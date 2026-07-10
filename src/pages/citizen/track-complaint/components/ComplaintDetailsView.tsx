@@ -183,7 +183,7 @@ export default function ComplaintDetailsView({
             {t("Complaint Timeline", "शिकायत समयरेखा")} —{" "}
             {t("End-to-End Lifecycle", "संपूर्ण जीवनचक्र")}
           </h3>
-          <ComplaintTimeline events={complaint.timeline} />
+          <ComplaintTimeline events={complaint.timeline} t={t} />
         </div>
       )}
     </div>
