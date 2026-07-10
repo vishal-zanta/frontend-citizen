@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const PREFERRED_LANGUAGE_OPTIONS = [
-  { value: "en", label: "English" },
-  { value: "hi", label: "हिन्दी (Hindi)" },
+  { value: "English", label: "English" },
+  { value: "Hindi", label: "हिन्दी (Hindi)" },
 ];
 
 export const grievanceSchema = z.object({
