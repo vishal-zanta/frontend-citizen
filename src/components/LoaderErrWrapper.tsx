@@ -6,13 +6,23 @@ interface LoaderErrWrapperProps {
   isLoading: boolean;
   error?: any;
   children: React.ReactNode;
-  loaderClassName?:string
+  loaderClassName?: string;
 }
 
-const LoaderErrWrapper: React.FC<LoaderErrWrapperProps> = ({ isLoading, error, children,loaderClassName }) => {
+const LoaderErrWrapper: React.FC<LoaderErrWrapperProps> = ({
+  isLoading,
+  error,
+  children,
+  loaderClassName,
+}) => {
   if (isLoading) {
     return (
-      <div className={clsx("flex items-center justify-center h-full py-4", loaderClassName)}>
+      <div
+        className={clsx(
+          "flex items-center justify-center h-full py-4",
+          loaderClassName,
+        )}
+      >
         <ClipLoader color="#0A5ADB" size={32} />
       </div>
     );
@@ -21,7 +31,9 @@ const LoaderErrWrapper: React.FC<LoaderErrWrapperProps> = ({ isLoading, error, c
   if (error) {
     return (
       <div className="flex items-center justify-center h-full min-h-40">
-        <p className="text-red-500 text-lg font-semibold">{error}</p>
+        <p className="text-red-500 text-lg font-semibold">
+          {error?.message || error || "Something went wrong"}
+        </p>
       </div>
     );
   }
