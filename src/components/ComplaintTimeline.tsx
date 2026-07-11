@@ -88,7 +88,7 @@ export default function ComplaintTimeline({ events, t }: ComplaintTimelineProps)
         return (
           <div key={event._id || i} className="relative mb-6 last:mb-0">
             {/* Dot */}
-            <div className="absolute -left-[22px] top-0 w-6 h-6 rounded-full bg-white border-2 border-blue-500 flex items-center justify-center shadow-sm">
+            <div className="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-white border-2 border-blue-500 flex items-center justify-center shadow-sm">
               <Icon className="w-3 h-3 text-blue-600" />
             </div>
 

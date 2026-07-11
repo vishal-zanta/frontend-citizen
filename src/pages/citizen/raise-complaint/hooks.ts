@@ -20,7 +20,7 @@ export const useRaiseComplaintData = (lang :any) => {
 
   // Filter grievance natures to only "grievanceNature" type
   const grievanceNatureOptions = allNatures
-    .filter((n) => n.type === "grievanceNature")
+    .filter((n) => n.type === "Grievance Nature")
     .map((n) => ({
       label: lang === "hi" && n.titleHindi ? n.titleHindi : n.title,
       value: n._id,
@@ -32,14 +32,14 @@ export const useRaiseComplaintData = (lang :any) => {
   }));
 
   const frequencyOptions = allNatures
-    .filter((n) => n.type === "evidenceFrequency")
+    .filter((n) => n.type === "Evidence Frequency")
     .map((n) => ({
       label: lang === "hi" && n.titleHindi ? n.titleHindi : n.title,
       value: n._id,
     }));
 
   const affectedBeneficiaryOptions = allNatures
-    .filter((n) => n.type === "publicImpact")
+    .filter((n) => n.type === "Public Impact")
     .map((n) => ({
       label: lang === "hi" && n.titleHindi ? n.titleHindi : n.title,
       value: n._id,
