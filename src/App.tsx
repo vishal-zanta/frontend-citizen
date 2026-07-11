@@ -50,6 +50,8 @@ const AdminProtectedRoute = ({ children }) => {
   }
 
   if (error || !data) {
+    localStorage.removeItem("usertoken");
+    sessionStorage.removeItem("usertoken");
     return <Navigate to="/" replace state={{ redirect: false }} />;
   }
 
