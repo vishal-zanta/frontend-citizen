@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { LogIn, Loader2, ArrowLeft, Phone, KeyRound, RotateCw } from "lucide-react";
@@ -18,6 +18,7 @@ import { getErrorToast, getSuccessToast } from "@/utils/helpers";
 
 export default function Login() {
   const navigate = useNavigate();
+  const {state} = useLocation();
   const [phone, setPhone] = useState<any>("");
   const [otp, setOtp] = useState("");
   const [captcha, setCaptcha] = useState("");
@@ -38,7 +39,7 @@ export default function Login() {
 
   useEffect(() => {
     const token = localStorage.getItem("usertoken");
-    if (!!token) {
+    if (!!token && state?.redirect !== false) {
       navigate("/citizen");
     }
   }, [navigate]);

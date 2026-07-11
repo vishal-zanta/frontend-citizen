@@ -50,7 +50,7 @@ const AdminProtectedRoute = ({ children }) => {
   }
 
   if (error || !data) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" replace state={{ redirect: false }} />;
   }
 
   return children;
@@ -71,9 +71,11 @@ const router = createBrowserRouter([
       },
       {
         path: "citizen",
-        element : <AdminProtectedRoute>
-          <Outlet />
-        </AdminProtectedRoute>,
+        element: (
+          <AdminProtectedRoute>
+            <Outlet />
+          </AdminProtectedRoute>
+        ),
         children: [
           {
             path: "",
