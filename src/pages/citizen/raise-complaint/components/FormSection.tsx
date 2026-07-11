@@ -8,7 +8,7 @@ interface FormSectionProps {
 export default function FormSection({ title, children }: FormSectionProps) {
   return (
     <div className="rounded-xl border border-border bg-white shadow-sm overflow-hidden">
-      <div className="bg-[#101C38] px-5 py-3">
+      <div className="bg-gradient-to-r from-blue-900 to-blue-600 px-5 py-3">
         <h2 className="text-white font-semibold text-sm tracking-wide uppercase">
           {title}
         </h2>
