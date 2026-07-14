@@ -1,0 +1,31 @@
+import React from "react";
+
+interface WelcomeBannerProps {
+  t: (en: string, hi: string) => string;
+  lang: string;
+  toggle: () => void;
+}
+
+export default function WelcomeBanner({ t, lang, toggle }: WelcomeBannerProps) {
+  return (
+    <div className="bg-gradient-to-r from-blue-900 to-blue-600 rounded-2xl p-6 text-white flex items-start justify-between">
+      <div>
+        <h1 className="text-2xl font-bold mb-1">
+          {t("Namaste, Ramesh Prasad!", "नमस्ते, रमेश प्रसाद!")}
+        </h1>
+        <p className="text-white/80 text-sm">
+          {t(
+            "Welcome to your citizen dashboard. File complaints, track status, and get assistance — all in one place.",
+            "अपने नागरिक डैशबोर्ड में आपका स्वागत है। शिकायत दर्ज करें, स्थिति ट्रैक करें, और सहायता प्राप्त करें।"
+          )}
+        </p>
+      </div>
+      <button
+        onClick={toggle}
+        className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm text-white font-medium whitespace-nowrap cursor-pointer"
+      >
+        {lang === "en" ? "हिन्दी" : "English"}
+      </button>
+    </div>
+  );
+}

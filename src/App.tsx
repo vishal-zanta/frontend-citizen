@@ -13,7 +13,7 @@ import ScrollToTop from "./components/ScrollToTop";
 
 // Page imports
 import PortalHome from "./pages/PortalHome";
-import CitizenDashboard from "./pages/citizen/CitizenDashboard";
+import CitizenDashboard from "./pages/citizen/dashboard";
 import RaiseComplaint from "./pages/citizen/raise-complaint";
 import TrackComplaint from "./pages/citizen/track-complaint";
 import CitizenFeedback from "./pages/citizen/CitizenFeedback";
