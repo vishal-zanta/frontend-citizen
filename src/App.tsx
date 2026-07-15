@@ -16,7 +16,7 @@ import PortalHome from "./pages/PortalHome";
 import CitizenDashboard from "./pages/citizen/dashboard";
 import RaiseComplaint from "./pages/citizen/raise-complaint";
 import TrackComplaint from "./pages/citizen/track-complaint";
-import CitizenFeedback from "./pages/citizen/CitizenFeedback";
+import CitizenFeedback from "./pages/citizen/citizen-feedback";
 import CitizenSettings from "./pages/citizen/CitizenSettings";
 import Login from "./pages/Login";
 import PageNotFound from "./lib/PageNotFound";

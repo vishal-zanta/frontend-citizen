@@ -27,6 +27,7 @@ export default function RhfInput({
   inputClassName,
   required = false,
   disabled = false,
+
   ...props
 }: RhfInputProps) {
   const { control } = useFormContext();

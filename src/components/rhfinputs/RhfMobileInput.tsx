@@ -58,9 +58,10 @@ export default function RhfMobileInput({
             onBlur={field.onBlur}
             className={cn(
               "h-9",
-              error && "[&_input]:border-destructive [&_button]:border-destructive",
+              error &&
+                "[&_input]:border-destructive [&_button]:border-destructive",
             )}
-            countrySelectProps={{ disabled: true}}
+            countrySelectProps={{ disabled: true }}
           />
 
           {error && (

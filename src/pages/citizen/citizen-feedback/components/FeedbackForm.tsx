@@ -1,0 +1,508 @@
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useMutation } from "@tanstack/react-query";
+import {
+  CheckCircle2,
+  ChevronDown,
+  Loader2,
+  Search,
+  Send,
+  X,
+} from "lucide-react";
+import { Rating } from "@/components/reui/rating";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { getComplaints, postComplaintFeedback } from "@/api/complaints.api";
+import { getErrorToast, getSuccessToast } from "@/utils/helpers";
+import { useLanguage } from "@/hooks/useLanguage";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface Complaint {
+  _id: string;
+  grievanceId: string;
+  status: string;
+  rating?: number;
+  classification?: {
+    subService?: {
+      title?: string;
+      titleHindi?: string;
+    };
+  };
+  address?: {
+    district?: string;
+    state?: string;
+  };
+  createdAt?: string;
+}
+
+// ─── Custom Complaint Dropdown ────────────────────────────────────────────────
+
+const PAGE_SIZE = 10;
+
+interface ComplaintDropdownProps {
+  value: Complaint | null;
+  onChange: (c: Complaint | null) => void;
+  t: (en: string, hi: string) => string;
+}
+
+function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [items, setItems] = useState<Complaint[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const listRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Focus search on open
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => searchRef.current?.focus(), 50);
+    }
+  }, [open]);
+
+  // Fetch first page (reset)
+  const fetchFirst = useCallback(async (q: string) => {
+    setLoading(true);
+    setItems([]);
+    setPage(1);
+    try {
+      const res = await getComplaints({
+        status: "RESOLVED",
+        page: 1,
+        limit: PAGE_SIZE,
+        search: q || undefined,
+      });
+      const docs: Complaint[] = res?.data?.data?.docs ?? [];
+      const tp: number = res?.data?.data?.pagination?.totalPages ?? 1;
+      setItems(docs);
+      setTotalPages(tp);
+      setPage(2);
+    } catch {
+      /* ignore */
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Fetch next page (append)
+  const fetchMore = useCallback(async () => {
+    if (loadingMore || page > totalPages) return;
+    setLoadingMore(true);
+    try {
+      const res = await getComplaints({
+        status: "RESOLVED",
+        page,
+        limit: PAGE_SIZE,
+        search: search || undefined,
+      });
+      const docs: Complaint[] = res?.data?.data?.docs ?? [];
+      setItems((prev) => [...prev, ...docs]);
+      setPage((p) => p + 1);
+    } catch {
+      /* ignore */
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [loadingMore, page, totalPages, search]);
+
+  // Debounced search
+  useEffect(() => {
+    const id = setTimeout(() => {
+      if (open) fetchFirst(search);
+    }, 350);
+    return () => clearTimeout(id);
+  }, [search, open, fetchFirst]);
+
+  // Infinite scroll listener
+  const onListScroll = () => {
+    const el = listRef.current;
+    if (!el) return;
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 40) {
+      fetchMore();
+    }
+  };
+
+  const handleOpen = () => {
+    setOpen((o) => {
+      if (!o) {
+        setSearch("");
+        fetchFirst("");
+      }
+      return !o;
+    });
+  };
+
+  const handleSelect = (c: Complaint) => {
+    const isResolved = c.status === "RESOLVED";
+    const alreadyRated = typeof c.rating === "number" && c.rating > 0;
+    if (!isResolved || alreadyRated) return;
+    onChange(c);
+    setOpen(false);
+  };
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onChange(null);
+  };
+
+  const isDisabled = (c: Complaint) =>
+    c.status !== "RESOLVED" || (typeof c.rating === "number" && c.rating > 0);
+
+  return (
+    <div ref={containerRef} className="relative">
+      {/* Trigger */}
+      <button
+        type="button"
+        onClick={handleOpen}
+        className={`w-full flex items-center justify-between gap-2 h-10 px-3 rounded-lg border text-sm transition-colors
+          ${open ? "border-primary ring-2 ring-primary/20" : "border-border hover:border-primary/60"}
+          bg-background text-foreground`}
+      >
+        {value ? (
+          <span className="flex-1 text-left truncate font-medium">
+            {value.grievanceId} —{" "}
+            {value.classification?.subService?.title ?? ""}
+          </span>
+        ) : (
+          <span className="flex-1 text-left text-muted-foreground">
+            {t("Search or select a resolved complaint…", "हल की गई शिकायत खोजें…")}
+          </span>
+        )}
+        <span className="flex items-center gap-1 text-muted-foreground shrink-0">
+          {value && (
+            <span
+              role="button"
+              tabIndex={0}
+              onClick={handleClear}
+              className="hover:text-foreground p-0.5 rounded"
+            >
+              <X className="w-3.5 h-3.5" />
+            </span>
+          )}
+          <ChevronDown
+            className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
+          />
+        </span>
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <div className="absolute left-0 right-0 mt-1 z-50 bg-background border border-border rounded-xl shadow-lg overflow-hidden">
+          {/* Search */}
+          <div className="flex items-center gap-2 px-3 py-2 border-b border-border">
+            <Search className="w-4 h-4 text-muted-foreground shrink-0" />
+            <input
+              ref={searchRef}
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t("Search by ID or service…", "ID या सेवा से खोजें…")}
+              className="flex-1 bg-transparent text-sm outline-none text-foreground placeholder:text-muted-foreground"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* List */}
+          <div
+            ref={listRef}
+            onScroll={onListScroll}
+            className="max-h-64 overflow-y-auto"
+          >
+            {loading ? (
+              <div className="flex items-center justify-center gap-2 py-8 text-muted-foreground text-sm">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                {t("Loading…", "लोड हो रहा है…")}
+              </div>
+            ) : items.length === 0 ? (
+              <div className="py-8 text-center text-sm text-muted-foreground">
+                {t(
+                  "No resolved complaints found.",
+                  "कोई हल की गई शिकायत नहीं मिली।"
+                )}
+              </div>
+            ) : (
+              <>
+                {items.map((c) => {
+                  const disabled = isDisabled(c);
+                  const active = value?._id === c._id;
+                  return (
+                    <button
+                      key={c._id}
+                      type="button"
+                      disabled={disabled}
+                      onClick={() => handleSelect(c)}
+                      className={`w-full text-left px-4 py-3 flex flex-col gap-0.5 border-b border-border/50 last:border-0 transition-colors
+                        ${active ? "bg-primary/10" : ""}
+                        ${disabled
+                          ? "opacity-40 cursor-not-allowed"
+                          : "hover:bg-muted/60 cursor-pointer"
+                        }`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span
+                          className={`text-sm font-medium ${active ? "text-primary" : "text-foreground"}`}
+                        >
+                          {c.grievanceId}
+                        </span>
+                        {disabled && (
+                          <span className="text-[10px] font-medium bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full">
+                            {typeof c.rating === "number" && c.rating > 0
+                              ? t("Feedback given", "प्रतिक्रिया दी गई")
+                              : t("Not resolved", "अनसुलझा")}
+                          </span>
+                        )}
+                        {active && !disabled && (
+                          <span className="text-[10px] font-medium bg-primary/15 text-primary px-1.5 py-0.5 rounded-full">
+                            {t("Selected", "चुना गया")}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-xs text-muted-foreground truncate">
+                        {c.classification?.subService?.title ?? ""}{" "}
+                        {c.address?.district ? `· ${c.address.district}` : ""}
+                      </span>
+                    </button>
+                  );
+                })}
+
+                {/* Load more spinner */}
+                {page <= totalPages && (
+                  <div className="flex items-center justify-center gap-2 py-3 text-xs text-muted-foreground">
+                    {loadingMore ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        {t("Loading more…", "और लोड हो रहा है…")}
+                      </>
+                    ) : (
+                      <span>{t("Scroll to load more", "अधिक के लिए स्क्रॉल करें")}</span>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Main Form ────────────────────────────────────────────────────────────────
+
+interface FeedbackFormProps {
+  onSuccess?: () => void;
+}
+
+export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
+  const { t } = useLanguage();
+
+  const [selected, setSelected] = useState<Complaint | null>(null);
+  const [rating, setRating] = useState(0);
+  const [feedback, setFeedback] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      postComplaintFeedback({
+        id: selected!._id,
+        data: { rating, feedbackText: feedback },
+      }),
+    onSuccess: () => {
+      getSuccessToast(
+        t(
+          "Feedback submitted successfully",
+          "प्रतिक्रिया सफलतापूर्वक सबमिट की गई"
+        )
+      );
+      setSubmitted(true);
+      onSuccess?.();
+    },
+    onError: (err: any) => {
+      getErrorToast(err);
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (rating === 0) {
+      getErrorToast({
+        message: t(
+          "Please select a rating before submitting",
+          "कृपया सबमिट करने से पहले रेटिंग चुनें"
+        ),
+      });
+      return;
+    }
+    mutation.mutate();
+  };
+
+  // ── Success screen ────────────────────────────────────────────────────────
+  if (submitted) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 gap-4">
+        <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-sm">
+          <CheckCircle2 className="w-9 h-9" />
+        </div>
+        <h2 className="text-xl font-bold text-foreground">
+          {t("Thank You for Your Feedback!", "आपकी प्रतिक्रिया के लिए धन्यवाद!")}
+        </h2>
+        <p className="text-sm text-muted-foreground text-center max-w-sm">
+          {t(
+            "Your feedback has been recorded successfully.",
+            "आपकी प्रतिक्रिया सफलतापूर्वक दर्ज कर ली गई है।"
+          )}
+        </p>
+        <Button
+          variant="outline"
+          onClick={() => {
+            setSubmitted(false);
+            setSelected(null);
+            setRating(0);
+            setFeedback("");
+          }}
+        >
+          {t("Submit Another", "एक और जमा करें")}
+        </Button>
+      </div>
+    );
+  }
+
+  // ── Form ─────────────────────────────────────────────────────────────────
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+
+      {/* ── Complaint selector ─── */}
+      <div className="space-y-1.5">
+        <Label className="text-sm font-medium">
+          {t("Select Resolved Complaint", "हल की गई शिकायत चुनें")}
+          <span className="text-destructive ml-0.5">*</span>
+        </Label>
+        <p className="text-xs text-muted-foreground">
+          {t(
+            "Only RESOLVED complaints are listed. Scroll inside the dropdown to load more.",
+            "केवल हल की गई शिकायतें सूची में हैं। अधिक के लिए ड्रॉपडाउन में स्क्रॉल करें।"
+          )}
+        </p>
+        <ComplaintDropdown
+          value={selected}
+          onChange={(c) => {
+            setSelected(c);
+            setRating(0);
+            setFeedback("");
+          }}
+          t={t}
+        />
+
+        {/* Preview card */}
+        {selected && (
+          <div className="mt-2 p-3 bg-muted/40 border border-border/60 rounded-lg text-sm space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="font-semibold text-foreground">
+                {selected.grievanceId}
+              </span>
+              <span className="text-[11px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
+                {selected.status}
+              </span>
+            </div>
+            <p className="text-muted-foreground text-xs">
+              {selected.classification?.subService?.title ?? ""}
+              {selected.address?.district
+                ? ` · ${selected.address.district}`
+                : ""}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* ── Rating ─── */}
+      <div className="space-y-2">
+        <Label className="text-sm font-medium">
+          {t("Rate Your Experience", "अपना अनुभव रेट करें")}
+          <span className="text-destructive ml-0.5">*</span>
+        </Label>
+        <Rating
+          rating={rating}
+          editable={!!selected}
+          onRatingChange={setRating}
+          showValue
+          size="lg"
+          className="py-1"
+        />
+        {!selected && (
+          <p className="text-xs text-muted-foreground">
+            {t("Select a complaint first", "पहले एक शिकायत चुनें")}
+          </p>
+        )}
+      </div>
+
+      {/* ── Feedback textarea ─── */}
+      <div className="space-y-1.5">
+        <Label htmlFor="feedback-text" className="text-sm font-medium">
+          {t("Your Comments / Suggestions", "आपकी टिप्पणियाँ / सुझाव")}
+          <span className="text-destructive ml-0.5">*</span>
+        </Label>
+        <Textarea
+          id="feedback-text"
+          rows={4}
+          disabled={!selected}
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          placeholder={t(
+            "Share your thoughts on the resolution or officer's conduct…",
+            "समाधान या अधिकारी के आचरण पर अपने विचार साझा करें…"
+          )}
+          className="resize-none"
+        />
+      </div>
+
+      {/* ── Submit ─── */}
+      <Button
+        type="submit"
+        disabled={
+          !selected || rating === 0 || !feedback.trim() || mutation.isPending
+        }
+        className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
+      >
+        {mutation.isPending ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <Send className="w-4 h-4" />
+        )}
+        {t("Submit Feedback", "प्रतिक्रिया सबमिट करें")}
+      </Button>
+    </form>
+  );
+}
