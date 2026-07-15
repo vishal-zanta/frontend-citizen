@@ -73,6 +73,7 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
     formData.append("address[pinCode]", data.address.pinCode);
   if (data.address.landmark)
     formData.append("address[landmark]", data.address.landmark);
+  // formData.append("channel", "Website");
 
   attachments.forEach((file) => formData.append("attachments[]", file));
   return formData;

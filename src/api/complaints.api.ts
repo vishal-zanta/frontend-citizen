@@ -13,3 +13,7 @@ export const getComplaintById = (params :any)=> {
 export const postComplaints = (data : any)=> {
     return instance.post("/grievances/citizen", data)
 }
+
+export const postComplaintFeedback = ({ id, data }: { id: string; data: { rating: number; feedbackText: string } }) => {
+    return instance.post(`/grievances/citizen/${id}/feedback`, data)
+}

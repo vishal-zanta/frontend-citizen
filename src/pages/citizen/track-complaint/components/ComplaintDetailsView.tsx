@@ -12,6 +12,7 @@ import {
 import { StatusBadge } from "@/components/Badges";
 import { Button } from "@/components/ui/button";
 import ComplaintTimeline from "@/components/ComplaintTimeline";
+import ComplaintFeedback from "./ComplaintFeedback";
 
 interface ComplaintDetailsViewProps {
   complaint: any;
@@ -26,6 +27,8 @@ export default function ComplaintDetailsView({
 }: ComplaintDetailsViewProps) {
   if (!complaint) return null;
 
+  const feedbackStatus = ["RESOLVED"];
+
   return (
     <div className="print-area space-y-6">
       <div className="bg-white rounded-xl border border-border p-6">
@@ -39,6 +42,7 @@ export default function ComplaintDetailsView({
                 {complaint.grievanceId || complaint.id}
               </h2>
               <StatusBadge status={complaint.status} />
+             
             </div>
             <p className="text-sm text-muted-foreground">
               {complaint.classification?.subService?.title ||
@@ -164,6 +168,14 @@ export default function ComplaintDetailsView({
             {complaint.evidence?.details || complaint.description || "—"}
           </p>
         </div>
+        {feedbackStatus.includes(complaint.status.toString()) && (
+          <ComplaintFeedback
+            complaintId={complaint?._id}
+            existingRating={complaint?.rating}
+            existingFeedback={complaint?.feedbackText}
+            t={t}
+          />
+        )}
 
         {complaint.deptTransfer && (
           <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
