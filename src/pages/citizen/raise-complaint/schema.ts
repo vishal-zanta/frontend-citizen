@@ -8,7 +8,7 @@ export const PREFERRED_LANGUAGE_OPTIONS = [
 export const grievanceSchema = z.object({
   citizenInfo: z.object({
     fullName: z.string().optional(),
-    mobile: z.string().min(10, "Mobile number must be at least 10 digits"),
+    mobile: z.string().min(13, "Mobile number must be at least 10 digits"),
     alternateMobile: z.string().optional(),
     email: z.string().email("Enter a valid email").optional().or(z.literal("")),
     preferredLanguage: z.string().optional(),
@@ -38,11 +38,14 @@ export const grievanceSchema = z.object({
     satisfactionSurveyConsent: z.boolean().optional(),
   }),
   address: z.object({
-    state: z.string().optional(),
-    district: z.string().optional(),
-    subdivision: z.string().optional(),
+    state: z.string().min(1, "State is required"),
+    district: z.string().min(1, "District is required"),
+    subdivision: z.string().min(1, "Subdivision is required"),
     villageOrWard: z.string().optional(),
-    pinCode: z.string().optional(),
+    pinCode: z
+      .string()
+      .min(1, "Pincode is required")
+      .regex(/^\d{6}$/, "Pincode must be exactly 6 digits"),
     landmark: z.string().optional(),
   }),
 });
