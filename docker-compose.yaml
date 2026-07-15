@@ -1,0 +1,18 @@
+services:
+  citizen:
+    image: citizen-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_BASE_URL=${VITE_BASE_URL}
+    container_name: citizen
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
