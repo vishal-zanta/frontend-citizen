@@ -21,6 +21,7 @@ interface RhfSelectProps {
   disabled?: boolean;
   isMultiple?: boolean;
   isCreatable?: boolean;
+  isLoading?: boolean;
   colors?: {
     placeholder?: string;
   };
@@ -169,6 +170,7 @@ export default function RhfSelect({
   disabled = false,
   isMultiple = false,
   isCreatable = false,
+  isLoading = false,
   colors,
 }: RhfSelectProps) {
   const { control } = useFormContext();
@@ -208,6 +210,7 @@ export default function RhfSelect({
           options,
           placeholder: placeholder ?? label ?? "Select...",
           isDisabled: disabled,
+          isLoading: isLoading,
           isMulti: isMulti,
           isClearable: true,
           isSearchable: true,

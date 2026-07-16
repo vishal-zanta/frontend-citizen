@@ -150,3 +150,6 @@ export const getPriorityBadgeMeta = (priority: string) => {
   // Default fallback
   return { badgeLabel: priority || "Normal", badgeClass: "bg-blue-50 text-blue-700 border-blue-200" };
 };
+
+
+  export const feedbackStatus = ["RESOLVED", "CLOSED"];

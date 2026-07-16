@@ -46,9 +46,10 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
     grievanceNatureOptions,
     frequencyOptions,
     affectedBeneficiaryOptions,
-    // preferredModeOptions,
     subServicesLoading,
     naturesLoading,
+    allDemography,
+    demographyLoading,
   } = useRaiseComplaintData(lang);
 
   // ── File attachments ──────────────────────────────────────────────────────
@@ -59,9 +60,24 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFileError("");
     const files = Array.from(e.target.files ?? []);
+
+    const whitelist = ["image/jpeg", "image/png", "image/webp", "video/mp4", "audio/mpeg"];
+    const invalidFile = files.find((f) => !whitelist.includes(f.type));
+    if (invalidFile) {
+      const msg = t(
+        "Invalid file type. Only JPEG, PNG, WEBP, MP4, and MP3 are allowed.",
+        "अमान्य फ़ाइल प्रकार। केवल JPEG, PNG, WEBP, MP4, और MP3 की अनुमति है।"
+      );
+      setFileError(msg);
+      getErrorToast(msg);
+      return;
+    }
+
     const oversized = files.find((f) => f.size > 10 * 1024 * 1024);
     if (oversized) {
-      setFileError(t("File too large. Max 10 MB.", "फ़ाइल बहुत बड़ी है। अधिकतम 10 MB।"));
+      const msg = t("File too large. Max 10 MB.", "फ़ाइल बहुत बड़ी है। अधिकतम 10 MB।");
+      setFileError(msg);
+      getErrorToast(msg);
       return;
     }
     setAttachments((prev) => [...prev, ...files]);
@@ -169,6 +185,8 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
           handleFileChange={handleFileChange}
           removeAttachment={removeAttachment}
           postComplaintsMutation={postComplaintsMutation}
+          allDemography={allDemography}
+          demographyLoading={demographyLoading}
         />
       </RhfWrapper>
            </CenterLayout>
@@ -191,6 +209,8 @@ interface FormWizardProps {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   removeAttachment: (index: number) => void;
   postComplaintsMutation: any;
+  allDemography?: any;
+  demographyLoading?: boolean;
 }
 
 function FormWizard({
@@ -207,6 +227,8 @@ function FormWizard({
   handleFileChange,
   removeAttachment,
   postComplaintsMutation,
+  allDemography,
+  demographyLoading,
 }: FormWizardProps) {
   const { trigger } = useFormContext<GrievanceFormValues>();
   const [step, setStep] = useState(1);
@@ -337,7 +359,7 @@ function FormWizard({
 
         {step === 2 && (
           <div className="space-y-6">
-            <AddressSection t={t} />
+            <AddressSection t={t} allDemography={allDemography} demographyLoading={demographyLoading} />
           </div>
         )}
 

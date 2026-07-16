@@ -11,5 +11,8 @@ export const getGrievenceNatures= async (params = {})=> {
 
 export const getComplainSources = async(params = {})=> {
     return instance.get("/complaint-sources", {params});
-
 }
+
+export const getDemographics = async (params = {}) => {
+  return instance.get("/demography", { params });
+};

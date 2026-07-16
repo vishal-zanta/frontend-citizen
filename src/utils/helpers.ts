@@ -6,7 +6,7 @@ export const getSuccessToast = (description: string) => {
 
 export const getErrorToast = (err: any) => {
   const message =
-    err?.response?.data?.message || err?.message || "Something went wrong!";
+    err?.response?.data?.message || err?.message || (typeof err === "string" ? err :  "Something went wrong!");
   toast.error(message);
 };
 

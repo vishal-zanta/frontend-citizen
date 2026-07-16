@@ -25,6 +25,7 @@ export default function CitizenInfoSection({ t }: CitizenInfoSectionProps) {
           label={t("Mobile Number", "मोबाइल नंबर")}
           placeholder={t("10-digit mobile number", "10 अंकों का मोबाइल नंबर")}
           required
+          
         />
         <RhfMobileInput
           name="citizenInfo.alternateMobile"
@@ -42,6 +43,7 @@ export default function CitizenInfoSection({ t }: CitizenInfoSectionProps) {
           label={t("Preferred Language", "पसंदीदा भाषा")}
           placeholder={t("Select language", "भाषा चुनें")}
           options={PREFERRED_LANGUAGE_OPTIONS}
+          required
         />
       </div>
     </FormSection>
