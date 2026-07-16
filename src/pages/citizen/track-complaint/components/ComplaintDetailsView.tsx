@@ -87,7 +87,7 @@ export default function ComplaintDetailsView({
                 {t("District", "ज़िला")}:
               </span>
               <span className="font-medium">
-                {complaint.address?.district || complaint.districtName || "—"}
+                {complaint.address?.district?.name || complaint?.address?.district || complaint.districtName || "—"}
               </span>
             </div>
             <div className="flex items-center gap-2">
