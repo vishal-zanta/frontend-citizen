@@ -13,6 +13,7 @@ import { StatusBadge } from "@/components/Badges";
 import { Button } from "@/components/ui/button";
 import ComplaintTimeline from "@/components/ComplaintTimeline";
 import ComplaintFeedback from "./ComplaintFeedback";
+import { feedbackStatus } from "@/utils/constants";
 
 interface ComplaintDetailsViewProps {
   complaint: any;
@@ -27,7 +28,7 @@ export default function ComplaintDetailsView({
 }: ComplaintDetailsViewProps) {
   if (!complaint) return null;
 
-  const feedbackStatus = ["RESOLVED"];
+
 
   return (
     <div className="print-area space-y-6">

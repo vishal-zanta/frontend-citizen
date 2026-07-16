@@ -62,6 +62,7 @@ export default function RhfMobileInput({
                 "[&_input]:border-destructive [&_button]:border-destructive",
             )}
             countrySelectProps={{ disabled: true }}
+            maxLength={15}
           />
 
           {error && (

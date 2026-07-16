@@ -8,10 +8,18 @@ export const PREFERRED_LANGUAGE_OPTIONS = [
 export const grievanceSchema = z.object({
   citizenInfo: z.object({
     fullName: z.string().optional(),
-    mobile: z.string().min(13, "Mobile number must be at least 10 digits"),
-    alternateMobile: z.string().optional(),
+    mobile: z
+      .string()
+      .min(13, "Mobile number must be at least 10 digits")
+      .max(13, "Mobile number cannot exceed 10 digits"),
+    alternateMobile: z
+      .string()
+      .min(13, "Mobile number must be at least 10 digits")
+      .max(13, "Mobile number cannot exceed 10 digits")
+      .optional()
+      .or(z.literal("")),
     email: z.string().email("Enter a valid email").optional().or(z.literal("")),
-    preferredLanguage: z.string().optional(),
+    preferredLanguage: z.string().min(1, "Preferred language is required"),
   }),
   classification: z.object({
     subService: z.string().min(1, "Sub-service is required"),
@@ -45,7 +53,7 @@ export const grievanceSchema = z.object({
     pinCode: z
       .string()
       .min(1, "Pincode is required")
-      .regex(/^\d{6}$/, "Pincode must be exactly 6 digits"),
+      .regex(/^8\d{5}$/, "Enter a valid pin code of Bihar"),
     landmark: z.string().optional(),
   }),
 });
@@ -76,5 +84,5 @@ export const defaultValues: GrievanceFormValues = {
     feedbackConsent: false,
     satisfactionSurveyConsent: false,
   },
-  address: { state: "", district: "", subdivision: "", villageOrWard: "", pinCode: "", landmark: "" },
+  address: { state: "Bihar", district: "", subdivision: "", villageOrWard: "", pinCode: "", landmark: "" },
 };

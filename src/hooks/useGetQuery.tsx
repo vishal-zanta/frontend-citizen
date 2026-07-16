@@ -1,5 +1,5 @@
 import { getComplaints, getComplaintById } from "@/api/complaints.api";
-import { getComplainSources, getGrievenceNatures, getSubservices } from "@/api/global.api";
+import { getComplainSources, getGrievenceNatures, getSubservices, getDemographics } from "@/api/global.api";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -38,15 +38,21 @@ export const useGetComplaintById = (keys = [], params :any = {}, enabled = true)
   });
 };
 
+export const useGetComplaintSources = (keys = [], params = {}, enabled = true) => {
+  return useQuery({
+    queryKey: ["complain-sources", ...keys],
+    queryFn: () => getComplainSources(params),
+    enabled: enabled,
+  });
+};
 
-
-// export const useGetComplaintResources = (keys = [], params = {}, enabled = true) => {
-//   return useQuery({
-//     queryKey: ["complain-sources", ...keys],
-//     queryFn: () => getComplainSources(params),
-//     enabled: enabled,
-//   });
-// };
+export const useGetDemographics = (keys = [], params = {}, enabled = true) => {
+  return useQuery({
+    queryKey: ["demography", ...keys],
+    queryFn: () => getDemographics(params),
+    enabled: enabled,
+  });
+};
 
 
 

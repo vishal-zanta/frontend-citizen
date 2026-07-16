@@ -1,10 +1,10 @@
 
-import { useGetGrievenceNatures, useGetSubservices } from "@/hooks/useGetQuery";
+import { useGetGrievenceNatures, useGetSubservices, useGetDemographics } from "@/hooks/useGetQuery";
 
 
 export const useRaiseComplaintData = (lang :any) => {
 
-  const API_PARAMS = { page: 1, limit: 100 };
+  const API_PARAMS = { page: 1, limit: 500, select: "title,titleHindi,name,nameHindi" };
 
   const { data: subServicesData, isLoading: subServicesLoading } =
     useGetSubservices([], API_PARAMS);
@@ -12,11 +12,11 @@ export const useRaiseComplaintData = (lang :any) => {
   const { data: naturesData, isLoading: naturesLoading } =
     useGetGrievenceNatures([], API_PARAMS);
 
-    // const {  data: complaintSourceData, isLoading: complaintSourceLoading } = useGetComplaintResources([], API_PARAMS)
+  const { data: demographyData, isLoading: demographyLoading } =
+    useGetDemographics([], API_PARAMS);
 
   const allSubServices: any[] = subServicesData?.data?.data?.docs ?? [];
   const allNatures: any[] = naturesData?.data?.data?.docs ?? [];
-  // const complaintSource: any[] = complaintSourceData?.data?.data?.docs ?? [];
 
   // Filter grievance natures to only "grievanceNature" type
   const grievanceNatureOptions = allNatures
@@ -45,25 +45,22 @@ export const useRaiseComplaintData = (lang :any) => {
       value: n._id,
     }));
 
-  // const preferredModeOptions = complaintSource.map((n) => ({
-  //     label:  n.title,
-  //     value: n._id,
-  //   }));
+  const allDemography = (demographyData?.data?.data?.docs ?? []).map((d: any) => ({
+    label: lang === "hi" && d.nameHindi ? d.nameHindi : d.name ,
+    value:  d._id,
+  }));
 
-
- 
   return {
     subServicesLoading,
     naturesLoading,
-    // complaintSourceLoading,
+    demographyLoading,
 
     subServiceOptions,
     grievanceNatureOptions,
-    // complaintSource,
+    allDemography,
 
     frequencyOptions,
     affectedBeneficiaryOptions,
-    // preferredModeOptions,
   };
 };
 

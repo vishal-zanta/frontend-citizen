@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
+import { isValidNumber } from "@/utils/helpers";
 
 interface RhfInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -15,6 +16,8 @@ interface RhfInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   inputClassName?: string;
   required?: boolean;
   disabled?: boolean;
+  isDisableFutureDates?: boolean;
+  isNumsOnly?:boolean
 }
 
 export default function RhfInput({
@@ -27,13 +30,16 @@ export default function RhfInput({
   inputClassName,
   required = false,
   disabled = false,
+  isDisableFutureDates = false,
+  isNumsOnly=false,
 
   ...props
 }: RhfInputProps) {
   const { control } = useFormContext();
   const [showPassword, setShowPassword] = useState(false);
 
-  const inputType = type === "password" ? (showPassword ? "text" : "password") : type;
+  const inputType =
+    type === "password" ? (showPassword ? "text" : "password") : type;
 
   return (
     <Controller
@@ -64,7 +70,19 @@ export default function RhfInput({
                 type === "password" && "pr-10",
                 inputClassName,
               )}
+              max={
+                isDisableFutureDates
+                  ? new Date().toISOString().split("T")[0]
+                  : props?.max
+              }
               {...field}
+               onChange={(e) => {
+                if (isNumsOnly && !isValidNumber(e.target.value)) {
+                  return;
+                }
+                field.onChange(e);
+                
+              }}
               {...props}
             />
             {type === "password" && (

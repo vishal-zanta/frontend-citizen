@@ -4,22 +4,19 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useMutation } from "@tanstack/react-query";
 import {
-  CheckCircle2,
   ChevronDown,
   Loader2,
   Search,
-  Send,
   X,
+  CheckCircle2,
 } from "lucide-react";
-import { Rating } from "@/components/reui/rating";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { getComplaints, postComplaintFeedback } from "@/api/complaints.api";
-import { getErrorToast, getSuccessToast } from "@/utils/helpers";
+import { getComplaints } from "@/api/complaints.api";
 import { useLanguage } from "@/hooks/useLanguage";
+import { feedbackStatus } from "@/utils/constants";
+import ComplaintFeedback from "@/pages/citizen/track-complaint/components/ComplaintFeedback";
+import { Button } from "@/components/ui/button";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -28,6 +25,7 @@ interface Complaint {
   grievanceId: string;
   status: string;
   rating?: number;
+  feedbackText?: string;
   classification?: {
     subService?: {
       title?: string;
@@ -43,7 +41,7 @@ interface Complaint {
 
 // ─── Custom Complaint Dropdown ────────────────────────────────────────────────
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 interface ComplaintDropdownProps {
   value: Complaint | null;
@@ -92,7 +90,7 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
     setPage(1);
     try {
       const res = await getComplaints({
-        status: "RESOLVED",
+        status: feedbackStatus.join(","),
         page: 1,
         limit: PAGE_SIZE,
         search: q || undefined,
@@ -115,7 +113,7 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
     setLoadingMore(true);
     try {
       const res = await getComplaints({
-        status: "RESOLVED",
+        status: feedbackStatus.join(","),
         page,
         limit: PAGE_SIZE,
         search: search || undefined,
@@ -130,11 +128,13 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
     }
   }, [loadingMore, page, totalPages, search]);
 
-  // Debounced search
+  // Debounced search — 0ms delay on initial open, 350ms while typing
   useEffect(() => {
+    if (!open) return;
+    const delay = search ? 350 : 0;
     const id = setTimeout(() => {
-      if (open) fetchFirst(search);
-    }, 350);
+      fetchFirst(search);
+    }, delay);
     return () => clearTimeout(id);
   }, [search, open, fetchFirst]);
 
@@ -151,16 +151,13 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
     setOpen((o) => {
       if (!o) {
         setSearch("");
-        fetchFirst("");
+        // fetchFirst is triggered by the useEffect above when open becomes true
       }
       return !o;
     });
   };
 
   const handleSelect = (c: Complaint) => {
-    const isResolved = c.status === "RESOLVED";
-    const alreadyRated = typeof c.rating === "number" && c.rating > 0;
-    if (!isResolved || alreadyRated) return;
     onChange(c);
     setOpen(false);
   };
@@ -169,9 +166,6 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
     e.stopPropagation();
     onChange(null);
   };
-
-  const isDisabled = (c: Complaint) =>
-    c.status !== "RESOLVED" || (typeof c.rating === "number" && c.rating > 0);
 
   return (
     <div ref={containerRef} className="relative">
@@ -256,20 +250,15 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
             ) : (
               <>
                 {items.map((c) => {
-                  const disabled = isDisabled(c);
                   const active = value?._id === c._id;
+                  const alreadyRated = typeof c.rating === "number" && c.rating > 0;
                   return (
                     <button
                       key={c._id}
                       type="button"
-                      disabled={disabled}
                       onClick={() => handleSelect(c)}
                       className={`w-full text-left px-4 py-3 flex flex-col gap-0.5 border-b border-border/50 last:border-0 transition-colors
-                        ${active ? "bg-primary/10" : ""}
-                        ${disabled
-                          ? "opacity-40 cursor-not-allowed"
-                          : "hover:bg-muted/60 cursor-pointer"
-                        }`}
+                        ${active ? "bg-primary/10" : "hover:bg-muted/60 cursor-pointer"}`}
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span
@@ -277,14 +266,12 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
                         >
                           {c.grievanceId}
                         </span>
-                        {disabled && (
-                          <span className="text-[10px] font-medium bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full">
-                            {typeof c.rating === "number" && c.rating > 0
-                              ? t("Feedback given", "प्रतिक्रिया दी गई")
-                              : t("Not resolved", "अनसुलझा")}
+                        {alreadyRated && (
+                          <span className="text-[10px] font-medium bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full">
+                            {t("Feedback given", "प्रतिक्रिया दी गई")}
                           </span>
                         )}
-                        {active && !disabled && (
+                        {active && !alreadyRated && (
                           <span className="text-[10px] font-medium bg-primary/15 text-primary px-1.5 py-0.5 rounded-full">
                             {t("Selected", "चुना गया")}
                           </span>
@@ -330,44 +317,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
   const { t } = useLanguage();
 
   const [selected, setSelected] = useState<Complaint | null>(null);
-  const [rating, setRating] = useState(0);
-  const [feedback, setFeedback] = useState("");
   const [submitted, setSubmitted] = useState(false);
-
-  const mutation = useMutation({
-    mutationFn: () =>
-      postComplaintFeedback({
-        id: selected!._id,
-        data: { rating, feedbackText: feedback },
-      }),
-    onSuccess: () => {
-      getSuccessToast(
-        t(
-          "Feedback submitted successfully",
-          "प्रतिक्रिया सफलतापूर्वक सबमिट की गई"
-        )
-      );
-      setSubmitted(true);
-      onSuccess?.();
-    },
-    onError: (err: any) => {
-      getErrorToast(err);
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (rating === 0) {
-      getErrorToast({
-        message: t(
-          "Please select a rating before submitting",
-          "कृपया सबमिट करने से पहले रेटिंग चुनें"
-        ),
-      });
-      return;
-    }
-    mutation.mutate();
-  };
 
   // ── Success screen ────────────────────────────────────────────────────────
   if (submitted) {
@@ -390,8 +340,6 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
           onClick={() => {
             setSubmitted(false);
             setSelected(null);
-            setRating(0);
-            setFeedback("");
           }}
         >
           {t("Submit Another", "एक और जमा करें")}
@@ -402,7 +350,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
 
   // ── Form ─────────────────────────────────────────────────────────────────
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="space-y-6">
 
       {/* ── Complaint selector ─── */}
       <div className="space-y-1.5">
@@ -412,17 +360,13 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
         </Label>
         <p className="text-xs text-muted-foreground">
           {t(
-            "Only RESOLVED complaints are listed. Scroll inside the dropdown to load more.",
-            "केवल हल की गई शिकायतें सूची में हैं। अधिक के लिए ड्रॉपडाउन में स्क्रॉल करें।"
+            "Only RESOLVED and CLOSED complaints are listed. Scroll inside the dropdown to load more.",
+            "केवल हल की गई और बंद शिकायतें सूची में हैं। अधिक के लिए ड्रॉपडाउन में स्क्रॉल करें।"
           )}
         </p>
         <ComplaintDropdown
           value={selected}
-          onChange={(c) => {
-            setSelected(c);
-            setRating(0);
-            setFeedback("");
-          }}
+          onChange={(c) => setSelected(c)}
           t={t}
         />
 
@@ -447,62 +391,16 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
         )}
       </div>
 
-      {/* ── Rating ─── */}
-      <div className="space-y-2">
-        <Label className="text-sm font-medium">
-          {t("Rate Your Experience", "अपना अनुभव रेट करें")}
-          <span className="text-destructive ml-0.5">*</span>
-        </Label>
-        <Rating
-          rating={rating}
-          editable={!!selected}
-          onRatingChange={setRating}
-          showValue
-          size="lg"
-          className="py-1"
+      {/* ── Feedback section (ComplaintFeedback) ─── */}
+      {selected && (
+        <ComplaintFeedback
+          key={selected._id}
+          complaintId={selected._id}
+          existingRating={selected.rating}
+          existingFeedback={selected.feedbackText}
+          t={t}
         />
-        {!selected && (
-          <p className="text-xs text-muted-foreground">
-            {t("Select a complaint first", "पहले एक शिकायत चुनें")}
-          </p>
-        )}
-      </div>
-
-      {/* ── Feedback textarea ─── */}
-      <div className="space-y-1.5">
-        <Label htmlFor="feedback-text" className="text-sm font-medium">
-          {t("Your Comments / Suggestions", "आपकी टिप्पणियाँ / सुझाव")}
-          <span className="text-destructive ml-0.5">*</span>
-        </Label>
-        <Textarea
-          id="feedback-text"
-          rows={4}
-          disabled={!selected}
-          value={feedback}
-          onChange={(e) => setFeedback(e.target.value)}
-          placeholder={t(
-            "Share your thoughts on the resolution or officer's conduct…",
-            "समाधान या अधिकारी के आचरण पर अपने विचार साझा करें…"
-          )}
-          className="resize-none"
-        />
-      </div>
-
-      {/* ── Submit ─── */}
-      <Button
-        type="submit"
-        disabled={
-          !selected || rating === 0 || !feedback.trim() || mutation.isPending
-        }
-        className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
-      >
-        {mutation.isPending ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
-        ) : (
-          <Send className="w-4 h-4" />
-        )}
-        {t("Submit Feedback", "प्रतिक्रिया सबमिट करें")}
-      </Button>
-    </form>
+      )}
+    </div>
   );
 }

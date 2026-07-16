@@ -18,6 +18,7 @@ export default function EvidenceSection({ frequencyOptions, t }: EvidenceSection
           name="evidence.occurrenceDate"
           label={t("Date of Occurrence", "घटना की तारीख")}
           type="date"
+          isDisableFutureDates={true}
         />
 
         <RhfSelect
