@@ -33,7 +33,7 @@ interface Complaint {
     };
   };
   address?: {
-    district?: string;
+    district?: any;
     state?: string;
   };
   createdAt?: string;
@@ -279,7 +279,7 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
                       </div>
                       <span className="text-xs text-muted-foreground truncate">
                         {c.classification?.subService?.title ?? ""}{" "}
-                        {c.address?.district ? `· ${c.address.district}` : ""}
+                        {c.address?.district?.name ? `· ${c.address.district?.name}` : ""}
                       </span>
                     </button>
                   );
@@ -383,8 +383,8 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
             </div>
             <p className="text-muted-foreground text-xs">
               {selected.classification?.subService?.title ?? ""}
-              {selected.address?.district
-                ? ` · ${selected.address.district}`
+              {selected.address?.district?.name
+                ? ` · ${selected.address.district?.name}`
                 : ""}
             </p>
           </div>
@@ -398,6 +398,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
           complaintId={selected._id}
           existingRating={selected.rating}
           existingFeedback={selected.feedbackText}
+          setSelected={setSelected}
           t={t}
         />
       )}

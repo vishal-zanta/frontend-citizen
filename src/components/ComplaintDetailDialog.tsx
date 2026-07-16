@@ -276,7 +276,7 @@ export function ComplaintDetailDialog({
                   <MapPin className="w-4 h-4 text-muted-foreground" />
                   <span className="text-muted-foreground">District:</span>
                   <span className="font-medium">
-                    {complaint.address?.district ||
+                    {complaint.address?.district?.name || complaint?.address?.district ||
                       complaint.districtName ||
                       "—"}
                   </span>

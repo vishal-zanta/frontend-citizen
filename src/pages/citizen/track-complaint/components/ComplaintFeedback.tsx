@@ -13,10 +13,11 @@ interface ComplaintFeedbackProps {
   complaintId: string;
   existingRating?: number;
   existingFeedback?: string;
-  t: any
+  t: any,
+  setSelected?:any
 }
 
-const ComplaintFeedback = ({ complaintId, existingRating, existingFeedback, t }: ComplaintFeedbackProps) => {
+const ComplaintFeedback = ({ complaintId, existingRating, existingFeedback, t, setSelected }: ComplaintFeedbackProps) => {
 //   const { t } = useLanguage()
   const queryClient = useQueryClient()
   const [rating, setRating] = useState(existingRating || 0)
@@ -29,6 +30,7 @@ const ComplaintFeedback = ({ complaintId, existingRating, existingFeedback, t }:
     onSuccess: () => {
       getSuccessToast(t('Feedback submitted successfully', 'प्रतिक्रिया सफलतापूर्वक सबमिट की गई'))
       queryClient.invalidateQueries({ queryKey: ['grievance'] })
+      setSelected && setSelected((prev :any)=> ({...prev, rating, feedbackText: feedback }))
     },
     onError: (err: any) => {
       getErrorToast(err)
