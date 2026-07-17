@@ -36,7 +36,7 @@ export default function PortalLayout({
         />
         <main className="flex-1 overflow-x-hidden">{children}</main>
       </div>
-      <Chatbot role="citizen" />
+      {/* <Chatbot role="citizen" /> */}
     </div>
   );
 }
