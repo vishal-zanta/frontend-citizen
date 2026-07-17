@@ -17,3 +17,7 @@ export const postComplaints = (data : any)=> {
 export const postComplaintFeedback = ({ id, data }: { id: string; data: { rating: number; feedbackText: string } }) => {
     return instance.post(`/grievances/citizen/${id}/feedback`, data)
 }
+
+export const reopenComplaint = ({ id, data }: { id: string; data: { reOpenReason: string } }) => {
+    return instance.post(`/grievances/citizen/${id}/reopen`, data)
+}
