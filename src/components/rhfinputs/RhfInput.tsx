@@ -51,7 +51,7 @@ export default function RhfInput({
             <Label
               htmlFor={name}
               className={cn(
-                "font-normal text-sm md:text-sm text-foreground mb-0.5",
+                "font-normal text-sm text-foreground mb-0.5",
                 labelClassName,
               )}
             >

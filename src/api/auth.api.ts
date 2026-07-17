@@ -14,5 +14,8 @@ export const getCaptcha = async () => {
 
 export const sendOtp = async (body: any) => {
   return instance.post("/citizen/send-otp", body);
-
 }
+
+export const updateProfile = async (body: { fullName: string; email?: string | null; preferredLanguage: string }) => {
+  return instance.put("/citizen/profile", body);
+};

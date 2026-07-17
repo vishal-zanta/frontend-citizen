@@ -32,18 +32,17 @@ export default function ComplaintDetailsView({
 
   return (
     <div className="print-area space-y-6">
-      <div className="bg-white rounded-xl border border-border p-6">
-        <div className="flex items-start justify-between mb-4">
+      <div className="bg-white rounded-xl border border-border p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
           <div>
             <div className="text-xs text-muted-foreground mb-1">
               {t("Complaint ID", "शिकायत आईडी")}
             </div>
-            <div className="flex items-center gap-3 mb-1">
-              <h2 className="text-xl font-bold text-primary font-mono">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
+              <h2 className="text-lg sm:text-xl font-bold text-primary font-mono break-all">
                 {complaint.grievanceId || complaint.id}
               </h2>
               <StatusBadge status={complaint.status} />
-             
             </div>
             <p className="text-sm text-muted-foreground">
               {complaint.classification?.subService?.title ||
@@ -53,9 +52,9 @@ export default function ComplaintDetailsView({
           <Button
             onClick={onPrint}
             variant="outline"
-            className="shrink-0 no-print"
+            className="shrink-0 no-print self-start sm:self-auto text-xs sm:text-sm h-9 sm:h-10"
           >
-            <Printer className="w-4 h-4 mr-1" /> {t("Print", "प्रिंट")}
+            <Printer className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" /> {t("Print", "प्रिंट")}
           </Button>
         </div>
 
@@ -191,7 +190,7 @@ export default function ComplaintDetailsView({
       </div>
 
       {complaint.timeline && complaint.timeline.length > 0 && (
-        <div className="bg-white rounded-xl border border-border p-6">
+        <div className="bg-white rounded-xl border border-border p-4 sm:p-6">
           <h3 className="font-bold text-foreground mb-4">
             {t("Complaint Timeline", "शिकायत समयरेखा")} —{" "}
             {t("End-to-End Lifecycle", "संपूर्ण जीवनचक्र")}

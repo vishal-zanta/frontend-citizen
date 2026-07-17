@@ -1,5 +1,6 @@
 import React from "react";
 import SearchDebounced from "@/components/debounced/SearchDebounced";
+import { Button } from "@/components/ui/button";
 
 interface SearchComplaintProps {
   searchId: string;
@@ -16,9 +17,16 @@ export default function SearchComplaint({
   t,
   onQuickTrack,
 }: SearchComplaintProps) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchId.trim()) {
+      onQuickTrack({ _id: searchId.trim() });
+    }
+  };
+
   return (
-    <div className="bg-white rounded-xl border border-border p-5 mb-6 no-print">
-      <div className="flex gap-3">
+    <div className="bg-white rounded-xl border border-border p-4 sm:p-5 mb-6 no-print">
+      <form onSubmit={handleSubmit} className="flex gap-2 sm:gap-3">
         <SearchDebounced
           initialValue={searchId}
           handleDebouncedChange={setSearchId}
@@ -27,9 +35,12 @@ export default function SearchComplaint({
             "शिकायत आईडी दर्ज करें (जैसे, BH-2026-047821)",
           )}
           className="flex-1"
-          inputClassName="h-11"
+          inputClassName="h-11 text-xs sm:text-sm"
         />
-      </div>
+        <Button type="submit" className="h-11 bg-primary hover:bg-primary/90 px-4 sm:px-6 font-semibold text-xs sm:text-sm shrink-0">
+          {t("Track", "ट्रैक करें")}
+        </Button>
+      </form>
       {quickTrackIds.length > 0 && (
         <div className="mt-3 text-xs text-muted-foreground">
           <span>

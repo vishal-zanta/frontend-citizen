@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import { Loader2 } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
@@ -31,6 +31,7 @@ import { getErrorToast, getSuccessToast } from "@/utils/helpers";
 import SuccessScreen from "./components/SuccessScreen";
 import { postComplaints } from "@/api/complaints.api";
 import CenterLayout from "@/components/CenterLayout";
+import { useProfile } from "@/context/ProfileContext";
 
 interface RaiseComplaintProps {
   role?: string;
@@ -39,6 +40,22 @@ interface RaiseComplaintProps {
 export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps) {
   const { t, lang, setLang } = useLanguage();
   const qc = useQueryClient();
+  const { profile } = useProfile();
+
+  const computedDefaultValues = useMemo(() => {
+    let mobileVal = profile?.mobile || "";
+   
+    return {
+      ...defaultValues,
+      citizenInfo: {
+        ...defaultValues.citizenInfo,
+        fullName: profile?.fullName || "",
+        email: profile?.email || "",
+        mobile: mobileVal,
+        preferredLanguage :profile?.preferredLanguage || "",
+      },
+    };
+  }, [profile]);
 
   // ── Query Hook ─────────────────────────────────────────────────────────────
   const {
@@ -132,15 +149,15 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
 
   // ── Form ──────────────────────────────────────────────────────────────────
   return (
-    <PortalLayout role={role}>
+    <PortalLayout >
       {/* <div className="p-6 max-w-6xl mx-auto"> */}
-        <CenterLayout className="p-6">
+        <CenterLayout className="p-4 sm:p-6">
 
    
         {/* Page header */}
-        <div className="mb-6 flex items-start justify-between">
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">
               {t("Register Grievance", "शिकायत दर्ज करें")}
             </h1>
             <p className="text-sm text-muted-foreground mt-0.5">
@@ -153,7 +170,7 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
 
           {/* Language switcher */}
           <Select value={lang} onValueChange={(v: any) => setLang(v)}>
-            <SelectTrigger className="w-28">
+            <SelectTrigger className="w-28 self-start sm:self-auto">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -164,7 +181,7 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
         </div>
 
       <RhfWrapper
-        initialValues={defaultValues}
+        initialValues={computedDefaultValues}
         isValidation
         validationSchema={grievanceSchema}
         validationOn="onChange"
@@ -285,7 +302,7 @@ function FormWizard({
   return (
     <div className="space-y-8 animate-fade-in w-full">
       {/* Stepper Header */}
-      <div className="relative flex justify-between items-center max-w-3xl mx-auto mb-8 px-4">
+      <div className="relative flex justify-between items-center max-w-3xl mx-auto mb-8 px-2 sm:px-4">
         {/* Background Line */}
         <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-1 bg-muted rounded-full -z-10">
           {/* Progress Line */}
@@ -299,9 +316,9 @@ function FormWizard({
           const isActive = step === s.id;
           const isCompleted = step > s.id;
           return (
-            <div key={s.id} className="flex flex-col items-center gap-2">
+            <div key={s.id} className="flex flex-col items-center gap-1.5">
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm transition-all duration-300 ${
                   isCompleted
                     ? "bg-emerald-500 text-white shadow-md border-2 border-emerald-500"
                     : isActive
@@ -311,7 +328,7 @@ function FormWizard({
               >
                 {isCompleted ? (
                   <svg
-                    className="w-5 h-5"
+                    className="w-4 h-4 sm:w-5 sm:h-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -329,7 +346,7 @@ function FormWizard({
               </div>
               <div className="text-center">
                 <p
-                  className={`text-xs font-semibold whitespace-nowrap transition-colors ${
+                  className={`text-[10px] sm:text-xs font-semibold whitespace-nowrap transition-colors ${
                     isActive
                       ? "text-blue-600"
                       : isCompleted
@@ -349,7 +366,7 @@ function FormWizard({
       </div>
 
       {/* Step Content */}
-      <div className="bg-card border border-border shadow-sm rounded-xl p-6 transition-all duration-300">
+      <div className="bg-card border border-border shadow-sm rounded-xl p-3 sm:p-6 transition-all duration-300">
         {step === 1 && (
           <div className="space-y-6">
             <CitizenInfoSection t={t} />
@@ -390,27 +407,26 @@ function FormWizard({
       </div>
 
       {/* Buttons Footer */}
-      <div className="flex justify-between items-center mt-6 pt-4 border-t border-border">
-        <div>
+      <div className="flex flex-col-reverse sm:flex-row justify-between items-stretch sm:items-center gap-3 mt-6 pt-4 border-t border-border">
+        <div className="w-full sm:w-auto">
           {step > 1 && (
             <Button
               type="button"
               variant="outline"
               onClick={handleBack}
-              className="hover:bg-muted font-medium transition-all"
+              className="w-full sm:w-auto hover:bg-muted font-medium transition-all"
             >
               &larr; {t("Back", "पीछे")}
             </Button>
           )}
         </div>
 
-        <div>
+        <div className="w-full sm:w-auto">
           {step < 3 ? (
-          
              <button
               type="button"
               onClick={handleNext}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-medium min-w-[120px] transition-all h-9 px-4 py-2 rounded-lg flex items-center justify-center"
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium min-w-[120px] transition-all h-9 px-4 py-2 rounded-lg flex items-center justify-center"
             >
               {t("Next", "आगे")} &rarr;
             </button> 
@@ -418,10 +434,10 @@ function FormWizard({
             <Button
               type="submit"
               disabled={postComplaintsMutation.isPending}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium min-w-[180px] transition-all"
+              className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-medium min-w-[180px] transition-all"
             >
               {postComplaintsMutation.isPending ? (
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 justify-center">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   {t("Submitting...", "जमा हो रहा है...")}
                 </span>

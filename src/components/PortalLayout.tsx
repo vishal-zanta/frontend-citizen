@@ -2,28 +2,41 @@ import React, { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import Chatbot from "@/components/Chatbot";
-import { usePortalProfile } from "@/hooks/usePortalProfile";
 
 interface PortalLayoutProps {
   children: React.ReactNode;
-  role?: string;
+  role?: any;
 }
 
-export default function PortalLayout({ children, role = "superadmin" }: PortalLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const portal = role === "crm" ? "crm" : role === "officer" ? "officer" : null;
-  const [profile, setProfile] = usePortalProfile(portal);
+export default function PortalLayout({
+  children,
+  role = "",
+}: PortalLayoutProps) {
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 1024;
+    }
+    return true;
+  });
 
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar role={role} profile={profile} open={sidebarOpen} onClose={() => { if (typeof window !== "undefined" && window.innerWidth < 1024) setSidebarOpen(false); }} />
+      <Sidebar
+        role="citizen"
+        open={sidebarOpen}
+        onClose={() => {
+          if (typeof window !== "undefined" && window.innerWidth < 1024)
+            setSidebarOpen(false);
+        }}
+      />
       <div className="flex-1 flex flex-col min-w-0">
-        <TopBar role={role} profile={profile} onProfileChange={setProfile} onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} sidebarOpen={sidebarOpen} />
-        <main className="flex-1 overflow-x-hidden">
-          {children}
-        </main>
+        <TopBar
+          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          sidebarOpen={sidebarOpen}
+        />
+        <main className="flex-1 overflow-x-hidden">{children}</main>
       </div>
-      {role === "citizen" && <Chatbot role={role} />}
+      <Chatbot role="citizen" />
     </div>
   );
 }

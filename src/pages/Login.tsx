@@ -26,6 +26,20 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [resendTimer, setResendTimer] = useState(0);
+  const [showResendCaptcha, setShowResendCaptcha] = useState(false);
+  const [resendCaptcha, setResendCaptcha] = useState("");
+
+  useEffect(() => {
+    let interval: any;
+    if (resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [resendTimer]);
+
   const {
     data,
     refetch,
@@ -49,13 +63,30 @@ export default function Login() {
     onSuccess: (data)=> {
           getSuccessToast("OTP send successfully");
           setStep("otp");
+          setResendTimer(30);
+          setShowResendCaptcha(false);
+          setResendCaptcha("");
     },
     onError : (err)=> {
       getErrorToast(err);
       setCaptcha("");
+      setResendCaptcha("");
       refetch();
     }
-  })
+  });
+
+  const handleConfirmResend = () => {
+    if (!resendCaptcha) {
+      setError("Please enter security code");
+      return;
+    }
+    setError("");
+    sendOtpMutation.mutate({
+      mobile: phone,
+      captchaId: data?.headers["x-captcha-id"],
+      captchaValue: resendCaptcha,
+    });
+  };
 
   const verifyOtpMutation = useMutation({
     mutationFn: postLogin,
@@ -116,7 +147,7 @@ export default function Login() {
   return (
     <AuthLayout
       icon={LogIn}
-      title="Citizen Portal"
+      title="Unified Citizen Grievance Portal"
       subtitle={
         step === "phone"
           ? "Enter your phone number to sign in or register"
@@ -146,9 +177,10 @@ export default function Login() {
                   value={phone}
                   onChange={setPhone}
                   countries={["IN"]}
-                  className="h-12"
+                  className="h-8.5 sm:h-12"
                   limitMaxLength
                   required
+                 
                 />
               </div>
             </div>
@@ -164,10 +196,10 @@ export default function Login() {
                     placeholder="Enter security code"
                     value={captcha}
                     onChange={(e) => setCaptcha(e.target.value)}
-                    className="flex-1 h-12"
+                    className="flex-1 !h-8.5 sm:!h-12"
                     required
                   />
-                  <div className="sm:basis-1/2 flex justify-center  items-center gap-2">
+                  <div className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 shrink-0">
 
              
                    <LoaderErrWrapper
@@ -231,7 +263,7 @@ export default function Login() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Label htmlFor="otp" className="text-sm font-semibold">
-                One-Time Password (OTP)
+              { showResendCaptcha ? " Enter new captcha to resend OTP"  :  `One-Time Password (OTP)` } 
               </Label>
               <button
                 type="button"
@@ -246,12 +278,12 @@ export default function Login() {
               </button>
             </div>
 
-            <p className="text-xs text-muted-foreground">
+         {!showResendCaptcha &&    <p className="text-xs text-muted-foreground">
               Enter the 6-digit code sent to{" "}
               <span className="font-semibold text-foreground">{phone}</span>
-            </p>
+            </p>}
 
-            <div className="flex justify-center py-2">
+          {!showResendCaptcha &&   <div className="flex justify-center py-2">
               <InputOTP maxLength={6} value={otp} onChange={setOtp} autoFocus>
                 <InputOTPGroup className="gap-2">
                   <InputOTPSlot
@@ -280,11 +312,73 @@ export default function Login() {
                   />
                 </InputOTPGroup>
               </InputOTP>
-            </div>
+            </div>}
           </div>
 
           <div className="space-y-3">
-            <Button
+            {showResendCaptcha && (
+              <div className="space-y-2 mt-4 p-3 bg-muted/10 rounded-lg">
+                <Label htmlFor="resendCaptcha" className="text-xs font-semibold">
+              
+                </Label>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-2">
+                  <Input
+                    id="resendCaptcha"
+                    placeholder="Enter security code"
+                    value={resendCaptcha}
+                    onChange={(e) => setResendCaptcha(e.target.value)}
+                    className="flex-1 !h-8.5 sm:!h-12 text-sm"
+                    required
+                  />
+                  <div className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 shrink-0">
+                    <LoaderErrWrapper
+                      isLoading={isLoading || isRefetching}
+                      error={queryError}
+                      loaderClassName="pt-0 pb-0"
+                    >
+                      <div className="flex items-center justify-center bg-muted/10 border border-border rounded-lg h-12 select-none w-32 shrink-0 overflow-hidden">
+                        {data?.data ? (
+                          <div
+                            className="w-full h-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-auto"
+                            dangerouslySetInnerHTML={{ __html: data.data }}
+                          />
+                        ) : (
+                          <span className="text-xs text-muted-foreground">No Captcha</span>
+                        )}
+                      </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="h-12 w-12 text-muted-foreground hover:text-foreground shrink-0 rounded-lg cursor-pointer"
+                        onClick={() => refetch()}
+                        disabled={isLoading || isRefetching}
+                        title="Refresh Captcha"
+                      >
+                        <RotateCw className={`h-4 w-4 ${(isLoading || isRefetching) ? "animate-spin" : ""}`} />
+                      </Button>
+                    </LoaderErrWrapper>
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  onClick={handleConfirmResend}
+                  disabled={!resendCaptcha || sendOtpMutation.isPending}
+                  className="w-full mt-2 h-12 text-xs"
+                >
+                  {sendOtpMutation.isPending ? (
+                    <span className="flex items-center gap-2 justify-center">
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      Resending...
+                    </span>
+                  ) : (
+                    "Confirm & Resend OTP"
+                  )}
+                </Button>
+              </div>
+            )}
+
+         {!showResendCaptcha &&   <Button
               type="submit"
               className="w-full h-12 font-medium transition-all duration-200 active:scale-[0.98] cursor-pointer"
               disabled={verifyOtpMutation.isPending}
@@ -300,24 +394,28 @@ export default function Login() {
                   Verify & Login
                 </>
               )}
-            </Button>
+            </Button>}
 
-            <div className="text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setError("");
-                  sendOtpMutation.mutate({
-                    mobile: phone,
-                    captchaId: data?.headers["x-captcha-id"],
-                    captchaValue: captcha,
-                  });
-                }}
-                disabled={sendOtpMutation.isPending}
-                className="text-xs text-muted-foreground hover:text-primary hover:underline font-medium cursor-pointer"
-              >
-                {sendOtpMutation.isPending ? "Resending..." : "Didn't receive code? Resend OTP"}
-              </button>
+            <div className="text-center pt-2">
+              {resendTimer > 0 ? (
+                <span className="text-xs text-muted-foreground font-medium">
+                  Resend OTP in {resendTimer}s
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setError("");
+                    setShowResendCaptcha(true);
+                    setResendCaptcha("");
+                    refetch();
+                  }}
+                  disabled={sendOtpMutation.isPending || showResendCaptcha}
+                  className="text-xs text-muted-foreground hover:text-primary hover:underline font-medium cursor-pointer disabled:opacity-50"
+                >
+                  Didn't receive code? Resend OTP
+                </button>
+              )}
             </div>
           </div>
         </form>

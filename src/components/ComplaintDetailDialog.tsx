@@ -236,44 +236,44 @@ export function ComplaintDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="w-[92vw] max-w-2xl max-h-[85vh] overflow-y-auto p-4 sm:p-6 rounded-xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            Complaint Details
-            <span className="font-mono text-primary">{complaint?.grievanceId}</span>
+          <DialogTitle className="flex flex-wrap items-center gap-2 text-base sm:text-lg">
+            <span>Complaint Details</span>
+            <span className="font-mono text-primary text-sm sm:text-base break-all">{complaint?.grievanceId}</span>
           </DialogTitle>
         </DialogHeader>
         <LoaderErrWrapper isLoading={isLoading} error={error}>
           {complaint ? (
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <StatusBadge status={complaint.status} />
                 <PriorityBadge
                   priority={complaint.assignedPriority || complaint.priority}
                 />
-                <span className="text-xs text-muted-foreground ml-auto capitalize">
+                <span className="text-[10px] sm:text-xs text-muted-foreground ml-auto capitalize">
                   {complaint.source || "Website"}
                 </span>
               </div>
-              <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
                 <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-muted-foreground" />
+                  <User className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">Citizen:</span>
-                  <span className="font-medium">
+                  <span className="font-medium truncate">
                     {complaint.citizenInfo?.fullName ||
                       complaint.citizenName ||
                       "—"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-muted-foreground" />
+                  <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">Mobile:</span>
                   <span className="font-medium">
                     {complaint.citizenInfo?.mobile || complaint.mobile || "—"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-muted-foreground" />
+                  <MapPin className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">District:</span>
                   <span className="font-medium">
                     {complaint.address?.district?.name || complaint?.address?.district ||
@@ -282,7 +282,7 @@ export function ComplaintDetailDialog({
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-muted-foreground" />
+                  <Building2 className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">ULB / Ward:</span>
                   <span className="font-medium">
                     {complaint.address?.villageOrWard ||
@@ -291,14 +291,14 @@ export function ComplaintDetailDialog({
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Tag className="w-4 h-4 text-muted-foreground" />
+                  <Tag className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">Subdivision:</span>
                   <span className="font-medium">
                     {complaint.address?.subdivision || complaint.ward || "—"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-muted-foreground" />
+                  <Calendar className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">Filed:</span>
                   <span className="font-medium">
                     {complaint.createdAt || complaint.createdDate
@@ -314,29 +314,29 @@ export function ComplaintDetailDialog({
                 </div>
               </div>
               <div className="bg-muted/50 rounded-lg p-3">
-                <div className="text-xs text-muted-foreground mb-1">
+                <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
                   Service
                 </div>
-                <div className="font-medium">
+                <div className="font-medium text-xs sm:text-sm">
                   {complaint.classification?.subService?.title ||
                     complaint.serviceName ||
                     "—"}
                 </div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground mb-1">
+                <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
                   Description
                 </div>
-                <p className="text-sm">
+                <p className="text-xs sm:text-sm whitespace-pre-wrap">
                   {complaint.evidence?.details || complaint.description || "—"}
                 </p>
               </div>
               <div className="flex gap-3">
                 <div className="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-3">
-                  <div className="text-[10px] uppercase text-muted-foreground">
+                  <div className="text-[9px] sm:text-[10px] uppercase text-muted-foreground">
                     Assigned Officer
                   </div>
-                  <div className="font-semibold text-sm">
+                  <div className="font-semibold text-xs sm:text-sm">
                     {complaint.assignedOfficer?.fullName ||
                       complaint.assignedOfficer?.name ||
                       complaint.l1OfficerName ||
@@ -345,7 +345,7 @@ export function ComplaintDetailDialog({
                 </div>
               </div>
               {complaint.resolvedDate && (
-                <div className="text-sm text-emerald-600">
+                <div className="text-xs sm:text-sm text-emerald-600">
                   Resolved on{" "}
                   {new Date(complaint.resolvedDate).toLocaleDateString(
                     "en-IN",
@@ -359,7 +359,7 @@ export function ComplaintDetailDialog({
               )}
               <Link
                 to={`/citizen/track?complaint=${complaint._id || complaint.id}`}
-                className="flex items-center gap-1 text-sm text-primary hover:underline"
+                className="flex items-center gap-1 text-xs sm:text-sm text-primary hover:underline"
               >
                 View Full Timeline <ExternalLink className="w-3 h-3" />
               </Link>

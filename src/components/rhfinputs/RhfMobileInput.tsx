@@ -54,7 +54,9 @@ export default function RhfMobileInput({
             placeholder={placeholder}
             disabled={disabled}
             value={field.value ?? ""}
-            onChange={(val) => field.onChange(val ?? "")}
+            onChange={(val) => {
+              if(disabled) return;
+              field.onChange(val ?? "")}}
             onBlur={field.onBlur}
             className={cn(
               "h-9",

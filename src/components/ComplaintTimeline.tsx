@@ -94,7 +94,7 @@ export default function ComplaintTimeline({ events, t }: ComplaintTimelineProps)
 
             {/* Content */}
             <div className="bg-white border border-border rounded-lg p-3 hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                 <div className="flex-1">
                   <div className="text-sm font-semibold text-foreground">
                     {getLocalizedType(event.type)}
@@ -103,12 +103,12 @@ export default function ComplaintTimeline({ events, t }: ComplaintTimelineProps)
                     by {actorName}
                   </div>
                   {description && (
-                    <div className="text-sm text-muted-foreground mt-1">
+                    <div className="text-xs sm:text-sm text-muted-foreground mt-1.5 break-words">
                       {description}
                     </div>
                   )}
                 </div>
-                <div className="text-[10px] text-muted-foreground whitespace-nowrap flex items-center gap-1">
+                <div className="text-[10px] text-muted-foreground flex items-center gap-1 shrink-0 self-start sm:self-auto mt-1 sm:mt-0">
                   <Clock className="w-3 h-3" />
                   {new Date(event.createdAt).toLocaleString("en-IN", {
                     day: "2-digit",

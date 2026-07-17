@@ -15,6 +15,8 @@ interface AuthContextType {
   navigateToLogin: () => void;
   checkUserAuth: () => Promise<void>;
   checkAppState: () => Promise<void>;
+  profile: any;
+  setProfile: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [authError, setAuthError] = useState<any>(null);
   const [authChecked, setAuthChecked] = useState(false);
   const [appPublicSettings, setAppPublicSettings] = useState<any>(null); // Contains only { id, public_settings }
+  const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
     checkAppState();
@@ -158,7 +161,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       logout,
       navigateToLogin,
       checkUserAuth,
-      checkAppState
+      checkAppState,
+      profile,
+      setProfile
     }}>
       {children}
     </AuthContext.Provider>

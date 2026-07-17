@@ -96,10 +96,10 @@ export default function TrackComplaint({
 
   return (
     <PortalLayout role={role}>
-      <CenterLayout className="p-6">
-        <div className="mb-6 flex items-start justify-between no-print">
+      <CenterLayout className="p-4 sm:p-6">
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 no-print">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">
               {t("Track Complaint", "शिकायत ट्रैक करें")}
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -111,7 +111,7 @@ export default function TrackComplaint({
           </div>
           <button
             onClick={toggle}
-            className="px-3 py-1.5 border border-border rounded-lg text-sm font-medium hover:bg-muted cursor-pointer"
+            className="px-3 py-1.5 border border-border rounded-lg text-sm font-medium hover:bg-muted cursor-pointer self-start sm:self-auto"
           >
             {lang === "en" ? "हिन्दी" : "English"}
           </button>

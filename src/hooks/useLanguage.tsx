@@ -1,19 +1,21 @@
+import { useProfile } from "@/context/ProfileContext";
 import { useState, useEffect, useCallback } from "react";
 
 export function useLanguage() {
-  const [lang, setLang] = useState(() => {
-    try { return localStorage.getItem("bucgp_lang") || "en"; } catch { return "en"; }
-  });
+  const { profile } = useProfile();
+  const [lang, setLang] = useState("en");
 
   useEffect(() => {
-    try { localStorage.setItem("bucgp_lang", lang); } catch {}
-  }, [lang]);
+    if (profile?.preferredLanguage === "Hindi") {
+      setLang("hi");
+    }
+  }, [profile]);
 
   const toggle = useCallback(() => {
-    setLang(prev => (prev === "en" ? "hi" : "en"));
+    setLang((prev) => (prev === "en" ? "hi" : "en"));
   }, []);
 
-  const t = useCallback((en, hi) => (lang === "hi" ? hi : en), [lang]);
+  const t = useCallback((en : any, hi: any) => (lang === "hi" ? hi : en), [lang]);
 
   return { lang, setLang, toggle, t };
 }

@@ -46,7 +46,7 @@ export default function PreviousComplaintsTable({
                   <th className="px-4 py-3 font-medium">
                     {t("Complaint ID", "शिकायत आईडी")}
                   </th>
-                  <th className="px-4 py-3 font-medium">
+                  <th className="px-4 py-3 font-medium min-w-[180px]">
                     {t("Service", "सेवा")}
                   </th>
                   <th className="px-4 py-3 font-medium">
@@ -103,8 +103,8 @@ export default function PreviousComplaintsTable({
             </table>
           )}
         </LoaderErrWrapper>
-        {Pagination}
       </div>
+      {Pagination}
 
       {selectedId && (
         <ComplaintDetailDialog

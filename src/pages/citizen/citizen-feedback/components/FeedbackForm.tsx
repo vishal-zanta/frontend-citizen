@@ -350,7 +350,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
 
   // ── Form ─────────────────────────────────────────────────────────────────
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
 
       {/* ── Complaint selector ─── */}
       <div className="space-y-1.5">
@@ -358,9 +358,9 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
           {t("Select Resolved Complaint", "हल की गई शिकायत चुनें")}
           <span className="text-destructive ml-0.5">*</span>
         </Label>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground mt-1 mb-2">
           {t(
-            "Only RESOLVED and CLOSED complaints are listed. Scroll inside the dropdown to load more.",
+            "Only Resolved and Closed complaints are listed. Scroll inside the dropdown to load more.",
             "केवल हल की गई और बंद शिकायतें सूची में हैं। अधिक के लिए ड्रॉपडाउन में स्क्रॉल करें।"
           )}
         </p>
