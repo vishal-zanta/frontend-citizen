@@ -8,12 +8,26 @@ import {
   Tag,
   Calendar,
   CheckCircle2,
+  RotateCcw,
 } from "lucide-react";
 import { StatusBadge } from "@/components/Badges";
 import { Button } from "@/components/ui/button";
 import ComplaintTimeline from "@/components/ComplaintTimeline";
 import ComplaintFeedback from "./ComplaintFeedback";
 import { feedbackStatus } from "@/utils/constants";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { reopenComplaint } from "@/api/complaints.api";
+import { getErrorToast, getSuccessToast } from "@/utils/helpers";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 interface ComplaintDetailsViewProps {
   complaint: any;
@@ -26,6 +40,54 @@ export default function ComplaintDetailsView({
   t,
   onPrint,
 }: ComplaintDetailsViewProps) {
+  const queryClient = useQueryClient();
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [reOpenReason, setReOpenReason] = React.useState("");
+
+  const filedDateVal = complaint?.createdAt || complaint?.createdDate;
+  const isWithin7Days = React.useMemo(() => {
+    if (!filedDateVal) return false;
+    const filedDate = new Date(filedDateVal);
+    if (isNaN(filedDate.getTime())) return false;
+    const diffTime = Date.now() - filedDate.getTime();
+    return diffTime >= 0 && diffTime <= 7 * 24 * 60 * 60 * 1000;
+  }, [filedDateVal]);
+
+  const canReopen = ["RESOLVED", "CLOSED"].includes(complaint?.status) && isWithin7Days;
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      reopenComplaint({
+        id: complaint?._id || complaint?.id,
+        data: { reOpenReason },
+      }),
+    onSuccess: () => {
+      getSuccessToast(
+        t("Complaint reopened successfully", "शिकायत सफलतापूर्वक पुनः खोल दी गई")
+      );
+      queryClient.invalidateQueries({ queryKey: ["grievance"] });
+      setIsDialogOpen(false);
+      setReOpenReason("");
+    },
+    onError: (err: any) => {
+      getErrorToast(err);
+    },
+  });
+
+  const handleReopenSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reOpenReason.trim()) {
+      getErrorToast(
+        t(
+          "Please enter a reason for reopening",
+          "कृपया पुनः खोलने का कारण दर्ज करें"
+        )
+      );
+      return;
+    }
+    mutation.mutate();
+  };
+
   if (!complaint) return null;
 
 
@@ -49,13 +111,24 @@ export default function ComplaintDetailsView({
                 complaint.serviceName}
             </p>
           </div>
-          <Button
-            onClick={onPrint}
-            variant="outline"
-            className="shrink-0 no-print self-start sm:self-auto text-xs sm:text-sm h-9 sm:h-10"
-          >
-            <Printer className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" /> {t("Print", "प्रिंट")}
-          </Button>
+          <div className="flex items-center gap-2 no-print self-start sm:self-auto">
+            {canReopen && (
+              <Button
+                onClick={() => setIsDialogOpen(true)}
+                className="shrink-0 text-xs sm:text-sm h-9 sm:h-10 bg-amber-500 hover:bg-amber-600 text-white font-medium flex items-center gap-1.5 shadow-sm"
+              >
+                <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                {t("Reopen", "पुनः खोलें")}
+              </Button>
+            )}
+            <Button
+              onClick={onPrint}
+              variant="outline"
+              className="shrink-0 text-xs sm:text-sm h-9 sm:h-10"
+            >
+              <Printer className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" /> {t("Print", "प्रिंट")}
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -209,6 +282,60 @@ export default function ComplaintDetailsView({
           <ComplaintTimeline events={complaint.timeline} t={t} />
         </div>
       )}
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("Reopen Complaint", "शिकायत पुनः खोलें")}</DialogTitle>
+            <DialogDescription>
+              {t(
+                "Please state the reason for reopening this complaint. It will be reassigned for investigation.",
+                "कृपया इस शिकायत को पुनः खोलने का कारण बताएं। इसे जांच के लिए फिर से सौंपा जाएगा।"
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleReopenSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label  htmlFor="reopen-reason" className="text-sm font-medium mb-4">
+                {t("Reason ", "पुनः खोलने का कारण")}
+              </Label>
+              <Textarea
+              
+                id="reopen-reason"
+                placeholder={t(
+                  "e.g. Work is incomplete / not resolved correctly",
+                  "उदा. कार्य अपूर्ण है / सही ढंग से हल नहीं हुआ"
+                )}
+                value={reOpenReason}
+                onChange={(e) => setReOpenReason(e.target.value)}
+                required
+                rows={4}
+                className="resize-none mt-2"
+              />
+            </div>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsDialogOpen(false)}
+                disabled={mutation.isPending}
+              >
+                {t("Cancel", "रद्द करें")}
+              </Button>
+              <Button
+                type="submit"
+                className="bg-yellow-600 hover:bg-yellow-700 text-white"
+                disabled={!reOpenReason.trim() || mutation.isPending}
+              >
+                {mutation.isPending ? (
+                  <span className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2 inline-block" />
+                ) : null}
+                {t("Reopen Complaint", "शिकायत पुनः खोलें")}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
