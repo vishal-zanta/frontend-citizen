@@ -8,10 +8,10 @@ interface QuickActionsProps {
 
 export default function QuickActions({ t }: QuickActionsProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
       <Link
         to="/citizen/raise"
-        className="group bg-white rounded-xl border-2 border-blue-100 hover:border-primary p-6 transition-all hover:shadow-lg"
+        className="group bg-white rounded-xl border-2 border-blue-100 hover:border-primary p-4 sm:p-6 transition-all hover:shadow-lg"
       >
         <div className="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
           <FileText className="w-6 h-6" />
@@ -26,7 +26,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
 
       <Link
         to="/citizen/track"
-        className="group bg-white rounded-xl border-2 border-emerald-100 hover:border-emerald-400 p-6 transition-all hover:shadow-lg"
+        className="group bg-white rounded-xl border-2 border-emerald-100 hover:border-emerald-400 p-4 sm:p-6 transition-all hover:shadow-lg"
       >
         <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
           <Search className="w-6 h-6" />
@@ -40,7 +40,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
       </Link>
 
       <div
-        className="group bg-white rounded-xl border-2 border-purple-100 hover:border-purple-400 p-6 transition-all hover:shadow-lg cursor-pointer"
+        className="group bg-white rounded-xl border-2 border-purple-100 hover:border-purple-400 p-4 sm:p-6 transition-all hover:shadow-lg cursor-pointer"
         onClick={() =>
           (document.querySelector(
             "[class*='fixed bottom-6 right-6']"
@@ -63,7 +63,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
 
       <Link
         to="/citizen/feedback"
-        className="group bg-white rounded-xl border-2 border-amber-100 hover:border-amber-400 p-6 transition-all hover:shadow-lg"
+        className="group bg-white rounded-xl border-2 border-amber-100 hover:border-amber-400 p-4 sm:p-6 transition-all hover:shadow-lg"
       >
         <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
           <MessageSquare className="w-6 h-6" />

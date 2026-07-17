@@ -25,7 +25,9 @@ export default function CitizenInfoSection({ t }: CitizenInfoSectionProps) {
           label={t("Mobile Number", "मोबाइल नंबर")}
           placeholder={t("10-digit mobile number", "10 अंकों का मोबाइल नंबर")}
           required
-          
+          disabled={true}
+
+
         />
         <RhfMobileInput
           name="citizenInfo.alternateMobile"

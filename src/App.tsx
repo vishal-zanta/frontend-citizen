@@ -8,8 +8,9 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
-import { AuthProvider } from "@/lib/AuthContext";
+import { ProfileProvider , useProfile} from "@/context/ProfileContext";
 import ScrollToTop from "./components/ScrollToTop";
+import { useEffect } from "react";
 
 // Page imports
 import PortalHome from "./pages/PortalHome";
@@ -32,6 +33,7 @@ const RootLayout = () => {
   );
 };
 const AdminProtectedRoute = ({ children }) => {
+  const { setProfile } = useProfile();
   const token =
     localStorage.getItem("usertoken") || sessionStorage.getItem("usertoken");
 
@@ -44,6 +46,11 @@ const AdminProtectedRoute = ({ children }) => {
     queryFn: getProfile,
     retry: false,
   });
+
+  useEffect(() => {
+    if (isLoading || error || !data) return;
+    setProfile(data?.data?.data);
+  }, [isLoading, error, data, setProfile]);
 
   if (isLoading) {
     return <FullScreenLoader />;
@@ -111,13 +118,13 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <AuthProvider>
+    <ProfileProvider>
       <QueryClientProvider client={queryClientInstance}>
         <RouterProvider router={router} />
-        <Toaster />
+        {/* <Toaster /> */}
         <SonnerToaster position="top-center" richColors />
       </QueryClientProvider>
-    </AuthProvider>
+    </ProfileProvider>
   );
 }
 

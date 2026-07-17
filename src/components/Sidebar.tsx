@@ -77,18 +77,17 @@ const roleConfig: Record<string, RoleConfig> = {
 
 interface SidebarProps {
   role?: string;
-  profile?: any;
   open: boolean;
   onClose: () => void;
 }
 
 export default function Sidebar({
-  role = "superadmin",
+  role = "citizen",
   open,
   onClose,
 }: SidebarProps) {
   const location = useLocation();
-  const config = roleConfig[role] || roleConfig.superadmin;
+  const config = roleConfig[role] || roleConfig.citizen;
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const isActive = (path: string) => {
@@ -133,14 +132,14 @@ export default function Sidebar({
           </div>
 
           {/* User Info banner */}
-          <div className="px-4 py-3 border-b border-sidebar-border/50 bg-sidebar-accent/10 shrink-0">
+          {/* <div className="px-4 py-3 border-b border-sidebar-border/50 bg-sidebar-accent/10 shrink-0">
             <div className="text-xs text-sidebar-foreground/60">
               Active Role
             </div>
             <div className="font-bold text-white text-sm mt-0.5">
               {config.label}
             </div>
-          </div>
+          </div> */}
 
           {/* Navigation */}
           <nav className="flex-1 overflow-y-auto scrollbar-thin py-3 px-3 space-y-4">

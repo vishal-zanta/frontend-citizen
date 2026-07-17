@@ -227,7 +227,7 @@ export default function MySelect({
       {label && (
         <Label
           className={cn(
-            "font-normal text-sm md:text-sm text-foreground mb-0.5",
+            "font-normal text-sm text-foreground mb-0.5",
             labelClassName
           )}
         >

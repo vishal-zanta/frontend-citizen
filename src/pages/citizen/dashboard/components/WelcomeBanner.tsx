@@ -8,9 +8,9 @@ interface WelcomeBannerProps {
 
 export default function WelcomeBanner({ t, lang, toggle }: WelcomeBannerProps) {
   return (
-    <div className="bg-gradient-to-r from-blue-900 to-blue-600 rounded-2xl p-6 text-white flex items-start justify-between">
+    <div className="bg-gradient-to-r from-blue-900 to-blue-600 rounded-2xl p-4 sm:p-6 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div>
-        <h1 className="text-2xl font-bold mb-1">
+        <h1 className="text-xl sm:text-2xl font-bold mb-1">
           {t("Namaste, Ramesh Prasad!", "नमस्ते, रमेश प्रसाद!")}
         </h1>
         <p className="text-white/80 text-sm">
@@ -22,7 +22,7 @@ export default function WelcomeBanner({ t, lang, toggle }: WelcomeBannerProps) {
       </div>
       <button
         onClick={toggle}
-        className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm text-white font-medium whitespace-nowrap cursor-pointer"
+        className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm text-white font-medium whitespace-nowrap cursor-pointer self-start sm:self-auto"
       >
         {lang === "en" ? "हिन्दी" : "English"}
       </button>
