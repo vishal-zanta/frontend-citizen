@@ -1,7 +1,15 @@
 import { getComplaints, getComplaintById } from "@/api/complaints.api";
-import { getComplainSources, getGrievenceNatures, getSubservices, getDemographics } from "@/api/global.api";
+import { getComplainSources, getGrievenceNatures, getSubservices, getDemographics, getServices } from "@/api/global.api";
 
 import { useQuery } from "@tanstack/react-query";
+
+export const useGetServices = (keys = [], params = {}, enabled = true) => {
+  return useQuery({
+    queryKey: ["services", ...keys],
+    queryFn: () => getServices(params),
+    enabled: enabled,
+  });
+};
 
 export const useGetGrievenceNatures = (
   keys = [],

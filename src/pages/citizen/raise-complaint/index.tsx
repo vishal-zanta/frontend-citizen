@@ -57,17 +57,17 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
     };
   }, [profile]);
 
-  // ── Query Hook ─────────────────────────────────────────────────────────────
   const {
-    subServiceOptions,
+    servicesOptions,
     grievanceNatureOptions,
     frequencyOptions,
     affectedBeneficiaryOptions,
-    subServicesLoading,
+    servicesLoading,
     naturesLoading,
     allDemography,
     demographyLoading,
   } = useRaiseComplaintData(lang);
+
 
   // ── File attachments ──────────────────────────────────────────────────────
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -190,9 +190,10 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
       >
         <FormWizard
           t={t}
-          subServiceOptions={subServiceOptions}
+          lang={lang}
+          servicesOptions={servicesOptions}
           grievanceNatureOptions={grievanceNatureOptions}
-          subServicesLoading={subServicesLoading}
+          servicesLoading={servicesLoading}
           naturesLoading={naturesLoading}
           frequencyOptions={frequencyOptions}
           affectedBeneficiaryOptions={affectedBeneficiaryOptions}
@@ -214,9 +215,10 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
 
 interface FormWizardProps {
   t: (en: string, hi: string) => string;
-  subServiceOptions: any;
+  lang : any
+  servicesOptions: any;
   grievanceNatureOptions: any;
-  subServicesLoading: boolean;
+  servicesLoading: boolean;
   naturesLoading: boolean;
   frequencyOptions: any;
   affectedBeneficiaryOptions: any;
@@ -232,9 +234,10 @@ interface FormWizardProps {
 
 function FormWizard({
   t,
-  subServiceOptions,
+  lang,
+  servicesOptions,
   grievanceNatureOptions,
-  subServicesLoading,
+  servicesLoading,
   naturesLoading,
   frequencyOptions,
   affectedBeneficiaryOptions,
@@ -383,11 +386,13 @@ function FormWizard({
         {step === 3 && (
           <div className="space-y-6">
             <ClassificationSection
-              subServiceOptions={subServiceOptions}
+              servicesOptions={servicesOptions}
               grievanceNatureOptions={grievanceNatureOptions}
-              subServicesLoading={subServicesLoading}
+              servicesLoading={servicesLoading}
               naturesLoading={naturesLoading}
               t={t}
+              lang={lang}
+             
             />
             <EvidenceSection frequencyOptions={frequencyOptions} t={t} />
             <ImpactSection
@@ -407,7 +412,7 @@ function FormWizard({
       </div>
 
       {/* Buttons Footer */}
-      <div className="flex flex-col-reverse sm:flex-row justify-between items-stretch sm:items-center gap-3 mt-6 pt-4 border-t border-border">
+      <div className="flex flex-col-reverse sm:flex-row justify-center items-stretch sm:items-center gap-3 mt-6 pt-4 border-t border-border">
         <div className="w-full sm:w-auto">
           {step > 1 && (
             <Button

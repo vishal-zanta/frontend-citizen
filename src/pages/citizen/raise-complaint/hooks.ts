@@ -1,13 +1,13 @@
 
-import { useGetGrievenceNatures, useGetSubservices, useGetDemographics } from "@/hooks/useGetQuery";
+import { useGetGrievenceNatures, useGetServices, useGetDemographics } from "@/hooks/useGetQuery";
 
 
 export const useRaiseComplaintData = (lang :any) => {
 
   const API_PARAMS = { page: 1, limit: 500, select: "title,titleHindi,name,nameHindi" };
 
-  const { data: subServicesData, isLoading: subServicesLoading } =
-    useGetSubservices([], API_PARAMS);
+  const { data: servicesData, isLoading: servicesLoading } =
+    useGetServices([], API_PARAMS);
 
   const { data: naturesData, isLoading: naturesLoading } =
     useGetGrievenceNatures([], API_PARAMS);
@@ -15,7 +15,6 @@ export const useRaiseComplaintData = (lang :any) => {
   const { data: demographyData, isLoading: demographyLoading } =
     useGetDemographics([], API_PARAMS);
 
-  const allSubServices: any[] = subServicesData?.data?.data?.docs ?? [];
   const allNatures: any[] = naturesData?.data?.data?.docs ?? [];
 
   // Filter grievance natures to only "grievanceNature" type
@@ -26,7 +25,7 @@ export const useRaiseComplaintData = (lang :any) => {
       value: n._id,
     }));
 
-  const subServiceOptions = allSubServices.map((s) => ({
+  const servicesOptions = (servicesData?.data?.data?.docs ?? []).map((s: any) => ({
     label: lang === "hi" && s.titleHindi ? s.titleHindi : s.title,
     value: s._id,
   }));
@@ -51,11 +50,11 @@ export const useRaiseComplaintData = (lang :any) => {
   }));
 
   return {
-    subServicesLoading,
+    servicesLoading,
     naturesLoading,
     demographyLoading,
 
-    subServiceOptions,
+    servicesOptions,
     grievanceNatureOptions,
     allDemography,
 

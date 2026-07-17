@@ -19,13 +19,7 @@ function District_SubDivision({
   allDemography: any;
   demographyLoading?: boolean;
 }) {
-  const { watch, setValue } = useFormContext();
-  const district = watch("address.district");
 
-  React.useEffect(() => {
-    // Reset subdivision value when district changes
-    setValue("address.subdivision", "");
-  }, [district, setValue]);
 
   return (
     <>
@@ -67,7 +61,7 @@ export default function AddressSection({ t, allDemography, demographyLoading }: 
           name="address.villageOrWard"
           label={t("Village / Ward", "गाँव / वार्ड")}
           placeholder={t("Village or ward name", "गाँव या वार्ड का नाम")}
-          required
+          // required
         />
         <RhfInput
           name="address.pinCode"
