@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 import RhfInput from "@/components/rhfinputs/RhfInput";
 import RhfSelect from "@/components/rhfinputs/RhfSelect";
 import FormSection from "./FormSection";
+import subDivisionsData from "@/utils/sub-divisions.json";
 
 interface AddressSectionProps {
   t: any;
@@ -19,7 +20,37 @@ function District_SubDivision({
   allDemography: any;
   demographyLoading?: boolean;
 }) {
+  const { watch, setValue } = useFormContext();
+  const selectedDistrictId = watch("address.district");
 
+  // Find the selected district object from allDemography to get the English name
+  const selectedDistrict = React.useMemo(() => {
+    return allDemography?.find((d: any) => d.value === selectedDistrictId);
+  }, [allDemography, selectedDistrictId]);
+
+  const districtName = selectedDistrict?.name;
+
+  // Find the subdivision options for the selected district name from json
+  const subdivisionOptions = React.useMemo(() => {
+    if (!districtName) return [];
+    const subdivisions = (subDivisionsData as Record<string, string[]>)[districtName];
+    if (!subdivisions) return [];
+    return subdivisions.map((sub: string) => ({
+      label: sub,
+      value: sub,
+    }));
+  }, [districtName]);
+
+  // Keep track of the last selected district to clear subdivision on change
+  const prevDistrictRef = React.useRef(selectedDistrictId);
+  React.useEffect(() => {
+    if (prevDistrictRef.current !== selectedDistrictId) {
+      setValue("address.subdivision", "");
+      prevDistrictRef.current = selectedDistrictId;
+    }
+  }, [selectedDistrictId, setValue]);
+
+  const isSubdivisionDisabled = !selectedDistrictId;
 
   return (
     <>
@@ -31,10 +62,12 @@ function District_SubDivision({
         isLoading={demographyLoading}
         required
       />
-      <RhfInput
+      <RhfSelect
         name="address.subdivision"
         label={t("Subdivision", "उपखंड")}
-        placeholder={t("e.g. Danapur", "जैसे दानापुर")}
+        placeholder={t("Select Subdivision", "उपखंड चुनें")}
+        options={subdivisionOptions}
+        disabled={isSubdivisionDisabled}
         required
       />
     </>

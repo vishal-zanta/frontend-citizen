@@ -331,6 +331,14 @@ export function ComplaintDetailDialog({
                   {complaint.evidence?.details || complaint.description || "—"}
                 </p>
               </div>
+              <div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
+                  Subject
+                </div>
+                <p className="text-xs sm:text-sm whitespace-pre-wrap">
+                  {complaint.classification?.subject || "—"}
+                </p>
+              </div>
               <div className="flex gap-3">
                 <div className="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-3">
                   <div className="text-[9px] sm:text-[10px] uppercase text-muted-foreground">
