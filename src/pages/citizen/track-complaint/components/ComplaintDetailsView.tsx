@@ -168,6 +168,17 @@ export default function ComplaintDetailsView({
             {complaint.evidence?.details || complaint.description || "—"}
           </p>
         </div>
+          {/* <div className="mt-4 p-3 bg-muted/50 rounded-lg"> */}
+        
+            <div className="mt-4 p-3 bg-muted/50 rounded-lg">
+          <div className="text-xs text-muted-foreground mb-1">
+            {t("Subject", "विषय")}
+          </div>
+          <p className="text-sm text-foreground">
+            {complaint.classification?.subject || complaint?.subject || "—"}
+          </p>
+        </div>
+        {/* </div> */}
         {feedbackStatus.includes(complaint.status.toString()) && (
           <ComplaintFeedback
             complaintId={complaint?._id}

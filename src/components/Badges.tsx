@@ -13,7 +13,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       variant="outline"
       className={`text-xs font-medium ${meta.badgeClass}`}
     >
-      {meta.badgeLabel}
+       Status: {meta.badgeLabel}
     </Badge>
   );
 }
@@ -29,7 +29,7 @@ export function PriorityBadge({ priority }: PriorityBadgeProps) {
       variant="outline"
       className={`text-xs font-medium ${meta.badgeClass}`}
     >
-      {meta.badgeLabel}
+      Priority : {meta.badgeLabel}
     </Badge>
   );
 }
