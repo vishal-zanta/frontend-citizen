@@ -35,3 +35,19 @@ export function isValidNumber(value: any, min?: number, max?: number) {
 
   return true;
 }
+export const isAlpha = (value : any) => {
+  // empty value is valid
+  if (value === "") return true;
+
+  // only letters and spaces allowed (no numbers, no special chars)
+  if (!/^[A-Za-z ]*$/.test(value)) return false;
+
+  // must contain at least one letter — spaces alone are not valid
+  if (!/[A-Za-z]/.test(value)) return false;
+
+  // no more than 2 trailing spaces allowed
+  const trailingSpaces = value.match(/ *$/)[0].length;
+  if (trailingSpaces > 2) return false;
+
+  return true;
+};
