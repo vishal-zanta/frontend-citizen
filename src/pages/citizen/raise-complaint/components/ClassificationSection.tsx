@@ -27,7 +27,7 @@ export default function ClassificationSection({
   const { setValue } = useFormContext();
   const [selectedService, setSelectedService] = useState<string>("");
 
-  const API_PARAMS = { page: 1, limit: 500, select: "title,titleHindi,name,nameHindi", service: selectedService };
+  const API_PARAMS = { page: 1, limit: 500, select: "title,titleHindi,name,nameHindi", serviceId: selectedService };
   const { data: subServicesData, isLoading: subServicesLoading } = useGetSubservices(
     [selectedService],
     API_PARAMS,
