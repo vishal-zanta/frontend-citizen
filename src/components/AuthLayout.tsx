@@ -8,9 +8,9 @@ interface AuthLayoutProps {
   children: React.ReactNode;
 }
 
-export default function AuthLayout({ icon: Icon, title, subtitle, footer, children }: AuthLayoutProps) {
+export default function AuthLayout({ title, subtitle, footer, children }: AuthLayoutProps) {
   return (
-    <div className=" w-full flex items-center justify-center bg-slate-50/50 p-3 sm:p-6">
+    <div className="w-full flex items-center justify-center p-3 sm:p-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-6 sm:mb-8">
           {/* <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary mb-3">
