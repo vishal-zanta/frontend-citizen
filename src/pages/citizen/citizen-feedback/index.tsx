@@ -2,8 +2,9 @@ import React from "react";
 import { MessageSquare } from "lucide-react";
 import PortalLayout from "@/components/PortalLayout";
 import CenterLayout from "@/components/CenterLayout";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/context/LanguageContext";
 import FeedbackForm from "./components/FeedbackForm";
+import LangSelector from "@/components/LangSelector";
 
 export default function CitizenFeedback() {
   const { t } = useLanguage();
@@ -12,7 +13,9 @@ export default function CitizenFeedback() {
     <PortalLayout role="citizen">
       <CenterLayout className="p-4 sm:p-6">
         {/* Page header */}
-        <div className="mb-6">
+        <div className="mb-6 flex items-center justify-between gap-2 flex-wrap">
+          <div>
+
           <div className="flex items-center gap-2 mb-1">
             <MessageSquare className="w-6 h-6 text-primary" />
             <h1 className="text-xl sm:text-2xl font-bold text-foreground">
@@ -25,6 +28,8 @@ export default function CitizenFeedback() {
               "अपनी हल की गई शिकायत के अनुभव को रेट करें।"
             )}
           </p>
+            </div>
+            <LangSelector/>
         </div>
 
         {/* Form card */}

@@ -107,8 +107,7 @@ export default function ComplaintDetailsView({
               <StatusBadge status={complaint.status} />
             </div>
             <p className="text-sm text-muted-foreground">
-              {complaint.classification?.subService?.title ||
-                complaint.serviceName}
+              {t(complaint.classification?.subService?.title , complaint.classification?.subService?.titleHindi)}
             </p>
           </div>
           <div className="flex items-center gap-2 no-print self-start sm:self-auto">
@@ -159,16 +158,16 @@ export default function ComplaintDetailsView({
                 {t("District", "ज़िला")}:
               </span>
               <span className="font-medium">
-                {complaint.address?.district?.name || complaint?.address?.district || complaint.districtName || "—"}
+                {t(complaint.address?.district?.name ||  "—", complaint.address?.district?.nameHindi ||  "—")}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <Building2 className="w-4 h-4 text-muted-foreground" />
               <span className="text-muted-foreground">
-                {t("ULB / Ward", "नगर निकाय / वार्ड")}:
+                {t("Village / Ward", "गाँव / वार्ड")}:
               </span>
               <span className="font-medium">
-                {complaint.address?.villageOrWard || complaint.ulbName || "—"}
+                {complaint.address?.villageOrWard || "—"}
               </span>
             </div>
           </div>

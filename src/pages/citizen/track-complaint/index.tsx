@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import PortalLayout from "@/components/PortalLayout";
 import CenterLayout from "@/components/CenterLayout";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/context/LanguageContext";
 import LoaderErrWrapper from "@/components/LoaderErrWrapper";
 
 import ComplaintDetailsView from "./components/ComplaintDetailsView";
@@ -13,6 +13,7 @@ import PreviousComplaintsTable from "./components/PreviousComplaintsTable";
 import { useGetComplaints, useGetComplaintById } from "@/hooks/useGetQuery";
 import Pagination from "@/components/Pagination";
 import usePagination from "@/hooks/usePagination";
+import LangSelector from "@/components/LangSelector";
 
 interface TrackComplaintProps {
   role?: string;
@@ -109,12 +110,7 @@ export default function TrackComplaint({
               )}
             </p>
           </div>
-          <button
-            onClick={toggle}
-            className="px-3 py-1.5 border border-border rounded-lg text-sm font-medium hover:bg-muted cursor-pointer self-start sm:self-auto"
-          >
-            {lang === "en" ? "हिन्दी" : "English"}
-          </button>
+         <LangSelector/>
         </div>
 
         {showDetails ? (

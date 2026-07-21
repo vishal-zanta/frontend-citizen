@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown, Bell, Menu, LogOut, Settings, CheckCircle2, AlertCircle, Info } from "lucide-react";
 import { useProfile } from "@/context/ProfileContext";
 import { base44 } from "@/api/base44Client";
+import { useLanguage } from "@/context/LanguageContext";
 
 const CITIZEN_NOTIFICATIONS = [
   { id: 1, text: "Your complaint BH-2026-047821 has been resolved ✅", time: "2h ago", type: "success" },
@@ -22,6 +23,7 @@ interface TopBarProps {
 export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
   const navigate = useNavigate();
   const { profile } = useProfile();
+  const { t } = useLanguage();
   const [showNotifs, setShowNotifs] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -36,7 +38,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
     .toUpperCase() || "C";
 
   const info = {
-    label: "Citizen Portal",
+    label: t("Citizen Portal", "नागरिक पोर्टल"),
     user: fullName,
     title: profile?.mobile || "Citizen",
     avatar: avatar,
@@ -91,7 +93,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
           </button>
           {showNotifs && (
             <div className="absolute right-0 mt-1.5 w-80 bg-white rounded-xl border border-border shadow-lg py-1 z-50">
-              <div className="px-4 py-2 border-b border-border font-bold text-xs text-foreground">Notifications</div>
+              <div className="px-4 py-2 border-b border-border font-bold text-xs text-foreground">{t("Notifications", "सूचनाएं")}</div>
               <div className="divide-y divide-border max-h-64 overflow-y-auto">
                 {CITIZEN_NOTIFICATIONS.map(n => (
                   <div key={n.id} className="p-3 flex items-start gap-2.5 hover:bg-muted/50 transition-colors">
@@ -134,14 +136,14 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
                 className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition-colors"
               >
                 <Settings className="w-4 h-4 text-muted-foreground" />
-                Settings
+                {t("Settings", "सेटिंग्स")}
               </Link>
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-2 px-3 py-2 text-xs text-destructive hover:bg-red-50 hover:text-destructive transition-colors text-left"
               >
                 <LogOut className="w-4 h-4 text-destructive/80" />
-                Logout
+                {t("Logout", "लॉगआउट")}
               </button>
             </div>
           )}

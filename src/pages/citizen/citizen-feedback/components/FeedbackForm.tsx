@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { getComplaints } from "@/api/complaints.api";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/context/LanguageContext";
 import { feedbackStatus } from "@/utils/constants";
 import ComplaintFeedback from "@/pages/citizen/track-complaint/components/ComplaintFeedback";
 import { Button } from "@/components/ui/button";

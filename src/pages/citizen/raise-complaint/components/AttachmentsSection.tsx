@@ -1,6 +1,6 @@
 import React from "react";
 import { Camera, FileText, X } from "lucide-react";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/context/LanguageContext";
 import FormSection from "./FormSection";
 
 interface AttachmentsSectionProps {

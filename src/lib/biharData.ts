@@ -5,6 +5,7 @@
 
 export const PORTAL_META = {
   name: "Bihar e-Grievance Portal",
+  nameHindi : "बिहार ई-शिकायत पोर्टल",
   tagline: "सुशासन ही जनसेवा — Good Governance is Public Service",
   dept: "Urban Development & Housing Department, Government of Bihar",
   version: "v2.4.1",

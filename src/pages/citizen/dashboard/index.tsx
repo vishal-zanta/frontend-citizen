@@ -1,6 +1,6 @@
 
 import PortalLayout from "@/components/PortalLayout";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/context/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
 import { getDashboardAnalytics } from "./api";
 import LoaderErrWrapper from "@/components/LoaderErrWrapper";

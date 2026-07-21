@@ -8,7 +8,7 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
-import { ProfileProvider , useProfile} from "@/context/ProfileContext";
+import { ProfileProvider, useProfile } from "@/context/ProfileContext";
 import ScrollToTop from "./components/ScrollToTop";
 import { useEffect } from "react";
 
@@ -23,6 +23,7 @@ import Login from "./pages/Login";
 import PageNotFound from "./lib/PageNotFound";
 import { getProfile } from "./api/auth.api";
 import FullScreenLoader from "./components/FullScreenLoader";
+import LanguageContextProvider from "./context/LanguageContext";
 
 const RootLayout = () => {
   return (
@@ -118,13 +119,15 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <ProfileProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <RouterProvider router={router} />
-        {/* <Toaster /> */}
-        <SonnerToaster position="top-center" richColors />
-      </QueryClientProvider>
-    </ProfileProvider>
+    <QueryClientProvider client={queryClientInstance}>
+      <ProfileProvider>
+        <LanguageContextProvider>
+          <RouterProvider router={router} />
+          {/* <Toaster /> */}
+          <SonnerToaster position="top-center" richColors />
+        </LanguageContextProvider>
+      </ProfileProvider>
+    </QueryClientProvider>
   );
 }
 
