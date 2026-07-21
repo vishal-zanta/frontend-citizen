@@ -25,12 +25,14 @@ import {
   Headphones,
 } from "lucide-react";
 import { PORTAL_META } from "@/lib/biharData";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Simple stub for FileBarChart since it was omitted from Lucide imports in build to avoid error
 const FileBarChart = LayoutDashboard;
 
 interface SidebarItem {
   label: string;
+  labelHindi: string;
   path: string;
   icon?: React.ComponentType<any>;
   children?: { label: string; path: string }[];
@@ -39,10 +41,12 @@ interface SidebarItem {
 interface SidebarSection {
   title: string;
   items: SidebarItem[];
+  titleHindi: string;
 }
 
 interface RoleConfig {
   label: string;
+
   color: string;
   sections: SidebarSection[];
 }
@@ -54,21 +58,44 @@ const roleConfig: Record<string, RoleConfig> = {
     sections: [
       {
         title: "Overview",
+        titleHindi: "अवलोकन",
         items: [
-          { label: "Dashboard", path: "/citizen", icon: LayoutDashboard },
+          {
+            label: "Dashboard",
+            labelHindi: "डैशबोर्ड",
+            path: "/citizen",
+            icon: LayoutDashboard,
+          },
         ],
       },
       {
         title: "Grievances",
+        titleHindi: "शिकायतें",
         items: [
-          { label: "Raise Complaint", path: "/citizen/raise", icon: FileText },
-          { label: "Track Complaint", path: "/citizen/track", icon: Search },
+          {
+            label: "Raise Complaint",
+            labelHindi: "शिकायत दर्ज करें",
+            path: "/citizen/raise",
+            icon: FileText,
+          },
+          {
+            label: "Track Complaint",
+            labelHindi: "शिकायत ट्रैक करें",
+            path: "/citizen/track",
+            icon: Search,
+          },
         ],
       },
       {
         title: "Support",
+        titleHindi: "सहायता",
         items: [
-          { label: "Feedback", path: "/citizen/feedback", icon: MessageSquare },
+          {
+            label: "Feedback",
+            labelHindi: "प्रतिक्रिया",
+            path: "/citizen/feedback",
+            icon: MessageSquare,
+          },
         ],
       },
     ],
@@ -89,6 +116,7 @@ export default function Sidebar({
   const location = useLocation();
   const config = roleConfig[role] || roleConfig.citizen;
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   const isActive = (path: string) => {
     const update = path.split("?")?.[0];
@@ -120,7 +148,7 @@ export default function Sidebar({
                 <ShieldCheck className="w-5 h-5 text-sky-400" />
               </div>
               <span className="font-bold text-sm leading-tight text-white">
-                {PORTAL_META.name}
+                {t(PORTAL_META.name, PORTAL_META.nameHindi)}
               </span>
             </Link>
             <button
@@ -146,7 +174,7 @@ export default function Sidebar({
             {config.sections.map((section, idx) => (
               <div key={idx} className="space-y-1">
                 <div className="px-3 text-[10px] font-bold text-sidebar-foreground/40 uppercase tracking-wider">
-                  {section.title}
+                  {t(section.title, section.titleHindi)}
                 </div>
                 <div className="space-y-0.5">
                   {section.items.map((item, itemIdx) => {
@@ -164,7 +192,7 @@ export default function Sidebar({
                           >
                             <span className="flex items-center gap-2.5">
                               <Icon className="w-4 h-4 shrink-0" />
-                              {item.label}
+                              {t(item.label, item.labelHindi)}
                             </span>
                             <ChevronDown
                               className={`w-3.5 h-3.5 transition-transform ${openDropdown === item.label ? "rotate-180" : ""}`}
@@ -177,7 +205,7 @@ export default function Sidebar({
                             className={`flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-lg hover:bg-sidebar-accent hover:text-white transition-all ${isItemActive ? "bg-sidebar-accent text-white border-l-2 border-sky-400" : "text-sidebar-foreground/80"}`}
                           >
                             <Icon className="w-4 h-4 shrink-0" />
-                            {item.label}
+                            {t(item.label, item.labelHindi)}
                           </Link>
                         )}
 

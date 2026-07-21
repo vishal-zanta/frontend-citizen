@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/context/LanguageContext";
 
 import { useRaiseComplaintData } from "./hooks";
 import { defaultValues, grievanceSchema, GrievanceFormValues } from "./schema";
@@ -32,6 +32,7 @@ import SuccessScreen from "./components/SuccessScreen";
 import { postComplaints } from "@/api/complaints.api";
 import CenterLayout from "@/components/CenterLayout";
 import { useProfile } from "@/context/ProfileContext";
+import LangSelector from "@/components/LangSelector";
 
 interface RaiseComplaintProps {
   role?: string;
@@ -169,15 +170,7 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
           </div>
 
           {/* Language switcher */}
-          <Select value={lang} onValueChange={(v: any) => setLang(v)}>
-            <SelectTrigger className="w-28 self-start sm:self-auto">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="en">English</SelectItem>
-              <SelectItem value="hi">हिन्दी</SelectItem>
-            </SelectContent>
-          </Select>
+         <LangSelector/>
         </div>
 
       <RhfWrapper

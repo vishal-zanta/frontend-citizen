@@ -1,3 +1,4 @@
+import LangSelector from "@/components/LangSelector";
 import { useProfile } from "@/context/ProfileContext";
 import React from "react";
 
@@ -22,12 +23,7 @@ export default function WelcomeBanner({ t, lang, toggle }: WelcomeBannerProps) {
           )}
         </p>
       </div>
-      <button
-        onClick={toggle}
-        className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm text-white font-medium whitespace-nowrap cursor-pointer self-start sm:self-auto"
-      >
-        {lang === "en" ? "हिन्दी" : "English"}
-      </button>
+     <LangSelector/>
     </div>
   );
 }
