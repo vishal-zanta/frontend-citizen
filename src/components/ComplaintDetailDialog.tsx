@@ -283,7 +283,7 @@ export function ComplaintDetailDialog({
                 </div>
                 <div className="flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span className="text-muted-foreground">ULB / Ward:</span>
+                  <span className="text-muted-foreground">Village / Ward:</span>
                   <span className="font-medium">
                     {complaint.address?.villageOrWard ||
                       complaint.ulbName ||
