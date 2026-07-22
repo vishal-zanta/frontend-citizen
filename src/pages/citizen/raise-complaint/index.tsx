@@ -25,6 +25,7 @@ import AddressSection from "./components/AddressSection";
 import CommunicationSection from "./components/CommunicationSection";
 import AttachmentsSection from "./components/AttachmentsSection";
 import { getFormData } from "./helpers";
+import FormButtonsFooter from "./components/FormButtonsFooter";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getErrorToast, getSuccessToast } from "@/utils/helpers";
@@ -33,6 +34,7 @@ import { postComplaints } from "@/api/complaints.api";
 import CenterLayout from "@/components/CenterLayout";
 import { useProfile } from "@/context/ProfileContext";
 import LangSelector from "@/components/LangSelector";
+import { useGetConfig } from "@/hooks/query/useGetConfig";
 
 interface RaiseComplaintProps {
   role?: string;
@@ -42,6 +44,12 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
   const { t, lang, setLang } = useLanguage();
   const qc = useQueryClient();
   const { profile } = useProfile();
+
+  const { data: configData } = useGetConfig();
+  console.log("configData:", configData?.data?.data);
+  const mbFile = configData?.data?.data?.grievanceMaxUploadSizeMB || 1;
+  const MAX_FILE_LIMIT = mbFile * 1024 * 1024;
+
 
   const computedDefaultValues = useMemo(() => {
     let mobileVal = profile?.mobile || "";
@@ -91,9 +99,9 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
       return;
     }
 
-    const oversized = files.find((f) => f.size > 10 * 1024 * 1024);
+    const oversized = files.find((f) => f.size > MAX_FILE_LIMIT);
     if (oversized) {
-      const msg = t("File too large. Max 10 MB.", "फ़ाइल बहुत बड़ी है। अधिकतम 10 MB।");
+      const msg = t(`File too large. Max ${mbFile} MB.`, `फ़ाइल बहुत बड़ी है। अधिकतम ${mbFile} MB।`);
       setFileError(msg);
       getErrorToast(msg);
       return;
@@ -274,7 +282,6 @@ function FormWizard({
         "citizenInfo.email",
         "citizenInfo.preferredLanguage",
         "communication.feedbackConsent",
-        "communication.satisfactionSurveyConsent",
       ]);
     } else if (step === 2) {
       isValid = await trigger([
@@ -404,48 +411,13 @@ function FormWizard({
         )}
       </div>
 
-      {/* Buttons Footer */}
-      <div className="flex flex-col-reverse sm:flex-row justify-center items-stretch sm:items-center gap-3 mt-6 pt-4 border-t border-border">
-        <div className="w-full sm:w-auto">
-          {step > 1 && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleBack}
-              className="w-full sm:w-auto hover:bg-muted font-medium transition-all"
-            >
-              &larr; {t("Back", "पीछे")}
-            </Button>
-          )}
-        </div>
-
-        <div className="w-full sm:w-auto">
-          {step < 3 ? (
-             <button
-              type="button"
-              onClick={handleNext}
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium min-w-[120px] transition-all h-9 px-4 py-2 rounded-lg flex items-center justify-center"
-            >
-              {t("Next", "आगे")} &rarr;
-            </button> 
-          ) : (
-            <Button
-              type="submit"
-              disabled={postComplaintsMutation.isPending}
-              className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-medium min-w-[180px] transition-all"
-            >
-              {postComplaintsMutation.isPending ? (
-                <span className="flex items-center gap-2 justify-center">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  {t("Submitting...", "जमा हो रहा है...")}
-                </span>
-              ) : (
-                t("Submit Grievance", "शिकायत जमा करें")
-              )}
-            </Button>
-          )}
-        </div>
-      </div>
+      <FormButtonsFooter
+        step={step}
+        handleBack={handleBack}
+        handleNext={handleNext}
+        t={t}
+        isSubmitting={postComplaintsMutation.isPending}
+      />
     </div>
   );
 }

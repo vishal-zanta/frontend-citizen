@@ -20,3 +20,7 @@ export const getDemographics = async (params = {}) => {
 export const getServices = async (params = {}) => {
   return instance.get("/services", { params });
 };
+
+export const getConfig = async () => {
+  return instance.get("/config");
+};
