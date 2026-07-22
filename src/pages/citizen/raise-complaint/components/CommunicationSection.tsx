@@ -24,22 +24,17 @@ export default function CommunicationSection({
         />
       </div> */}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-muted/30 rounded-lg p-4 border border-border mt-2">
+      <div className="grid grid-cols-1 gap-3 bg-muted/30 rounded-lg p-4 border border-border mt-2">
         <RhfBoolean
           name="communication.feedbackConsent"
+          required={true}
           label={t(
-            "I consent to receiving feedback call",
+            "I consent to receiving feedback call and satisfaction survey",
             "मैं फ़ीडबैक कॉल प्राप्त करने की सहमति देता/देती हूँ",
           )}
         />
-        <RhfBoolean
-          name="communication.satisfactionSurveyConsent"
-          label={t(
-            "I consent to satisfaction survey",
-            "मैं संतुष्टि सर्वेक्षण की सहमति देता/देती हूँ",
-          )}
-        />
       </div>
+
     </FormSection>
   );
 }

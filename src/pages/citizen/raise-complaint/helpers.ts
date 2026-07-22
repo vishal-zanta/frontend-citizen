@@ -53,14 +53,11 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
 
   // if (data.communication.preferredMode)
   //   formData.append("communication[preferredMode]", data.communication.preferredMode);
-  // formData.append(
-  //   "communication[feedbackConsent]",
-  //   String(data.communication.feedbackConsent ?? false),
-  // );
   formData.append(
-    "communication[satisfactionSurveyConsent]",
-    String(data.communication.satisfactionSurveyConsent ?? false),
+    "communication[feedbackConsent]",
+    String(data.communication.feedbackConsent ?? false),
   );
+
 
   if (data.address.state) formData.append("address[state]", data.address.state);
   if (data.address.district)

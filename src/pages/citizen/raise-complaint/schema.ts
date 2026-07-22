@@ -43,7 +43,6 @@ export const grievanceSchema = z.object({
   communication: z.object({
     // preferredMode: z.string().optional(),
     feedbackConsent: z.boolean().optional(),
-    satisfactionSurveyConsent: z.boolean().optional(),
   }),
   address: z.object({
     state: z.string().min(1, "State is required"),
@@ -82,7 +81,7 @@ export const defaultValues: GrievanceFormValues = {
   communication: {
     // preferredMode: "",
     feedbackConsent: false,
-    satisfactionSurveyConsent: false,
   },
+
   address: { state: "Bihar", district: "", subdivision: "", villageOrWard: "", pinCode: "", landmark: "" },
 };

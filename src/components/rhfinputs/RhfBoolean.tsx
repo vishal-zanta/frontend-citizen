@@ -10,6 +10,7 @@ interface RhfBooleanProps {
   className?: string;
   labelClassName?: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
 /**
@@ -23,6 +24,7 @@ export default function RhfBoolean({
   className,
   labelClassName,
   disabled = false,
+  required = false,
 }: RhfBooleanProps) {
   const { control } = useFormContext();
 
@@ -57,9 +59,11 @@ export default function RhfBoolean({
                 )}
               >
                 {label}
+                {required && <span className="text-destructive"> *</span>}
               </Label>
             )}
           </label>
+
 
           {description && (
             <p className="text-xs text-muted-foreground pl-6">{description}</p>
