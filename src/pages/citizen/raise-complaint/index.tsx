@@ -202,6 +202,7 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
           postComplaintsMutation={postComplaintsMutation}
           allDemography={allDemography}
           demographyLoading={demographyLoading}
+          mbFile={mbFile}
         />
       </RhfWrapper>
            </CenterLayout>
@@ -227,6 +228,7 @@ interface FormWizardProps {
   postComplaintsMutation: any;
   allDemography?: any;
   demographyLoading?: boolean;
+  mbFile?: number;
 }
 
 function FormWizard({
@@ -246,6 +248,7 @@ function FormWizard({
   postComplaintsMutation,
   allDemography,
   demographyLoading,
+  mbFile,
 }: FormWizardProps) {
   const { trigger } = useFormContext<GrievanceFormValues>();
   const [step, setStep] = useState(1);
@@ -402,6 +405,7 @@ function FormWizard({
               handleFileChange={handleFileChange}
               removeAttachment={removeAttachment}
               t={t}
+              mbFile={mbFile}
             />
           </div>
         )}

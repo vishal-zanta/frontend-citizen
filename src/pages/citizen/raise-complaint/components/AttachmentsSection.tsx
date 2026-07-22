@@ -9,7 +9,8 @@ interface AttachmentsSectionProps {
   fileError: string;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   removeAttachment: (index: number) => void;
-  t: any
+  t: any;
+  mbFile?: number;
 }
 
 export default function AttachmentsSection({
@@ -18,14 +19,18 @@ export default function AttachmentsSection({
   fileError,
   handleFileChange,
   removeAttachment,
-  t
+  t,
+  mbFile = 1,
 }: AttachmentsSectionProps) {
  
 
   return (
     <FormSection title={t("Attachments", "संलग्नक")}>
       <p className="text-xs text-muted-foreground mb-3">
-        {t("Allowed file types: Images, Videos, Audio. Max size: 10MB per file.", "स्वीकृत फ़ाइल प्रकार: चित्र, वीडियो, ऑडियो। अधिकतम आकार: प्रति फ़ाइल 10MB।")}
+        {t(
+          `Allowed file types: Images, Videos, Audio. Max size: ${mbFile}MB per file.`,
+          `स्वीकृत फ़ाइल प्रकार: चित्र, वीडियो, ऑडियो। अधिकतम आकार: प्रति फ़ाइल ${mbFile}MB।`,
+        )}
       </p>
       <input
         ref={fileInputRef}
@@ -50,7 +55,7 @@ export default function AttachmentsSection({
             )}
           </p>
           <p className="text-xs text-muted-foreground/60 mt-1">
-            {t("Max 10 MB per file", "प्रति फ़ाइल अधिकतम 10 MB")}
+            {t(`Max ${mbFile} MB per file`, `प्रति फ़ाइल अधिकतम ${mbFile} MB`)}
           </p>
         </button>
       ) : (
