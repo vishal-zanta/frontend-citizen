@@ -50,8 +50,17 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
            *
            * @param {E164Number | undefined} value - The entered value
            */
-          onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
+         
           {...props}
+           onChange={(value) => {
+            const stripped = (value || "").replace(/\s+/g, "");
+            // remove the leading country calling code (e.g. +91) to count only the national digits
+            const nationalDigits = stripped.replace(/^\+\d{1,2}/, "");
+       
+            if (nationalDigits.length <= 10) {
+              onChange?.(value || ("" as RPNInput.Value));
+            }
+          }}
         />
       );
     },
@@ -61,14 +70,29 @@ PhoneInput.displayName = "PhoneInput";
 const InputComponent = React.forwardRef<
   HTMLInputElement,
   React.ComponentProps<"input">
->(({ className, ...props }, ref) => (
-  <Input
-    className={cn("rounded-e-lg rounded-s-none h-full", className)}
-    {...props}
-    ref={ref}
-  />
-));
+>(({ className, onChange, ...props }, ref) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, "");
+  const nationalDigits = val.replace(/^\+\d{1,2}/, "");
+   if (nationalDigits.length <= 10) {
+              onChange?.(e);
+            }
+
+    // onChange?.(e);
+  };
+
+  return (
+    <Input
+      className={cn("rounded-e-lg rounded-s-none h-full", className)}
+      {...props}
+      onChange={handleChange}
+      // maxLength={10}
+      ref={ref}
+    />
+  );
+});
 InputComponent.displayName = "InputComponent";
+
 
 type CountryEntry = { label: string; value: RPNInput.Country | undefined };
 

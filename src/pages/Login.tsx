@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { LogIn, Loader2, ArrowLeft, Phone, KeyRound, RotateCw } from "lucide-react";
+import {
+  LogIn,
+  Loader2,
+  ArrowLeft,
+  Phone,
+  KeyRound,
+  RotateCw,
+} from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
 import { PhoneInput } from "@/components/ui/phone-input";
 import {
@@ -18,7 +25,7 @@ import { getErrorToast, getSuccessToast } from "@/utils/helpers";
 
 export default function Login() {
   const navigate = useNavigate();
-  const {state} = useLocation();
+  const { state } = useLocation();
   const [phone, setPhone] = useState<any>("");
   const [otp, setOtp] = useState("");
   const [captcha, setCaptcha] = useState("");
@@ -60,19 +67,19 @@ export default function Login() {
 
   const sendOtpMutation = useMutation({
     mutationFn: sendOtp,
-    onSuccess: (data)=> {
-          getSuccessToast("OTP send successfully");
-          setStep("otp");
-          setResendTimer(30);
-          setShowResendCaptcha(false);
-          setResendCaptcha("");
+    onSuccess: (data) => {
+      getSuccessToast("OTP send successfully");
+      setStep("otp");
+      setResendTimer(30);
+      setShowResendCaptcha(false);
+      setResendCaptcha("");
     },
-    onError : (err)=> {
+    onError: (err) => {
       getErrorToast(err);
       setCaptcha("");
       setResendCaptcha("");
       refetch();
-    }
+    },
   });
 
   const handleConfirmResend = () => {
@@ -142,8 +149,6 @@ export default function Login() {
     }
   };
 
-  
-
   return (
     <AuthLayout
       icon={LogIn}
@@ -179,8 +184,10 @@ export default function Login() {
                   countries={["IN"]}
                   className="h-8.5 sm:h-12"
                   limitMaxLength
+                  // maxLength={10}
                   required
-                 
+                  international={false} // shows national format (no "+91" typed in the input)
+                  countryCallingCodeEditable={false} // user can't edit/delete the +91 code
                 />
               </div>
             </div>
@@ -189,51 +196,50 @@ export default function Login() {
               <Label htmlFor="captcha" className="text-sm font-semibold">
                 Security Code
               </Label>
-             
-                <div className="flex sm:flex-row flex-col sm:items-center gap-2">
-                  <Input
-                    id="captcha"
-                    placeholder="Enter security code"
-                    value={captcha}
-                    onChange={(e) => setCaptcha(e.target.value)}
-                    className="flex-1 !h-8.5 sm:!h-12"
-                    required
-                  />
-                  <div className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 shrink-0">
 
-             
-                   <LoaderErrWrapper
-                isLoading={isLoading || isRefetching}
-                error={queryError}
-              loaderClassName = {"pt-0 pb-0 "}
-              >
-
-            
-                  <div className="flex items-center justify-center bg-muted/10 border border-border rounded-lg h-12 select-none w-32 shrink-0 overflow-hidden">
-                    {data?.data ? (
-                      <div
-                        className="w-full h-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-auto"
-                        dangerouslySetInnerHTML={{ __html: data.data }}
-                      />
-                    ) : (
-                      <span className="text-xs text-muted-foreground">No Captcha</span>
-                    )}
-                  </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className="h-12 w-12 text-muted-foreground hover:text-foreground shrink-0 rounded-lg cursor-pointer"
-                    onClick={() => refetch()}
-                    disabled={isLoading || isRefetching}
-                    title="Refresh Captcha"
+              <div className="flex sm:flex-row flex-col sm:items-center gap-2">
+                <Input
+                  id="captcha"
+                  placeholder="Enter security code"
+                  value={captcha}
+                  onChange={(e) => setCaptcha(e.target.value)}
+                  className="flex-1 !h-8.5 sm:!h-12"
+                  required
+                />
+                <div className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 shrink-0">
+                  <LoaderErrWrapper
+                    isLoading={isLoading || isRefetching}
+                    error={queryError}
+                    loaderClassName={"pt-0 pb-0 "}
                   >
-                    <RotateCw className={`h-4 w-4 ${(isLoading || isRefetching) ? "animate-spin" : ""}`} />
-                  </Button>
-                    </LoaderErrWrapper>
-                         </div>
+                    <div className="flex items-center justify-center bg-muted/10 border border-border rounded-lg h-12 select-none w-32 shrink-0 overflow-hidden">
+                      {data?.data ? (
+                        <div
+                          className="w-full h-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-auto"
+                          dangerouslySetInnerHTML={{ __html: data.data }}
+                        />
+                      ) : (
+                        <span className="text-xs text-muted-foreground">
+                          No Captcha
+                        </span>
+                      )}
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-12 w-12 text-muted-foreground hover:text-foreground shrink-0 rounded-lg cursor-pointer"
+                      onClick={() => refetch()}
+                      disabled={isLoading || isRefetching}
+                      title="Refresh Captcha"
+                    >
+                      <RotateCw
+                        className={`h-4 w-4 ${isLoading || isRefetching ? "animate-spin" : ""}`}
+                      />
+                    </Button>
+                  </LoaderErrWrapper>
                 </div>
-           
+              </div>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               We'll send a 6-digit verification code to this number.
@@ -263,7 +269,9 @@ export default function Login() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Label htmlFor="otp" className="text-sm font-semibold">
-              { showResendCaptcha ? " Enter new captcha to resend OTP"  :  `One-Time Password (OTP)` } 
+                {showResendCaptcha
+                  ? " Enter new captcha to resend OTP"
+                  : `One-Time Password (OTP)`}
               </Label>
               <button
                 type="button"
@@ -278,49 +286,54 @@ export default function Login() {
               </button>
             </div>
 
-         {!showResendCaptcha &&    <p className="text-xs text-muted-foreground">
-              Enter the 6-digit code sent to{" "}
-              <span className="font-semibold text-foreground">{phone}</span>
-            </p>}
+            {!showResendCaptcha && (
+              <p className="text-xs text-muted-foreground">
+                Enter the 6-digit code sent to{" "}
+                <span className="font-semibold text-foreground">{phone}</span>
+              </p>
+            )}
 
-          {!showResendCaptcha &&   <div className="flex justify-center py-2">
-              <InputOTP maxLength={6} value={otp} onChange={setOtp} autoFocus>
-                <InputOTPGroup className="gap-2">
-                  <InputOTPSlot
-                    index={0}
-                    className="w-10 h-12 text-lg font-bold"
-                  />
-                  <InputOTPSlot
-                    index={1}
-                    className="w-10 h-12 text-lg font-bold"
-                  />
-                  <InputOTPSlot
-                    index={2}
-                    className="w-10 h-12 text-lg font-bold"
-                  />
-                  <InputOTPSlot
-                    index={3}
-                    className="w-10 h-12 text-lg font-bold"
-                  />
-                  <InputOTPSlot
-                    index={4}
-                    className="w-10 h-12 text-lg font-bold"
-                  />
-                  <InputOTPSlot
-                    index={5}
-                    className="w-10 h-12 text-lg font-bold"
-                  />
-                </InputOTPGroup>
-              </InputOTP>
-            </div>}
+            {!showResendCaptcha && (
+              <div className="flex justify-center py-2">
+                <InputOTP maxLength={6} value={otp} onChange={setOtp} autoFocus>
+                  <InputOTPGroup className="gap-2">
+                    <InputOTPSlot
+                      index={0}
+                      className="w-10 h-12 text-lg font-bold"
+                    />
+                    <InputOTPSlot
+                      index={1}
+                      className="w-10 h-12 text-lg font-bold"
+                    />
+                    <InputOTPSlot
+                      index={2}
+                      className="w-10 h-12 text-lg font-bold"
+                    />
+                    <InputOTPSlot
+                      index={3}
+                      className="w-10 h-12 text-lg font-bold"
+                    />
+                    <InputOTPSlot
+                      index={4}
+                      className="w-10 h-12 text-lg font-bold"
+                    />
+                    <InputOTPSlot
+                      index={5}
+                      className="w-10 h-12 text-lg font-bold"
+                    />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+            )}
           </div>
 
           <div className="space-y-3">
             {showResendCaptcha && (
               <div className="space-y-2 mt-4 p-3 bg-muted/10 rounded-lg">
-                <Label htmlFor="resendCaptcha" className="text-xs font-semibold">
-              
-                </Label>
+                <Label
+                  htmlFor="resendCaptcha"
+                  className="text-xs font-semibold"
+                ></Label>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-2">
                   <Input
                     id="resendCaptcha"
@@ -343,7 +356,9 @@ export default function Login() {
                             dangerouslySetInnerHTML={{ __html: data.data }}
                           />
                         ) : (
-                          <span className="text-xs text-muted-foreground">No Captcha</span>
+                          <span className="text-xs text-muted-foreground">
+                            No Captcha
+                          </span>
                         )}
                       </div>
                       <Button
@@ -355,7 +370,9 @@ export default function Login() {
                         disabled={isLoading || isRefetching}
                         title="Refresh Captcha"
                       >
-                        <RotateCw className={`h-4 w-4 ${(isLoading || isRefetching) ? "animate-spin" : ""}`} />
+                        <RotateCw
+                          className={`h-4 w-4 ${isLoading || isRefetching ? "animate-spin" : ""}`}
+                        />
                       </Button>
                     </LoaderErrWrapper>
                   </div>
@@ -378,23 +395,25 @@ export default function Login() {
               </div>
             )}
 
-         {!showResendCaptcha &&   <Button
-              type="submit"
-              className="w-full h-12 font-medium transition-all duration-200 active:scale-[0.98] cursor-pointer"
-              disabled={verifyOtpMutation.isPending}
-            >
-              {verifyOtpMutation.isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Verifying...
-                </>
-              ) : (
-                <>
-                  <KeyRound className="w-4 h-4 mr-2" />
-                  Verify & Login
-                </>
-              )}
-            </Button>}
+            {!showResendCaptcha && (
+              <Button
+                type="submit"
+                className="w-full h-12 font-medium transition-all duration-200 active:scale-[0.98] cursor-pointer"
+                disabled={verifyOtpMutation.isPending}
+              >
+                {verifyOtpMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Verifying...
+                  </>
+                ) : (
+                  <>
+                    <KeyRound className="w-4 h-4 mr-2" />
+                    Verify & Login
+                  </>
+                )}
+              </Button>
+            )}
 
             <div className="text-center pt-2">
               {resendTimer > 0 ? (
