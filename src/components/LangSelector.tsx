@@ -1,20 +1,69 @@
 import React from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { useLanguage } from '@/context/LanguageContext'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { updateProfile } from '@/api/auth.api'
+import { useProfile } from '@/context/ProfileContext'
+import { getErrorToast, getSuccessToast } from '@/utils/helpers'
 
 const LangSelector = () => {
-    const {lang, setLang} = useLanguage();
+  const { lang, setLang, t } = useLanguage();
+  const { profile } = useProfile();
+  const queryClient = useQueryClient();
+
+  const updateProfileMutation = useMutation({
+    mutationFn: (newLang: string) =>
+      updateProfile({
+        fullName: profile?.fullName || "",
+        email: profile?.email || null,
+        preferredLanguage: newLang === "hi" ? "Hindi" : "English",
+      }),
+    onSuccess: () => {
+      getSuccessToast(t("Language updated successfully", "भाषा सफलतापूर्वक अपडेट की गई"));
+      queryClient.invalidateQueries({ queryKey: ["auth-profile"] });
+    },
+    onError: (err: any) => {
+      getErrorToast(err);
+    },
+  });
+
+  const handleLanguageChange = (v: string) => {
+    setLang(v);
+    if (profile) {
+      updateProfileMutation.mutate(v);
+    }
+  };
+
+  const isPending = updateProfileMutation.isPending;
+
   return (
-     <Select value={lang} onValueChange={(v: any) => setLang(v)}>
-            <SelectTrigger className="w-28 self-start sm:self-auto">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="en">English</SelectItem>
-              <SelectItem value="hi">हिन्दी</SelectItem>
-            </SelectContent>
-          </Select>
-  )
+    <div className={`flex items-center gap-1.5 text-xs font-semibold ${isPending ? "pointer-events-none opacity-60" : ""}`}>
+      <button
+        type="button"
+        onClick={() => handleLanguageChange("en")}
+        disabled={isPending}
+        className={`px-2 py-1 rounded transition-colors cursor-pointer border ${
+          lang === "en"
+            ? "bg-blue-600 text-white border-blue-600 font-bold"
+            : "text-muted-foreground hover:bg-muted border-transparent"
+        }`}
+      >
+        English
+      </button>
+      <span className="text-muted-foreground/35 select-none font-normal">|</span>
+      <button
+        type="button"
+        onClick={() => handleLanguageChange("hi")}
+        disabled={isPending}
+        className={`px-2 py-1 rounded transition-colors cursor-pointer border ${
+          lang === "hi"
+            ? "bg-blue-600 text-white border-blue-600 font-bold"
+            : "text-muted-foreground hover:bg-muted border-transparent"
+        }`}
+      >
+        हिन्दी
+      </button>
+    </div>
+  );
 }
 
 export default LangSelector

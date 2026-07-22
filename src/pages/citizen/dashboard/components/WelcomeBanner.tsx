@@ -1,4 +1,3 @@
-import LangSelector from "@/components/LangSelector";
 import { useProfile } from "@/context/ProfileContext";
 import React from "react";
 
@@ -11,7 +10,7 @@ interface WelcomeBannerProps {
 export default function WelcomeBanner({ t, lang, toggle }: WelcomeBannerProps) {
   const {profile} = useProfile();
   return (
-    <div className="bg-gradient-to-r from-blue-900 to-blue-600 rounded-2xl p-4 sm:p-6 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div className="bg-gradient-to-r from-blue-900 to-blue-600 rounded-2xl p-4 sm:p-6 text-white flex flex-col sm:flex-row items-start sm:items-center gap-4">
       <div>
         <h1 className="text-xl sm:text-2xl font-bold mb-1">
           {t(`Namaste, ${profile?.fullName ?? "Citizen"}!`, "नमस्ते")}
@@ -23,7 +22,7 @@ export default function WelcomeBanner({ t, lang, toggle }: WelcomeBannerProps) {
           )}
         </p>
       </div>
-     <LangSelector/>
     </div>
   );
 }
+

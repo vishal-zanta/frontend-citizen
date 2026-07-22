@@ -13,7 +13,6 @@ import PreviousComplaintsTable from "./components/PreviousComplaintsTable";
 import { useGetComplaints, useGetComplaintById } from "@/hooks/useGetQuery";
 import Pagination from "@/components/Pagination";
 import usePagination from "@/hooks/usePagination";
-import LangSelector from "@/components/LangSelector";
 
 interface TrackComplaintProps {
   role?: string;
@@ -110,7 +109,6 @@ export default function TrackComplaint({
               )}
             </p>
           </div>
-         <LangSelector/>
         </div>
 
         {showDetails ? (

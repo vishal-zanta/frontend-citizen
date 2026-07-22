@@ -4,7 +4,6 @@ import PortalLayout from "@/components/PortalLayout";
 import CenterLayout from "@/components/CenterLayout";
 import { useLanguage } from "@/context/LanguageContext";
 import FeedbackForm from "./components/FeedbackForm";
-import LangSelector from "@/components/LangSelector";
 
 export default function CitizenFeedback() {
   const { t } = useLanguage();
@@ -28,8 +27,7 @@ export default function CitizenFeedback() {
               "अपनी हल की गई शिकायत के अनुभव को रेट करें।"
             )}
           </p>
-            </div>
-            <LangSelector/>
+          </div>
         </div>
 
         {/* Form card */}

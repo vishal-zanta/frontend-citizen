@@ -4,8 +4,8 @@
 // ============================================================
 
 export const PORTAL_META = {
-  name: "Bihar e-Grievance Portal",
-  nameHindi : "बिहार ई-शिकायत पोर्टल",
+  name: "Bihar Sahayog Helpline Portal",
+  nameHindi: "बिहार ई-शिकायत पोर्टल",
   tagline: "सुशासन ही जनसेवा — Good Governance is Public Service",
   dept: "Urban Development & Housing Department, Government of Bihar",
   version: "v2.4.1",
@@ -1217,7 +1217,10 @@ for (let i = 0; i < 100; i++) {
 }
 
 // Shuffle so recent complaints appear first
-COMPLAINTS.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+COMPLAINTS.sort(
+  (a, b) =>
+    new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
+);
 
 // Populate timelines
 COMPLAINTS.forEach((c) => {

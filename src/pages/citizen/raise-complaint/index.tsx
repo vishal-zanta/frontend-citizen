@@ -33,7 +33,6 @@ import SuccessScreen from "./components/SuccessScreen";
 import { postComplaints } from "@/api/complaints.api";
 import CenterLayout from "@/components/CenterLayout";
 import { useProfile } from "@/context/ProfileContext";
-import LangSelector from "@/components/LangSelector";
 import { useGetConfig } from "@/hooks/query/useGetConfig";
 
 interface RaiseComplaintProps {
@@ -176,9 +175,6 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
               )}
             </p>
           </div>
-
-          {/* Language switcher */}
-         <LangSelector/>
         </div>
 
       <RhfWrapper

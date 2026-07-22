@@ -4,6 +4,7 @@ import { ChevronDown, Bell, Menu, LogOut, Settings, CheckCircle2, AlertCircle, I
 import { useProfile } from "@/context/ProfileContext";
 import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/context/LanguageContext";
+import LangSelector from "@/components/LangSelector";
 
 const CITIZEN_NOTIFICATIONS = [
   { id: 1, text: "Your complaint BH-2026-047821 has been resolved ✅", time: "2h ago", type: "success" },
@@ -82,6 +83,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
       </div>
 
       <div className="flex items-center gap-3">
+        <LangSelector />
         {/* Notifications */}
         <div ref={notifRef} className="relative">
           <button
