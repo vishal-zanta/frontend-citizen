@@ -199,10 +199,10 @@ export default function CitizenSettings() {
                     setLang("en");
                     setProfile((p) => ({ ...p, preferredLanguage: "English" }));
                   }}
-                  className={`px-4 py-2 rounded-lg text-sm border transition-colors cursor-pointer ${
+                  className={`px-4 py-2 rounded-lg text-sm border transition-all cursor-pointer ${
                     lang === "en"
-                      ? "bg-primary text-white border-primary"
-                      : "border-border hover:bg-muted"
+                      ? "bg-primary text-primary-foreground border-primary font-medium"
+                      : "bg-card text-foreground border-border hover:bg-muted font-normal"
                   }`}
                 >
                   English
@@ -213,10 +213,10 @@ export default function CitizenSettings() {
                     setLang("hi");
                     setProfile((p) => ({ ...p, preferredLanguage: "Hindi" }));
                   }}
-                  className={`px-4 py-2 rounded-lg text-sm border transition-colors cursor-pointer ${
+                  className={`px-4 py-2 rounded-lg text-sm border transition-all cursor-pointer ${
                     lang === "hi"
-                      ? "bg-primary text-white border-primary"
-                      : "border-border hover:bg-muted"
+                      ? "bg-primary text-primary-foreground border-primary font-medium"
+                      : "bg-card text-foreground border-border hover:bg-muted font-normal"
                   }`}
                 >
                   हिन्दी
