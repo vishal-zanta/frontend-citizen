@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "@/api/auth.api";
-import { getErrorToast, getSuccessToast } from "@/utils/helpers";
+import { getErrorToast, getSuccessToast, isAlpha } from "@/utils/helpers";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,7 @@ interface ProfileUpdateFormProps {
 }
 
 const profileSchema = z.object({
-  fullName: z.string().min(1, { message: "Full Name is required" }),
+  fullName: z.string().min(3, { message: "Full Name is required and more than 2 chars" }),
   email: z
     .string()
     .optional()
@@ -96,8 +96,11 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
         <Input
           value={fullName}
           onChange={(e) => {
-            setFullName(e.target.value);
-            if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: undefined }));
+            if(isAlpha(e.target.value)){
+
+              setFullName(e.target.value);
+              if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: undefined }));
+            }
           }}
           placeholder={t("Enter your full name", "अपना पूरा नाम दर्ज करें")}
         />
@@ -136,9 +139,9 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
               setPreferredLanguage("English");
               if (errors.preferredLanguage) setErrors((prev) => ({ ...prev, preferredLanguage: undefined }));
             }}
-            className={`px-4 py-2 rounded-lg text-sm border transition-colors cursor-pointer ${
+            className={`px-4 py-2 rounded-lg text-sm border text-foreground transition-colors cursor-pointer ${
               preferredLanguage === "English"
-                ? "bg-primary text-white border-primary"
+                ? "bg-primary  border-border"
                 : "border-border hover:bg-muted"
             }`}
           >
@@ -151,9 +154,9 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
               setPreferredLanguage("Hindi");
               if (errors.preferredLanguage) setErrors((prev) => ({ ...prev, preferredLanguage: undefined }));
             }}
-            className={`px-4 py-2 rounded-lg text-sm border transition-colors cursor-pointer ${
+            className={`px-4 py-2 rounded-lg text-sm border text-foreground transition-colors cursor-pointer ${
               preferredLanguage === "Hindi"
-                ? "bg-primary text-white border-primary"
+                ? "bg-primary  border-border"
                 : "border-border hover:bg-muted"
             }`}
           >
