@@ -226,6 +226,7 @@ export default function RhfSelect({
 
         const commonProps: any = {
           inputId: name,
+          ref: field.ref,
           options,
           placeholder: placeholder ?? label ?? "Select...",
           isDisabled: disabled,

@@ -51,3 +51,50 @@ export const isAlpha = (value: any) => {
 
   return true;
 };
+
+
+export const getFirstErrorEl = (errors :any, prefix : any = "") => {
+  if (!errors || typeof errors !== "object") return { el: null, path: null };
+
+  for (const key of Object.keys(errors)) {
+    const node = errors[key];
+    const path = prefix ? `${prefix}.${key}` : key;
+
+    if (!node || typeof node !== "object") continue;
+
+    // A FieldError leaf has a `message` string.
+    if (typeof node.message === "string") {
+      // Try querying by name attribute first (covers inputs rendered with that name),
+      // then fall back to getElementById for react-select inputs (inputId === name).
+      const el =
+        document.querySelector(`[name="${path}"]`) ??
+        document.getElementById(path) ??
+        // react-select sets inputId; also try the last segment for flat ids.
+        document.getElementById(key);
+      return { el, path };
+    }
+
+    // Nested error group — recurse.
+    const result = getFirstErrorEl(node, path);
+    if (result.path !== null) return result;
+  }
+
+  return { el: null, path: null };
+};
+
+
+export const focusErrorElement = (methods :any, err :any=null)=> {
+  let errors = err? err : methods.formState.errors;
+      if (!Object.keys(errors).length) return;
+    
+ const { el, path } = getFirstErrorEl(errors);
+    // console.log({el, path, errors});
+    if (el ) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+     
+    }
+    if (path) {
+      // setFocus expects the registered field name (dot-path for nested fields)
+      try { methods.setFocus(path); } catch (_) {}
+    }
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { focusErrorElement, getFirstErrorEl } from "@/utils/helpers";
 
 interface RhfWrapperProps {
   children: React.ReactNode;
@@ -58,12 +59,30 @@ const RhfWrapper: React.FC<RhfWrapperProps> = ({
     }
   }, [validationSchema, schemaKey]);
 
+  // useEffect(()=> {
+  //  const errors = methods.formState.errors;
+  //   if (!Object.keys(errors).length) return;
+
+  //   const { el, path } = getFirstErrorEl(errors);
+  //   // console.log({el, path});
+  //   if (el) {
+  //     el.scrollIntoView({ behavior: "smooth", block: "center" });
+  //   }
+  //   if (path) {
+  //     // setFocus expects the registered field name (dot-path for nested fields)
+  //     try { methods.setFocus(path); } catch (_) {}
+  //   }
+  // },[methods.formState.errors])
+
   return (
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(
           (data) => onSubmit(data, methods),
-          (err) => onError?.(err, methods.getValues(), methods),
+          (err) => {
+            onError?.(err, methods.getValues(), methods);
+            focusErrorElement(methods, err);
+          },
         )}
         id="rhf-form"
         className={className}
