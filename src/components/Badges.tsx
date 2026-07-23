@@ -11,7 +11,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
   return (
     <Badge
       variant="outline"
-      className={`text-xs font-medium ${meta.badgeClass}`}
+      className={`text-xs font-medium text-nowrap ${meta.badgeClass}`}
     >
        Status: {meta.badgeLabel}
     </Badge>
@@ -27,7 +27,7 @@ export function PriorityBadge({ priority }: PriorityBadgeProps) {
   return (
     <Badge
       variant="outline"
-      className={`text-xs font-medium ${meta.badgeClass}`}
+      className={`text-xs font-medium text-nowrap ${meta.badgeClass}`}
     >
       Priority : {meta.badgeLabel}
     </Badge>
