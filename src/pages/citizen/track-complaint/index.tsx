@@ -100,7 +100,13 @@ export default function TrackComplaint({
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 no-print">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-foreground">
-              {t("Track Complaint", "शिकायत ट्रैक करें")}
+              {statusFilter === "resolved"
+                ? t("Resolved Complaints", "हल की गई शिकायतें")
+                : statusFilter === "in_progress"
+                ? t("In-Progress Complaints", "प्रगति पर शिकायतें")
+                : statusFilter === "escalated"
+                ? t("Escalated Complaints", "गंभीर शिकायतें")
+                : t("Track Complaint", "शिकायत ट्रैक करें")}
             </h1>
             <p className="text-sm text-muted-foreground">
               {t(
@@ -133,7 +139,7 @@ export default function TrackComplaint({
                 />
               ) : (
                 showNotFound && (
-                  <div className="bg-white rounded-xl border border-border p-12 text-center no-print mb-6">
+                  <div className="bg-card rounded-xl border border-border p-12 text-center no-print mb-6">
                     <Search className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
                     <p className="text-muted-foreground">
                       {t(

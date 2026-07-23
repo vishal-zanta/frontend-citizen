@@ -61,7 +61,7 @@ export default function CitizenFeedback() {
         <h1 className="text-2xl font-bold mb-1">{t("Feedback", "प्रतिक्रिया")}</h1>
         <p className="text-sm text-muted-foreground mb-6">{t("Rate your experience with a resolved complaint.", "अपनी हल की गई शिकायत के अनुभव को रेट करें।")}</p>
 
-        <div className="bg-white rounded-xl border border-border p-6 space-y-6">
+        <div className="bg-card rounded-xl border border-border p-6 space-y-6">
           {/* Select resolved complaint */}
           <div>
             <Label className="mb-1.5 block">{t("Select Resolved Complaint *", "हल की गई शिकायत चुनें *")}</Label>
@@ -80,7 +80,7 @@ export default function CitizenFeedback() {
                 <div className="font-medium">{selectedComplaint.serviceName} — {selectedComplaint.subserviceName}</div>
                 <div className="text-muted-foreground mt-1">{selectedComplaint.description}</div>
                 {selectedComplaint.resolvedDate && (
-                  <div className="text-xs text-emerald-600 mt-1">{t("Resolved on", "हल किया गया")}: {new Date(selectedComplaint.resolvedDate).toLocaleDateString("en-IN")}</div>
+                  <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">{t("Resolved on", "हल किया गया")}: {new Date(selectedComplaint.resolvedDate).toLocaleDateString("en-IN")}</div>
                 )}
               </div>
             )}
@@ -111,7 +111,7 @@ export default function CitizenFeedback() {
         </div>
 
         {uniqueResolved.length === 0 && (
-          <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+          <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 rounded-lg text-sm text-amber-800 dark:text-amber-200">
             {t("You have no resolved complaints to give feedback on yet.", "आपकी कोई हल की गई शिकायत नहीं है जिस पर प्रतिक्रिया दी जा सके।")}
           </div>
         )}

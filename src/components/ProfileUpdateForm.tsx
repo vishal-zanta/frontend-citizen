@@ -16,7 +16,12 @@ interface ProfileUpdateFormProps {
 
 const profileSchema = z.object({
   fullName: z.string().min(1, { message: "Full Name is required" }),
-  email: z.string().min(1, { message: "Email is required" }).email({ message: "Invalid email address" }),
+  email: z
+    .string()
+    .optional()
+    .refine((val) => !val || z.string().email().safeParse(val).success, {
+      message: "Invalid email address",
+    }),
   preferredLanguage: z.string().min(1, { message: "Language is required" }),
 });
 
@@ -38,12 +43,16 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
   }, [initialData]);
 
   const updateProfileMutation = useMutation({
-    mutationFn: () =>
-      updateProfile({
+    mutationFn: () => {
+      const payload: any = {
         fullName,
-        email,
         preferredLanguage,
-      }),
+      };
+      if (email && email.trim() !== "") {
+        payload.email = email.trim();
+      }
+      return updateProfile(payload);
+    },
     onSuccess: (data) => {
       getSuccessToast(t("Profile updated successfully", "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई"));
       queryClient.invalidateQueries({ queryKey: ["auth-profile"] });
@@ -100,7 +109,6 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
       <div>
         <Label className="mb-1.5 block">
           {t("Email", "ईमेल")}
-          <span className="text-destructive ml-0.5">*</span>
         </Label>
         <Input
           value={email}

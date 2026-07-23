@@ -11,9 +11,9 @@ export default function QuickActions({ t }: QuickActionsProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
       <Link
         to="/citizen/raise"
-        className="group bg-white rounded-xl border-2 border-blue-100 hover:border-primary p-4 sm:p-6 transition-all hover:shadow-lg"
+        className="group bg-card rounded-xl border-2 border-blue-100 dark:border-slate-800 hover:border-primary p-4 sm:p-6 transition-all hover:shadow-lg"
       >
-        <div className="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+        <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
           <FileText className="w-6 h-6" />
         </div>
         <h3 className="font-bold text-foreground">
@@ -26,9 +26,9 @@ export default function QuickActions({ t }: QuickActionsProps) {
 
       <Link
         to="/citizen/track"
-        className="group bg-white rounded-xl border-2 border-emerald-100 hover:border-emerald-400 p-4 sm:p-6 transition-all hover:shadow-lg"
+        className="group bg-card rounded-xl border-2 border-emerald-100 dark:border-slate-800 hover:border-emerald-400 p-4 sm:p-6 transition-all hover:shadow-lg"
       >
-        <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+        <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
           <Search className="w-6 h-6" />
         </div>
         <h3 className="font-bold text-foreground">
@@ -40,14 +40,14 @@ export default function QuickActions({ t }: QuickActionsProps) {
       </Link>
 
       <div
-        className="group bg-white rounded-xl border-2 border-purple-100 hover:border-purple-400 p-4 sm:p-6 transition-all hover:shadow-lg cursor-pointer"
+        className="group bg-card rounded-xl border-2 border-purple-100 dark:border-slate-800 hover:border-purple-400 p-4 sm:p-6 transition-all hover:shadow-lg cursor-pointer"
         onClick={() =>
           (document.querySelector(
             "[class*='fixed bottom-6 right-6']"
           ) as HTMLElement)?.click()
         }
       >
-        <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+        <div className="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
           <Bot className="w-6 h-6" />
         </div>
         <h3 className="font-bold text-foreground">
@@ -63,9 +63,9 @@ export default function QuickActions({ t }: QuickActionsProps) {
 
       <Link
         to="/citizen/feedback"
-        className="group bg-white rounded-xl border-2 border-amber-100 hover:border-amber-400 p-4 sm:p-6 transition-all hover:shadow-lg"
+        className="group bg-card rounded-xl border-2 border-amber-100 dark:border-slate-800 hover:border-amber-400 p-4 sm:p-6 transition-all hover:shadow-lg"
       >
-        <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+        <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
           <MessageSquare className="w-6 h-6" />
         </div>
         <h3 className="font-bold text-foreground">

@@ -9,7 +9,7 @@ interface TrackShortcutProps {
 
 export default function TrackShortcut({ t }: TrackShortcutProps) {
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-blue-950/50 rounded-xl border border-blue-200 dark:border-slate-800 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div>
         <h3 className="font-bold text-foreground text-sm sm:text-base">
           {t(

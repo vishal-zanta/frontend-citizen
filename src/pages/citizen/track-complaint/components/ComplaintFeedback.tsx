@@ -48,20 +48,20 @@ const ComplaintFeedback = ({ complaintId, existingRating, existingFeedback, t, s
 
   if (isAlreadySubmitted) {
     return (
-      <div className="mt-6 p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl space-y-3">
-        <div className="flex items-center gap-2 text-emerald-800 font-semibold">
-          <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+      <div className="mt-6 p-4 bg-emerald-50/50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900 rounded-xl space-y-3">
+        <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-semibold">
+          <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           <span>{t('Feedback Submitted', 'प्रतिक्रिया सबमिट की गई')}</span>
         </div>
-        <div className="space-y-2 text-sm text-emerald-950">
+        <div className="space-y-2 text-sm text-emerald-950 dark:text-emerald-100">
           <div className="flex items-center gap-2">
-            <span className="font-medium text-emerald-800">{t('Rating', 'रेटिंग')}:</span>
+            <span className="font-medium text-emerald-800 dark:text-emerald-300">{t('Rating', 'रेटिंग')}:</span>
             <Rating  rating={existingRating} editable={false} showValue={true} />
           </div>
           {existingFeedback && (
             <div>
-              <span className="font-medium text-emerald-800">{t('Comments', 'टिप्पणियाँ')}:</span>
-              <p className="mt-1 p-3 bg-white rounded-lg border border-emerald-100 text-foreground italic">
+              <span className="font-medium text-emerald-800 dark:text-emerald-300">{t('Comments', 'टिप्पणियाँ')}:</span>
+              <p className="mt-1 p-3 bg-card rounded-lg border border-emerald-100 dark:border-emerald-900 text-foreground italic">
                 "{existingFeedback}"
               </p>
             </div>
@@ -72,7 +72,7 @@ const ComplaintFeedback = ({ complaintId, existingRating, existingFeedback, t, s
   }
 
   return (
-    <div className="mt-6 p-4 bg-white border border-border rounded-xl space-y-4">
+    <div className="mt-6 p-4 bg-card border border-border rounded-xl space-y-4">
       <div className="flex items-center gap-2 font-semibold text-foreground">
         <MessageSquare className="w-5 h-5 text-primary" />
         <h3>{t('Rate Resolution Experience', 'समाधान अनुभव को रेट करें')}</h3>

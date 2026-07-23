@@ -25,7 +25,7 @@ export default function SearchComplaint({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-border p-4 sm:p-5 mb-6 no-print">
+    <div className="bg-card rounded-xl border border-border p-4 sm:p-5 mb-6 no-print">
       <form onSubmit={handleSubmit} className="flex gap-2 sm:gap-3">
         <SearchDebounced
           initialValue={searchId}
@@ -54,7 +54,7 @@ export default function SearchComplaint({
               <button
                 key={c._id || c.id}
                 onClick={() => onQuickTrack(c)}
-                className="px-3 py-1 bg-muted hover:bg-blue-50 hover:text-primary rounded-full font-mono text-xs transition-colors cursor-pointer"
+                className="px-3 py-1 bg-muted hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:text-primary rounded-full font-mono text-xs transition-colors cursor-pointer"
               >
                 {c.grievanceId || c.id}
               </button>

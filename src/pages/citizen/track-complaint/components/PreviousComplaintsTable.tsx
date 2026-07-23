@@ -21,7 +21,7 @@ export default function PreviousComplaintsTable({
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   return (
-    <div className="bg-white rounded-xl border border-border overflow-hidden mb-6 no-print">
+    <div className="bg-card rounded-xl border border-border overflow-hidden mb-6 no-print">
       <div className="px-5 py-3 border-b border-border">
         <h3 className="font-bold text-foreground">
           {t("Your Previous Complaints", "आपकी पिछली शिकायतें")}
@@ -65,7 +65,7 @@ export default function PreviousComplaintsTable({
                   <tr
                     key={c._id || c.id}
                     onClick={() => setSelectedId(c._id || c.id)}
-                    className="hover:bg-blue-50/50 cursor-pointer transition-colors"
+                    className="hover:bg-blue-50/50 dark:hover:bg-muted/50 cursor-pointer transition-colors"
                   >
                     <td className="px-4 py-2.5 font-mono text-primary font-semibold hover:underline">
                       {c.grievanceId || c.id || "—"}

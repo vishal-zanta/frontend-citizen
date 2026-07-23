@@ -10,7 +10,7 @@ interface WelcomeBannerProps {
 export default function WelcomeBanner({ t, lang, toggle }: WelcomeBannerProps) {
   const {profile} = useProfile();
   return (
-    <div className="bg-gradient-to-r from-blue-900 to-blue-600 rounded-2xl p-4 sm:p-6 text-white flex flex-col sm:flex-row items-start sm:items-center gap-4">
+    <div className="bg-gradient-to-r from-blue-900 to-blue-600 dark:from-blue-950 dark:to-slate-900 rounded-2xl p-4 sm:p-6 text-white flex flex-col sm:flex-row items-start sm:items-center gap-4 border border-transparent dark:border-slate-800">
       <div>
         <h1 className="text-xl sm:text-2xl font-bold mb-1">
           {t(`Namaste, ${profile?.fullName ?? "Citizen"}!`, "नमस्ते")}
