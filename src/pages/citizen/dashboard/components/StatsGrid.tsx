@@ -20,7 +20,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
         <Link
           key={i}
           to={`/citizen/track?status=${s.filter}`}
-          className="bg-white rounded-xl border border-border p-3 sm:p-4 hover:shadow-md hover:border-primary/30 transition-all cursor-pointer"
+          className="bg-card rounded-xl border border-border p-3 sm:p-4 hover:shadow-md hover:border-primary/30 transition-all cursor-pointer"
         >
           <div className={`text-xl sm:text-2xl font-bold ${s.color}`}>{s.value}</div>
           <div className="text-xs sm:text-sm text-muted-foreground">{s.label}</div>

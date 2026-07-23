@@ -13,8 +13,8 @@ export default function SuccessScreen({ role, t, onReset }: SuccessScreenProps) 
   return (
     <PortalLayout role={role}>
       <div className="p-6 flex items-center justify-center min-h-[80vh]">
-        <div className="max-w-md w-full bg-white rounded-2xl border border-border shadow-xl p-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4">
+        <div className="max-w-md w-full bg-card rounded-2xl border border-border shadow-xl p-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-10 h-10" />
           </div>
           <h2 className="text-2xl font-bold text-foreground mb-2">

@@ -377,7 +377,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
               <span className="font-semibold text-foreground">
                 {selected.grievanceId}
               </span>
-              <span className="text-[11px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
+              <span className="text-[11px] bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800/40 px-2 py-0.5 rounded-full font-medium">
                 {selected.status}
               </span>
             </div>

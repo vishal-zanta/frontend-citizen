@@ -78,7 +78,7 @@ export default function ComplaintTimeline({ events, t }: ComplaintTimelineProps)
   return (
     <div className="relative pl-8">
       {/* Vertical line */}
-      <div className="absolute left-3 top-2 bottom-2 w-0.5 bg-gradient-to-b from-blue-500 via-sky-300 to-slate-200"></div>
+      <div className="absolute left-3 top-2 bottom-2 w-0.5 bg-gradient-to-b from-blue-500 via-sky-300 to-slate-200 dark:to-slate-800"></div>
 
       {[...events].reverse().map((event, i) => {
         const Icon = iconMap[event.type] || FilePlus2;
@@ -88,12 +88,12 @@ export default function ComplaintTimeline({ events, t }: ComplaintTimelineProps)
         return (
           <div key={event._id || i} className="relative mb-6 last:mb-0">
             {/* Dot */}
-            <div className="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-white border-2 border-blue-500 flex items-center justify-center shadow-sm">
-              <Icon className="w-3 h-3 text-blue-600" />
+            <div className="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-card border-2 border-blue-500 flex items-center justify-center shadow-sm">
+              <Icon className="w-3 h-3 text-blue-600 dark:text-blue-400" />
             </div>
 
             {/* Content */}
-            <div className="bg-white border border-border rounded-lg p-3 hover:shadow-md transition-shadow">
+            <div className="bg-card border border-border rounded-lg p-3 hover:shadow-md transition-shadow">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                 <div className="flex-1">
                   <div className="text-sm font-semibold text-foreground">

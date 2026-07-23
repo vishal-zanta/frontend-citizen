@@ -241,7 +241,7 @@ export function ComplaintDetailDialog({
       <DialogContent className="w-[92vw] max-w-2xl max-h-[85vh] overflow-y-auto p-4 sm:p-6 rounded-xl">
         <DialogHeader>
           <DialogTitle className="flex flex-wrap items-center gap-2 text-base sm:text-lg">
-            <span>{t("Complaint Details", "शिकायत का विवरण")}</span>
+            <span className="text-foreground ">{t("Complaint Details", "शिकायत का विवरण")}</span>
             <span className="font-mono text-primary text-sm sm:text-base break-all">{complaint?.grievanceId}</span>
           </DialogTitle>
         </DialogHeader>
@@ -261,7 +261,7 @@ export function ComplaintDetailDialog({
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">{t("Citizen:", "नागरिक:")}</span>
-                  <span className="font-medium truncate">
+                  <span className="font-medium text-foreground truncate">
                     {complaint.citizenInfo?.fullName ||
                       complaint.citizenName ||
                       "—"}
@@ -270,14 +270,14 @@ export function ComplaintDetailDialog({
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">{t("Mobile:", "मोबाइल:")}</span>
-                  <span className="font-medium">
+                  <span className="font-medium text-foreground">
                     {complaint.citizenInfo?.mobile || complaint.mobile || "—"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">{t("District:", "जिला:")}</span>
-                  <span className="font-medium">
+                  <span className="font-medium text-foreground">
                     {complaint.address?.district?.name || complaint?.address?.district ||
                       complaint.districtName ||
                       "—"}
@@ -286,7 +286,7 @@ export function ComplaintDetailDialog({
                 <div className="flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">{t("Village / Ward:", "ग्राम / वार्ड:")}</span>
-                  <span className="font-medium">
+                  <span className="font-medium text-foreground">
                     {complaint.address?.villageOrWard ||
                       complaint.ulbName ||
                       "—"}
@@ -295,14 +295,14 @@ export function ComplaintDetailDialog({
                 <div className="flex items-center gap-2">
                   <Tag className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">{t("Subdivision:", "अनुमंडल:")}</span>
-                  <span className="font-medium">
+                  <span className="font-medium text-foreground">
                     {complaint.address?.subdivision || complaint.ward || "—"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">{t("Filed:", "दर्ज:")}</span>
-                  <span className="font-medium">
+                  <span className="font-medium text-foreground">
                     {complaint.createdAt || complaint.createdDate
                       ? new Date(
                           complaint.createdAt || complaint.createdDate,
@@ -319,7 +319,7 @@ export function ComplaintDetailDialog({
                 <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
                   {t("Service", "सेवा")}
                 </div>
-                <div className="font-medium text-xs sm:text-sm">
+                <div className="font-medium text-xs sm:text-sm text-foreground">
                   {complaint.classification?.subService?.title ||
                     complaint.serviceName ||
                     "—"}
@@ -329,7 +329,7 @@ export function ComplaintDetailDialog({
                 <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
                   {t("Description", "विवरण")}
                 </div>
-                <p className="text-xs sm:text-sm whitespace-pre-wrap">
+                <p className="text-xs sm:text-sm whitespace-pre-wrap text-foreground">
                   {complaint.evidence?.details || complaint.description || "—"}
                 </p>
               </div>
@@ -337,16 +337,16 @@ export function ComplaintDetailDialog({
                 <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
                   {t("Subject", "विषय")}
                 </div>
-                <p className="text-xs sm:text-sm whitespace-pre-wrap">
+                <p className="text-xs sm:text-sm whitespace-pre-wrap text-foreground">
                   {complaint.classification?.subject || "—"}
                 </p>
               </div>
               <div className="flex gap-3">
-                <div className="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div className="flex-1 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 rounded-lg p-3">
                   <div className="text-[9px] sm:text-[10px] uppercase text-muted-foreground">
                     {t("Assigned Officer", "नियुक्त अधिकारी")}
                   </div>
-                  <div className="font-semibold text-xs sm:text-sm">
+                  <div className="font-semibold text-xs sm:text-sm text-foreground">
                     {complaint.assignedOfficer?.fullName ||
                       complaint.assignedOfficer?.name ||
                       complaint.l1OfficerName ||
@@ -477,7 +477,7 @@ export function OfficerDetailDialog({
                 <div className="font-bold text-lg">{officer.name}</div>
                 <Badge
                   variant="outline"
-                  className={`text-xs ${officer.designation === "l1-officer" ? "bg-blue-50 text-blue-700" : officer.designation === "l2-officer" ? "bg-purple-50 text-purple-700" : "bg-emerald-50 text-emerald-700"}`}
+                  className={`text-xs ${officer.designation === "l1-officer" ? "bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900" : officer.designation === "l2-officer" ? "bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-900" : "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900"}`}
                 >
                   {officer.designationLabel}
                 </Badge>
@@ -509,7 +509,7 @@ export function OfficerDetailDialog({
                 <span className="text-muted-foreground">Status:</span>
                 <Badge
                   variant="outline"
-                  className={`text-xs ${officer.status === "active" ? "bg-emerald-50 text-emerald-700" : "bg-slate-50 text-slate-500"}`}
+                  className={`text-xs ${officer.status === "active" ? "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300" : "bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400"}`}
                 >
                   {officer.status}
                 </Badge>
@@ -525,7 +525,7 @@ export function OfficerDetailDialog({
                     <Badge
                       key={sId}
                       variant="outline"
-                      className="text-xs bg-blue-50 text-primary"
+                      className="text-xs bg-blue-50 dark:bg-blue-950/50 text-primary dark:text-blue-300 border-blue-200 dark:border-blue-900"
                     >
                       {getServiceName(sId)}
                     </Badge>
@@ -547,7 +547,7 @@ export function OfficerDetailDialog({
                     <Badge
                       key={w}
                       variant="outline"
-                      className="text-xs bg-purple-50 text-purple-700"
+                      className="text-xs bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-900"
                     >
                       {w}
                     </Badge>
@@ -556,30 +556,30 @@ export function OfficerDetailDialog({
               </div>
             )}
             <div className="grid grid-cols-4 gap-2">
-              <div className="bg-emerald-50 rounded-lg p-2 text-center">
-                <div className="text-lg font-bold text-emerald-600">
+              <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-transparent dark:border-emerald-900 rounded-lg p-2 text-center">
+                <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
                   {officer.resolved}
                 </div>
                 <div className="text-[10px] text-muted-foreground">
                   Resolved
                 </div>
               </div>
-              <div className="bg-amber-50 rounded-lg p-2 text-center">
-                <div className="text-lg font-bold text-amber-600">
+              <div className="bg-amber-50 dark:bg-amber-950/40 border border-transparent dark:border-amber-900 rounded-lg p-2 text-center">
+                <div className="text-lg font-bold text-amber-600 dark:text-amber-400">
                   {officer.pending}
                 </div>
                 <div className="text-[10px] text-muted-foreground">Pending</div>
               </div>
-              <div className="bg-red-50 rounded-lg p-2 text-center">
-                <div className="text-lg font-bold text-red-600">
+              <div className="bg-red-50 dark:bg-red-950/40 border border-transparent dark:border-red-900 rounded-lg p-2 text-center">
+                <div className="text-lg font-bold text-red-600 dark:text-red-400">
                   {officer.slaBreached}
                 </div>
                 <div className="text-[10px] text-muted-foreground">
                   SLA Breach
                 </div>
               </div>
-              <div className="bg-blue-50 rounded-lg p-2 text-center">
-                <div className="text-lg font-bold text-blue-600">
+              <div className="bg-blue-50 dark:bg-blue-950/40 border border-transparent dark:border-blue-900 rounded-lg p-2 text-center">
+                <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
                   {officer.avgResolutionHrs}h
                 </div>
                 <div className="text-[10px] text-muted-foreground">

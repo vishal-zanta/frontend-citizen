@@ -170,7 +170,7 @@ export default function Login() {
         <form onSubmit={handleSendOtp} className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-sm font-semibold">
+              <Label htmlFor="phone" className="text-sm font-semibold text-foreground">
                 Phone Number
               </Label>
               <div className="relative">
@@ -193,7 +193,7 @@ export default function Login() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="captcha" className="text-sm font-semibold">
+              <Label htmlFor="captcha" className="text-sm font-semibold text-foreground">
                 Security Code
               </Label>
 
@@ -212,7 +212,7 @@ export default function Login() {
                     error={queryError}
                     loaderClassName={"pt-0 pb-0 "}
                   >
-                    <div className="flex items-center justify-center bg-muted/10 border border-border rounded-lg h-12 select-none w-32 shrink-0 overflow-hidden">
+                    <div className="flex items-center justify-center bg-white dark:bg-slate-100 border border-border rounded-lg h-12 select-none w-32 shrink-0 overflow-hidden">
                       {data?.data ? (
                         <div
                           className="w-full h-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-auto"
@@ -268,7 +268,7 @@ export default function Login() {
         <form onSubmit={handleVerifyOtp} className="space-y-6">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label htmlFor="otp" className="text-sm font-semibold">
+              <Label htmlFor="otp" className="text-sm font-semibold text-foreground">
                 {showResendCaptcha
                   ? " Enter new captcha to resend OTP"
                   : `One-Time Password (OTP)`}
@@ -349,7 +349,7 @@ export default function Login() {
                       error={queryError}
                       loaderClassName="pt-0 pb-0"
                     >
-                      <div className="flex items-center justify-center bg-muted/10 border border-border rounded-lg h-12 select-none w-32 shrink-0 overflow-hidden">
+                      <div className="flex items-center justify-center bg-white dark:bg-slate-100 border border-border rounded-lg h-12 select-none w-32 shrink-0 overflow-hidden">
                         {data?.data ? (
                           <div
                             className="w-full h-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-auto"

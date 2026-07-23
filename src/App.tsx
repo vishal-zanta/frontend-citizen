@@ -24,6 +24,7 @@ import PageNotFound from "./lib/PageNotFound";
 import { getProfile } from "./api/auth.api";
 import FullScreenLoader from "./components/FullScreenLoader";
 import LanguageContextProvider from "./context/LanguageContext";
+import ThemeContextProvider from "./context/ThemeContext";
 
 const RootLayout = () => {
   return (
@@ -119,15 +120,17 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <QueryClientProvider client={queryClientInstance}>
-      <ProfileProvider>
-        <LanguageContextProvider>
-          <RouterProvider router={router} />
-          {/* <Toaster /> */}
-          <SonnerToaster position="top-center" richColors />
-        </LanguageContextProvider>
-      </ProfileProvider>
-    </QueryClientProvider>
+    <ThemeContextProvider>
+      <QueryClientProvider client={queryClientInstance}>
+        <ProfileProvider>
+          <LanguageContextProvider>
+            <RouterProvider router={router} />
+            {/* <Toaster /> */}
+            <SonnerToaster position="top-center" richColors />
+          </LanguageContextProvider>
+        </ProfileProvider>
+      </QueryClientProvider>
+    </ThemeContextProvider>
   );
 }
 

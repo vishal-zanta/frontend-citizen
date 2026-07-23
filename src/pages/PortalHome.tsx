@@ -5,9 +5,9 @@ import Login from "./Login";
 
 export default function PortalHome() {
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-slate-50 via-blue-50/30 to-sky-50 overflow-x-hidden">
+    <div className="min-h-screen relative bg-gradient-to-br from-slate-50 via-blue-50/30 to-sky-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-x-hidden transition-colors">
       {/* Header */}
-      <div className="relative z-20 bg-gradient-to-r from-blue-950 via-blue-800 to-blue-600 text-white">
+      <div className="relative z-20 bg-gradient-to-r from-blue-950 via-blue-800 to-blue-600 dark:from-slate-900 dark:via-blue-950 dark:to-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center ring-2 ring-white/20">
@@ -38,11 +38,11 @@ export default function PortalHome() {
       </div>
 
       {/* Tagline banner */}
-      <div className="relative z-20 bg-blue-50 border-b border-blue-100">
+      <div className="relative z-20 bg-blue-50 dark:bg-slate-900/80 border-b border-blue-100 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between text-sm">
-          <span className="text-blue-800 font-medium">{PORTAL_META.tagline}</span>
-          <div className="flex items-center gap-3 text-xs text-blue-600">
-            <span className="flex items-center gap-1"><Zap className="w-3 h-3 text-green-600" /> All systems operational</span>
+          <span className="text-blue-800 dark:text-blue-300 font-medium">{PORTAL_META.tagline}</span>
+          <div className="flex items-center gap-3 text-xs text-blue-600 dark:text-blue-400">
+            <span className="flex items-center gap-1"><Zap className="w-3 h-3 text-green-600 dark:text-green-400" /> All systems operational</span>
             <span>-</span>
             <span>Last synced: {PORTAL_META.lastSync}</span>
           </div>
@@ -66,7 +66,7 @@ export default function PortalHome() {
         className="hidden lg:block pointer-events-none fixed right-0 bottom-0 z-[1] h-[min(85vh,720px)] w-auto max-w-[40vw] object-contain object-bottom"
       />
       <div className="hidden lg:block pointer-events-none fixed right-4 bottom-3 z-[2] text-right">
-        <p className="text-sm font-semibold text-foreground bg-white/90 rounded-lg px-3 py-1.5 shadow-sm inline-block">
+        <p className="text-sm font-semibold text-foreground bg-card/90 border border-border rounded-lg px-3 py-1.5 shadow-sm inline-block">
           Shri Samrat Choudhary
           <span className="block text-xs font-normal text-muted-foreground">
             Hon&apos;ble Chief Minister of Bihar

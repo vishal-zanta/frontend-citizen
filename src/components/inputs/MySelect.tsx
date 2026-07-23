@@ -31,41 +31,44 @@ const buildStyles = (hasError: boolean, disabled: boolean, colors: any, isMulti:
   control: (provided: any, state: any) => ({
     ...provided,
     borderColor: hasError
-      ? "#ef4444"
+      ? "var(--color-destructive)"
       : state.isFocused
-      ? "hsl(var(--ring))"
-      : "#D7DFEA",
+      ? "var(--color-ring)"
+      : "var(--color-border)",
     boxShadow: state.isFocused
       ? hasError
-        ? "0 0 0 1px #ef4444"
-        : "0 0 0 1px hsl(var(--ring))"
+        ? "0 0 0 1px var(--color-destructive)"
+        : "0 0 0 1px var(--color-ring)"
       : "none",
     borderRadius: "var(--radius)",
     minHeight: "36px",
-    height: "36px",
-    backgroundColor: disabled ? "#f3f4f6" : "#FFFFFF",
+    backgroundColor: disabled ? "var(--color-muted)" : "var(--color-card)",
     cursor: disabled ? "not-allowed" : "default",
     "&:hover": {
       borderColor: hasError
-        ? "#ef4444"
+        ? "var(--color-destructive)"
         : state.isFocused
-        ? "hsl(var(--ring))"
-        : "#D7DFEA",
+        ? "var(--color-ring)"
+        : "var(--color-border)",
     },
   }),
   valueContainer: (provided: any) => ({
     ...provided,
-    padding: "0px 12px",
-    height: "34px",
+    padding: "4px 12px",
+    minHeight: "34px",
     display: "flex",
+    flexWrap: "wrap",
     alignItems: "center",
-    maxHeight: "200px",
+    maxHeight: "120px",
     overflowY: isMulti ? "auto" : "hidden",
   }),
   menu: (provided: any) => ({
     ...provided,
     zIndex: 9999,
     width: "100%",
+    backgroundColor: "var(--color-popover)",
+    border: "1px solid var(--color-border)",
+    color: "var(--color-popover-foreground)",
   }),
   menuPortal: (provided: any) => ({
     ...provided,
@@ -76,62 +79,79 @@ const buildStyles = (hasError: boolean, disabled: boolean, colors: any, isMulti:
     ...provided,
     maxHeight: "200px",
     overflowY: "auto",
+    backgroundColor: "var(--color-popover)",
+    color: "var(--color-popover-foreground)",
   }),
   option: (provided: any, state: any) => ({
     ...provided,
     backgroundColor: state.isSelected
-      ? "hsl(var(--primary))"
+      ? "var(--color-primary)"
       : state.isFocused
-      ? "hsl(var(--accent))"
+      ? "var(--color-accent)"
       : "transparent",
     color: state.isSelected
-      ? "hsl(var(--primary-foreground))"
+      ? "var(--color-primary-foreground)"
       : state.isFocused
-      ? "hsl(var(--accent-foreground))"
-      : "#0F1729",
+      ? "var(--color-accent-foreground)"
+      : "var(--color-popover-foreground)",
     cursor: "pointer",
-    fontSize: "14px",
+    fontSize: "0.875rem",
+    "@media (max-width: 768px)": {
+      fontSize: "1rem",
+    },
     padding: "8px 12px",
     "&:active": {
-      backgroundColor: "hsl(var(--accent))",
+      backgroundColor: "var(--color-accent)",
     },
   }),
   multiValue: (provided: any) => ({
     ...provided,
-    backgroundColor: "hsl(var(--secondary))",
+    backgroundColor: "var(--color-secondary)",
     borderRadius: "calc(var(--radius) - 2px)",
     fontSize: "13px",
   }),
   multiValueLabel: (provided: any) => ({
     ...provided,
-    color: "#0F1729",
+    color: "var(--color-secondary-foreground)",
     fontSize: "13px",
     padding: "2px 6px",
   }),
   multiValueRemove: (provided: any) => ({
     ...provided,
-    color: "hsl(var(--muted-foreground))",
+    color: "var(--color-muted-foreground)",
     padding: "2px",
     borderRadius: "calc(var(--radius) - 2px)",
     "&:hover": {
-      backgroundColor: "hsl(var(--destructive))",
-      color: "hsl(var(--destructive-foreground))",
+      backgroundColor: "var(--color-destructive)",
+      color: "var(--color-destructive-foreground)",
     },
   }),
   singleValue: (provided: any) => ({
     ...provided,
-    fontSize: "14px",
-    color: "#0F1729",
+    fontSize: "0.875rem",
+    color: "var(--color-foreground)",
+    "@media (max-width: 768px)": {
+      fontSize: "1rem",
+    },
   }),
   input: (provided: any) => ({
     ...provided,
-    fontSize: "14px",
-    color: "#0F1729",
+    fontSize: "0.875rem",
+    color: "var(--color-foreground)",
+    margin: 0,
+    padding: 0,
+    "@media (max-width: 768px)": {
+      fontSize: "1rem",
+    },
   }),
   placeholder: (provided: any) => ({
     ...provided,
-    fontSize: "14px",
-    color: colors?.placeholder ?? "hsl(var(--muted-foreground))",
+    position: "absolute",
+    fontSize: "0.875rem",
+    color: colors?.placeholder ?? "var(--color-muted-foreground)",
+    "@media (max-width: 768px)": {
+      fontSize: "1rem",
+    },
   }),
   indicatorSeparator: () => ({ display: "none" }),
   indicatorsContainer: (provided: any) => ({
@@ -142,15 +162,19 @@ const buildStyles = (hasError: boolean, disabled: boolean, colors: any, isMulti:
     ...provided,
     padding: "0px 8px",
     color: state.isFocused
-      ? "hsl(var(--foreground))"
-      : "hsl(var(--muted-foreground))",
+      ? "var(--color-foreground)"
+      : "var(--color-muted-foreground)",
     "&:hover": {
-      color: "hsl(var(--foreground))",
+      color: "var(--color-foreground)",
     },
   }),
   clearIndicator: (provided: any) => ({
     ...provided,
     padding: "0px 8px",
+    color: "var(--color-muted-foreground)",
+    "&:hover": {
+      color: "var(--color-foreground)",
+    },
   }),
 });
 
@@ -210,9 +234,9 @@ export default function MySelect({
       ...theme,
       colors: {
         ...theme.colors,
-        primary: "hsl(var(--ring))",
-        primary25: "hsl(var(--accent))",
-        primary50: "hsl(var(--accent))",
+        primary: "var(--color-ring)",
+        primary25: "var(--color-accent)",
+        primary50: "var(--color-accent)",
       },
     }),
   };

@@ -85,12 +85,16 @@ export default function CitizenSettings() {
   }, [highContrast]);
 
   const updateProfileMutation = useMutation({
-    mutationFn: () =>
-      updateProfile({
+    mutationFn: () => {
+      const payload: any = {
         fullName: profile.fullName,
-        email: profile.email || null,
         preferredLanguage: profile.preferredLanguage,
-      }),
+      };
+      if (profile.email && profile.email.trim() !== "") {
+        payload.email = profile.email.trim();
+      }
+      return updateProfile(payload);
+    },
     onSuccess: (data) => {
       getSuccessToast(t("Profile updated successfully", "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई"));
       queryClient.invalidateQueries({ queryKey: ["auth-profile"] });
@@ -134,7 +138,7 @@ export default function CitizenSettings() {
     <PortalLayout role="citizen">
       <div className="p-4 sm:p-6 max-w-2xl mx-auto space-y-4 sm:space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">{t("Settings", "सेटिंग्स")}</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t("Settings", "सेटिंग्स")}</h1>
           <p className="text-sm text-muted-foreground">
             {t(
               "Manage your profile, accessibility, and preferences.",

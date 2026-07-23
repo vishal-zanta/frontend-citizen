@@ -68,10 +68,10 @@ const Pagination: React.FC<PaginationProps> = ({
   if (totalPage <= 0) return null;
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 py-2 px-4 border-t border-border bg-white">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 py-2 px-4 border-t border-border bg-card">
       {/* Rows per page Selector */}
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <span className="text-xs">Values per page:</span>
+      <div className="flex items-center gap-2 text-sm text-foreground">
+        <span className="text-xs text-foreground font-medium">Values per page:</span>
         <Select
           value={String(limit)}
           onValueChange={(val) => {
@@ -79,10 +79,10 @@ const Pagination: React.FC<PaginationProps> = ({
             setPage(1); // Reset page index to 1 when limit updates
           }}
         >
-          <SelectTrigger className="w-[70px] h-8 border-border bg-card">
+          <SelectTrigger className="w-[70px] h-8 border-border bg-card text-foreground">
             <SelectValue placeholder={String(limit)} />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-popover text-popover-foreground border-border">
             {limitOptions.map((opt) => (
               <SelectItem key={opt} value={String(opt)}>
                 {opt}
@@ -99,7 +99,7 @@ const Pagination: React.FC<PaginationProps> = ({
             <PaginationPrevious
               onClick={() => page > 1 && setPage(page - 1)}
               className={cn(
-                "cursor-pointer select-none text-xs",
+                "cursor-pointer select-none text-xs text-foreground",
                 page <= 1 && "pointer-events-none opacity-50",
               )}
             />
@@ -119,7 +119,7 @@ const Pagination: React.FC<PaginationProps> = ({
                 <PaginationLink
                   isActive={page === pageNum}
                   onClick={() => setPage(pageNum)}
-                  className="cursor-pointer select-none"
+                  className="cursor-pointer select-none text-foreground border-border"
                 >
                   {pageNum}
                 </PaginationLink>
@@ -131,7 +131,7 @@ const Pagination: React.FC<PaginationProps> = ({
             <PaginationNext
               onClick={() => page < totalPage && setPage(page + 1)}
               className={cn(
-                "cursor-pointer select-none text-xs",
+                "cursor-pointer select-none text-xs text-foreground",
                 page >= totalPage && "pointer-events-none opacity-50",
               )}
             />

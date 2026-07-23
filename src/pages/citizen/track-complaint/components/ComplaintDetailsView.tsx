@@ -94,7 +94,7 @@ export default function ComplaintDetailsView({
 
   return (
     <div className="print-area space-y-6">
-      <div className="bg-white rounded-xl border border-border p-4 sm:p-6">
+      <div className="bg-card rounded-xl border border-border p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
           <div>
             <div className="text-xs text-muted-foreground mb-1">
@@ -106,7 +106,7 @@ export default function ComplaintDetailsView({
               </h2>
               <StatusBadge status={complaint.status} />
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-foreground font-medium">
               {t(complaint.classification?.subService?.title , complaint.classification?.subService?.titleHindi)}
             </p>
           </div>
@@ -123,7 +123,7 @@ export default function ComplaintDetailsView({
             <Button
               onClick={onPrint}
               variant="outline"
-              className="shrink-0 text-xs sm:text-sm h-9 sm:h-10"
+              className="shrink-0 text-xs sm:text-sm h-9 sm:h-10 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" /> {t("Print", "प्रिंट")}
             </Button>
@@ -137,7 +137,7 @@ export default function ComplaintDetailsView({
               <span className="text-muted-foreground">
                 {t("Citizen", "नागरिक")}:
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground">
                 {complaint.citizenInfo?.fullName ||
                   complaint.citizenName ||
                   "—"}
@@ -148,7 +148,7 @@ export default function ComplaintDetailsView({
               <span className="text-muted-foreground">
                 {t("Mobile", "मोबाइल")}:
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground">
                 {complaint.citizenInfo?.mobile || complaint.mobile || "—"}
               </span>
             </div>
@@ -157,7 +157,7 @@ export default function ComplaintDetailsView({
               <span className="text-muted-foreground">
                 {t("District", "ज़िला")}:
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground">
                 {t(complaint.address?.district?.name ||  "—", complaint.address?.district?.nameHindi ||  "—")}
               </span>
             </div>
@@ -166,7 +166,7 @@ export default function ComplaintDetailsView({
               <span className="text-muted-foreground">
                 {t("Village / Ward", "गाँव / वार्ड")}:
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground">
                 {complaint.address?.villageOrWard || "—"}
               </span>
             </div>
@@ -177,7 +177,7 @@ export default function ComplaintDetailsView({
               <span className="text-muted-foreground">
                 {t("Filed On", "दाखिल")}:
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground">
                 {complaint.createdAt || complaint.createdDate
                   ? new Date(
                       complaint.createdAt || complaint.createdDate,
@@ -196,7 +196,7 @@ export default function ComplaintDetailsView({
               <span className="text-muted-foreground">
                 {t("Source", "स्रोत")}:
               </span>
-              <span className="font-medium capitalize">
+              <span className="font-medium text-foreground capitalize">
                 {complaint.source || "Website"}
               </span>
             </div>
@@ -205,7 +205,7 @@ export default function ComplaintDetailsView({
               <span className="text-muted-foreground">
                 {t("Assigned Officer", "नियुक्त अधिकारी")}:
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground">
                 {complaint.assignedOfficer?.fullName ||
                   complaint.assignedOfficer?.name ||
                   complaint.l1OfficerName ||
@@ -218,7 +218,7 @@ export default function ComplaintDetailsView({
                 <span className="text-muted-foreground">
                   {t("Resolved On", "हल")}:
                 </span>
-                <span className="font-medium">
+                <span className="font-medium text-foreground">
                   {new Date(complaint.resolvedDate).toLocaleString("en-IN", {
                     day: "2-digit",
                     month: "short",
@@ -261,7 +261,7 @@ export default function ComplaintDetailsView({
         )}
 
         {complaint.deptTransfer && (
-          <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+          <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 rounded-lg text-sm text-amber-800 dark:text-amber-200">
             {t("Department Transfer", "विभागीय स्थानांतरण")}:{" "}
             {t(
               "This complaint involves multiple departments",
@@ -273,7 +273,7 @@ export default function ComplaintDetailsView({
       </div>
 
       {complaint.timeline && complaint.timeline.length > 0 && (
-        <div className="bg-white rounded-xl border border-border p-4 sm:p-6">
+        <div className="bg-card rounded-xl border border-border p-4 sm:p-6">
           <h3 className="font-bold text-foreground mb-4">
             {t("Complaint Timeline", "शिकायत समयरेखा")} —{" "}
             {t("End-to-End Lifecycle", "संपूर्ण जीवनचक्र")}

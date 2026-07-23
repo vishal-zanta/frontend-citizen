@@ -324,7 +324,7 @@ function FormWizard({
                   isCompleted
                     ? "bg-emerald-500 text-white shadow-md border-2 border-emerald-500"
                     : isActive
-                      ? "bg-blue-600 text-white shadow-lg ring-4 ring-blue-100 border-2 border-blue-600"
+                      ? "bg-blue-600 text-white shadow-lg ring-4 ring-blue-100 dark:ring-blue-950 border-2 border-blue-600"
                       : "bg-muted text-muted-foreground border-2 border-border"
                 }`}
               >
@@ -350,9 +350,9 @@ function FormWizard({
                 <p
                   className={`text-[10px] sm:text-xs font-semibold whitespace-nowrap transition-colors ${
                     isActive
-                      ? "text-blue-600"
+                      ? "text-blue-600 dark:text-blue-400"
                       : isCompleted
-                        ? "text-emerald-600"
+                        ? "text-emerald-600 dark:text-emerald-400"
                         : "text-muted-foreground"
                   }`}
                 >

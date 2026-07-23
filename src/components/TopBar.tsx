@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ChevronDown, Bell, Menu, LogOut, Settings, CheckCircle2, AlertCircle, Info } from "lucide-react";
+import { ChevronDown, Bell, Menu, LogOut, Settings, CheckCircle2, AlertCircle, Info, Sun, Moon } from "lucide-react";
 import { useProfile } from "@/context/ProfileContext";
 import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/context/LanguageContext";
 import LangSelector from "@/components/LangSelector";
+import { useTheme } from "@/context/ThemeContext";
 
 const CITIZEN_NOTIFICATIONS = [
   { id: 1, text: "Your complaint BH-2026-047821 has been resolved ✅", time: "2h ago", type: "success" },
@@ -25,6 +26,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
   const navigate = useNavigate();
   const { profile } = useProfile();
   const { t } = useLanguage();
+  const { theme, toggle } = useTheme();
   const [showNotifs, setShowNotifs] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -68,11 +70,11 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
   };
 
   return (
-    <header className="h-14 bg-white border-b border-border flex items-center justify-between px-4 sticky top-0 z-30 shadow-sm">
+    <header className="h-14 bg-card border-b border-border flex items-center justify-between px-4 sticky top-0 z-30 shadow-sm">
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="p-1 hover:bg-muted rounded-lg text-foreground focus:outline-none lg:hidden"
+          className="p-1 hover:bg-muted rounded-lg text-foreground focus:outline-none lg:hidden cursor-pointer"
         >
           <Menu className="w-5 h-5" />
           
@@ -84,6 +86,21 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
 
       <div className="flex items-center gap-3">
         <LangSelector />
+
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggle}
+          title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          aria-label="Toggle theme"
+          className="p-2 hover:bg-muted text-muted-foreground hover:text-foreground rounded-lg transition-colors cursor-pointer"
+        >
+          {theme === "dark" ? (
+            <Sun className="w-5 h-5 text-amber-400" />
+          ) : (
+            <Moon className="w-5 h-5" />
+          )}
+        </button>
+
         {/* Notifications */}
         <div ref={notifRef} className="relative">
           <button
@@ -94,7 +111,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           {showNotifs && (
-            <div className="absolute right-0 mt-1.5 w-80 bg-white rounded-xl border border-border shadow-lg py-1 z-50">
+            <div className="absolute right-0 mt-1.5 w-80 bg-card rounded-xl border border-border shadow-lg py-1 z-50">
               <div className="px-4 py-2 border-b border-border font-bold text-xs text-foreground">{t("Notifications", "सूचनाएं")}</div>
               <div className="divide-y divide-border max-h-64 overflow-y-auto">
                 {CITIZEN_NOTIFICATIONS.map(n => (
@@ -127,7 +144,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
             <ChevronDown className="w-3.5 h-3.5 text-muted-foreground hidden md:block" />
           </button>
           {showProfile && (
-            <div className="absolute right-0 mt-1.5 w-48 bg-white rounded-xl border border-border shadow-lg py-1 z-50">
+            <div className="absolute right-0 mt-1.5 w-48 bg-card rounded-xl border border-border shadow-lg py-1 z-50">
               <div className="px-3 py-2 border-b border-border">
                 <div className="text-xs font-bold text-foreground">{info.user}</div>
                 <div className="text-[10px] text-muted-foreground mt-0.5">{info.title}</div>
@@ -142,7 +159,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
               </Link>
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-destructive hover:bg-red-50 hover:text-destructive transition-colors text-left"
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive transition-colors text-left cursor-pointer"
               >
                 <LogOut className="w-4 h-4 text-destructive/80" />
                 {t("Logout", "लॉगआउट")}
