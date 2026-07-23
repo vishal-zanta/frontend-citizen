@@ -139,10 +139,10 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
               setPreferredLanguage("English");
               if (errors.preferredLanguage) setErrors((prev) => ({ ...prev, preferredLanguage: undefined }));
             }}
-            className={`px-4 py-2 rounded-lg text-sm border text-foreground transition-colors cursor-pointer ${
+            className={`px-4 py-2 rounded-lg text-sm border transition-all cursor-pointer ${
               preferredLanguage === "English"
-                ? "bg-primary  border-border"
-                : "border-border hover:bg-muted"
+                ? "bg-primary text-primary-foreground border-primary font-medium"
+                : "bg-card text-foreground border-border hover:bg-muted font-normal"
             }`}
           >
             English
@@ -154,10 +154,10 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
               setPreferredLanguage("Hindi");
               if (errors.preferredLanguage) setErrors((prev) => ({ ...prev, preferredLanguage: undefined }));
             }}
-            className={`px-4 py-2 rounded-lg text-sm border text-foreground transition-colors cursor-pointer ${
+            className={`px-4 py-2 rounded-lg text-sm border transition-all cursor-pointer ${
               preferredLanguage === "Hindi"
-                ? "bg-primary  border-border"
-                : "border-border hover:bg-muted"
+                ? "bg-primary text-primary-foreground border-primary font-medium"
+                : "bg-card text-foreground border-border hover:bg-muted font-normal"
             }`}
           >
             हिन्दी

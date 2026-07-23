@@ -41,10 +41,10 @@ const LangSelector = () => {
         type="button"
         onClick={() => handleLanguageChange("en")}
         disabled={isPending}
-        className={`px-2 py-1 rounded transition-colors cursor-pointer border ${
+        className={`px-2 py-1 rounded transition-all cursor-pointer border ${
           lang === "en"
-            ? "bg-blue-600 text-white border-blue-600 font-bold"
-            : "text-muted-foreground hover:bg-muted border-transparent"
+            ? "bg-primary text-primary-foreground border-primary font-bold"
+            : "text-foreground/80 hover:text-foreground hover:bg-muted border-transparent font-medium"
         }`}
       >
         English
@@ -54,10 +54,10 @@ const LangSelector = () => {
         type="button"
         onClick={() => handleLanguageChange("hi")}
         disabled={isPending}
-        className={`px-2 py-1 rounded transition-colors cursor-pointer border ${
+        className={`px-2 py-1 rounded transition-all cursor-pointer border ${
           lang === "hi"
-            ? "bg-blue-600 text-white border-blue-600 font-bold"
-            : "text-muted-foreground hover:bg-muted border-transparent"
+            ? "bg-primary text-primary-foreground border-primary font-bold"
+            : "text-foreground/80 hover:text-foreground hover:bg-muted border-transparent font-medium"
         }`}
       >
         हिन्दी
