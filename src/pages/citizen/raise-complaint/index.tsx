@@ -45,7 +45,7 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
   const { profile } = useProfile();
 
   const { data: configData } = useGetConfig();
-  console.log("configData:", configData?.data?.data);
+  // console.log("configData:", configData?.data?.data);
   const mbFile = configData?.data?.data?.grievanceMaxUploadSizeMB || 1;
   const MAX_FILE_LIMIT = mbFile * 1024 * 1024;
 
