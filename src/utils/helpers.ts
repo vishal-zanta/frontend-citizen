@@ -100,8 +100,9 @@ export const focusErrorElement = (methods :any, err :any=null)=> {
     }
 }
 
-export const getImageUrl = (url :string)=> {
-  if(!url) return "";
-  return (IMG_BASE_URL + url).replaceAll("//", "/");
-
-}
+export const getImageUrl = (url: string) => {
+  if (!url) return "";
+  const combined = IMG_BASE_URL + url;
+  // collapse multiple slashes, but skip the "://" after the protocol
+  return combined.replace(/([^:]\/)\/+/g, "$1");
+};
