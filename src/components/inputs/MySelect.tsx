@@ -27,14 +27,19 @@ interface MySelectProps {
   };
 }
 
-const buildStyles = (hasError: boolean, disabled: boolean, colors: any, isMulti: boolean) => ({
+const buildStyles = (
+  hasError: boolean,
+  disabled: boolean,
+  colors: any,
+  isMulti: boolean,
+) => ({
   control: (provided: any, state: any) => ({
     ...provided,
     borderColor: hasError
       ? "var(--color-destructive)"
       : state.isFocused
-      ? "var(--color-ring)"
-      : "var(--color-border)",
+        ? "var(--color-ring)"
+        : "var(--color-border)",
     boxShadow: state.isFocused
       ? hasError
         ? "0 0 0 1px var(--color-destructive)"
@@ -48,8 +53,8 @@ const buildStyles = (hasError: boolean, disabled: boolean, colors: any, isMulti:
       borderColor: hasError
         ? "var(--color-destructive)"
         : state.isFocused
-        ? "var(--color-ring)"
-        : "var(--color-border)",
+          ? "var(--color-ring)"
+          : "var(--color-border)",
     },
   }),
   valueContainer: (provided: any) => ({
@@ -87,13 +92,13 @@ const buildStyles = (hasError: boolean, disabled: boolean, colors: any, isMulti:
     backgroundColor: state.isSelected
       ? "var(--color-primary)"
       : state.isFocused
-      ? "var(--color-accent)"
-      : "transparent",
+        ? "var(--color-accent)"
+        : "transparent",
     color: state.isSelected
       ? "var(--color-primary-foreground)"
       : state.isFocused
-      ? "var(--color-accent-foreground)"
-      : "var(--color-popover-foreground)",
+        ? "var(--color-accent-foreground)"
+        : "var(--color-popover-foreground)",
     cursor: "pointer",
     fontSize: "0.875rem",
     "@media (max-width: 768px)": {
@@ -204,8 +209,8 @@ export default function MySelect({
       ? value.map(toOption)
       : []
     : value
-    ? toOption(value)
-    : null;
+      ? toOption(value)
+      : null;
 
   const handleChange = (selected: any) => {
     if (isMulti) {
@@ -226,7 +231,10 @@ export default function MySelect({
     value: selectValue,
     onChange: handleChange,
     styles,
-    menuPortalTarget: typeof document !== "undefined" ? document.body : undefined,
+    menuShouldBlockScroll: true,
+
+    menuPortalTarget:
+      typeof document !== "undefined" ? document.body : undefined,
     menuPosition: "fixed",
     menuPlacement: "auto",
     classNamePrefix: "my-select",
@@ -252,7 +260,7 @@ export default function MySelect({
         <Label
           className={cn(
             "font-normal text-sm text-foreground mb-0.5",
-            labelClassName
+            labelClassName,
           )}
         >
           {label}
@@ -275,9 +283,7 @@ export default function MySelect({
       )}
 
       {error && (
-        <span className="text-destructive text-xs font-medium">
-          {error}
-        </span>
+        <span className="text-destructive text-xs font-medium">{error}</span>
       )}
     </div>
   );

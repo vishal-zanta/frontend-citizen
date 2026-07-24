@@ -12,9 +12,9 @@ const LangSelector = () => {
 
   const updateProfileMutation = useMutation({
     mutationFn: (newLang: string) =>
-      updateProfile({
-        fullName: profile?.fullName || "",
-        email: profile?.email || null,
+    updateProfile({
+        // fullName: profile?.fullName || "",
+        // email: profile?.email || null,
         preferredLanguage: newLang === "hi" ? "Hindi" : "English",
       }),
     onSuccess: () => {

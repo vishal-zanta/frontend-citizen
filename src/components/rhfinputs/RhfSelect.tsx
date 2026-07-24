@@ -75,6 +75,7 @@ const buildStyles = (hasError: boolean, disabled: boolean, colors: any, isMulti?
     zIndex: 9999,
     pointerEvents: "auto",
   }),
+
   menuList: (provided: any) => ({
     ...provided,
     maxHeight: "200px",
@@ -238,6 +239,7 @@ export default function RhfSelect({
           onChange: handleChange,
           onBlur: field.onBlur,
           styles,
+          menuShouldBlockScroll : true,
 
           // Portal the menu into <body> so it escapes dialog/overflow contexts
           menuPortalTarget:
