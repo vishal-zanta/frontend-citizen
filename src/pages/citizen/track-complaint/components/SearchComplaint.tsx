@@ -37,9 +37,9 @@ export default function SearchComplaint({
           className="flex-1"
           inputClassName="h-11 text-xs sm:text-sm"
         />
-        <Button type="submit" className="h-11 bg-primary hover:bg-primary/90 px-4 sm:px-6 font-semibold text-xs sm:text-sm shrink-0">
+        {/* <Button type="submit" className="h-11 bg-primary hover:bg-primary/90 px-4 sm:px-6 font-semibold text-xs sm:text-sm shrink-0">
           {t("Track", "ट्रैक करें")}
-        </Button>
+        </Button> */}
       </form>
       {quickTrackIds.length > 0 && (
         <div className="mt-3 text-xs text-muted-foreground">
