@@ -25,17 +25,19 @@ export default function TrackComplaint({
   const complaintId = searchParams.get("complaint") || searchParams.get("id");
   const { page, limit, ...pageProps } = usePagination();
   const [searchId, setSearchId] = useState("");
+    const statusFilter = searchParams.get("status");
 
+// ────────────────────────────────────────────────────────────
 
-  // ── API Queries ────────────────────────────────────────────────────────────
+  // ── API Queries 
   // Fetch paginated history list
   const {
     data: listData,
     isLoading: isListLoading,
     error: listError,
   } = useGetComplaints(
-    [page, limit, searchId],
-    { page, limit, search: searchId },
+    [page, limit, searchId, statusFilter],
+    { page, limit, search: searchId, status: statusFilter },
     !complaintId
   );
   const compl = listData?.data?.data?.docs || [];
@@ -58,22 +60,10 @@ export default function TrackComplaint({
     }
   }, [complaintId]);
 
-  const statusFilter = searchParams.get("status");
+
 
   // Apply frontend filter based on backend status values
-  const filteredComplaints =
-    statusFilter && statusFilter !== "all"
-      ? compl.filter((c: any) => {
-          if (statusFilter === "in_progress")
-            return ["OPEN", "IN_PROGRESS", "REOPENED", "PENDING"].includes(
-              c.status,
-            );
-          if (statusFilter === "resolved")
-            return ["RESOLVED", "CLOSED"].includes(c.status);
-          if (statusFilter === "escalated") return c.status === "ESCALATED";
-          return true;
-        })
-      : compl;
+  const filteredComplaints = compl;
 
   // Grab the first 5 complaints from the database for the quick-track suggestion list
   const quickTrackComplaints = compl.slice(0, 5);
