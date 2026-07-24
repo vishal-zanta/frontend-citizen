@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { IMG_BASE_URL } from "./constants";
 
 export const getSuccessToast = (description: string) => {
   toast.success(description);
@@ -97,4 +98,10 @@ export const focusErrorElement = (methods :any, err :any=null)=> {
       // setFocus expects the registered field name (dot-path for nested fields)
       try { methods.setFocus(path); } catch (_) {}
     }
+}
+
+export const getImageUrl = (url :string)=> {
+  if(!url) return "";
+  return (IMG_BASE_URL + url).replaceAll("//", "/");
+
 }
