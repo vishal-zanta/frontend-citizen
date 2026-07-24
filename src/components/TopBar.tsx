@@ -102,7 +102,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
         </button>
 
         {/* Notifications */}
-        <div ref={notifRef} className="relative">
+        {/* <div ref={notifRef} className="relative">
           <button
             onClick={() => setShowNotifs(!showNotifs)}
             className="p-2 hover:bg-muted text-muted-foreground hover:text-foreground rounded-lg transition-colors relative cursor-pointer"
@@ -126,7 +126,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* User profile */}
         <div ref={profileRef} className="relative">
