@@ -17,7 +17,7 @@ import ComplaintFeedback from "./ComplaintFeedback";
 import { feedbackStatus, IMG_BASE_URL } from "@/utils/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { reopenComplaint } from "@/api/complaints.api";
-import { getErrorToast, getSuccessToast } from "@/utils/helpers";
+import { getErrorToast, getImageUrl, getSuccessToast } from "@/utils/helpers";
 import {
   Dialog,
   DialogContent,
@@ -275,12 +275,12 @@ console.log({IMG_BASE_URL})
                   >
                     {isImage ? (
                       <a
-                        href={IMG_BASE_URL + att.url}
+                        href={getImageUrl(att.url)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <img
-                          src={IMG_BASE_URL + att.url}
+                          src={getImageUrl(att.url)}
                           alt={att.fileName || "Attachment"}
                           className=" max-h-48 max-w-48 mx-auto w-full h-full object-contain rounded hover:scale-105 transition-transform"
                         />
@@ -318,9 +318,7 @@ console.log({IMG_BASE_URL})
               {geotaggedImages.map((img: any, idx: number) => {
                 const url =
                   typeof img === "string" ? img : img?.url || img?.path || "";
-                const displayUrl = url.startsWith("http")
-                  ? url
-                  : IMG_BASE_URL + url;
+                const displayUrl = getImageUrl(url);
                 const fileName =
                   typeof img === "object"
                     ? img?.fileName || img?.name || `Field Photo ${idx + 1}`
