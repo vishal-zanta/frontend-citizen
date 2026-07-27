@@ -201,7 +201,7 @@ export default function CitizenSettings() {
                   }}
                   className={`px-4 py-2 rounded-lg text-sm border transition-all cursor-pointer ${
                     lang === "en"
-                      ? "bg-primary text-primary-foreground border-primary font-medium"
+                      ? "bg-primary text-primary-foreground dark:text-white border-primary font-medium"
                       : "bg-card text-foreground border-border hover:bg-muted font-normal"
                   }`}
                 >
@@ -215,7 +215,7 @@ export default function CitizenSettings() {
                   }}
                   className={`px-4 py-2 rounded-lg text-sm border transition-all cursor-pointer ${
                     lang === "hi"
-                      ? "bg-primary text-primary-foreground border-primary font-medium"
+                      ? "bg-primary text-primary-foreground  dark:text-white border-primary font-medium"
                       : "bg-card text-foreground border-border hover:bg-muted font-normal"
                   }`}
                 >
