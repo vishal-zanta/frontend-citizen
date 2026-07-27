@@ -43,11 +43,11 @@ const LangSelector = () => {
         disabled={isPending}
         className={`px-2 py-1 rounded transition-all cursor-pointer border ${
           lang === "en"
-            ? "bg-primary text-primary-foreground border-primary font-bold"
+            ? "bg-primary text-primary-foreground dark:text-white border-primary font-bold"
             : "text-foreground/80 hover:text-foreground hover:bg-muted border-transparent font-medium"
         }`}
       >
-        English
+        English 
       </button>
       <span className="text-muted-foreground/35 select-none font-normal">|</span>
       <button
@@ -56,7 +56,7 @@ const LangSelector = () => {
         disabled={isPending}
         className={`px-2 py-1 rounded transition-all cursor-pointer border ${
           lang === "hi"
-            ? "bg-primary text-primary-foreground border-primary font-bold"
+            ? "bg-primary text-primary-foreground dark:text-white border-primary font-bold"
             : "text-foreground/80 hover:text-foreground hover:bg-muted border-transparent font-medium"
         }`}
       >
