@@ -148,7 +148,7 @@ console.log({IMG_BASE_URL})
               <span className="font-medium text-foreground">
                 {complaint.citizenInfo?.fullName ||
                   complaint.citizenName ||
-                  "—"}
+                  "N/A"}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -157,7 +157,7 @@ console.log({IMG_BASE_URL})
                 {t("Mobile", "मोबाइल")}:
               </span>
               <span className="font-medium text-foreground">
-                {complaint.citizenInfo?.mobile || complaint.mobile || "—"}
+                {complaint.citizenInfo?.mobile || complaint.mobile || "N/A"}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ console.log({IMG_BASE_URL})
                 {t("District", "ज़िला")}:
               </span>
               <span className="font-medium text-foreground">
-                {t(complaint.address?.district?.name ||  "—", complaint.address?.district?.nameHindi ||  "—")}
+                {t(complaint.address?.district?.name ||  "N/A", complaint.address?.district?.nameHindi ||  "N/A")}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -175,7 +175,7 @@ console.log({IMG_BASE_URL})
                 {t("Village / Ward", "गाँव / वार्ड")}:
               </span>
               <span className="font-medium text-foreground">
-                {complaint.address?.villageOrWard || "—"}
+                {complaint.address?.villageOrWard || "N/A"}
               </span>
             </div>
           </div>
@@ -196,7 +196,7 @@ console.log({IMG_BASE_URL})
                       hour: "2-digit",
                       minute: "2-digit",
                     })
-                  : "—"}
+                  : "N/A"}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -245,7 +245,7 @@ console.log({IMG_BASE_URL})
             {t("Description", "विवरण")}
           </div>
           <p className="text-sm text-foreground">
-            {complaint.evidence?.details || complaint.description || "—"}
+            {complaint.evidence?.details || complaint.description || "N/A"}
           </p>
         </div>
         <div className="mt-4 p-3 bg-muted/50 rounded-lg">
@@ -253,7 +253,7 @@ console.log({IMG_BASE_URL})
             {t("Subject", "विषय")}
           </div>
           <p className="text-sm text-foreground">
-            {complaint.classification?.subject || complaint?.subject || "—"}
+            {complaint.classification?.subject || complaint?.subject || "N/A"}
           </p>
         </div>
 

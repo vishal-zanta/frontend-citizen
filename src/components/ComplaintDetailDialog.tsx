@@ -264,14 +264,14 @@ export function ComplaintDetailDialog({
                   <span className="font-medium text-foreground truncate">
                     {complaint.citizenInfo?.fullName ||
                       complaint.citizenName ||
-                      "—"}
+                      "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">{t("Mobile:", "मोबाइल:")}</span>
                   <span className="font-medium text-foreground">
-                    {complaint.citizenInfo?.mobile || complaint.mobile || "—"}
+                    {complaint.citizenInfo?.mobile || complaint.mobile || "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -280,7 +280,7 @@ export function ComplaintDetailDialog({
                   <span className="font-medium text-foreground">
                     {complaint.address?.district?.name || complaint?.address?.district ||
                       complaint.districtName ||
-                      "—"}
+                      "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -289,14 +289,14 @@ export function ComplaintDetailDialog({
                   <span className="font-medium text-foreground">
                     {complaint.address?.villageOrWard ||
                       complaint.ulbName ||
-                      "—"}
+                      "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Tag className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-muted-foreground">{t("Subdivision:", "अनुमंडल:")}</span>
                   <span className="font-medium text-foreground">
-                    {complaint.address?.subdivision || complaint.ward || "—"}
+                    {complaint.address?.subdivision || complaint.ward || "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -311,7 +311,7 @@ export function ComplaintDetailDialog({
                           month: "short",
                           year: "numeric",
                         })
-                      : "—"}
+                      : "N/A"}
                   </span>
                 </div>
               </div>
@@ -322,7 +322,7 @@ export function ComplaintDetailDialog({
                 <div className="font-medium text-xs sm:text-sm text-foreground">
                   {complaint.classification?.subService?.title ||
                     complaint.serviceName ||
-                    "—"}
+                    "N/A"}
                 </div>
               </div>
               <div>
@@ -330,7 +330,7 @@ export function ComplaintDetailDialog({
                   {t("Description", "विवरण")}
                 </div>
                 <p className="text-xs sm:text-sm whitespace-pre-wrap text-foreground">
-                  {complaint.evidence?.details || complaint.description || "—"}
+                  {complaint.evidence?.details || complaint.description || "N/A"}
                 </p>
               </div>
               <div>
@@ -338,7 +338,7 @@ export function ComplaintDetailDialog({
                   {t("Subject", "विषय")}
                 </div>
                 <p className="text-xs sm:text-sm whitespace-pre-wrap text-foreground">
-                  {complaint.classification?.subject || "—"}
+                  {complaint.classification?.subject || "N/A"}
                 </p>
               </div>
               <div className="flex gap-3">
