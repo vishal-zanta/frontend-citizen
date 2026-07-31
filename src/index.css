@@ -244,3 +244,7 @@ th {
     @apply font-sans;
   }
 }
+
+input[type="date"]{
+  display: block !important;
+}

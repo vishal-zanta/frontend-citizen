@@ -53,7 +53,7 @@ export default function RhfInput({
             <Label
               htmlFor={name}
               className={cn(
-                "font-normal text-sm text-foreground mb-0.5",
+                "font-normal text-sm text-foreground mb-0.5 w-fit",
                 labelClassName,
               )}
             >
@@ -65,6 +65,11 @@ export default function RhfInput({
             <Input
               id={name}
               type={inputType}
+              onFocus={(e)=> {
+                if(inputType == "date"){
+                  e.target.showPicker();
+                }
+              }}
               placeholder={placeholder}
               disabled={disabled}
               className={cn(
