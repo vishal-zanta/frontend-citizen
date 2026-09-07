@@ -7,7 +7,9 @@ export const getSuccessToast = (description: string) => {
 
 export const getErrorToast = (err: any) => {
   const message =
-    err?.response?.data?.message || err?.message || (typeof err === "string" ? err :  "Something went wrong!");
+    err?.response?.data?.message ||
+    err?.message ||
+    (typeof err === "string" ? err : "Something went wrong!");
   toast.error(message);
 };
 
@@ -53,8 +55,7 @@ export const isAlpha = (value: any) => {
   return true;
 };
 
-
-export const getFirstErrorEl = (errors :any, prefix : any = "") => {
+export const getFirstErrorEl = (errors: any, prefix: any = "") => {
   if (!errors || typeof errors !== "object") return { el: null, path: null };
 
   for (const key of Object.keys(errors)) {
@@ -75,7 +76,7 @@ export const getFirstErrorEl = (errors :any, prefix : any = "") => {
       return { el, path };
     }
 
-    // Nested error group — recurse.
+    // Nested error group - recurse.
     const result = getFirstErrorEl(node, path);
     if (result.path !== null) return result;
   }
@@ -83,22 +84,22 @@ export const getFirstErrorEl = (errors :any, prefix : any = "") => {
   return { el: null, path: null };
 };
 
+export const focusErrorElement = (methods: any, err: any = null) => {
+  let errors = err ? err : methods.formState.errors;
+  if (!Object.keys(errors).length) return;
 
-export const focusErrorElement = (methods :any, err :any=null)=> {
-  let errors = err? err : methods.formState.errors;
-      if (!Object.keys(errors).length) return;
-    
- const { el, path } = getFirstErrorEl(errors);
-    // console.log({el, path, errors});
-    if (el ) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-     
-    }
-    if (path) {
-      // setFocus expects the registered field name (dot-path for nested fields)
-      try { methods.setFocus(path); } catch (_) {}
-    }
-}
+  const { el, path } = getFirstErrorEl(errors);
+  // console.log({el, path, errors});
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  if (path) {
+    // setFocus expects the registered field name (dot-path for nested fields)
+    try {
+      methods.setFocus(path);
+    } catch (_) {}
+  }
+};
 
 export const getImageUrl = (url: string) => {
   if (!url) return "";

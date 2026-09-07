@@ -39,7 +39,9 @@ interface RaiseComplaintProps {
   role?: string;
 }
 
-export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps) {
+export default function RaiseComplaint({
+  role = "citizen",
+}: RaiseComplaintProps) {
   const { t, lang, setLang } = useLanguage();
   const qc = useQueryClient();
   const { profile } = useProfile();
@@ -49,10 +51,9 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
   const mbFile = configData?.data?.data?.grievanceMaxUploadSizeMB || 1;
   const MAX_FILE_LIMIT = mbFile * 1024 * 1024;
 
-
   const computedDefaultValues = useMemo(() => {
     let mobileVal = profile?.mobile || "";
-   
+
     return {
       ...defaultValues,
       citizenInfo: {
@@ -60,7 +61,7 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
         fullName: profile?.fullName || "",
         email: profile?.email || "",
         mobile: mobileVal,
-        preferredLanguage :profile?.preferredLanguage || "",
+        preferredLanguage: profile?.preferredLanguage || "",
       },
     };
   }, [profile]);
@@ -76,7 +77,6 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
     demographyLoading,
   } = useRaiseComplaintData(lang);
 
-
   // ── File attachments ──────────────────────────────────────────────────────
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [attachments, setAttachments] = useState<File[]>([]);
@@ -86,12 +86,18 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
     setFileError("");
     const files = Array.from(e.target.files ?? []);
 
-    const whitelist = ["image/jpeg", "image/png", "image/webp", "video/mp4", "audio/mpeg"];
+    const whitelist = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "video/mp4",
+      "audio/mpeg",
+    ];
     const invalidFile = files.find((f) => !whitelist.includes(f.type));
     if (invalidFile) {
       const msg = t(
         "Invalid file type. Only JPEG, PNG, WEBP, MP4, and MP3 are allowed.",
-        "अमान्य फ़ाइल प्रकार। केवल JPEG, PNG, WEBP, MP4, और MP3 की अनुमति है।"
+        "अमान्य फ़ाइल प्रकार। केवल JPEG, PNG, WEBP, MP4, और MP3 की अनुमति है।",
       );
       setFileError(msg);
       getErrorToast(msg);
@@ -100,7 +106,10 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
 
     const oversized = files.find((f) => f.size > MAX_FILE_LIMIT);
     if (oversized) {
-      const msg = t(`File too large. Max ${mbFile} MB.`, `फ़ाइल बहुत बड़ी है। अधिकतम ${mbFile} MB।`);
+      const msg = t(
+        `File too large. Max ${mbFile} MB.`,
+        `फ़ाइल बहुत बड़ी है। अधिकतम ${mbFile} MB।`,
+      );
       setFileError(msg);
       getErrorToast(msg);
       return;
@@ -114,54 +123,50 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
   };
 
   // ── Submit ────────────────────────────────────────────────────────────────
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState<any>([false, null]);
   // const [submitting, setSubmitting] = useState(false);
 
-
-
   const postComplaintsMutation = useMutation({
-    mutationFn : postComplaints,
-    onSuccess: (data)=> {
+    mutationFn: postComplaints,
+    onSuccess: (data) => {
       getSuccessToast("Complaint register successfully");
-      qc.invalidateQueries({queryKey: ["grievance"]});
+      qc.invalidateQueries({ queryKey: ["grievance"] });
       console.log(data);
-      setSubmitted(true);
+      setSubmitted([true, data]);
     },
-    onError : (err)=> {
+    onError: (err) => {
       getErrorToast(err);
-    }
-  })
+    },
+  });
 
   const handleSubmit = (data: GrievanceFormValues) => {
-   
-   const formData = getFormData(data , attachments)
+    const formData = getFormData(data, attachments);
     console.log("Final  FormData:", Object.fromEntries(formData as any));
     postComplaintsMutation.mutate(formData);
-
   };
 
   // ── Success screen ────────────────────────────────────────────────────────
-  if (submitted) {
+  if (submitted?.[0]) {
     return (
       <SuccessScreen
         role={role}
         t={t}
         onReset={() => {
-          setSubmitted(false);
+          setSubmitted([false, null]);
           setAttachments([]);
           setFileError("");
         }}
+        data={submitted?.[1]}
+        grievanceNatureOptions={grievanceNatureOptions}
       />
     );
   }
 
   // ── Form ──────────────────────────────────────────────────────────────────
   return (
-    <PortalLayout >
+    <PortalLayout>
       {/* <div className="p-6 max-w-6xl mx-auto"> */}
-        <CenterLayout className="p-4 sm:p-6">
-
-   
+      <CenterLayout className="p-4 sm:p-6">
         {/* Page header */}
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
@@ -177,43 +182,43 @@ export default function RaiseComplaint({ role = "citizen" }: RaiseComplaintProps
           </div>
         </div>
 
-      <RhfWrapper
-        initialValues={computedDefaultValues}
-        isValidation
-        validationSchema={grievanceSchema}
-        validationOn="onChange"
-        onSubmit={handleSubmit}
-        className="space-y-6"
-      >
-        <FormWizard
-          t={t}
-          lang={lang}
-          servicesOptions={servicesOptions}
-          grievanceNatureOptions={grievanceNatureOptions}
-          servicesLoading={servicesLoading}
-          naturesLoading={naturesLoading}
-          frequencyOptions={frequencyOptions}
-          affectedBeneficiaryOptions={affectedBeneficiaryOptions}
-          fileInputRef={fileInputRef}
-          attachments={attachments}
-          fileError={fileError}
-          handleFileChange={handleFileChange}
-          removeAttachment={removeAttachment}
-          postComplaintsMutation={postComplaintsMutation}
-          allDemography={allDemography}
-          demographyLoading={demographyLoading}
-          mbFile={mbFile}
-        />
-      </RhfWrapper>
-           </CenterLayout>
-    {/* </div> */}
-  </PortalLayout>
-);
+        <RhfWrapper
+          initialValues={computedDefaultValues}
+          isValidation
+          validationSchema={grievanceSchema}
+          validationOn="onChange"
+          onSubmit={handleSubmit}
+          className="space-y-6"
+        >
+          <FormWizard
+            t={t}
+            lang={lang}
+            servicesOptions={servicesOptions}
+            grievanceNatureOptions={grievanceNatureOptions}
+            servicesLoading={servicesLoading}
+            naturesLoading={naturesLoading}
+            frequencyOptions={frequencyOptions}
+            affectedBeneficiaryOptions={affectedBeneficiaryOptions}
+            fileInputRef={fileInputRef}
+            attachments={attachments}
+            fileError={fileError}
+            handleFileChange={handleFileChange}
+            removeAttachment={removeAttachment}
+            postComplaintsMutation={postComplaintsMutation}
+            allDemography={allDemography}
+            demographyLoading={demographyLoading}
+            mbFile={mbFile}
+          />
+        </RhfWrapper>
+      </CenterLayout>
+      {/* </div> */}
+    </PortalLayout>
+  );
 }
 
 interface FormWizardProps {
   t: (en: string, hi: string) => string;
-  lang : any
+  lang: any;
   servicesOptions: any;
   grievanceNatureOptions: any;
   servicesLoading: boolean;
@@ -378,7 +383,11 @@ function FormWizard({
 
         {step === 2 && (
           <div className="space-y-6">
-            <AddressSection t={t} allDemography={allDemography} demographyLoading={demographyLoading} />
+            <AddressSection
+              t={t}
+              allDemography={allDemography}
+              demographyLoading={demographyLoading}
+            />
           </div>
         )}
 
@@ -391,7 +400,6 @@ function FormWizard({
               naturesLoading={naturesLoading}
               t={t}
               lang={lang}
-             
             />
             <EvidenceSection frequencyOptions={frequencyOptions} t={t} />
             <ImpactSection

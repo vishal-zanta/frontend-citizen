@@ -234,15 +234,19 @@ export function ComplaintDetailDialog({
     open,
   );
   const complaint = data?.data?.data;
-  console.log({complaint})
+  console.log({ complaint });
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="w-[92vw] max-w-2xl max-h-[85vh] overflow-y-auto p-4 sm:p-6 rounded-xl">
         <DialogHeader>
           <DialogTitle className="flex flex-wrap items-center gap-2 text-base sm:text-lg">
-            <span className="text-foreground ">{t("Complaint Details", "शिकायत का विवरण")}</span>
-            <span className="font-mono text-primary text-sm sm:text-base break-all">{complaint?.grievanceId}</span>
+            <span className="text-foreground ">
+              {t("Complaint Details", "शिकायत का विवरण")}
+            </span>
+            <span className="font-mono text-primary text-sm sm:text-base break-all">
+              {complaint?.grievanceId}
+            </span>
           </DialogTitle>
         </DialogHeader>
         <LoaderErrWrapper isLoading={isLoading} error={error}>
@@ -260,7 +264,9 @@ export function ComplaintDetailDialog({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span className="text-muted-foreground">{t("Citizen:", "नागरिक:")}</span>
+                  <span className="text-muted-foreground">
+                    {t("Citizen:", "नागरिक:")}
+                  </span>
                   <span className="font-medium text-foreground truncate">
                     {complaint.citizenInfo?.fullName ||
                       complaint.citizenName ||
@@ -269,23 +275,30 @@ export function ComplaintDetailDialog({
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span className="text-muted-foreground">{t("Mobile:", "मोबाइल:")}</span>
+                  <span className="text-muted-foreground">
+                    {t("Mobile:", "मोबाइल:")}
+                  </span>
                   <span className="font-medium text-foreground">
                     {complaint.citizenInfo?.mobile || complaint.mobile || "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span className="text-muted-foreground">{t("District:", "जिला:")}</span>
+                  <span className="text-muted-foreground">
+                    {t("District:", "जिला:")}
+                  </span>
                   <span className="font-medium text-foreground">
-                    {complaint.address?.district?.name || complaint?.address?.district ||
+                    {complaint.address?.district?.name ||
+                      complaint?.address?.district ||
                       complaint.districtName ||
                       "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span className="text-muted-foreground">{t("Village / Ward:", "ग्राम / वार्ड:")}</span>
+                  <span className="text-muted-foreground">
+                    {t("Village / Ward:", "ग्राम / वार्ड:")}
+                  </span>
                   <span className="font-medium text-foreground">
                     {complaint.address?.villageOrWard ||
                       complaint.ulbName ||
@@ -294,14 +307,18 @@ export function ComplaintDetailDialog({
                 </div>
                 <div className="flex items-center gap-2">
                   <Tag className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span className="text-muted-foreground">{t("Subdivision:", "अनुमंडल:")}</span>
+                  <span className="text-muted-foreground">
+                    {t("Subdivision:", "अनुमंडल:")}
+                  </span>
                   <span className="font-medium text-foreground">
                     {complaint.address?.subdivision || complaint.ward || "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span className="text-muted-foreground">{t("Filed:", "दर्ज:")}</span>
+                  <span className="text-muted-foreground">
+                    {t("Filed:", "दर्ज:")}
+                  </span>
                   <span className="font-medium text-foreground">
                     {complaint.createdAt || complaint.createdDate
                       ? new Date(
@@ -330,7 +347,9 @@ export function ComplaintDetailDialog({
                   {t("Description", "विवरण")}
                 </div>
                 <p className="text-xs sm:text-sm whitespace-pre-wrap text-foreground">
-                  {complaint.evidence?.details || complaint.description || "N/A"}
+                  {complaint.evidence?.details ||
+                    complaint.description ||
+                    "N/A"}
                 </p>
               </div>
               <div>
@@ -371,7 +390,8 @@ export function ComplaintDetailDialog({
                 to={`/citizen/track?complaint=${complaint._id || complaint.id}`}
                 className="flex items-center gap-1 text-xs sm:text-sm text-primary hover:underline"
               >
-                {t("View Full Timeline", "पूरी समयरेखा देखें")} <ExternalLink className="w-3 h-3" />
+                {t("View Full Timeline", "पूरी समयरेखा देखें")}{" "}
+                <ExternalLink className="w-3 h-3" />
               </Link>
             </div>
           ) : (
@@ -613,7 +633,8 @@ export function FieldVisitDetailDialog({
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Navigation className="w-5 h-5 text-primary" /> {t("Field Visit Details", "फील्ड विजिट विवरण")}
+            <Navigation className="w-5 h-5 text-primary" />{" "}
+            {t("Field Visit Details", "फील्ड विजिट विवरण")}
             <span className="font-mono text-primary text-sm">{visitId}</span>
           </DialogTitle>
         </DialogHeader>
@@ -631,43 +652,59 @@ export function FieldVisitDetailDialog({
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">{t("Officer:", "अधिकारी:")}</span>
+                <span className="text-muted-foreground">
+                  {t("Officer:", "अधिकारी:")}
+                </span>
                 <span className="font-medium">{visit.officer}</span>
               </div>
               <div className="flex items-center gap-2">
                 <HardHat className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">{t("Officer ID:", "अधिकारी आईडी:")}</span>
+                <span className="text-muted-foreground">
+                  {t("Officer ID:", "अधिकारी आईडी:")}
+                </span>
                 <OfficerId id={visit.officerId} />
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">{t("Ward:", "वार्ड:")}</span>
+                <span className="text-muted-foreground">
+                  {t("Ward:", "वार्ड:")}
+                </span>
                 <span className="font-medium">{visit.ward}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Building2 className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">{t("District:", "जिला:")}</span>
+                <span className="text-muted-foreground">
+                  {t("District:", "जिला:")}
+                </span>
                 <span className="font-medium">{visit.district}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">{t("Scheduled:", "निर्धारित:")}</span>
+                <span className="text-muted-foreground">
+                  {t("Scheduled:", "निर्धारित:")}
+                </span>
                 <span className="font-medium">{visit.scheduledDate}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Camera className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">{t("Photo:", "फोटो:")}</span>
+                <span className="text-muted-foreground">
+                  {t("Photo:", "फोटो:")}
+                </span>
                 {visit.photoUploaded ? (
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                 ) : (
-                  <span className="text-xs text-amber-600">{t("Pending", "लंबित")}</span>
+                  <span className="text-xs text-amber-600">
+                    {t("Pending", "लंबित")}
+                  </span>
                 )}
               </div>
             </div>
             <div className="bg-muted/50 rounded-lg p-3">
-              <div className="text-xs text-muted-foreground mb-1">{t("Service", "सेवा")}</div>
+              <div className="text-xs text-muted-foreground mb-1">
+                {t("Service", "सेवा")}
+              </div>
               <div className="font-medium">
-                {visit.service} — {visit.subservice}
+                {visit.service} - {visit.subservice}
               </div>
             </div>
             <div className="bg-muted/50 rounded-lg p-3">
@@ -677,7 +714,9 @@ export function FieldVisitDetailDialog({
               <ComplaintId id={visit.complaintId} />
             </div>
             <div className="bg-muted/50 rounded-lg p-3">
-              <div className="text-xs text-muted-foreground mb-1">{t("Geo-Tag", "जियो-टैग")}</div>
+              <div className="text-xs text-muted-foreground mb-1">
+                {t("Geo-Tag", "जियो-टैग")}
+              </div>
               <div className="font-mono text-sm">{visit.geoTag}</div>
             </div>
             <div>

@@ -1,13 +1,20 @@
+import {
+  useGetGrievenceNatures,
+  useGetServices,
+  useGetDemographics,
+} from "@/hooks/useGetQuery";
 
-import { useGetGrievenceNatures, useGetServices, useGetDemographics } from "@/hooks/useGetQuery";
+export const useRaiseComplaintData = (lang: any) => {
+  const API_PARAMS = {
+    page: 1,
+    limit: 500,
+    select: "title,titleHindi,name,nameHindi",
+  };
 
-
-export const useRaiseComplaintData = (lang :any) => {
-
-  const API_PARAMS = { page: 1, limit: 500, select: "title,titleHindi,name,nameHindi" };
-
-  const { data: servicesData, isLoading: servicesLoading } =
-    useGetServices([], API_PARAMS);
+  const { data: servicesData, isLoading: servicesLoading } = useGetServices(
+    [],
+    API_PARAMS,
+  );
 
   const { data: naturesData, isLoading: naturesLoading } =
     useGetGrievenceNatures([], API_PARAMS);
@@ -23,12 +30,16 @@ export const useRaiseComplaintData = (lang :any) => {
     .map((n) => ({
       label: lang === "hi" && n.titleHindi ? n.titleHindi : n.title,
       value: n._id,
+      title: n.title,
+      titleHindi: n.titleHindi,
     }));
 
-  const servicesOptions = (servicesData?.data?.data?.docs ?? []).map((s: any) => ({
-    label: lang === "hi" && s.titleHindi ? s.titleHindi : s.title,
-    value: s._id,
-  }));
+  const servicesOptions = (servicesData?.data?.data?.docs ?? []).map(
+    (s: any) => ({
+      label: lang === "hi" && s.titleHindi ? s.titleHindi : s.title,
+      value: s._id,
+    }),
+  );
 
   const frequencyOptions = allNatures
     .filter((n) => n.type === "Evidence Frequency")
@@ -44,11 +55,13 @@ export const useRaiseComplaintData = (lang :any) => {
       value: n._id,
     }));
 
-  const allDemography = (demographyData?.data?.data?.docs ?? []).map((d: any) => ({
-    label: lang === "hi" && d.nameHindi ? d.nameHindi : d.name ,
-    value:  d._id,
-    name: d.name,
-  }));
+  const allDemography = (demographyData?.data?.data?.docs ?? []).map(
+    (d: any) => ({
+      label: lang === "hi" && d.nameHindi ? d.nameHindi : d.name,
+      value: d._id,
+      name: d.name,
+    }),
+  );
 
   return {
     servicesLoading,
@@ -63,6 +76,3 @@ export const useRaiseComplaintData = (lang :any) => {
     affectedBeneficiaryOptions,
   };
 };
-
-
-

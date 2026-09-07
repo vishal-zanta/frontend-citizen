@@ -20,7 +20,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
           {t("Raise a Complaint", "शिकायत दर्ज करें")}
         </h3>
         <p className="text-sm text-muted-foreground mt-1">
-          {t("3-step form — quick & easy", "3-चरण फॉर्म — त्वरित और आसान")}
+          {t("3-step form - quick & easy", "3-चरण फॉर्म - त्वरित और आसान")}
         </p>
       </Link>
 
@@ -42,9 +42,11 @@ export default function QuickActions({ t }: QuickActionsProps) {
       <div
         className="group bg-card rounded-xl border-2 border-purple-100 dark:border-slate-800 hover:border-purple-400 p-4 sm:p-6 transition-all hover:shadow-lg cursor-pointer"
         onClick={() =>
-          (document.querySelector(
-            "[class*='fixed bottom-6 right-6']"
-          ) as HTMLElement)?.click()
+          (
+            document.querySelector(
+              "[class*='fixed bottom-6 right-6']",
+            ) as HTMLElement
+          )?.click()
         }
       >
         <div className="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
@@ -56,7 +58,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
         <p className="text-sm text-muted-foreground mt-1">
           {t(
             "Chat & file complaints via chat",
-            "चैट के माध्यम से शिकायत दर्ज करें"
+            "चैट के माध्यम से शिकायत दर्ज करें",
           )}
         </p>
       </div>

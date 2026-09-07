@@ -29,9 +29,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
-
-
-
 interface ComplaintDetailsViewProps {
   complaint: any;
   t: any;
@@ -56,7 +53,8 @@ export default function ComplaintDetailsView({
     return diffTime >= 0 && diffTime <= 7 * 24 * 60 * 60 * 1000;
   }, [filedDateVal]);
 
-  const canReopen = ["RESOLVED", "CLOSED"].includes(complaint?.status) && isWithin7Days;
+  const canReopen =
+    ["RESOLVED", "CLOSED"].includes(complaint?.status) && isWithin7Days;
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -66,7 +64,10 @@ export default function ComplaintDetailsView({
       }),
     onSuccess: () => {
       getSuccessToast(
-        t("Complaint reopened successfully", "शिकायत सफलतापूर्वक पुनः खोल दी गई")
+        t(
+          "Complaint reopened successfully",
+          "शिकायत सफलतापूर्वक पुनः खोल दी गई",
+        ),
       );
       queryClient.invalidateQueries({ queryKey: ["grievance"] });
       setIsDialogOpen(false);
@@ -83,8 +84,8 @@ export default function ComplaintDetailsView({
       getErrorToast(
         t(
           "Please enter a reason for reopening",
-          "कृपया पुनः खोलने का कारण दर्ज करें"
-        )
+          "कृपया पुनः खोलने का कारण दर्ज करें",
+        ),
       );
       return;
     }
@@ -95,10 +96,10 @@ export default function ComplaintDetailsView({
 
   const c = complaint;
   const attachments = c?.evidence?.attachments || [];
-  const geotaggedImages = c?.geotaggedImages || c?.evidence?.geotaggedImages || [];
+  const geotaggedImages =
+    c?.geotaggedImages || c?.evidence?.geotaggedImages || [];
 
-console.log({IMG_BASE_URL})
-
+  console.log({ IMG_BASE_URL });
 
   return (
     <div className="print-area space-y-6">
@@ -115,7 +116,10 @@ console.log({IMG_BASE_URL})
               <StatusBadge status={complaint.status} />
             </div>
             <p className="text-sm text-foreground font-medium">
-              {t(complaint.classification?.subService?.title , complaint.classification?.subService?.titleHindi)}
+              {t(
+                complaint.classification?.subService?.title,
+                complaint.classification?.subService?.titleHindi,
+              )}
             </p>
           </div>
           <div className="flex items-center gap-2 no-print self-start sm:self-auto">
@@ -133,7 +137,8 @@ console.log({IMG_BASE_URL})
               variant="outline"
               className="shrink-0 text-xs sm:text-sm h-9 sm:h-10 cursor-pointer"
             >
-              <Printer className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" /> {t("Print", "प्रिंट")}
+              <Printer className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" />{" "}
+              {t("Print", "प्रिंट")}
             </Button>
           </div>
         </div>
@@ -166,7 +171,10 @@ console.log({IMG_BASE_URL})
                 {t("District", "ज़िला")}:
               </span>
               <span className="font-medium text-foreground">
-                {t(complaint.address?.district?.name ||  "N/A", complaint.address?.district?.nameHindi ||  "N/A")}
+                {t(
+                  complaint.address?.district?.name || "N/A",
+                  complaint.address?.district?.nameHindi || "N/A",
+                )}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -217,7 +225,7 @@ console.log({IMG_BASE_URL})
                 {complaint.assignedOfficer?.fullName ||
                   complaint.assignedOfficer?.name ||
                   complaint.l1OfficerName ||
-                  t("Not yet assigned", "अभी तक नियुक्त नहीं")}
+                  t("Unassigned", "अभी तक नियुक्त नहीं")}
               </span>
             </div>
             {complaint.resolvedDate && (
@@ -261,7 +269,8 @@ console.log({IMG_BASE_URL})
         {attachments.length > 0 && (
           <div className="mt-4">
             <div className="text-[10px] lg:text-xs text-muted-foreground mb-2 font-semibold uppercase tracking-wide">
-              {t("Evidence Attachments", "साक्ष्य संलग्नक")} ({attachments.length})
+              {t("Evidence Attachments", "साक्ष्य संलग्नक")} (
+              {attachments.length})
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {attachments.map((att: any, idx: number) => {
@@ -381,7 +390,7 @@ console.log({IMG_BASE_URL})
               "This complaint involves multiple departments",
               "यह शिकायत कई विभागों की है",
             )}{" "}
-            — {complaint.deptTransfer.join(" + ")}
+            - {complaint.deptTransfer.join(" + ")}
           </div>
         )}
       </div>
@@ -389,7 +398,7 @@ console.log({IMG_BASE_URL})
       {complaint.timeline && complaint.timeline.length > 0 && (
         <div className="bg-card rounded-xl border border-border p-4 sm:p-6">
           <h3 className="font-bold text-foreground mb-4">
-            {t("Complaint Timeline", "शिकायत समयरेखा")} —{" "}
+            {t("Complaint Timeline", "शिकायत समयरेखा")} -{" "}
             {t("End-to-End Lifecycle", "संपूर्ण जीवनचक्र")}
           </h3>
           <ComplaintTimeline events={complaint.timeline} t={t} />
@@ -399,25 +408,29 @@ console.log({IMG_BASE_URL})
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t("Reopen Complaint", "शिकायत पुनः खोलें")}</DialogTitle>
+            <DialogTitle>
+              {t("Reopen Complaint", "शिकायत पुनः खोलें")}
+            </DialogTitle>
             <DialogDescription>
               {t(
                 "Please state the reason for reopening this complaint. It will be reassigned for investigation.",
-                "कृपया इस शिकायत को पुनः खोलने का कारण बताएं। इसे जांच के लिए फिर से सौंपा जाएगा।"
+                "कृपया इस शिकायत को पुनः खोलने का कारण बताएं। इसे जांच के लिए फिर से सौंपा जाएगा।",
               )}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleReopenSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label  htmlFor="reopen-reason" className="text-sm font-medium mb-4">
+              <Label
+                htmlFor="reopen-reason"
+                className="text-sm font-medium mb-4"
+              >
                 {t("Reason ", "पुनः खोलने का कारण")}
               </Label>
               <Textarea
-              
                 id="reopen-reason"
                 placeholder={t(
                   "e.g. Work is incomplete / not resolved correctly",
-                  "उदा. कार्य अपूर्ण है / सही ढंग से हल नहीं हुआ"
+                  "उदा. कार्य अपूर्ण है / सही ढंग से हल नहीं हुआ",
                 )}
                 value={reOpenReason}
                 onChange={(e) => setReOpenReason(e.target.value)}

@@ -8,7 +8,10 @@ import LoaderErrWrapper from "@/components/LoaderErrWrapper";
 import WelcomeBanner from "./components/WelcomeBanner";
 import QuickActions from "./components/QuickActions";
 import StatsGrid from "./components/StatsGrid";
-import TrackShortcut from "./components/TrackShortcut";
+import PreviousComplaintsTable from "../track-complaint/components/PreviousComplaintsTable";
+import { useGetComplaints } from "@/hooks/useGetQuery";
+import Pagination from "@/components/Pagination";
+import usePagination from "@/hooks/usePagination";
 
 export default function CitizenDashboard() {
   const { t, lang, toggle } = useLanguage();
@@ -18,14 +21,21 @@ export default function CitizenDashboard() {
     queryFn: getDashboardAnalytics,
   });
 
+  const { page, limit, ...pageProps } = usePagination();
+  const {
+    data: listData,
+    isLoading: isComplaintsLoading,
+    error: complaintsError,
+  } = useGetComplaints([page, limit], { page, limit });
+
   const analytics = res?.data?.data;
+  const filteredComplaints = listData?.data?.data?.docs || [];
+  const totalPages = listData?.data?.data?.pagination?.totalPages || 1;
 
- 
-
-  const totalCount = analytics?.totalComplaints ?? 0 ; 
-  const inProgressCount = analytics?.inProgress ?? 0 ; 
-  const resolvedCount = analytics?.resolved ?? 0 ; 
-  const escalatedCount = analytics?.escalated ?? 0 ; 
+  const totalCount = analytics?.totalComplaints ?? 0;
+  const inProgressCount = analytics?.inProgress ?? 0;
+  const resolvedCount = analytics?.resolved ?? 0;
+  const escalatedCount = analytics?.escalated ?? 0;
 
   const stats = [
     {
@@ -72,8 +82,21 @@ export default function CitizenDashboard() {
           <StatsGrid stats={stats} />
         </LoaderErrWrapper>
 
-        {/* Quick track shortcut */}
-        <TrackShortcut t={t} />
+        {/* Previous Complaints */}
+        <PreviousComplaintsTable
+          filteredComplaints={filteredComplaints}
+          t={t}
+          isLoading={isComplaintsLoading}
+          error={complaintsError}
+          Pagination={
+            <Pagination
+              page={page}
+              limit={limit}
+              {...pageProps}
+              totalPage={totalPages}
+            />
+          }
+        />
       </div>
     </PortalLayout>
   );
