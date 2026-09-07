@@ -1,5 +1,5 @@
 import React from "react";
-import { Camera, FileText, X } from "lucide-react";
+import { Camera, Eye, FileText, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import FormSection from "./FormSection";
 
@@ -22,10 +22,13 @@ export default function AttachmentsSection({
   t,
   mbFile = 1,
 }: AttachmentsSectionProps) {
- 
+  const handlePreview = (file: File) => {
+    const url = URL.createObjectURL(file);
+    window.open(url, "_blank");
+  };
 
   return (
-    <FormSection title={t("Attachments", "संलग्नक")}>
+    <FormSection title={t("Upload Supporting Documents", "सहायक दस्तावेज़ अपलोड करें")}>
       <p className="text-xs text-muted-foreground mb-3">
         {t(
           `Allowed file types: Images, Videos, Audio. Max size: ${mbFile}MB per file.`,
@@ -66,14 +69,23 @@ export default function AttachmentsSection({
               className="flex items-center gap-3 border border-border rounded-lg p-3"
             >
               <FileText className="w-5 h-5 text-muted-foreground shrink-0" />
-              <span className="text-sm flex-1 truncate">{file.name}</span>
+              <span className="text-sm flex-1 truncate text-foreground">{file.name}</span>
               <span className="text-xs text-muted-foreground shrink-0">
                 {(file.size / 1024).toFixed(0)} KB
               </span>
               <button
                 type="button"
+                onClick={() => handlePreview(file)}
+                className="flex items-center gap-1.5 text-xs text-primary font-medium hover:underline px-2 py-1 rounded hover:bg-primary/10 transition-colors"
+              >
+                <Eye className="w-3.5 h-3.5" />
+                <span>{t("Preview", "पूर्वावलोकन")}</span>
+              </button>
+              <button
+                type="button"
                 onClick={() => removeAttachment(idx)}
-                className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-destructive"
+                title={t("Remove", "हटाएं")}
+                className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-destructive transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>

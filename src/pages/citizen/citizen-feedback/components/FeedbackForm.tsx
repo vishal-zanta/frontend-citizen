@@ -1,16 +1,5 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import {
-  ChevronDown,
-  Loader2,
-  Search,
-  X,
-  CheckCircle2,
-} from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ChevronDown, Loader2, Search, X, CheckCircle2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { getComplaints } from "@/api/complaints.api";
 import { useLanguage } from "@/context/LanguageContext";
@@ -128,7 +117,7 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
     }
   }, [loadingMore, page, totalPages, search]);
 
-  // Debounced search — 0ms delay on initial open, 350ms while typing
+  // Debounced search - 0ms delay on initial open, 350ms while typing
   useEffect(() => {
     if (!open) return;
     const delay = search ? 350 : 0;
@@ -179,12 +168,15 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
       >
         {value ? (
           <span className="flex-1 text-left truncate font-medium">
-            {value.grievanceId} —{" "}
+            {value.grievanceId} -{" "}
             {value.classification?.subService?.title ?? ""}
           </span>
         ) : (
           <span className="flex-1 text-left text-muted-foreground">
-            {t("Search or select a resolved complaint…", "हल की गई शिकायत खोजें…")}
+            {t(
+              "Search or select a resolved complaint…",
+              "हल की गई शिकायत खोजें…",
+            )}
           </span>
         )}
         <span className="flex items-center gap-1 text-muted-foreground shrink-0">
@@ -215,7 +207,10 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder={t("Search by ID or service…", "ID या सेवा से खोजें…")}
+              placeholder={t(
+                "Search by ID or service…",
+                "ID या सेवा से खोजें…",
+              )}
               className="flex-1 bg-transparent text-sm outline-none text-foreground placeholder:text-muted-foreground"
             />
             {search && (
@@ -244,14 +239,15 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
               <div className="py-8 text-center text-sm text-muted-foreground">
                 {t(
                   "No resolved complaints found.",
-                  "कोई हल की गई शिकायत नहीं मिली।"
+                  "कोई हल की गई शिकायत नहीं मिली।",
                 )}
               </div>
             ) : (
               <>
                 {items.map((c) => {
                   const active = value?._id === c._id;
-                  const alreadyRated = typeof c.rating === "number" && c.rating > 0;
+                  const alreadyRated =
+                    typeof c.rating === "number" && c.rating > 0;
                   return (
                     <button
                       key={c._id}
@@ -279,7 +275,9 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
                       </div>
                       <span className="text-xs text-muted-foreground truncate">
                         {c.classification?.subService?.title ?? ""}{" "}
-                        {c.address?.district?.name ? `· ${c.address.district?.name}` : ""}
+                        {c.address?.district?.name
+                          ? `· ${c.address.district?.name}`
+                          : ""}
                       </span>
                     </button>
                   );
@@ -294,7 +292,9 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
                         {t("Loading more…", "और लोड हो रहा है…")}
                       </>
                     ) : (
-                      <span>{t("Scroll to load more", "अधिक के लिए स्क्रॉल करें")}</span>
+                      <span>
+                        {t("Scroll to load more", "अधिक के लिए स्क्रॉल करें")}
+                      </span>
                     )}
                   </div>
                 )}
@@ -327,12 +327,15 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
           <CheckCircle2 className="w-9 h-9" />
         </div>
         <h2 className="text-xl font-bold text-foreground">
-          {t("Thank You for Your Feedback!", "आपकी प्रतिक्रिया के लिए धन्यवाद!")}
+          {t(
+            "Thank You for Your Feedback!",
+            "आपकी प्रतिक्रिया के लिए धन्यवाद!",
+          )}
         </h2>
         <p className="text-sm text-muted-foreground text-center max-w-sm">
           {t(
             "Your feedback has been recorded successfully.",
-            "आपकी प्रतिक्रिया सफलतापूर्वक दर्ज कर ली गई है।"
+            "आपकी प्रतिक्रिया सफलतापूर्वक दर्ज कर ली गई है।",
           )}
         </p>
         <Button
@@ -351,7 +354,6 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
   // ── Form ─────────────────────────────────────────────────────────────────
   return (
     <div className="space-y-4">
-
       {/* ── Complaint selector ─── */}
       <div className="space-y-1.5">
         <Label className="text-sm font-medium">
@@ -361,7 +363,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
         <p className="text-xs text-muted-foreground mt-1 mb-2">
           {t(
             "Only Resolved and Closed complaints are listed. Scroll inside the dropdown to load more.",
-            "केवल हल की गई और बंद शिकायतें सूची में हैं। अधिक के लिए ड्रॉपडाउन में स्क्रॉल करें।"
+            "केवल हल की गई और बंद शिकायतें सूची में हैं। अधिक के लिए ड्रॉपडाउन में स्क्रॉल करें।",
           )}
         </p>
         <ComplaintDropdown

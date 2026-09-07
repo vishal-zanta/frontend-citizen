@@ -19,6 +19,7 @@ export default function PreviousComplaintsTable({
   error,
 }: PreviousComplaintsTableProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  console.log({ filteredComplaints });
 
   return (
     <div className="bg-card rounded-xl border border-border overflow-hidden mb-6 no-print">
@@ -41,60 +42,108 @@ export default function PreviousComplaintsTable({
             </div>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-muted/50 text-left text-xs text-muted-foreground">
+              <thead className="bg-muted/50 text-left text-xs text-muted-foreground whitespace-nowrap">
                 <tr>
+                  <th className="px-4 py-3 font-medium">
+                    {t("S.No.", "क्र.सं.")}
+                  </th>
                   <th className="px-4 py-3 font-medium">
                     {t("Complaint ID", "शिकायत आईडी")}
                   </th>
-                  <th className="px-4 py-3 font-medium min-w-[180px]">
+                  <th className="px-4 py-3 font-medium">
+                    {t("Nature", "प्रकृति")}
+                  </th>
+                  <th className="px-4 py-3 font-medium">
+                    {t("District", "जिला")}
+                  </th>
+                  <th className="px-4 py-3 font-medium">
+                    {t("Department", "विभाग")}
+                  </th>
+                  <th className="px-4 py-3 font-medium min-w-[150px]">
                     {t("Service", "सेवा")}
+                  </th>
+                  <th className="px-4 py-3 font-medium min-w-[180px]">
+                    {t("Sub-Service", "उप-सेवा")}
                   </th>
                   <th className="px-4 py-3 font-medium">
                     {t("Status", "स्थिति")}
                   </th>
                   <th className="px-4 py-3 font-medium">
-                    {t("Filed On", "दाखिल")}
+                    {t("Raised On", "दर्ज तिथि")}
                   </th>
                   <th className="px-4 py-3 font-medium">
-                    {t("Officer", "अधिकारी")}
+                    {t("Officer Assigned", "नियुक्त अधिकारी")}
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
-                {filteredComplaints.map((c) => (
+              <tbody className="divide-y divide-border whitespace-nowrap">
+                {filteredComplaints.map((c, idx) => (
                   <tr
-                    key={c._id || c.id}
+                    key={c._id || c.id || idx}
                     onClick={() => setSelectedId(c._id || c.id)}
                     className="hover:bg-blue-50/50 dark:hover:bg-muted/50 cursor-pointer transition-colors"
                   >
+                    <td className="px-4 py-2.5 text-muted-foreground font-mono text-xs">
+                      {idx + 1}
+                    </td>
                     <td className="px-4 py-2.5 font-mono text-primary font-semibold hover:underline">
-                      {c.grievanceId || c.id || "—"}
+                      {c.grievanceId || "-"}
                     </td>
                     <td className="px-4 py-2.5 text-foreground">
-                      {t(c.classification?.subService?.title ||
-                        c.serviceName ||
-                        "—", c.classification?.subService?.titleHindi ||
-                        c.serviceName ||
-                        "—")}
+                      {typeof c.classification?.nature === "object"
+                        ? t(
+                            c.classification?.nature?.title,
+                            c.classification?.nature?.titleHindi,
+                          )
+                        : c.classification?.nature || "-"}
+                    </td>
+                    <td className="px-4 py-2.5 text-foreground">
+                      {t(
+                        c.address?.district?.name,
+                        c.address?.district?.nameHindi,
+                      ) || "-"}
+                    </td>
+                    <td className="px-4 py-2.5 text-foreground">
+                      {typeof c.classification?.subService?.service
+                        ?.department === "object"
+                        ? t(
+                            c.classification?.subService?.service?.department
+                              ?.title,
+                            c.classification?.subService?.service?.department
+                              ?.titleHindi ||
+                              c.classification?.subService?.service?.department
+                                ?.title,
+                          )
+                        : c.classification?.subService?.service?.department ||
+                          "-"}
+                    </td>
+                    <td className="px-4 py-2.5 text-foreground">
+                      {t(
+                        c.classification?.subService?.service?.title,
+                        c.classification?.subService?.service?.titleHindi,
+                      ) || "-"}
+                    </td>
+                    <td className="px-4 py-2.5 text-foreground">
+                      {t(
+                        c.classification?.subService?.title,
+                        c.classification?.subService?.titleHindi,
+                      ) || "-"}
                     </td>
                     <td className="px-4 py-2.5">
                       <StatusBadge status={c.status} />
                     </td>
                     <td className="px-4 py-2.5 text-muted-foreground">
-                      {c.createdAt || c.createdDate
-                        ? new Date(
-                            c.createdAt || c.createdDate,
-                          ).toLocaleDateString("en-IN", {
+                      {c.createdAt
+                        ? new Date(c.createdAt).toLocaleDateString("en-IN", {
                             day: "2-digit",
                             month: "short",
                             year: "numeric",
                           })
-                        : "—"}
+                        : "-"}
                     </td>
                     <td className="px-4 py-2.5 text-muted-foreground">
                       {c.assignedOfficer?.fullName ||
                         c.assignedOfficer?.name ||
-                        c.l1OfficerName ||
                         t("Not assigned", "नियुक्त नहीं")}
                     </td>
                   </tr>

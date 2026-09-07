@@ -90,7 +90,7 @@ const KB = [
   {
     keywords: ["ward", "area", "district"],
     response:
-      "I can help identify your ward! Please share your district or area name, and I'll look up ward details. You can also select your district when filing a complaint — the ward auto-fills from master data.",
+      "I can help identify your ward! Please share your district or area name, and I'll look up ward details. You can also select your district when filing a complaint - the ward auto-fills from master data.",
   },
   {
     keywords: ["document", "upload", "photo"],
@@ -273,7 +273,7 @@ export default function Chatbot({ role = "citizen" }: { role?: string }) {
     setStep(3);
     if (draft.template) {
       addBot(
-        `Great! You selected: ${dist?.name}\n\nPlease describe your issue in detail. (A template description is pre-filled — you can edit it.)`,
+        `Great! You selected: ${dist?.name}\n\nPlease describe your issue in detail. (A template description is pre-filled - you can edit it.)`,
       );
       setInput(draft.description || "");
     } else {

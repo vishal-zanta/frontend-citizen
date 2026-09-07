@@ -9,6 +9,8 @@ import {
   Phone,
   KeyRound,
   RotateCw,
+  MessageCircle,
+  MessageSquare,
 } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
 import { PhoneInput } from "@/components/ui/phone-input";
@@ -258,7 +260,7 @@ export default function Login() {
               </>
             ) : (
               <>
-                <Phone className="w-4 h-4 mr-2" />
+                <MessageSquare className="w-4 h-4 mr-2" />
                 Send OTP
               </>
             )}
