@@ -13,7 +13,7 @@ export default function CitizenInfoSection({ t }: CitizenInfoSectionProps) {
 
 
   return (
-    <FormSection title={t("Complainant Details", "शिकायतकर्ता का विवरण")}>
+    <FormSection title={t("Applicant Information", "शिकायतकर्ता का विवरण")}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <RhfInput
           name="citizenInfo.fullName"

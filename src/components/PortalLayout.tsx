@@ -65,7 +65,7 @@ export default function PortalLayout({
           showCloseButton={false}
           onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}
-          className="sm:max-w-[425px]"
+          className="sm:max-w-xl max-h-[90vh] overflow-y-auto"
         >
           <DialogHeader>
             <DialogTitle>

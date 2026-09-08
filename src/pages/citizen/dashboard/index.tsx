@@ -39,7 +39,7 @@ export default function CitizenDashboard() {
 
   const stats = [
     {
-      label: t("Total Filed", "कुल दर्ज"),
+      label: t("Total Raised", "कुल दर्ज"),
       value: totalCount,
       color: "text-primary",
       bg: "bg-blue-50",

@@ -6,10 +6,8 @@ import {
   LogIn,
   Loader2,
   ArrowLeft,
-  Phone,
   KeyRound,
   RotateCw,
-  MessageCircle,
   MessageSquare,
 } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
@@ -24,10 +22,12 @@ import { getCaptcha, sendOtp, postLogin } from "@/api/auth.api";
 import { Input } from "@/components/ui/input";
 import LoaderErrWrapper from "@/components/LoaderErrWrapper";
 import { getErrorToast, getSuccessToast } from "@/utils/helpers";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Login() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { t } = useLanguage();
   const [phone, setPhone] = useState<any>("");
   const [otp, setOtp] = useState("");
   const [captcha, setCaptcha] = useState("");
@@ -69,8 +69,8 @@ export default function Login() {
 
   const sendOtpMutation = useMutation({
     mutationFn: sendOtp,
-    onSuccess: (data) => {
-      getSuccessToast("OTP send successfully");
+    onSuccess: () => {
+      getSuccessToast(t("OTP sent successfully", "ओटीपी सफलतापूर्वक भेजा गया"));
       setStep("otp");
       setResendTimer(30);
       setShowResendCaptcha(false);
@@ -86,7 +86,7 @@ export default function Login() {
 
   const handleConfirmResend = () => {
     if (!resendCaptcha) {
-      setError("Please enter security code");
+      setError(t("Please enter security code", "कृपया सुरक्षा कोड दर्ज करें"));
       return;
     }
     setError("");
@@ -100,14 +100,14 @@ export default function Login() {
   const verifyOtpMutation = useMutation({
     mutationFn: postLogin,
     onSuccess: (res: any) => {
-      getSuccessToast("Logged in successfully");
+      getSuccessToast(t("Logged in successfully", "सफलतापूर्वक लॉग इन किया गया"));
       const token = res?.data?.data?.token;
       if (token) {
         localStorage.setItem("usertoken", token);
         sessionStorage.setItem("usertoken", token);
         navigate("/citizen");
       } else {
-        setError("Token not found in response");
+        setError(t("Token not found in response", "प्रतिक्रिया में टोकन नहीं मिला"));
       }
     },
     onError: (err: any) => {
@@ -118,11 +118,11 @@ export default function Login() {
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone) {
-      setError("Please enter a valid phone number");
+      setError(t("Please enter a valid phone number", "कृपया एक मान्य फ़ोन नंबर दर्ज करें"));
       return;
     }
     if (!captcha) {
-      setError("Please enter captcha");
+      setError(t("Please enter security code", "कृपया सुरक्षा कोड दर्ज करें"));
       return;
     }
     setError("");
@@ -140,7 +140,7 @@ export default function Login() {
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otp.length !== 6) {
-      setError("Please enter a 6-digit OTP");
+      setError(t("Please enter a 6-digit OTP", "कृपया 6 अंकों का ओटीपी दर्ज करें"));
       return;
     }
     setError("");
@@ -154,11 +154,14 @@ export default function Login() {
   return (
     <AuthLayout
       icon={LogIn}
-      title="Unified Citizen Grievance Portal"
+      title={t("Sahayog Helpline Portal", "सहयोग हेल्पलाइन पोर्टल")}
       subtitle={
         step === "phone"
-          ? "Enter your phone number to sign in or register"
-          : "Verify your identity"
+          ? t(
+              "Enter your phone number to sign in or register",
+              "साइन इन या पंजीकरण करने के लिए अपना फ़ोन नंबर दर्ज करें"
+            )
+          : t("Verify your identity", "अपनी पहचान सत्यापित करें")
       }
       footer={null}
     >
@@ -173,36 +176,38 @@ export default function Login() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="phone" className="text-sm font-semibold text-foreground">
-                Phone Number
+                {t("Phone Number", "फ़ोन नंबर")}
               </Label>
               <div className="relative">
                 <PhoneInput
                   id="phone"
                   defaultCountry="IN"
                   countrySelectProps={{ disabled: true }}
-                  placeholder="Enter your registered phone number"
+                  placeholder={t(
+                    "Enter your registered phone number",
+                    "अपना पंजीकृत फ़ोन नंबर दर्ज करें"
+                  )}
                   value={phone}
                   onChange={setPhone}
                   countries={["IN"]}
                   className="h-8.5 sm:h-12"
                   limitMaxLength
-                  // maxLength={10}
                   required
-                  international={false} // shows national format (no "+91" typed in the input)
-                  countryCallingCodeEditable={false} // user can't edit/delete the +91 code
+                  international={false}
+                  countryCallingCodeEditable={false}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="captcha" className="text-sm font-semibold text-foreground">
-                Security Code
+                {t("Security Code", "सुरक्षा कोड")}
               </Label>
 
               <div className="flex sm:flex-row flex-col sm:items-center gap-2">
                 <Input
                   id="captcha"
-                  placeholder="Enter security code"
+                  placeholder={t("Enter security code", "सुरक्षा कोड दर्ज करें")}
                   value={captcha}
                   onChange={(e) => setCaptcha(e.target.value)}
                   className="flex-1 !h-8.5 sm:!h-12"
@@ -222,7 +227,7 @@ export default function Login() {
                         />
                       ) : (
                         <span className="text-xs text-muted-foreground">
-                          No Captcha
+                          {t("No Captcha", "कोई कैप्चा नहीं")}
                         </span>
                       )}
                     </div>
@@ -233,7 +238,7 @@ export default function Login() {
                       className="h-12 w-12 text-muted-foreground hover:text-foreground shrink-0 rounded-lg cursor-pointer"
                       onClick={() => refetch()}
                       disabled={isLoading || isRefetching}
-                      title="Refresh Captcha"
+                      title={t("Refresh Captcha", "कैप्चा रिफ्रेश करें")}
                     >
                       <RotateCw
                         className={`h-4 w-4 ${isLoading || isRefetching ? "animate-spin" : ""}`}
@@ -244,7 +249,10 @@ export default function Login() {
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              We'll send a 6-digit verification code to this number.
+              {t(
+                "We'll send a 6-digit verification code to this number.",
+                "हम इस नंबर पर 6 अंकों का सत्यापन कोड भेजेंगे।"
+              )}
             </p>
           </div>
 
@@ -256,12 +264,12 @@ export default function Login() {
             {sendOtpMutation.isPending ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Sending OTP...
+                {t("Sending OTP...", "ओटीपी भेजा जा रहा है...")}
               </>
             ) : (
               <>
                 <MessageSquare className="w-4 h-4 mr-2" />
-                Send OTP
+                {t("Send OTP", "ओटीपी भेजें")}
               </>
             )}
           </Button>
@@ -272,25 +280,14 @@ export default function Login() {
             <div className="flex items-center justify-between">
               <Label htmlFor="otp" className="text-sm font-semibold text-foreground">
                 {showResendCaptcha
-                  ? " Enter new captcha to resend OTP"
-                  : `One-Time Password (OTP)`}
+                  ? t("Enter new captcha to resend OTP", "ओटीपी पुनः भेजने के लिए नया कैप्चा दर्ज करें")
+                  : t("One-Time Password (OTP)", "वन-टाइम पासवर्ड (ओटीपी)")}
               </Label>
-              <button
-                type="button"
-                onClick={() => {
-                  setStep("phone");
-                  setError("");
-                  setOtp("");
-                }}
-                className="text-xs text-primary hover:underline font-medium flex items-center gap-1 cursor-pointer"
-              >
-                <ArrowLeft className="w-3 h-3" /> Change Number
-              </button>
             </div>
 
             {!showResendCaptcha && (
               <p className="text-xs text-muted-foreground">
-                Enter the 6-digit code sent to{" "}
+                {t("Enter the 6-digit code sent to", "इस नंबर पर भेजा गया 6 अंकों का कोड दर्ज करें:")}{" "}
                 <span className="font-semibold text-foreground">{phone}</span>
               </p>
             )}
@@ -339,7 +336,7 @@ export default function Login() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-2">
                   <Input
                     id="resendCaptcha"
-                    placeholder="Enter security code"
+                    placeholder={t("Enter security code", "सुरक्षा कोड दर्ज करें")}
                     value={resendCaptcha}
                     onChange={(e) => setResendCaptcha(e.target.value)}
                     className="flex-1 !h-8.5 sm:!h-12 text-sm"
@@ -359,7 +356,7 @@ export default function Login() {
                           />
                         ) : (
                           <span className="text-xs text-muted-foreground">
-                            No Captcha
+                            {t("No Captcha", "कोई कैप्चा नहीं")}
                           </span>
                         )}
                       </div>
@@ -370,7 +367,7 @@ export default function Login() {
                         className="h-12 w-12 text-muted-foreground hover:text-foreground shrink-0 rounded-lg cursor-pointer"
                         onClick={() => refetch()}
                         disabled={isLoading || isRefetching}
-                        title="Refresh Captcha"
+                        title={t("Refresh Captcha", "कैप्चा रिफ्रेश करें")}
                       >
                         <RotateCw
                           className={`h-4 w-4 ${isLoading || isRefetching ? "animate-spin" : ""}`}
@@ -388,10 +385,10 @@ export default function Login() {
                   {sendOtpMutation.isPending ? (
                     <span className="flex items-center gap-2 justify-center">
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      Resending...
+                      {t("Resending...", "पुनः भेजा जा रहा है...")}
                     </span>
                   ) : (
-                    "Confirm & Resend OTP"
+                    t("Confirm & Resend OTP", "पुष्टि करें और ओटीपी पुनः भेजें")
                   )}
                 </Button>
               </div>
@@ -406,37 +403,61 @@ export default function Login() {
                 {verifyOtpMutation.isPending ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Verifying...
+                    {t("Verifying...", "सत्यापित किया जा रहा है...")}
                   </>
                 ) : (
                   <>
                     <KeyRound className="w-4 h-4 mr-2" />
-                    Verify & Login
+                    {t("Verify & Login", "सत्यापित करें और लॉगिन करें")}
                   </>
                 )}
               </Button>
             )}
 
-            <div className="text-center pt-2">
-              {resendTimer > 0 ? (
-                <span className="text-xs text-muted-foreground font-medium">
-                  Resend OTP in {resendTimer}s
-                </span>
-              ) : (
+            <div className="text-center pt-2 space-y-2">
+              <div>
+                {resendTimer > 0 ? (
+                  <span className="text-xs text-muted-foreground font-medium">
+                    {t(
+                      `Resend OTP in ${resendTimer}s`,
+                      `${resendTimer}s में ओटीपी पुनः भेजें`
+                    )}
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setError("");
+                      setShowResendCaptcha(true);
+                      setResendCaptcha("");
+                      refetch();
+                    }}
+                    disabled={sendOtpMutation.isPending || showResendCaptcha}
+                    className="text-xs text-muted-foreground hover:text-primary hover:underline font-medium cursor-pointer disabled:opacity-50"
+                  >
+                    {t(
+                      "Didn't receive code? Resend OTP",
+                      "कोड नहीं मिला? ओटीपी पुनः भेजें"
+                    )}
+                  </button>
+                )}
+              </div>
+
+              <div>
                 <button
                   type="button"
                   onClick={() => {
+                    setStep("phone");
                     setError("");
-                    setShowResendCaptcha(true);
+                    setOtp("");
+                    setShowResendCaptcha(false);
                     setResendCaptcha("");
-                    refetch();
                   }}
-                  disabled={sendOtpMutation.isPending || showResendCaptcha}
-                  className="text-xs text-muted-foreground hover:text-primary hover:underline font-medium cursor-pointer disabled:opacity-50"
+                  className="text-xs text-primary hover:underline font-medium inline-flex items-center gap-1 cursor-pointer"
                 >
-                  Didn't receive code? Resend OTP
+                  <ArrowLeft className="w-3 h-3" /> {t("Change Number", "नंबर बदलें")}
                 </button>
-              )}
+              </div>
             </div>
           </div>
         </form>

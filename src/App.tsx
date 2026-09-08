@@ -22,11 +22,19 @@ import CitizenSettings from "./pages/citizen/CitizenSettings";
 import Login from "./pages/Login";
 import PageNotFound from "./lib/PageNotFound";
 import { getProfile } from "./api/auth.api";
+import { saveVisitor } from "./api/global.api";
+
 import FullScreenLoader from "./components/FullScreenLoader";
 import LanguageContextProvider from "./context/LanguageContext";
 import ThemeContextProvider from "./context/ThemeContext";
 
 const RootLayout = () => {
+  useEffect(() => {
+    saveVisitor().catch(() => {
+      // ignore silently
+    });
+  }, []);
+
   return (
     <>
       <ScrollToTop />
@@ -34,6 +42,7 @@ const RootLayout = () => {
     </>
   );
 };
+
 const AdminProtectedRoute = ({ children }) => {
   const { setProfile } = useProfile();
   const token =

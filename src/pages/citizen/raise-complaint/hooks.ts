@@ -2,6 +2,7 @@ import {
   useGetGrievenceNatures,
   useGetServices,
   useGetDemographics,
+  useGetDepartments,
 } from "@/hooks/useGetQuery";
 
 export const useRaiseComplaintData = (lang: any) => {
@@ -11,10 +12,16 @@ export const useRaiseComplaintData = (lang: any) => {
     select: "title,titleHindi,name,nameHindi",
   };
 
-  const { data: servicesData, isLoading: servicesLoading } = useGetServices(
-    [],
-    API_PARAMS,
-  );
+  const {
+    data: departmentsData,
+    isLoading: departmentsLoading,
+    error: departmentsError,
+  } = useGetDepartments([], API_PARAMS);
+
+  // const { data: servicesData, isLoading: servicesLoading } = useGetServices(
+  //   [],
+  //   API_PARAMS,
+  // );
 
   const { data: naturesData, isLoading: naturesLoading } =
     useGetGrievenceNatures([], API_PARAMS);
@@ -34,12 +41,29 @@ export const useRaiseComplaintData = (lang: any) => {
       titleHindi: n.titleHindi,
     }));
 
-  const servicesOptions = (servicesData?.data?.data?.docs ?? []).map(
-    (s: any) => ({
-      label: lang === "hi" && s.titleHindi ? s.titleHindi : s.title,
-      value: s._id,
+  const departmentOptions = (departmentsData?.data?.data?.docs ?? []).map(
+    (d: any) => ({
+      label:
+        lang === "hi" && (d.titleHindi || d.nameHindi)
+          ? d.titleHindi || d.nameHindi
+          : d.title || d.name,
+      value: d._id,
+      title: d.title || d.name,
+      titleHindi: d.titleHindi || d.nameHindi,
     }),
   );
+
+  // const servicesOptions = (servicesData?.data?.data?.docs ?? []).map(
+  //   (s: any) => ({
+  //     label:
+  //       lang === "hi" && (s.titleHindi || s.nameHindi)
+  //         ? s.titleHindi || s.nameHindi
+  //         : s.title || s.name,
+  //     value: s._id,
+  //     title: s.title || s.name,
+  //     titleHindi: s.titleHindi || s.nameHindi,
+  //   }),
+  // );
 
   const frequencyOptions = allNatures
     .filter((n) => n.type === "Evidence Frequency")
@@ -64,11 +88,16 @@ export const useRaiseComplaintData = (lang: any) => {
   );
 
   return {
-    servicesLoading,
+    departmentsLoading,
+    departmentsError,
+    departmentOptions,
+    departmentsOptions: departmentOptions,
+
+    // servicesLoading,
+    // servicesOptions,
     naturesLoading,
     demographyLoading,
 
-    servicesOptions,
     grievanceNatureOptions,
     allDemography,
 
@@ -76,3 +105,4 @@ export const useRaiseComplaintData = (lang: any) => {
     affectedBeneficiaryOptions,
   };
 };
+
