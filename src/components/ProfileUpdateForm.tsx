@@ -26,7 +26,9 @@ interface ProfileUpdateFormProps {
 }
 
 const profileSchema = z.object({
-  fullName: z.string().min(3, { message: "Full Name is required and more than 2 chars" }),
+  fullName: z
+    .string()
+    .min(3, { message: "Full Name is required and more than 2 chars" }),
   email: z
     .string()
     .optional()
@@ -36,7 +38,10 @@ const profileSchema = z.object({
   preferredLanguage: z.string().min(1, { message: "Language is required" }),
 });
 
-export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpdateFormProps) {
+export default function ProfileUpdateForm({
+  onSuccess,
+  initialData,
+}: ProfileUpdateFormProps) {
   const { t, lang, setLang } = useLanguage();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -49,7 +54,11 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
     thana: "",
     pincode: "",
   });
-  const [errors, setErrors] = useState<{ fullName?: string; email?: string; preferredLanguage?: string }>({});
+  const [errors, setErrors] = useState<{
+    fullName?: string;
+    email?: string;
+    preferredLanguage?: string;
+  }>({});
 
   const queryClient = useQueryClient();
 
@@ -67,13 +76,11 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
       label: lang === "hi" && d.nameHindi ? d.nameHindi : d.name,
       value: d._id,
       name: d.name,
-    })
+    }),
   );
 
   const selectedDistrict = React.useMemo(() => {
-    return allDemography?.find(
-      (d: any) => d.value === address.district
-    );
+    return allDemography?.find((d: any) => d.value === address.district);
   }, [allDemography, address.district]);
 
   const districtName = selectedDistrict?.name;
@@ -119,7 +126,9 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
       return updateProfile(payload);
     },
     onSuccess: (data) => {
-      getSuccessToast(t("Profile updated successfully", "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई"));
+      getSuccessToast(
+        t("Profile updated successfully", "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई"),
+      );
       queryClient.invalidateQueries({ queryKey: ["auth-profile"] });
       onSuccess(data?.data?.data);
     },
@@ -164,7 +173,8 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
             onChange={(e) => {
               if (isAlpha(e.target.value)) {
                 setFullName(e.target.value);
-                if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: undefined }));
+                if (errors.fullName)
+                  setErrors((prev) => ({ ...prev, fullName: undefined }));
               }
             }}
             placeholder={t("Enter your full name", "अपना पूरा नाम दर्ज करें")}
@@ -175,14 +185,13 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
         </div>
 
         <div>
-          <Label className="mb-1.5 block">
-            {t("Email", "ईमेल")}
-          </Label>
+          <Label className="mb-1.5 block">{t("Email", "ईमेल")}</Label>
           <Input
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+              if (errors.email)
+                setErrors((prev) => ({ ...prev, email: undefined }));
             }}
             placeholder={t("Enter your email", "अपना ईमेल दर्ज करें")}
           />
@@ -203,7 +212,11 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
             onClick={() => {
               setLang("en");
               setPreferredLanguage("English");
-              if (errors.preferredLanguage) setErrors((prev) => ({ ...prev, preferredLanguage: undefined }));
+              if (errors.preferredLanguage)
+                setErrors((prev) => ({
+                  ...prev,
+                  preferredLanguage: undefined,
+                }));
             }}
             className={`px-4 py-2 rounded-lg text-sm border transition-all cursor-pointer ${
               preferredLanguage === "English"
@@ -218,7 +231,11 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
             onClick={() => {
               setLang("hi");
               setPreferredLanguage("Hindi");
-              if (errors.preferredLanguage) setErrors((prev) => ({ ...prev, preferredLanguage: undefined }));
+              if (errors.preferredLanguage)
+                setErrors((prev) => ({
+                  ...prev,
+                  preferredLanguage: undefined,
+                }));
             }}
             className={`px-4 py-2 rounded-lg text-sm border transition-all cursor-pointer ${
               preferredLanguage === "Hindi"
@@ -230,7 +247,9 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
           </button>
         </div>
         {errors.preferredLanguage && (
-          <p className="text-xs text-destructive mt-1">{errors.preferredLanguage}</p>
+          <p className="text-xs text-destructive mt-1">
+            {errors.preferredLanguage}
+          </p>
         )}
       </div>
 
@@ -250,7 +269,7 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
               value={address.addressLine || ""}
               placeholder={t(
                 "House no., Street, Area",
-                "मकान संख्या, सड़क, क्षेत्र"
+                "मकान संख्या, सड़क, क्षेत्र",
               )}
               onChange={(e) =>
                 setAddress((prev) => ({
@@ -262,7 +281,9 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
           </div>
 
           <div>
-            <Label className="mb-1.5 block text-xs">{t("District", "ज़िला")}</Label>
+            <Label className="mb-1.5 block text-xs">
+              {t("District", "ज़िला")}
+            </Label>
             <select
               value={address.district || ""}
               disabled={demographyLoading}
@@ -323,7 +344,9 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
           </div>
 
           <div>
-            <Label className="mb-1.5 block text-xs">{t("Panchayat", "पंचायत")}</Label>
+            <Label className="mb-1.5 block text-xs">
+              {t("Panchayat", "पंचायत")}
+            </Label>
             <Input
               value={address.panchayat || ""}
               placeholder={t("Panchayat name", "पंचायत का नाम")}
@@ -351,10 +374,12 @@ export default function ProfileUpdateForm({ onSuccess, initialData }: ProfileUpd
           </div>
 
           <div className="sm:col-span-2">
-            <Label className="mb-1.5 block text-xs">{t("Pin Code", "पिन कोड")}</Label>
+            <Label className="mb-1.5 block text-xs">
+              {t("Pin Code", "पिन कोड")}
+            </Label>
             <Input
               value={address.pincode || ""}
-              placeholder="e.g. 800001"
+              placeholder="800001"
               maxLength={6}
               onChange={(e) => {
                 const val = e.target.value.replace(/\D/g, "");

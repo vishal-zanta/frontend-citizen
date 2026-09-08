@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StatusBadge } from "@/components/Badges";
 import { ComplaintDetailDialog } from "@/components/ComplaintDetailDialog";
 import LoaderErrWrapper from "@/components/LoaderErrWrapper";
+import { useNavigate } from "react-router-dom";
 
 interface PreviousComplaintsTableProps {
   filteredComplaints: any[];
@@ -20,10 +21,11 @@ export default function PreviousComplaintsTable({
 }: PreviousComplaintsTableProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   console.log({ filteredComplaints });
+  const nav = useNavigate();
 
   return (
     <div className="bg-card rounded-xl border border-border overflow-hidden mb-6 no-print">
-      <div className="px-5 py-3 border-b border-border">
+      {/* <div className="px-5 py-3 border-b border-border">
         <h3 className="font-bold text-foreground">
           {t("Your Previous Complaints", "आपकी पिछली शिकायतें")}
         </h3>
@@ -33,7 +35,7 @@ export default function PreviousComplaintsTable({
             "पूर्ण विवरण देखने के लिए किसी भी शिकायत पर क्लिक करें",
           )}
         </p>
-      </div>
+      </div> */}
       <div className="overflow-x-auto">
         <LoaderErrWrapper isLoading={isLoading} error={error}>
           {!isLoading && !error && filteredComplaints.length === 0 ? (
@@ -44,11 +46,11 @@ export default function PreviousComplaintsTable({
             <table className="w-full text-sm">
               <thead className="bg-muted/50 text-left text-xs text-muted-foreground whitespace-nowrap">
                 <tr>
-                  <th className="px-4 py-3 font-medium">
+                  <th className="px-4 py-3 font-medium text-center">
                     {t("S.No.", "क्र.सं.")}
                   </th>
                   <th className="px-4 py-3 font-medium">
-                    {t("Complaint ID", "शिकायत आईडी")}
+                    {t("ID", "शिकायत आईडी")}
                   </th>
                   <th className="px-4 py-3 font-medium">
                     {t("Nature", "प्रकृति")}
@@ -80,10 +82,14 @@ export default function PreviousComplaintsTable({
                 {filteredComplaints.map((c, idx) => (
                   <tr
                     key={c._id || c.id || idx}
-                    onClick={() => setSelectedId(c._id || c.id)}
-                    className="hover:bg-blue-50/50 dark:hover:bg-muted/50 cursor-pointer transition-colors"
+                    onClick={() => {
+                      nav(`/citizen/track?complaint=${c._id || c.id}`)
+                      // setSelectedId(c._id || c.id)
+                    }
+                    }
+                    className="hover:bg-[#155DFC]/10 dark:hover:bg-muted/50 cursor-pointer transition-colors"
                   >
-                    <td className="px-4 py-2.5 text-muted-foreground font-mono text-xs">
+                    <td className="px-4 py-2.5 text-muted-foreground font-mono text-xs text-center">
                       {idx + 1}
                     </td>
                     <td className="px-4 py-2.5 font-mono text-primary font-semibold hover:underline">

@@ -69,17 +69,17 @@ export default function SuccessScreen({
             {t(`${natureTitleEn} Submitted!`, `${natureTitleHi} दर्ज हो गई!`)}
           </h2>
 
-          <p className="text-sm text-muted-foreground mb-6">
+          {/* <p className="text-sm text-muted-foreground mb-6">
             {t(
               `Your ${natureTitleEn.toLowerCase()} has been recorded. You will be notified about updates.`,
               `आपकी ${natureTitleHi} दर्ज कर ली गई है। आपको अपडेट के बारे में सूचित किया जाएगा।`,
             )}
-          </p>
+          </p> */}
 
           {grievanceId && (
-            <div className="bg-muted/50 dark:bg-muted/30 border border-border rounded-xl p-4 mb-6 text-left">
+            <div className="bg-muted/50 dark:bg-muted/30 border border-border rounded-xl p-4  text-left mt-6">
               <div className="text-xs text-muted-foreground font-medium mb-1">
-                {t("Grievance Tracking ID", "शिकायत ट्रैकिंग आईडी")}
+                {t(" Tracking ID", "शिकायत ट्रैकिंग आईडी")}
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span className="font-mono text-base sm:text-lg font-bold text-primary tracking-wide">

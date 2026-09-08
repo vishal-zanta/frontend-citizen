@@ -72,7 +72,7 @@ export default function CitizenDashboard() {
     <PortalLayout role="citizen">
       <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
         {/* Welcome */}
-        <WelcomeBanner t={t} lang={lang} toggle={toggle} />
+        {/* <WelcomeBanner t={t} lang={lang} toggle={toggle} /> */}
 
         {/* Quick actions */}
         <QuickActions t={t} />

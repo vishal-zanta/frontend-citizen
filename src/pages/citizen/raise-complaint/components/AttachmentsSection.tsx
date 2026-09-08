@@ -103,7 +103,7 @@ export default function AttachmentsSection({
   mbFile = 1,
 }: AttachmentsSectionProps) {
   return (
-    <FormSection title={t("Upload Supporting Documents", "सहायक दस्तावेज़ अपलोड करें")}>
+    <FormSection title={t("Uploading Documents", "दस्तावेज़ अपलोड करें")}>
       <p className="text-xs text-muted-foreground mb-3">
         {t(
           `Allowed file types: Images, Videos, Audio. Max size: ${mbFile}MB per file.`,

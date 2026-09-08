@@ -95,19 +95,37 @@ export default function ComplaintDetailsView({
   if (!complaint) return null;
 
   const c = complaint;
+  const getEntityLabel = (item: any) => {
+    if (!item) return "";
+    if (typeof item === "object") {
+      return (
+        t(item.name || item.title, item.nameHindi || item.titleHindi) ||
+        item.name ||
+        item.title ||
+        item.nameHindi ||
+        item.titleHindi ||
+        ""
+      );
+    }
+    return String(item);
+  };
+
+  const citizenInfo = complaint.citizenInfo || {};
+  const permAddr = citizenInfo.address || {};
+  const corrAddr = complaint.address || {};
+  const loc = complaint.location || {};
   const attachments = c?.evidence?.attachments || [];
   const geotaggedImages =
     c?.geotaggedImages || c?.evidence?.geotaggedImages || [];
-
-  console.log({ IMG_BASE_URL });
+   
 
   return (
     <div className="print-area space-y-6">
-      <div className="bg-card rounded-xl border border-border p-4 sm:p-6">
+      <div className="bg-card rounded-xl border border-border p-4 sm:p-6 px-0">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
           <div>
             <div className="text-xs text-muted-foreground mb-1">
-              {t("Complaint ID", "शिकायत आईडी")}
+              {t(`${c?.classification?.nature?.title || "Complaint"} ID`, "आईडी")}
             </div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
               <h2 className="text-lg sm:text-xl font-bold text-primary font-mono break-all">
@@ -143,61 +161,50 @@ export default function ComplaintDetailsView({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        {/* Basic Citizen & Complaint Meta Details */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm pb-4 border-b border-border">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-muted-foreground" />
+              <User className="w-4 h-4 text-muted-foreground shrink-0" />
               <span className="text-muted-foreground">
                 {t("Citizen", "नागरिक")}:
               </span>
               <span className="font-medium text-foreground">
-                {complaint.citizenInfo?.fullName ||
+                {citizenInfo.fullName ||
                   complaint.citizenName ||
                   "N/A"}
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-muted-foreground" />
+              <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
               <span className="text-muted-foreground">
                 {t("Mobile", "मोबाइल")}:
               </span>
               <span className="font-medium text-foreground">
-                {complaint.citizenInfo?.mobile || complaint.mobile || "N/A"}
+                {citizenInfo.mobile || complaint.mobile || "N/A"}
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-muted-foreground" />
-              <span className="text-muted-foreground">
-                {t("District", "ज़िला")}:
-              </span>
-              <span className="font-medium text-foreground">
-                {t(
-                  complaint.address?.district?.name || "N/A",
-                  complaint.address?.district?.nameHindi || "N/A",
-                )}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-muted-foreground" />
-              <span className="text-muted-foreground">
-                {t("Village / Ward", "गाँव / वार्ड")}:
-              </span>
-              <span className="font-medium text-foreground">
-                {complaint.address?.villageOrWard || "N/A"}
-              </span>
-            </div>
+            {citizenInfo.alternateMobile && (
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
+                <span className="text-muted-foreground">
+                  {t("Alternate Mobile", "वैकल्पिक मोबाइल")}:
+                </span>
+                <span className="font-medium text-foreground">
+                  {citizenInfo.alternateMobile}
+                </span>
+              </div>
+            )}
           </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
+              <Calendar className="w-4 h-4 text-muted-foreground shrink-0" />
               <span className="text-muted-foreground">
                 {t("Raised On", "दाखिल")}:
               </span>
               <span className="font-medium text-foreground">
-                {complaint.createdAt || complaint.createdDate
-                  ? new Date(
-                      complaint.createdAt || complaint.createdDate,
-                    ).toLocaleString("en-IN", {
+                {filedDateVal
+                  ? new Date(filedDateVal).toLocaleString("en-IN", {
                       day: "2-digit",
                       month: "short",
                       year: "numeric",
@@ -207,17 +214,17 @@ export default function ComplaintDetailsView({
                   : "N/A"}
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <Tag className="w-4 h-4 text-muted-foreground" />
+            {/* <div className="flex items-center gap-2">
+              <Tag className="w-4 h-4 text-muted-foreground shrink-0" />
               <span className="text-muted-foreground">
                 {t("Source", "स्रोत")}:
               </span>
               <span className="font-medium text-foreground capitalize">
                 {complaint.source || "Website"}
               </span>
-            </div>
+            </div> */}
             <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-muted-foreground" />
+              <User className="w-4 h-4 text-muted-foreground shrink-0" />
               <span className="text-muted-foreground">
                 {t("Assigned Officer", "नियुक्त अधिकारी")}:
               </span>
@@ -230,7 +237,7 @@ export default function ComplaintDetailsView({
             </div>
             {complaint.resolvedDate && (
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                 <span className="text-muted-foreground">
                   {t("Resolved On", "हल")}:
                 </span>
@@ -248,21 +255,288 @@ export default function ComplaintDetailsView({
           </div>
         </div>
 
+        {/* Permanent Address Block (citizenInfo.address) */}
+        {(permAddr.addressLine ||
+          permAddr.district ||
+          permAddr.subdivision ||
+          permAddr.panchayat ||
+          permAddr.thana ||
+          permAddr.pincode) && (
+          <div className="mt-4 pt-3 pb-4 border-b border-border">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-primary shrink-0" />
+              {t("Permanent Address", "स्थायी पता")}
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+              {permAddr.addressLine && (
+                <div className="sm:col-span-2 md:col-span-3">
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Address Line", "पता विवरण")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {permAddr.addressLine}
+                  </span>
+                </div>
+              )}
+              {permAddr.district && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("District", "ज़िला")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {getEntityLabel(permAddr.district)}
+                  </span>
+                </div>
+              )}
+              {permAddr.subdivision && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Block / Subdivision", "प्रखंड / अनुमंडल")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {getEntityLabel(permAddr.subdivision)}
+                  </span>
+                </div>
+              )}
+              {permAddr.panchayat && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Panchayat", "पंचायत")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {permAddr.panchayat}
+                  </span>
+                </div>
+              )}
+              {permAddr.thana && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Thana", "थाना")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {permAddr.thana}
+                  </span>
+                </div>
+              )}
+              {permAddr.pincode && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Pin Code", "पिन कोड")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {permAddr.pincode}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Correspondence Address Block (complaint.address) */}
+        {(corrAddr.addressLine ||
+          corrAddr.state ||
+          corrAddr.city ||
+          corrAddr.district ||
+          corrAddr.subdivision ||
+          corrAddr.panchayat ||
+          corrAddr.thana ||
+          corrAddr.villageOrWard ||
+          corrAddr.pincode ||
+          corrAddr.pinCode) && (
+          <div className="mt-4 pt-3 pb-4 border-b border-border">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
+              <Building2 className="w-4 h-4 text-primary shrink-0" />
+              {t("Correspondence Address", "पत्राचार का पता")}
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+              {(corrAddr.addressLine || corrAddr.landmark) && (
+                <div className="sm:col-span-2 md:col-span-3">
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Address Line", "पता विवरण")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {corrAddr.addressLine || corrAddr.landmark}
+                  </span>
+                </div>
+              )}
+              {corrAddr.state && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("State", "राज्य")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {corrAddr.state}
+                  </span>
+                </div>
+              )}
+              {corrAddr.city && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("City", "शहर")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {corrAddr.city}
+                  </span>
+                </div>
+              )}
+              {corrAddr.district && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("District", "ज़िला")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {getEntityLabel(corrAddr.district)}
+                  </span>
+                </div>
+              )}
+              {corrAddr.subdivision && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Block / Subdivision", "प्रखंड / अनुमंडल")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {getEntityLabel(corrAddr.subdivision)}
+                  </span>
+                </div>
+              )}
+              {corrAddr.panchayat && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Panchayat", "पंचायत")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {corrAddr.panchayat}
+                  </span>
+                </div>
+              )}
+              {corrAddr.thana && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Thana", "थाना")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {corrAddr.thana}
+                  </span>
+                </div>
+              )}
+              {corrAddr.villageOrWard && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Village / Ward", "गाँव / वार्ड")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {corrAddr.villageOrWard}
+                  </span>
+                </div>
+              )}
+              {(corrAddr.pincode || corrAddr.pinCode) && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Pin Code", "पिन कोड")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {corrAddr.pincode || corrAddr.pinCode}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Location Details / Place of occurrence Block (complaint.location) */}
+        {(loc.division ||
+          loc.district ||
+          loc.subdivision ||
+          loc.block ||
+          loc.panchayat ||
+          loc.pincode) && (
+          <div className="mt-4 pt-3 pb-4 border-b border-border">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
+              <Building2 className="w-4 h-4 text-primary shrink-0" />
+              {t(
+                "Location Details/Place of occurence",
+                "स्थान का विवरण/घटना का स्थान",
+              )}
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+              {loc.division && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Division", "प्रमंडल")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {loc.division}
+                  </span>
+                </div>
+              )}
+              {loc.district && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("District", "ज़िला")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {getEntityLabel(loc.district)}
+                  </span>
+                </div>
+              )}
+              {loc.subdivision && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Subdivision", "अनुमंडल")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {getEntityLabel(loc.subdivision)}
+                  </span>
+                </div>
+              )}
+              {loc.block && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Block", "प्रखंड")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {loc.block}
+                  </span>
+                </div>
+              )}
+              {loc.panchayat && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Panchayat", "पंचायत")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {loc.panchayat}
+                  </span>
+                </div>
+              )}
+              {(loc.pincode || loc.pinCode) && (
+                <div>
+                  <span className="text-xs text-muted-foreground block">
+                    {t("Pin Code", "पिन कोड")}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {loc.pincode || loc.pinCode}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="mt-4 p-3 bg-muted/50 rounded-lg">
           <div className="text-xs text-muted-foreground mb-1">
-            {t("Description", "विवरण")}
+            {t("Brief Description", "संक्षिप्त विवरण")}
           </div>
           <p className="text-sm text-foreground">
             {complaint.evidence?.details || complaint.description || "N/A"}
           </p>
         </div>
 
-
         {/* Attachments */}
         {attachments.length > 0 && (
           <div className="mt-4">
             <div className="text-[10px] lg:text-xs text-muted-foreground mb-2 font-semibold uppercase tracking-wide">
-              {t("Evidence Attachments", "साक्ष्य संलग्नक")} (
+              {t("Uploaded document", "अपलोड किया गया दस्तावेज़")} (
               {attachments.length})
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">

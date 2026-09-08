@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, User, LogOut, Type, Contrast, Globe, Save, MapPin } from "lucide-react";
+import {
+  ArrowLeft,
+  User,
+  LogOut,
+  Type,
+  Contrast,
+  Globe,
+  Save,
+  MapPin,
+} from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import PortalLayout from "@/components/PortalLayout";
 import { Button } from "@/components/ui/button";
@@ -61,7 +70,9 @@ export default function CitizenSettings() {
       pincode: "",
     },
   });
-  const [errors, setErrors] = useState<{ fullName?: string; email?: string }>({});
+  const [errors, setErrors] = useState<{ fullName?: string; email?: string }>(
+    {},
+  );
   const [fontScale, setFontScale] = useState("1");
   const [highContrast, setHighContrast] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -83,12 +94,12 @@ export default function CitizenSettings() {
       label: lang === "hi" && d.nameHindi ? d.nameHindi : d.name,
       value: d._id,
       name: d.name,
-    })
+    }),
   );
 
   const selectedDistrict = React.useMemo(() => {
     return allDemography?.find(
-      (d: any) => d.value === profile.address?.district
+      (d: any) => d.value === profile.address?.district,
     );
   }, [allDemography, profile.address?.district]);
 
@@ -162,7 +173,9 @@ export default function CitizenSettings() {
       return updateProfile(payload);
     },
     onSuccess: (data) => {
-      getSuccessToast(t("Profile updated successfully", "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई"));
+      getSuccessToast(
+        t("Profile updated successfully", "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई"),
+      );
       queryClient.invalidateQueries({ queryKey: ["auth-profile"] });
       console.log({ data: data?.data?.data });
       setSaved(true);
@@ -195,9 +208,9 @@ export default function CitizenSettings() {
   };
 
   const handleLogout = async () => {
-     localStorage.removeItem("usertoken");
-      sessionStorage.removeItem("usertoken");
-      navigate("/");
+    localStorage.removeItem("usertoken");
+    sessionStorage.removeItem("usertoken");
+    navigate("/");
   };
 
   return (
@@ -213,11 +226,13 @@ export default function CitizenSettings() {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">{t("Settings", "सेटिंग्स")}</h1>
+            <h1 className="text-2xl font-bold text-foreground">
+              {t("Settings", "सेटिंग्स")}
+            </h1>
             <p className="text-sm text-muted-foreground mt-0.5">
               {t(
                 "Manage your profile, accessibility, and preferences.",
-                "अपनी प्रोफ़ाइल, पहुंच और प्राथमिकताएँ प्रबंधित करें।"
+                "अपनी प्रोफ़ाइल, पहुंच और प्राथमिकताएँ प्रबंधित करें।",
               )}
             </p>
           </div>
@@ -241,11 +256,14 @@ export default function CitizenSettings() {
                   value={profile.fullName}
                   onChange={(e) => {
                     setProfile({ ...profile, fullName: e.target.value });
-                    if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: undefined }));
+                    if (errors.fullName)
+                      setErrors((prev) => ({ ...prev, fullName: undefined }));
                   }}
                 />
                 {errors.fullName && (
-                  <p className="text-xs text-destructive mt-1">{errors.fullName}</p>
+                  <p className="text-xs text-destructive mt-1">
+                    {errors.fullName}
+                  </p>
                 )}
               </div>
               <div>
@@ -258,11 +276,14 @@ export default function CitizenSettings() {
                   value={profile.email}
                   onChange={(e) => {
                     setProfile({ ...profile, email: e.target.value });
-                    if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+                    if (errors.email)
+                      setErrors((prev) => ({ ...prev, email: undefined }));
                   }}
                 />
                 {errors.email && (
-                  <p className="text-xs text-destructive mt-1">{errors.email}</p>
+                  <p className="text-xs text-destructive mt-1">
+                    {errors.email}
+                  </p>
                 )}
               </div>
               <div>
@@ -274,7 +295,10 @@ export default function CitizenSettings() {
                     type="button"
                     onClick={() => {
                       setLang("en");
-                      setProfile((p) => ({ ...p, preferredLanguage: "English" }));
+                      setProfile((p) => ({
+                        ...p,
+                        preferredLanguage: "English",
+                      }));
                     }}
                     className={`px-4 py-2 rounded-lg text-sm border transition-all cursor-pointer ${
                       lang === "en"
@@ -318,7 +342,7 @@ export default function CitizenSettings() {
                     value={profile.address?.addressLine || ""}
                     placeholder={t(
                       "House no., Street, Area",
-                      "मकान संख्या, सड़क, क्षेत्र"
+                      "मकान संख्या, सड़क, क्षेत्र",
                     )}
                     onChange={(e) =>
                       setProfile({
@@ -333,7 +357,9 @@ export default function CitizenSettings() {
                 </div>
 
                 <div>
-                  <Label className="mb-1.5 block">{t("District", "ज़िला")}</Label>
+                  <Label className="mb-1.5 block">
+                    {t("District", "ज़िला")}
+                  </Label>
                   <select
                     value={profile.address?.district || ""}
                     disabled={demographyLoading}
@@ -349,7 +375,10 @@ export default function CitizenSettings() {
                     }}
                     className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <option value="" className="bg-popover text-popover-foreground">
+                    <option
+                      value=""
+                      className="bg-popover text-popover-foreground"
+                    >
                       {demographyLoading
                         ? t("Loading districts...", "जिले लोड हो रहे हैं...")
                         : t("Select District", "जिला चुनें")}
@@ -384,8 +413,14 @@ export default function CitizenSettings() {
                     }
                     className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <option value="" className="bg-popover text-popover-foreground">
-                      {t("Select Block / Subdivision", "प्रखंड / अनुमंडल चुनें")}
+                    <option
+                      value=""
+                      className="bg-popover text-popover-foreground"
+                    >
+                      {t(
+                        "Select Block / Subdivision",
+                        "प्रखंड / अनुमंडल चुनें",
+                      )}
                     </option>
                     {subdivisionOptions.map((sub: any) => (
                       <option
@@ -400,7 +435,9 @@ export default function CitizenSettings() {
                 </div>
 
                 <div>
-                  <Label className="mb-1.5 block">{t("Panchayat", "पंचायत")}</Label>
+                  <Label className="mb-1.5 block">
+                    {t("Panchayat", "पंचायत")}
+                  </Label>
                   <Input
                     value={profile.address?.panchayat || ""}
                     placeholder={t("Panchayat name", "पंचायत का नाम")}
@@ -434,10 +471,12 @@ export default function CitizenSettings() {
                 </div>
 
                 <div>
-                  <Label className="mb-1.5 block">{t("Pin Code", "पिन कोड")}</Label>
+                  <Label className="mb-1.5 block">
+                    {t("Pin Code", "पिन कोड")}
+                  </Label>
                   <Input
                     value={profile.address?.pincode || ""}
-                    placeholder="e.g. 800001"
+                    placeholder="800001"
                     maxLength={6}
                     onChange={(e) => {
                       const val = e.target.value.replace(/\D/g, "");
@@ -482,7 +521,9 @@ export default function CitizenSettings() {
           </CardHeader>
           <CardContent className="p-4 sm:p-6 space-y-4">
             <div>
-              <Label className="mb-2 block">{t("Font Size", "फ़ॉन्ट आकार")}</Label>
+              <Label className="mb-2 block">
+                {t("Font Size", "फ़ॉन्ट आकार")}
+              </Label>
               <div className="flex flex-wrap gap-2">
                 {[
                   { v: "1", label: t("Normal", "सामान्य") },
@@ -512,7 +553,7 @@ export default function CitizenSettings() {
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {t(
                     "Increases visual contrast for better readability",
-                    "बेहतर पठनीयता के लिए दृश्य कंट्रास्ट बढ़ाता है"
+                    "बेहतर पठनीयता के लिए दृश्य कंट्रास्ट बढ़ाता है",
                   )}
                 </p>
               </div>
@@ -535,7 +576,11 @@ export default function CitizenSettings() {
         {/* Logout */}
         <Card>
           <CardContent className="p-4 sm:p-6">
-            <Button onClick={handleLogout} variant="destructive" className="w-full">
+            <Button
+              onClick={handleLogout}
+              variant="destructive"
+              className="w-full"
+            >
               <LogOut className="w-4 h-4 mr-1" /> {t("Logout", "लॉग आउट")}
             </Button>
           </CardContent>

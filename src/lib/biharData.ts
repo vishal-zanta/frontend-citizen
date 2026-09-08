@@ -6,7 +6,7 @@
 export const PORTAL_META = {
   name: "Sahayog Helpline Portal",
   nameHindi: "बिहार ई-शिकायत पोर्टल",
-  tagline: "सुशासन ही जनसेवा - Good Governance is Public Service",
+  tagline: "Good Governance is Public Service - Bihar Government.",
   dept: "",
   version: "v2.4.1",
   lastSync: "",

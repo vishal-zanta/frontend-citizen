@@ -102,11 +102,11 @@ export default function ComplaintTimeline({ events, t }: ComplaintTimelineProps)
                   <div className="text-[11px] text-muted-foreground mt-0.5 animate-pulse-once">
                     by {actorName}
                   </div>
-                  {description && (
+                  {/* {description && (
                     <div className="text-xs sm:text-sm text-muted-foreground mt-1.5 break-words">
                       {description}
                     </div>
-                  )}
+                  )} */}
                 </div>
                 <div className="text-[10px] text-muted-foreground flex items-center gap-1 shrink-0 self-start sm:self-auto mt-1 sm:mt-0">
                   <Clock className="w-3 h-3" />

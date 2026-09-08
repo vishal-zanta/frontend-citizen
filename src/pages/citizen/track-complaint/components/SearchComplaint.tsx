@@ -31,8 +31,8 @@ export default function SearchComplaint({
           initialValue={searchId}
           handleDebouncedChange={setSearchId}
           placeholder={t(
-            "Enter Complaint ID (e.g., BH-2026-047821)",
-            "शिकायत आईडी दर्ज करें (जैसे, BH-2026-047821)",
+            "Enter Complaint ID ",
+            "शिकायत आईडी दर्ज करें ",
           )}
           className="flex-1"
           inputClassName="h-11 text-xs sm:text-sm"
@@ -41,7 +41,7 @@ export default function SearchComplaint({
           {t("Track", "ट्रैक करें")}
         </Button> */}
       </form>
-      {quickTrackIds.length > 0 && (
+      {/* {quickTrackIds.length > 0 && (
         <div className="mt-3 text-xs text-muted-foreground">
           <span>
             {t(
@@ -61,7 +61,7 @@ export default function SearchComplaint({
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

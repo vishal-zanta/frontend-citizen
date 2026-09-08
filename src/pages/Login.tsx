@@ -248,12 +248,12 @@ export default function Login() {
                 </div>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            {/* <p className="text-xs text-muted-foreground mt-1">
               {t(
                 "We'll send a 6-digit verification code to this number.",
                 "हम इस नंबर पर 6 अंकों का सत्यापन कोड भेजेंगे।"
               )}
-            </p>
+            </p> */}
           </div>
 
           <Button
@@ -455,7 +455,7 @@ export default function Login() {
                   }}
                   className="text-xs text-primary hover:underline font-medium inline-flex items-center gap-1 cursor-pointer"
                 >
-                  <ArrowLeft className="w-3 h-3" /> {t("Change Number", "नंबर बदलें")}
+                  <ArrowLeft className="w-3 h-3" /> {t("Change Mobile Number", "मोबाइल नंबर बदलें")}
                 </button>
               </div>
             </div>
