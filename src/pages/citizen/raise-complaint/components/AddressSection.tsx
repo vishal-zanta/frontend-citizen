@@ -321,7 +321,7 @@ export default function AddressSection({
   return (
     <div className="space-y-6">
       <AddressBlock
-        title={t("Permanent Address", "स्थायी पता")}
+        title={t("Applicant Permanent Address", "स्थायी पता")}
         prefix="citizenInfo.address"
         t={t}
         allDemography={allDemography}
