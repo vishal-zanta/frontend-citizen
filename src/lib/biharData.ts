@@ -4,12 +4,12 @@
 // ============================================================
 
 export const PORTAL_META = {
-  name: "Bihar Sahayog Helpline Portal",
+  name: "Sahayog Helpline Portal",
   nameHindi: "बिहार ई-शिकायत पोर्टल",
   tagline: "सुशासन ही जनसेवा - Good Governance is Public Service",
-  dept: "Urban Development & Housing Department, Government of Bihar",
+  dept: "",
   version: "v2.4.1",
-  lastSync: "06 Jul 2026, 09:42 AM IST",
+  lastSync: "",
 };
 
 // ── Districts & ULBs (Urban Local Bodies) ──
@@ -1245,6 +1245,7 @@ export const DASHBOARD_KPIS = {
   todayResolved: 143,
   feedbacksReceived: 38642,
   socialMediaComplaints: 2341,
+  visitorCount : 100,
 };
 
 // ── Time-series: Daily complaint volume (last 30 days) ──

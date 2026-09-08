@@ -5,7 +5,6 @@ import {
   FileText,
   Search,
   Users,
-  ShieldCheck,
   Building2,
   Phone,
   Workflow,
@@ -24,8 +23,10 @@ import {
   HardHat,
   Headphones,
 } from "lucide-react";
+import biharGovtLogo from "@/assets/bihar_govt.png";
 import { PORTAL_META } from "@/lib/biharData";
 import { useLanguage } from "@/context/LanguageContext";
+
 
 // Simple stub for FileBarChart since it was omitted from Lucide imports in build to avoid error
 const FileBarChart = LayoutDashboard;
@@ -144,8 +145,12 @@ export default function Sidebar({
           {/* Header */}
           <div className="h-14 border-b border-sidebar-border flex items-center justify-between px-4 shrink-0">
             <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center border border-sidebar-border/30">
-                <ShieldCheck className="w-5 h-5 text-sky-400" />
+              <div className="w-8 h-8 rounded-lg bg-white p-1 flex items-center justify-center border border-sidebar-border/30 shrink-0 shadow-sm">
+                <img
+                  src={biharGovtLogo}
+                  alt="Government of Bihar"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="font-bold text-sm leading-tight text-white">
                 {t(PORTAL_META.name, PORTAL_META.nameHindi)}
@@ -158,6 +163,7 @@ export default function Sidebar({
               <X className="w-5 h-5" />
             </button>
           </div>
+
 
           {/* User Info banner */}
           {/* <div className="px-4 py-3 border-b border-sidebar-border/50 bg-sidebar-accent/10 shrink-0">

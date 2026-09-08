@@ -4,61 +4,118 @@ import RhfInput from "@/components/rhfinputs/RhfInput";
 import RhfSelect from "@/components/rhfinputs/RhfSelect";
 import MySelect from "@/components/inputs/MySelect";
 import FormSection from "./FormSection";
-import { useGetSubservices } from "@/hooks/useGetQuery";
+import { useGetServices, useGetSubservices } from "@/hooks/useGetQuery";
+import RhfTextarea from "@/components/rhfinputs/RhfTextarea";
 
 interface ClassificationSectionProps {
-  servicesOptions: { label: string; value: string }[];
+  departmentOptions: { label: string; value: string }[];
   grievanceNatureOptions: { label: string; value: string }[];
-  servicesLoading: boolean;
+  departmentsLoading?: boolean;
+  departmentsError?: any;
   naturesLoading: boolean;
   t: any;
   lang?: any;
 }
 
 export default function ClassificationSection({
-  servicesOptions,
+  departmentOptions,
   grievanceNatureOptions,
-  servicesLoading,
+  departmentsLoading,
+  departmentsError,
   naturesLoading,
   t,
   lang,
 }: ClassificationSectionProps) {
-  const { setValue } = useFormContext();
-  const [selectedService, setSelectedService] = useState<string>("");
+  const { setValue,watch } = useFormContext();
 
-  const API_PARAMS = {
+
+  const selectedDepartment = watch("classification.department")
+  const selectedService = watch("classification.service")
+
+  const SERVICES_PARAMS = {
+    page: 1,
+    limit: 500,
+    select: "title,titleHindi,name,nameHindi",
+    departmentId: selectedDepartment,
+  };
+
+  const { data: servicesData, isLoading: servicesLoading } = useGetServices(
+    [selectedDepartment],
+    SERVICES_PARAMS,
+    !!selectedDepartment,
+  );
+
+  const serviceOptions = (servicesData?.data?.data?.docs ?? []).map(
+    (s: any) => ({
+      label:
+        lang === "hi" && (s.titleHindi || s.nameHindi)
+          ? s.titleHindi || s.nameHindi
+          : s.title || s.name,
+      value: s._id,
+      title: s.title || s.name,
+      titleHindi: s.titleHindi || s.nameHindi,
+    }),
+  );
+
+  const SUBSERVICES_PARAMS = {
     page: 1,
     limit: 500,
     select: "title,titleHindi,name,nameHindi",
     serviceId: selectedService,
   };
+
   const { data: subServicesData, isLoading: subServicesLoading } =
-    useGetSubservices([selectedService], API_PARAMS, !!selectedService);
+    useGetSubservices([selectedService], SUBSERVICES_PARAMS, !!selectedService);
 
   const subServiceOptions = (subServicesData?.data?.data?.docs ?? []).map(
     (s: any) => ({
-      label: lang === "hi" ? s.titleHindi : s.title,
+      label:
+        lang === "hi" && (s.titleHindi || s.nameHindi)
+          ? s.titleHindi || s.nameHindi
+          : s.title || s.name,
       value: s._id,
+      title: s.title || s.name,
+      titleHindi: s.titleHindi || s.nameHindi,
     }),
   );
-  // console.log({lang, subServiceOptions})
+
   return (
-    <FormSection title={t("Complaint Classification", "शिकायत वर्गीकरण")}>
+    <FormSection title={t("What does the complaint related to?", "शिकायत किससे संबंधित है?")}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MySelect
-          label={t("Service", "सेवा")}
+          label={t("Department", "विभाग")}
           placeholder={
-            servicesLoading
+            departmentsLoading
               ? t("Loading...", "लोड हो रहा है...")
-              : t("Select service", "सेवा चुनें")
+              : t("Select department", "विभाग चुनें")
           }
-          options={servicesOptions}
-          value={selectedService}
+          options={departmentOptions}
+          value={selectedDepartment}
           onValueChange={(val) => {
-            setSelectedService(val);
+            setValue("classification.department", val);
+            setValue("classification.service", "");
             setValue("classification.subService", "");
           }}
-          disabled={servicesLoading}
+          disabled={departmentsLoading}
+          required
+        />
+
+        <MySelect
+          label={t("Service / Category", "सेवा")}
+          placeholder={
+            !selectedDepartment
+              ? t("Select department first", "पहले विभाग चुनें")
+              : servicesLoading
+                ? t("Loading...", "लोड हो रहा है...")
+                : t("Select service", "सेवा चुनें")
+          }
+          options={serviceOptions}
+          value={selectedService}
+          onValueChange={(val) => {
+            setValue("classification.service", val);
+            setValue("classification.subService", "");
+          }}
+          disabled={!selectedDepartment || servicesLoading}
           required
         />
 
@@ -89,7 +146,7 @@ export default function ClassificationSection({
           required
         />
 
-        <RhfInput
+        {/* <RhfInput
           name="classification.subject"
           label={t("Subject", "विषय")}
           placeholder={t(
@@ -99,8 +156,20 @@ export default function ClassificationSection({
           required
           className="md:col-span-2"
           isLettersAllowed
+        /> */}
+
+        <RhfTextarea
+          name="evidence.details"
+          label={t("Brief Description", "संक्षिप्त विवरण")}
+          placeholder={t(
+            "Describe the issue in detail...",
+            "समस्या का विस्तार से वर्णन करें...",
+          )}
+          rows={4}
+          className="md:col-span-2"
         />
       </div>
     </FormSection>
   );
 }
+

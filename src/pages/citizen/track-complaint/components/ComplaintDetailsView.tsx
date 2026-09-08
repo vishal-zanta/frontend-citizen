@@ -191,7 +191,7 @@ export default function ComplaintDetailsView({
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-muted-foreground" />
               <span className="text-muted-foreground">
-                {t("Filed On", "दाखिल")}:
+                {t("Raised On", "दाखिल")}:
               </span>
               <span className="font-medium text-foreground">
                 {complaint.createdAt || complaint.createdDate
@@ -256,14 +256,7 @@ export default function ComplaintDetailsView({
             {complaint.evidence?.details || complaint.description || "N/A"}
           </p>
         </div>
-        <div className="mt-4 p-3 bg-muted/50 rounded-lg">
-          <div className="text-xs text-muted-foreground mb-1">
-            {t("Subject", "विषय")}
-          </div>
-          <p className="text-sm text-foreground">
-            {complaint.classification?.subject || complaint?.subject || "N/A"}
-          </p>
-        </div>
+
 
         {/* Attachments */}
         {attachments.length > 0 && (

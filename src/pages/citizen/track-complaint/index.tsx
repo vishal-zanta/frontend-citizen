@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Search } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { ArrowLeft, Search } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PortalLayout from "@/components/PortalLayout";
 import CenterLayout from "@/components/CenterLayout";
 import { Button } from "@/components/ui/button";
@@ -21,11 +21,12 @@ interface TrackComplaintProps {
 export default function TrackComplaint({
   role = "citizen",
 }: TrackComplaintProps) {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const complaintId = searchParams.get("complaint") || searchParams.get("id");
   const { page, limit, ...pageProps } = usePagination();
   const [searchId, setSearchId] = useState("");
-    const statusFilter = searchParams.get("status");
+  const statusFilter = searchParams.get("status");
 
 // ────────────────────────────────────────────────────────────
 
@@ -84,26 +85,45 @@ export default function TrackComplaint({
   const showDetails = !!complaintId;
   const showNotFound = showDetails && !isDetailLoading && !complaint;
 
+  const handleBack = () => {
+    if (showDetails) {
+      setSearchId("");
+      setSearchParams({});
+    } else {
+      navigate(-1);
+    }
+  };
+
   return (
     <PortalLayout role={role}>
       <CenterLayout className="p-4 sm:p-6">
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 no-print">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground">
-              {statusFilter === "resolved"
-                ? t("Resolved Complaints", "हल की गई शिकायतें")
-                : statusFilter === "in_progress"
-                ? t("In-Progress Complaints", "प्रगति पर शिकायतें")
-                : statusFilter === "escalated"
-                ? t("Escalated Complaints", "गंभीर शिकायतें")
-                : t("Track Complaint", "शिकायत ट्रैक करें")}
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              {t(
-                "Enter your Complaint ID to view status, timeline, and officer details.",
-                "स्थिति, समयरेखा और अधिकारी विवरण देखने के लिए अपनी शिकायत आईडी दर्ज करें।",
-              )}
-            </p>
+          <div className="flex items-start gap-3">
+            <button
+              type="button"
+              onClick={handleBack}
+              className="p-2 rounded-lg border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              title={t("Back", "पीछे जाएं")}
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+                {statusFilter === "resolved"
+                  ? t("Resolved Complaints", "हल की गई शिकायतें")
+                  : statusFilter === "in_progress"
+                  ? t("In-Progress Complaints", "प्रगति पर शिकायतें")
+                  : statusFilter === "escalated"
+                  ? t("Escalated Complaints", "गंभीर शिकायतें")
+                  : t("Track Complaint", "शिकायत ट्रैक करें")}
+              </h1>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                {t(
+                  "Enter your Complaint ID to view status, timeline, and officer details.",
+                  "स्थिति, समयरेखा और अधिकारी विवरण देखने के लिए अपनी शिकायत आईडी दर्ज करें।",
+                )}
+              </p>
+            </div>
           </div>
         </div>
 

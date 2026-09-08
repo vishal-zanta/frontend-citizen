@@ -352,14 +352,7 @@ export function ComplaintDetailDialog({
                     "N/A"}
                 </p>
               </div>
-              <div>
-                <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
-                  {t("Subject", "विषय")}
-                </div>
-                <p className="text-xs sm:text-sm whitespace-pre-wrap text-foreground">
-                  {complaint.classification?.subject || "N/A"}
-                </p>
-              </div>
+
               <div className="flex gap-3">
                 <div className="flex-1 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 rounded-lg p-3">
                   <div className="text-[9px] sm:text-[10px] uppercase text-muted-foreground">

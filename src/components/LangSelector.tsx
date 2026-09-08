@@ -1,4 +1,5 @@
 import React from 'react'
+import { Globe, ChevronDown } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateProfile } from '@/api/auth.api'
@@ -12,9 +13,7 @@ const LangSelector = () => {
 
   const updateProfileMutation = useMutation({
     mutationFn: (newLang: string) =>
-    updateProfile({
-        // fullName: profile?.fullName || "",
-        // email: profile?.email || null,
+      updateProfile({
         preferredLanguage: newLang === "hi" ? "Hindi" : "English",
       }),
     onSuccess: () => {
@@ -36,32 +35,29 @@ const LangSelector = () => {
   const isPending = updateProfileMutation.isPending;
 
   return (
-    <div className={`flex items-center gap-1.5 text-xs font-semibold ${isPending ? "pointer-events-none opacity-60" : ""}`}>
-      <button
-        type="button"
-        onClick={() => handleLanguageChange("en")}
-        disabled={isPending}
-        className={`px-2 py-1 rounded transition-all cursor-pointer border ${
-          lang === "en"
-            ? "bg-primary text-primary-foreground dark:text-white border-primary font-bold"
-            : "text-foreground/80 hover:text-foreground hover:bg-muted border-transparent font-medium"
+    <div className="relative inline-flex items-center">
+      <div
+        className={`flex items-center gap-1.5 px-2.5 py-1 sm:py-1.5 rounded-md border border-border/80 bg-background/90 hover:bg-muted/60 text-foreground text-xs font-medium transition-all shadow-2xs ${
+          isPending ? "pointer-events-none opacity-60" : ""
         }`}
       >
-        English 
-      </button>
-      <span className="text-muted-foreground/35 select-none font-normal">|</span>
-      <button
-        type="button"
-        onClick={() => handleLanguageChange("hi")}
-        disabled={isPending}
-        className={`px-2 py-1 rounded transition-all cursor-pointer border ${
-          lang === "hi"
-            ? "bg-primary text-primary-foreground dark:text-white border-primary font-bold"
-            : "text-foreground/80 hover:text-foreground hover:bg-muted border-transparent font-medium"
-        }`}
-      >
-        हिन्दी
-      </button>
+        <Globe className="w-3.5 h-3.5 text-primary shrink-0" />
+        <select
+          value={lang}
+          onChange={(e) => handleLanguageChange(e.target.value)}
+          disabled={isPending}
+          aria-label={t("Select Language", "भाषा चुनें")}
+          className="bg-transparent text-xs font-medium text-foreground cursor-pointer focus:outline-hidden pr-4 appearance-none"
+        >
+          <option value="en" className="bg-popover text-popover-foreground py-1">
+            English
+          </option>
+          <option value="hi" className="bg-popover text-popover-foreground py-1">
+            हिन्दी (Hindi)
+          </option>
+        </select>
+        <ChevronDown className="w-3.5 h-3.5 text-muted-foreground pointer-events-none absolute right-2" />
+      </div>
     </div>
   );
 }

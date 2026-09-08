@@ -1,5 +1,6 @@
 import React, { useRef, useState, useMemo } from "react";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 
 import PortalLayout from "@/components/PortalLayout";
@@ -19,7 +20,9 @@ import { defaultValues, grievanceSchema, GrievanceFormValues } from "./schema";
 
 import CitizenInfoSection from "./components/CitizenInfoSection";
 import ClassificationSection from "./components/ClassificationSection";
+import LocationDetailsSection from "./components/LocationDetailsSection";
 import EvidenceSection from "./components/EvidenceSection";
+
 import ImpactSection from "./components/ImpactSection";
 import AddressSection from "./components/AddressSection";
 import CommunicationSection from "./components/CommunicationSection";
@@ -45,6 +48,26 @@ export default function RaiseComplaint({
   const { t, lang, setLang } = useLanguage();
   const qc = useQueryClient();
   const { profile } = useProfile();
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+
+  const steps = [
+    {
+      id: 1,
+      label: t("Basic Info", "बुनियादी जानकारी"),
+      description: t("Citizen details", "नागरिक का विवरण"),
+    },
+    {
+      id: 2,
+      label: t("Location", "स्थान"),
+      description: t("Address details", "पता का विवरण"),
+    },
+    {
+      id: 3,
+      label: t("Complaint Details", "शिकायत विवरण"),
+      description: t("Category & description", "श्रेणी और विवरण"),
+    },
+  ];
 
   const { data: configData } = useGetConfig();
   // console.log("configData:", configData?.data?.data);
@@ -67,11 +90,12 @@ export default function RaiseComplaint({
   }, [profile]);
 
   const {
-    servicesOptions,
+    departmentOptions,
+    departmentsLoading,
+    departmentsError,
     grievanceNatureOptions,
     frequencyOptions,
     affectedBeneficiaryOptions,
-    servicesLoading,
     naturesLoading,
     allDemography,
     demographyLoading,
@@ -169,16 +193,32 @@ export default function RaiseComplaint({
       <CenterLayout className="p-4 sm:p-6">
         {/* Page header */}
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground">
-              {t("Register Grievance", "शिकायत दर्ज करें")}
-            </h1>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              {t(
-                "Fields marked * are required.",
-                "* चिह्नित फ़ील्ड अनिवार्य हैं।",
-              )}
-            </p>
+          <div className="flex items-start gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                if (step > 1) {
+                  setStep((prev) => prev - 1);
+                } else {
+                  navigate(-1);
+                }
+              }}
+              className="p-2 rounded-lg border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              title={t("Back", "पीछे जाएं")}
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+                {t("Register Grievance", "शिकायत दर्ज करें")}
+              </h1>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                {t(
+                  "Fields marked * are required.",
+                  "* चिह्नित फ़ील्ड अनिवार्य हैं।",
+                )}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -188,14 +228,16 @@ export default function RaiseComplaint({
           validationSchema={grievanceSchema}
           validationOn="onChange"
           onSubmit={handleSubmit}
+          onError={(err) => console.log("Errors ", err)}
           className="space-y-6"
         >
           <FormWizard
             t={t}
             lang={lang}
-            servicesOptions={servicesOptions}
+            departmentOptions={departmentOptions}
+            departmentsLoading={departmentsLoading}
+            departmentsError={departmentsError}
             grievanceNatureOptions={grievanceNatureOptions}
-            servicesLoading={servicesLoading}
             naturesLoading={naturesLoading}
             frequencyOptions={frequencyOptions}
             affectedBeneficiaryOptions={affectedBeneficiaryOptions}
@@ -208,6 +250,9 @@ export default function RaiseComplaint({
             allDemography={allDemography}
             demographyLoading={demographyLoading}
             mbFile={mbFile}
+            step={step}
+            setStep={setStep}
+            steps={steps}
           />
         </RhfWrapper>
       </CenterLayout>
@@ -219,9 +264,10 @@ export default function RaiseComplaint({
 interface FormWizardProps {
   t: (en: string, hi: string) => string;
   lang: any;
-  servicesOptions: any;
+  departmentOptions: any;
+  departmentsLoading?: boolean;
+  departmentsError?: any;
   grievanceNatureOptions: any;
-  servicesLoading: boolean;
   naturesLoading: boolean;
   frequencyOptions: any;
   affectedBeneficiaryOptions: any;
@@ -234,14 +280,18 @@ interface FormWizardProps {
   allDemography?: any;
   demographyLoading?: boolean;
   mbFile?: number;
+  step?: number;
+  setStep: any;
+  steps?: any;
 }
 
 function FormWizard({
   t,
   lang,
-  servicesOptions,
+  departmentOptions,
+  departmentsLoading,
+  departmentsError,
   grievanceNatureOptions,
-  servicesLoading,
   naturesLoading,
   frequencyOptions,
   affectedBeneficiaryOptions,
@@ -254,27 +304,11 @@ function FormWizard({
   allDemography,
   demographyLoading,
   mbFile,
+  step,
+  setStep,
+  steps,
 }: FormWizardProps) {
   const { trigger } = useFormContext<GrievanceFormValues>();
-  const [step, setStep] = useState(1);
-
-  const steps = [
-    {
-      id: 1,
-      label: t("Basic Info", "बुनियादी जानकारी"),
-      description: t("Citizen details", "नागरिक का विवरण"),
-    },
-    {
-      id: 2,
-      label: t("Location", "स्थान"),
-      description: t("Address details", "पता का विवरण"),
-    },
-    {
-      id: 3,
-      label: t("Complaint Details", "शिकायत विवरण"),
-      description: t("Category & description", "श्रेणी और विवरण"),
-    },
-  ];
 
   const handleNext = async () => {
     let isValid = false;
@@ -289,12 +323,20 @@ function FormWizard({
       ]);
     } else if (step === 2) {
       isValid = await trigger([
+        "citizenInfo.address.addressLine",
+        "citizenInfo.address.district",
+        "citizenInfo.address.subdivision",
+        "citizenInfo.address.panchayat",
+        "citizenInfo.address.thana",
+        "citizenInfo.address.pincode",
+        "address.addressLine",
         "address.state",
+        "address.city",
         "address.district",
         "address.subdivision",
-        "address.villageOrWard",
-        "address.pinCode",
-        "address.landmark",
+        "address.panchayat",
+        "address.thana",
+        "address.pincode",
       ]);
     }
     if (isValid) {
@@ -394,14 +436,21 @@ function FormWizard({
         {step === 3 && (
           <div className="space-y-6">
             <ClassificationSection
-              servicesOptions={servicesOptions}
+              departmentOptions={departmentOptions}
+              departmentsLoading={departmentsLoading}
+              departmentsError={departmentsError}
               grievanceNatureOptions={grievanceNatureOptions}
-              servicesLoading={servicesLoading}
               naturesLoading={naturesLoading}
               t={t}
               lang={lang}
             />
-            <EvidenceSection frequencyOptions={frequencyOptions} t={t} />
+            <LocationDetailsSection
+              t={t}
+              allDemography={allDemography}
+              demographyLoading={demographyLoading}
+            />
+            {/* <EvidenceSection frequencyOptions={frequencyOptions} t={t} /> */}
+
             <ImpactSection
               affectedBeneficiaryOptions={affectedBeneficiaryOptions}
               t={t}

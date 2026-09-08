@@ -24,7 +24,7 @@ interface TopBarProps {
 
 export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
   const navigate = useNavigate();
-  const { profile } = useProfile();
+  const { profile , setProfile} = useProfile();
   const { t } = useLanguage();
   const { theme, toggle } = useTheme();
   const [showNotifs, setShowNotifs] = useState(false);
@@ -60,6 +60,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
   const handleLogout = async () => {
      localStorage.removeItem("usertoken");
       sessionStorage.removeItem("usertoken");
+      setProfile(null);
       navigate("/");
   };
 

@@ -43,7 +43,7 @@ export default function FormButtonsFooter({
             type="button"
             onClick={handleNext}
             disabled={isNextDisabled}
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium min-w-[120px] transition-all h-9 px-4 py-2 rounded-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium min-w-[120px] transition-all h-9 px-4 py-2 rounded-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {t("Next", "आगे")} &rarr;
           </button>
@@ -51,7 +51,7 @@ export default function FormButtonsFooter({
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-medium min-w-[180px] transition-all"
+            className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-medium min-w-[180px] transition-all cursor-pointer"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2 justify-center">
@@ -59,7 +59,7 @@ export default function FormButtonsFooter({
                 {t("Submitting...", "जमा हो रहा है...")}
               </span>
             ) : (
-              t("Submit Grievance", "शिकायत जमा करें")
+              t("Submit", "जमा करें")
             )}
           </Button>
         )}

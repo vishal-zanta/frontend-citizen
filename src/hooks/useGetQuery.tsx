@@ -5,9 +5,18 @@ import {
   getSubservices,
   getDemographics,
   getServices,
+  getDepartments,
 } from "@/api/global.api";
 
 import { useQuery } from "@tanstack/react-query";
+
+export const useGetDepartments = (keys = [], params = {}, enabled = true) => {
+  return useQuery({
+    queryKey: ["departments", ...keys],
+    queryFn: () => getDepartments(params),
+    enabled: enabled,
+  });
+};
 
 export const useGetServices = (keys = [], params = {}, enabled = true) => {
   return useQuery({

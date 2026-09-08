@@ -72,7 +72,7 @@ export default function PreviousComplaintsTable({
                     {t("Raised On", "दर्ज तिथि")}
                   </th>
                   <th className="px-4 py-3 font-medium">
-                    {t("Officer Assigned", "नियुक्त अधिकारी")}
+                    {t("Assigned Officer", "नियुक्त अधिकारी")}
                   </th>
                 </tr>
               </thead>
