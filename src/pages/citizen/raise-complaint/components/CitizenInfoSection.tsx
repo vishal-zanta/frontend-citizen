@@ -41,13 +41,13 @@ export default function CitizenInfoSection({ t }: CitizenInfoSectionProps) {
           placeholder="example@email.com"
           type="email"
         />
-        <RhfSelect
+        {/* <RhfSelect
           name="citizenInfo.preferredLanguage"
           label={t("Preferred Language", "पसंदीदा भाषा")}
           placeholder={t("Select language", "भाषा चुनें")}
           options={PREFERRED_LANGUAGE_OPTIONS}
           required
-        />
+        /> */}
       </div>
     </FormSection>
   );

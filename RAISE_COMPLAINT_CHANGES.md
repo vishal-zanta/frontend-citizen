@@ -21,11 +21,11 @@ This document details the newly added fields, removed/deprecated fields, conditi
 
 | Field Path | Field Label | Component / Input Type | Validation & Rules |
 | :--- | :--- | :--- | :--- |
-| `citizenInfo.address.addressLine` | Address Line (*पता विवरण*) | Text Input | **Required** (Min 1 character) |
-| `citizenInfo.address.district` | District (*ज़िला*) | Select Dropdown | **Required** — Populated dynamically from Demographics API (`useGetDemographics`) |
-| `citizenInfo.address.subdivision` | Block / Subdivision (*प्रखंड / अनुमंडल*) | Select Dropdown | **Required** — Filtered dynamically based on selected District via `sub-divisions.json` |
-| `citizenInfo.address.panchayat` | Panchayat (*पंचायत*) | Text Input | **Required** |
-| `citizenInfo.address.thana` | Thana (*थाना*) | Text Input | **Required** |
+| `citizenInfo.address.addressLine` | Address Line (*पता विवरण*) | Text Input | **Required** (1–50 characters) |
+| `citizenInfo.address.district` | District (*ज़िला*) | Select Dropdown | **Required** (Max 50 characters) — Populated dynamically from Demographics API (`useGetDemographics`) |
+| `citizenInfo.address.subdivision` | Block / Subdivision (*प्रखंड / अनुमंडल*) | Select Dropdown | **Required** (Max 50 characters) — Filtered dynamically based on selected District via `sub-divisions.json` |
+| `citizenInfo.address.panchayat` | Panchayat (*पंचायत*) | Text Input | **Required** (1–50 characters) |
+| `citizenInfo.address.thana` | Thana (*थाना*) | Text Input | **Required** (1–50 characters) |
 | `citizenInfo.address.pincode` | Pin Code (*पिन कोड*) | Number Input | **Required** — Exactly 6 digits (`maxLength={6}`, numbers only) |
 
 ---
@@ -35,17 +35,17 @@ This document details the newly added fields, removed/deprecated fields, conditi
 
 | Field Path | Field Label | Component / Input Type | Validation & Conditional Rules |
 | :--- | :--- | :--- | :--- |
-| `isCrpEqualPerAdd` | Same as Permanent Address (*स्थायी पते के समान*) | Checkbox | **Optional toggle** — When checked, auto-fills correspondence address with permanent address values and disables correspondence address input fields. |
-| `address.addressLine` | Address Line (*पता विवरण*) | Text Input | **Required** (Min 1 character) |
-| `address.state` | State (*राज्य*) | Select Dropdown | **Required** — Options loaded from `states_cities.json`. Default value is `"Bihar"`. |
-| `address.city` | City (*शहर*) | Select Dropdown | **Conditional**: **Required** only if `state !== "Bihar"`. Hidden/Optional if `state === "Bihar"`. Options loaded dynamically based on selected State from `states_cities.json`. |
-| `address.district` | District (*ज़िला*) | Select Dropdown | **Conditional**: **Required** if `state === "Bihar"`. Optional if `state !== "Bihar"`. Options from Demographics API. |
-| `address.subdivision` | Block / Subdivision (*प्रखंड / अनुमंडल*) | Select Dropdown | **Conditional**: **Required** if `state === "Bihar"`. Optional if `state !== "Bihar"`. Filtered by selected District. |
-| `address.panchayat` | Panchayat (*पंचायत*) | Text Input | **Conditional**: **Required** if `state === "Bihar"`. Optional if `state !== "Bihar"`. |
-| `address.thana` | Thana (*थाना*) | Text Input | **Conditional**: **Required** if `state === "Bihar"`. Optional if `state !== "Bihar"`. |
+| `isCrpEqualPerAdd` | Same as Permanent Address (*स्थायी पते के समान*) | Checkbox | **Conditional toggle** — Only visible when `address.state === "Bihar"`. If `address.state !== "Bihar"`, the checkbox is automatically unchecked and hidden. When checked, auto-fills correspondence address with permanent address values and disables correspondence address input fields. |
+| `address.addressLine` | Address Line (*पता विवरण*) | Text Input | **Required** (1–50 characters) |
+| `address.state` | State (*राज्य*) | Select Dropdown | **Required** (Max 50 characters) — Options loaded from `states_cities.json`. Default value is `"Bihar"`. |
+| `address.city` | City (*शहर*) | Select Dropdown | **Conditional**: **Required** only if `state !== "Bihar"` (1–50 characters). Hidden/Optional if `state === "Bihar"`. Options loaded dynamically based on selected State from `states_cities.json`. |
+| `address.district` | District (*ज़िला*) | Select Dropdown | **Conditional**: **Required** if `state === "Bihar"` (Max 50 characters). Optional if `state !== "Bihar"`. Options from Demographics API. |
+| `address.subdivision` | Block / Subdivision (*प्रखंड / अनुमंडल*) | Select Dropdown | **Conditional**: **Required** if `state === "Bihar"` (Max 50 characters). Optional if `state !== "Bihar"`. Filtered by selected District. |
+| `address.panchayat` | Panchayat (*पंचायत*) | Text Input | **Conditional**: **Required** if `state === "Bihar"` (1–50 characters). Optional if `state !== "Bihar"`. |
+| `address.thana` | Thana (*थाना*) | Text Input | **Conditional**: **Required** if `state === "Bihar"` (1–50 characters). Optional if `state !== "Bihar"`. |
 | `address.pincode` | Pin Code (*पिन कोड*) | Number Input | **Required** — Exactly 6 digits (`maxLength={6}`, numbers only). |
 
-> **State Change Rule:** Whenever `address.state` changes in the correspondence address, dependent fields (`city`, `district`, `subdivision`, `panchayat`, `thana`) are automatically cleared.
+> **State Change Rule:** Whenever `address.state` changes in the correspondence address, dependent fields (`city`, `district`, `subdivision`, `panchayat`, `thana`) are automatically cleared, and if `address.state !== "Bihar"`, `isCrpEqualPerAdd` is automatically unchecked and hidden.
 
 ---
 

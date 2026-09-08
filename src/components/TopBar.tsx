@@ -81,7 +81,11 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
           
         </button>
         <span className="font-semibold text-foreground text-sm lg:text-base hidden sm:inline">
-          {info.label}
+          {/* {info.label}asdf */}
+           {t(
+            `Namaste, ${profile?.fullName ?? "Citizen"}!`,
+            `नमस्ते, ${profile?.fullName ?? "Citizen"}!`,
+          )}
         </span>
       </div>
 

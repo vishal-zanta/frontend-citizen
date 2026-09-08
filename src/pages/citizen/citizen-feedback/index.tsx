@@ -28,12 +28,12 @@ export default function CitizenFeedback() {
               <h1 className="text-xl sm:text-2xl font-bold text-foreground">
                 {t("Feedback", "प्रतिक्रिया")}
               </h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
+              {/* <p className="text-sm text-muted-foreground mt-0.5">
                 {t(
                   "Rate your experience with a resolved complaint.",
                   "अपनी हल की गई शिकायत के अनुभव को रेट करें।"
                 )}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

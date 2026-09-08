@@ -86,19 +86,19 @@ export default function TrackComplaint({
   const showNotFound = showDetails && !isDetailLoading && !complaint;
 
   const handleBack = () => {
-    if (showDetails) {
+    // if (showDetails) {
       setSearchId("");
-      setSearchParams({});
-    } else {
+      setSearchParams({}, {replace : true});
+    // } else {
       navigate(-1);
-    }
+    // }
   };
 
   return (
     <PortalLayout role={role}>
       <CenterLayout className="p-4 sm:p-6">
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 no-print">
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={handleBack}
@@ -117,19 +117,19 @@ export default function TrackComplaint({
                   ? t("Escalated Complaints", "गंभीर शिकायतें")
                   : t("Track Complaint", "शिकायत ट्रैक करें")}
               </h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
+              {/* <p className="text-sm text-muted-foreground mt-0.5">
                 {t(
                   "Enter your Complaint ID to view status, timeline, and officer details.",
                   "स्थिति, समयरेखा और अधिकारी विवरण देखने के लिए अपनी शिकायत आईडी दर्ज करें।",
                 )}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
 
         {showDetails ? (
           <div className="space-y-4">
-            <Button
+            {/* <Button
               onClick={() => {
                 setSearchId("");
                 setSearchParams({});
@@ -139,7 +139,7 @@ export default function TrackComplaint({
             >
               &larr;{" "}
               {t("Back to Search & History", "खोज और इतिहास पर वापस जाएं")}
-            </Button>
+            </Button> */}
             <LoaderErrWrapper isLoading={isDetailLoading} error={detailError}>
               {complaint ? (
                 <ComplaintDetailsView

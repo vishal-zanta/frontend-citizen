@@ -57,12 +57,37 @@ function AddressBlock({
   // Clear city, district, subdivision, thana, panchayat when state changes (for correspondence address)
   const prevStateRef = React.useRef(selectedState);
   React.useEffect(() => {
-    if (!isPermanent && prevStateRef.current !== undefined && prevStateRef.current !== selectedState) {
-      setValue(`${prefix}.city`, "");
-      setValue(`${prefix}.district`, "");
-      setValue(`${prefix}.subdivision`, "");
-      setValue(`${prefix}.panchayat`, "");
-      setValue(`${prefix}.thana`, "");
+    if (
+      !isPermanent &&
+      prevStateRef.current !== undefined &&
+      prevStateRef.current !== selectedState
+    ) {
+      if (selectedState !== "Bihar") {
+        setValue("isCrpEqualPerAdd", false, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
+      setValue(`${prefix}.city`, "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setValue(`${prefix}.district`, "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setValue(`${prefix}.subdivision`, "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setValue(`${prefix}.panchayat`, "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setValue(`${prefix}.thana`, "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
     }
     prevStateRef.current = selectedState;
   }, [selectedState, setValue, prefix, isPermanent]);
@@ -90,7 +115,10 @@ function AddressBlock({
   // Keep track of the last selected district to clear subdivision on change
   const prevDistrictRef = React.useRef(selectedDistrictId);
   React.useEffect(() => {
-    if (prevDistrictRef.current !== undefined && prevDistrictRef.current !== selectedDistrictId) {
+    if (
+      prevDistrictRef.current !== undefined &&
+      prevDistrictRef.current !== selectedDistrictId
+    ) {
       setValue(`${prefix}.subdivision`, "");
     }
     prevDistrictRef.current = selectedDistrictId;
@@ -115,6 +143,7 @@ function AddressBlock({
             "मकान संख्या, सड़क, क्षेत्र",
           )}
           required
+          maxLength={50}
           className="md:col-span-2"
         />
 
@@ -165,6 +194,7 @@ function AddressBlock({
           label={t("Panchayat", "पंचायत")}
           placeholder={t("Panchayat name", "पंचायत का नाम")}
           required={isBihar}
+          maxLength={50}
         />
 
         <RhfInput
@@ -172,12 +202,13 @@ function AddressBlock({
           label={t("Thana", "थाना")}
           placeholder={t("Police Station / Thana", "थाना का नाम")}
           required={isBihar}
+          maxLength={50}
         />
 
         <RhfInput
           name={`${prefix}.pincode`}
           label={t("Pin Code", "पिन कोड")}
-          placeholder="e.g. 800001"
+          placeholder="800001"
           inputClassName="tracking-widest"
           required
           isNumsOnly
@@ -196,59 +227,86 @@ export default function AddressSection({
   const { watch, setValue, getValues } = useFormContext();
   const isCrpEqualPerAdd = watch("isCrpEqualPerAdd");
   const permanentAddress = watch("citizenInfo.address");
+  const correspondenceState = watch("address.state");
+  const isBihar = correspondenceState === "Bihar";
 
   const handleToggleSameAddress = (checked: boolean) => {
     setValue("isCrpEqualPerAdd", checked, {
       shouldDirty: true,
-      shouldValidate : true
+      shouldValidate: true,
     });
     if (checked) {
       const perm = getValues("citizenInfo.address");
       setValue("address.addressLine", perm?.addressLine || "", {
         shouldDirty: true,
-        shouldValidate : true
+        shouldValidate: true,
       });
       setValue("address.state", "Bihar", {
         shouldDirty: true,
-        shouldValidate : true
+        shouldValidate: true,
       });
       setValue("address.district", perm?.district || "", {
         shouldDirty: true,
-        shouldValidate : true
+        shouldValidate: true,
       });
       setValue("address.subdivision", perm?.subdivision || "", {
         shouldDirty: true,
-        shouldValidate : true
+        shouldValidate: true,
       });
       setValue("address.panchayat", perm?.panchayat || "", {
         shouldDirty: true,
-        shouldValidate : true
+        shouldValidate: true,
       });
       setValue("address.thana", perm?.thana || "", {
         shouldDirty: true,
-        shouldValidate : true
+        shouldValidate: true,
       });
       setValue("address.pincode", perm?.pincode || "", {
         shouldDirty: true,
-        shouldValidate : true
+        shouldValidate: true,
       });
     }
   };
 
   React.useEffect(() => {
+    if (
+      correspondenceState &&
+      correspondenceState !== "Bihar" &&
+      isCrpEqualPerAdd
+    ) {
+      setValue("isCrpEqualPerAdd", false, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+    }
+  }, [correspondenceState, isCrpEqualPerAdd, setValue]);
+
+  React.useEffect(() => {
     // console.log({permanentAddress, isCrpEqualPerAdd});
     if (isCrpEqualPerAdd) {
-      setValue("address.addressLine", permanentAddress?.addressLine || "", { shouldValidate : true});
-      setValue("address.state", "Bihar", { shouldValidate : true});
-      setValue("address.district", permanentAddress?.district || "", { shouldValidate : true});
-      setValue("address.subdivision", permanentAddress?.subdivision || "", { shouldValidate : true});
-      setValue("address.panchayat", permanentAddress?.panchayat || "", { shouldValidate : true});
-      setValue("address.thana", permanentAddress?.thana || "", { shouldValidate : true});
-      setValue("address.pincode", permanentAddress?.pincode || "", { shouldValidate : true});
+      setValue("address.addressLine", permanentAddress?.addressLine || "", {
+        shouldValidate: true,
+      });
+      setValue("address.state", "Bihar", { shouldValidate: true });
+      setValue("address.district", permanentAddress?.district || "", {
+        shouldValidate: true,
+      });
+      setValue("address.subdivision", permanentAddress?.subdivision || "", {
+        shouldValidate: true,
+      });
+      setValue("address.panchayat", permanentAddress?.panchayat || "", {
+        shouldValidate: true,
+      });
+      setValue("address.thana", permanentAddress?.thana || "", {
+        shouldValidate: true,
+      });
+      setValue("address.pincode", permanentAddress?.pincode || "", {
+        shouldValidate: true,
+      });
     }
   }, [isCrpEqualPerAdd, JSON.stringify(permanentAddress), setValue]);
 
-  const sameAddressAction = (
+  const sameAddressAction = isBihar ? (
     <label className="flex items-center gap-2 cursor-pointer select-none text-white text-xs sm:text-sm font-normal normal-case bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-md transition-colors border border-white/20">
       <input
         type="checkbox"
@@ -258,7 +316,7 @@ export default function AddressSection({
       />
       <span>{t("Same as Permanent Address", "स्थायी पते के समान")}</span>
     </label>
-  );
+  ) : null;
 
   return (
     <div className="space-y-6">
@@ -284,4 +342,3 @@ export default function AddressSection({
     </div>
   );
 }
-

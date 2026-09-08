@@ -193,7 +193,7 @@ export default function RaiseComplaint({
       <CenterLayout className="p-4 sm:p-6">
         {/* Page header */}
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => {
@@ -210,14 +210,14 @@ export default function RaiseComplaint({
             </button>
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-foreground">
-                {t("Register Grievance", "शिकायत दर्ज करें")}
+                {t("Raise Complaint", "शिकायत दर्ज करें")}
               </h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
+              {/* <p className="text-sm text-muted-foreground mt-0.5">
                 {t(
                   "Fields marked * are required.",
                   "* चिह्नित फ़ील्ड अनिवार्य हैं।",
                 )}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -318,7 +318,7 @@ function FormWizard({
         "citizenInfo.mobile",
         "citizenInfo.alternateMobile",
         "citizenInfo.email",
-        "citizenInfo.preferredLanguage",
+        // "citizenInfo.preferredLanguage",
         "communication.feedbackConsent",
       ]);
     } else if (step === 2) {
@@ -341,11 +341,13 @@ function FormWizard({
     }
     if (isValid) {
       setStep((prev) => prev + 1);
+       window.scrollTo({top : 0, behavior : "instant"})
     }
   };
 
   const handleBack = () => {
     setStep((prev) => Math.max(1, prev - 1));
+     window.scrollTo({top : 0, behavior : "instant"})
   };
 
   return (
@@ -405,9 +407,9 @@ function FormWizard({
                 >
                   {s.label}
                 </p>
-                <p className="text-[10px] text-muted-foreground hidden sm:block">
+                {/* <p className="text-[10px] text-muted-foreground hidden sm:block">
                   {s.description}
-                </p>
+                </p> */}
               </div>
             </div>
           );
