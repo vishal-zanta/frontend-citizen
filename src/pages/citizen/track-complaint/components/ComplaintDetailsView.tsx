@@ -410,11 +410,11 @@ export default function ComplaintDetailsView({
                 <Building2 className="w-4 h-4 text-primary shrink-0" />
                 {t("Correspondence Address", "पत्राचार का पता")}
               </h4>
-              {isSameAddress && (
+              {/* {isSameAddress && (
                 <span className="text-xs font-medium bg-primary/10 text-primary border border-primary/20 rounded-full px-2.5 py-0.5">
                   {t("Same as Permanent Address", "स्थायी पते के समान")}
                 </span>
-              )}
+              )} */}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm">
               {(effectiveCorrAddr.addressLine ||
