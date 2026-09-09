@@ -61,19 +61,19 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
     data.impact.affectedBeneficiary,
   );
   formData.append(
-    "impact[vulnerability[seniorCitizen]]",
+    "impact[vulnerability][seniorCitizen]",
     String(data.impact.vulnerability.seniorCitizen ?? false),
   );
   formData.append(
-    "impact[vulnerability[woman]]",
+    "impact[vulnerability][woman]",
     String(data.impact.vulnerability.woman ?? false),
   );
   formData.append(
-    "impact[vulnerability[personWithDisability]]",
+    "impact[vulnerability][personWithDisability]",
     String(data.impact.vulnerability.personWithDisability ?? false),
   );
   formData.append(
-    "impact[vulnerability[economicallyWeakerSection]]",
+    "impact[vulnerability][economicallyWeakerSection]",
     String(data.impact.vulnerability.economicallyWeakerSection ?? false),
   );
 
