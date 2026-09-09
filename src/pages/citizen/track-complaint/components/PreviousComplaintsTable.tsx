@@ -64,9 +64,9 @@ export default function PreviousComplaintsTable({
                   <th className="px-4 py-3 font-medium min-w-[150px]">
                     {t("Service", "सेवा")}
                   </th>
-                  <th className="px-4 py-3 font-medium min-w-[180px]">
+                  {/* <th className="px-4 py-3 font-medium min-w-[180px]">
                     {t("Sub-Service", "उप-सेवा")}
-                  </th>
+                  </th> */}
                   <th className="px-4 py-3 font-medium">
                     {t("Status", "स्थिति")}
                   </th>
@@ -105,36 +105,31 @@ export default function PreviousComplaintsTable({
                     </td>
                     <td className="px-4 py-2.5 text-foreground">
                       {t(
-                        c.address?.district?.name,
-                        c.address?.district?.nameHindi,
+                        c?.location?.district?.name,
+                        c?.location?.district?.nameHindi,
                       ) || "-"}
-                    </td>
-                    <td className="px-4 py-2.5 text-foreground">
-                      {typeof c.classification?.subService?.service
-                        ?.department === "object"
-                        ? t(
-                            c.classification?.subService?.service?.department
-                              ?.title,
-                            c.classification?.subService?.service?.department
-                              ?.titleHindi ||
-                              c.classification?.subService?.service?.department
-                                ?.title,
-                          )
-                        : c.classification?.subService?.service?.department ||
-                          "-"}
                     </td>
                     <td className="px-4 py-2.5 text-foreground">
                       {t(
-                        c.classification?.subService?.service?.title,
-                        c.classification?.subService?.service?.titleHindi,
-                      ) || "-"}
+                            c.classification?.department
+                              ?.title,
+                             c.classification?.department
+                              ?.titleHindi,
+                          )
+                       }
                     </td>
                     <td className="px-4 py-2.5 text-foreground">
+                      {t(
+                        c.classification?.service?.title,
+                        c.classification?.service?.titleHindi,
+                      ) || "-"}
+                    </td>
+                    {/* <td className="px-4 py-2.5 text-foreground">
                       {t(
                         c.classification?.subService?.title,
                         c.classification?.subService?.titleHindi,
                       ) || "-"}
-                    </td>
+                    </td> */}
                     <td className="px-4 py-2.5">
                       <StatusBadge status={c.status} />
                     </td>

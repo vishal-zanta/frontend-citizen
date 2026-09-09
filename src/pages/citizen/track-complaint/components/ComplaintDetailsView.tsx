@@ -117,6 +117,79 @@ export default function ComplaintDetailsView({
   const attachments = c?.evidence?.attachments || [];
   const geotaggedImages =
     c?.geotaggedImages || c?.evidence?.geotaggedImages || [];
+
+  const hasPermAddr = Boolean(
+    permAddr?.addressLine ||
+      permAddr?.district ||
+      permAddr?.subdivision ||
+      permAddr?.panchayat ||
+      permAddr?.thana ||
+      permAddr?.pincode,
+  );
+
+  const isSameAddress = Boolean(
+    complaint?.isCrpEqualPerAdd ||
+      (!corrAddr?.addressLine &&
+        !corrAddr?.district &&
+        !corrAddr?.pincode &&
+        hasPermAddr),
+  );
+
+  const effectiveCorrAddr = isSameAddress
+    ? {
+        ...permAddr,
+        state: "Bihar",
+      }
+    : corrAddr || {};
+
+  const hasCorrAddr = Boolean(
+    effectiveCorrAddr?.addressLine ||
+      effectiveCorrAddr?.state ||
+      effectiveCorrAddr?.city ||
+      effectiveCorrAddr?.district ||
+      effectiveCorrAddr?.subdivision ||
+      effectiveCorrAddr?.panchayat ||
+      effectiveCorrAddr?.thana ||
+      effectiveCorrAddr?.villageOrWard ||
+      effectiveCorrAddr?.pincode ||
+      effectiveCorrAddr?.pinCode,
+  );
+
+  const vulnerabilities = [];
+  if (complaint.impact?.vulnerability?.seniorCitizen) {
+    vulnerabilities.push({
+      key: "seniorCitizen",
+      label: t("Senior Citizen", "वरिष्ठ नागरिक"),
+    });
+  }
+  if (complaint.impact?.vulnerability?.woman) {
+    vulnerabilities.push({ key: "woman", label: t("Woman", "महिला") });
+  }
+  if (complaint.impact?.vulnerability?.personWithDisability) {
+    vulnerabilities.push({
+      key: "personWithDisability",
+      label: t("Person with Disability", "दिव्यांग"),
+    });
+  }
+  if (complaint.impact?.vulnerability?.economicallyWeakerSection) {
+    vulnerabilities.push({
+      key: "economicallyWeakerSection",
+      label: t("Economically Weaker Section", "आर्थिक रूप से कमजोर वर्ग"),
+    });
+  }
+
+  const affectedBeneficiaryText =
+    typeof complaint.impact?.affectedBeneficiary === "object"
+      ? t(
+          complaint.impact.affectedBeneficiary?.title ||
+            complaint.impact.affectedBeneficiary?.name,
+          complaint.impact.affectedBeneficiary?.titleHindi ||
+            complaint.impact.affectedBeneficiary?.nameHindi,
+        ) ||
+        complaint.impact.affectedBeneficiary?.title ||
+        complaint.impact.affectedBeneficiary?.name ||
+        ""
+      : complaint.impact?.affectedBeneficiary;
    
 
   return (
@@ -258,12 +331,7 @@ export default function ComplaintDetailsView({
         </div>
 
         {/* Permanent Address Block (citizenInfo.address) */}
-        {(permAddr.addressLine ||
-          permAddr.district ||
-          permAddr.subdivision ||
-          permAddr.panchayat ||
-          permAddr.thana ||
-          permAddr.pincode) && (
+        {hasPermAddr && (
           <div className="mt-4 pt-3 pb-4 border-b border-border">
             <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
               <MapPin className="w-4 h-4 text-primary shrink-0" />
@@ -334,109 +402,111 @@ export default function ComplaintDetailsView({
           </div>
         )}
 
-        {/* Correspondence Address Block (complaint.address) */}
-        {(corrAddr.addressLine ||
-          corrAddr.state ||
-          corrAddr.city ||
-          corrAddr.district ||
-          corrAddr.subdivision ||
-          corrAddr.panchayat ||
-          corrAddr.thana ||
-          corrAddr.villageOrWard ||
-          corrAddr.pincode || corrAddr.pinCode) && (
+        {/* Correspondence Address Block */}
+        {hasCorrAddr && (
           <div className="mt-4 pt-3 pb-4 border-b border-border">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
-              <Building2 className="w-4 h-4 text-primary shrink-0" />
-              {t("Correspondence Address", "पत्राचार का पता")}
-            </h4>
+            <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <Building2 className="w-4 h-4 text-primary shrink-0" />
+                {t("Correspondence Address", "पत्राचार का पता")}
+              </h4>
+              {isSameAddress && (
+                <span className="text-xs font-medium bg-primary/10 text-primary border border-primary/20 rounded-full px-2.5 py-0.5">
+                  {t("Same as Permanent Address", "स्थायी पते के समान")}
+                </span>
+              )}
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm">
-              {(corrAddr.addressLine || corrAddr.landmark) && (
+              {(effectiveCorrAddr.addressLine ||
+                effectiveCorrAddr.landmark) && (
                 <div className="sm:col-span-2 md:col-span-3">
                   <span className="text-xs text-muted-foreground block">
                     {t("Address Line", "पता विवरण")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {corrAddr.addressLine || corrAddr.landmark}
+                    {effectiveCorrAddr.addressLine ||
+                      effectiveCorrAddr.landmark}
                   </span>
                 </div>
               )}
-              {corrAddr.state && (
+              {effectiveCorrAddr.state && (
                 <div>
                   <span className="text-xs text-muted-foreground block">
                     {t("State", "राज्य")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {corrAddr.state}
+                    {effectiveCorrAddr.state}
                   </span>
                 </div>
               )}
-              {corrAddr.city && (
-                <div>
-                  <span className="text-xs text-muted-foreground block">
-                    {t("City", "शहर")}
-                  </span>
-                  <span className="font-medium text-foreground">
-                    {corrAddr.city}
-                  </span>
-                </div>
-              )}
-              {corrAddr.district && (
+              {effectiveCorrAddr.city &&
+                effectiveCorrAddr.state !== "Bihar" && (
+                  <div>
+                    <span className="text-xs text-muted-foreground block">
+                      {t("City", "शहर")}
+                    </span>
+                    <span className="font-medium text-foreground">
+                      {effectiveCorrAddr.city}
+                    </span>
+                  </div>
+                )}
+              {effectiveCorrAddr.district && (
                 <div>
                   <span className="text-xs text-muted-foreground block">
                     {t("District", "ज़िला")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {getEntityLabel(corrAddr.district)}
+                    {getEntityLabel(effectiveCorrAddr.district)}
                   </span>
                 </div>
               )}
-              {corrAddr.subdivision && (
+              {effectiveCorrAddr.subdivision && (
                 <div>
                   <span className="text-xs text-muted-foreground block">
                     {t("Block / Subdivision", "प्रखंड / अनुमंडल")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {getEntityLabel(corrAddr.subdivision)}
+                    {getEntityLabel(effectiveCorrAddr.subdivision)}
                   </span>
                 </div>
               )}
-              {corrAddr.panchayat && (
+              {effectiveCorrAddr.panchayat && (
                 <div>
                   <span className="text-xs text-muted-foreground block">
                     {t("Panchayat", "पंचायत")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {corrAddr.panchayat}
+                    {effectiveCorrAddr.panchayat}
                   </span>
                 </div>
               )}
-              {corrAddr.thana && (
+              {effectiveCorrAddr.thana && (
                 <div>
                   <span className="text-xs text-muted-foreground block">
                     {t("Thana", "थाना")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {corrAddr.thana}
+                    {effectiveCorrAddr.thana}
                   </span>
                 </div>
               )}
-              {corrAddr.villageOrWard && (
+              {effectiveCorrAddr.villageOrWard && (
                 <div>
                   <span className="text-xs text-muted-foreground block">
                     {t("Village / Ward", "गाँव / वार्ड")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {corrAddr.villageOrWard}
+                    {effectiveCorrAddr.villageOrWard}
                   </span>
                 </div>
               )}
-              {(corrAddr.pincode || corrAddr.pinCode) && (
+              {(effectiveCorrAddr.pincode || effectiveCorrAddr.pinCode) && (
                 <div>
                   <span className="text-xs text-muted-foreground block">
                     {t("Pin Code", "पिन कोड")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {corrAddr.pincode || corrAddr.pinCode}
+                    {effectiveCorrAddr.pincode || effectiveCorrAddr.pinCode}
                   </span>
                 </div>
               )}
@@ -523,6 +593,46 @@ export default function ComplaintDetailsView({
             </div>
           </div>
         )}
+
+        {/* Impact & Vulnerability Block */}
+        {complaint.impact &&
+          (affectedBeneficiaryText || vulnerabilities.length > 0) && (
+            <div className="mt-4 pt-3 pb-4 border-b border-border">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
+                <Tag className="w-4 h-4 text-primary shrink-0" />
+                {t("Impact & Vulnerability", "प्रभाव एवं संवेदनशीलता")}
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+                {affectedBeneficiaryText && (
+                  <div>
+                    <span className="text-xs text-muted-foreground block">
+                      {t("Affected Beneficiary", "प्रभावित लाभार्थी")}
+                    </span>
+                    <span className="font-medium text-foreground">
+                      {affectedBeneficiaryText}
+                    </span>
+                  </div>
+                )}
+                {vulnerabilities.length > 0 && (
+                  <div className="sm:col-span-2">
+                    <span className="text-xs text-muted-foreground block mb-1">
+                      {t("Vulnerability", "संवेदनशीलता")}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {vulnerabilities.map((v) => (
+                        <span
+                          key={v.key}
+                          className="inline-flex items-center text-xs font-medium bg-primary/10 text-primary border border-primary/20 rounded-full px-2.5 py-0.5"
+                        >
+                          {v.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
         <div className="mt-4 p-3 bg-muted/50 rounded-lg">
           <div className="text-xs text-muted-foreground mb-1">
