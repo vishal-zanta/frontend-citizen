@@ -90,7 +90,7 @@ export default function PortalHome() {
           </span>
           <LangSelector/>
         </div>
-      </div>
+    </div>
 
       {/* Main content - CM card on left, Login form on right */}
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">

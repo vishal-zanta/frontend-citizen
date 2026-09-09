@@ -135,8 +135,10 @@ export default function ComplaintDetailsView({
             </div>
             <p className="text-sm text-foreground font-medium">
               {t(
-                complaint.classification?.subService?.title,
-                complaint.classification?.subService?.titleHindi,
+                complaint.classification?.service?.title ||
+                  complaint.classification?.subService?.title,
+                complaint.classification?.service?.titleHindi ||
+                  complaint.classification?.subService?.titleHindi,
               )}
             </p>
           </div>
@@ -341,8 +343,7 @@ export default function ComplaintDetailsView({
           corrAddr.panchayat ||
           corrAddr.thana ||
           corrAddr.villageOrWard ||
-          corrAddr.pincode ||
-          corrAddr.pinCode) && (
+          corrAddr.pincode || corrAddr.pinCode) && (
           <div className="mt-4 pt-3 pb-4 border-b border-border">
             <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
               <Building2 className="w-4 h-4 text-primary shrink-0" />

@@ -42,8 +42,10 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
       formData.append("citizenInfo[address][pincode]", citizenAddr.pincode);
   }
 
-  formData.append("classification[subService]", data.classification.subService);
+  // formData.append("classification[subService]", data.classification.subService);
   formData.append("classification[nature]", data.classification.nature);
+    formData.append("classification[service]", data.classification.service);
+  formData.append("classification[department]", data.classification.department);
   // if ((data.classification as any).subject)
   //   formData.append("classification[subject]", (data.classification as any).subject);
 
@@ -110,7 +112,7 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
       formData.append("location[subdivision]", loc.subdivision);
     if (loc.block) formData.append("location[block]", loc.block);
     if (loc.panchayat) formData.append("location[panchayat]", loc.panchayat);
-    if (loc.pincode) formData.append("location[pincode]", loc.pinCode);
+    if (loc.pincode) formData.append("location[pincode]", loc.pincode);
   }
 
   // formData.append("channel", "Website");
