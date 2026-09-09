@@ -109,7 +109,11 @@ const correspondenceAddressSchema = z
 
 export const grievanceSchema = z.object({
   citizenInfo: z.object({
-    fullName: z.string().optional(),
+    fullName: z
+      .string()
+      .max(50, "Full name cannot exceed 50 characters")
+      .optional()
+      .or(z.literal("")),
     mobile: z
       .string()
       .min(13, "Mobile number must be at least 10 digits")
@@ -120,20 +124,30 @@ export const grievanceSchema = z.object({
       .max(13, "Mobile number cannot exceed 10 digits")
       .optional()
       .or(z.literal("")),
-    email: z.string().email("Enter a valid email").optional().or(z.literal("")),
+    email: z
+      .string()
+      .email("Enter a valid email")
+      .max(50, "Email cannot exceed 50 characters")
+      .optional()
+      .or(z.literal("")),
     // preferredLanguage: z.string().min(1, "Preferred language is required"),
     address: addressSchema,
   }),
   classification: z.object({
-    subService: z.string().min(1, "Sub-service is required"),
+    // subService: z.string().min(1, "Sub-service is required"),
+
+    
     nature: z.string().min(1, "Grievance type is required"),
-    service: z.any(),
-    department: z.any(),
+    service: z.string().min(1, "Service is required"),
+    department: z.string().min(1, "Department is required"),
 
     // subject: z.string().min(3, "Subject must be at least 3 characters"),
   }),
   evidence: z.object({
-    details: z.string().optional(),
+    details: z
+      .string()
+      .min(1, "Brief description is required")
+      .max(1000, "Brief description cannot exceed 1000 characters"),
     // occurrenceDate: z.string().optional(),
     // frequency: z.string().min(1, "Frequency is required"),
   }),
@@ -213,7 +227,7 @@ export const defaultValues: GrievanceFormValues = {
       thana: "",
     },
   },
-  classification: { subService: "", nature: "", service: "", department: "" },
+  classification: { nature: "", service: "", department: "" },
   evidence: { details: "" },
 
   impact: {

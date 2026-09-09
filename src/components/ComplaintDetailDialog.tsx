@@ -337,7 +337,14 @@ export function ComplaintDetailDialog({
                   {t("Service", "सेवा")}
                 </div>
                 <div className="font-medium text-xs sm:text-sm text-foreground">
-                  {complaint.classification?.subService?.title ||
+                  {t(
+                    complaint.classification?.service?.title ||
+                      complaint.classification?.subService?.title,
+                    complaint.classification?.service?.titleHindi ||
+                      complaint.classification?.subService?.titleHindi,
+                  ) ||
+                    complaint.classification?.service?.title ||
+                    complaint.classification?.subService?.title ||
                     complaint.serviceName ||
                     "N/A"}
                 </div>
