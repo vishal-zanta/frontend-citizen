@@ -1,66 +1,110 @@
-import React, { useState } from 'react'
-import { Rating } from '@/components/reui/rating'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { postComplaintFeedback } from '@/api/complaints.api'
-import { getErrorToast, getSuccessToast } from '@/utils/helpers'
-import { useLanguage } from '@/context/LanguageContext'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { MessageSquare, Send, CheckCircle2 } from 'lucide-react'
+import React, { useState } from "react";
+import { Rating } from "@/components/reui/rating";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postComplaintFeedback } from "@/api/complaints.api";
+import { getErrorToast, getSuccessToast } from "@/utils/helpers";
+import { useLanguage } from "@/context/LanguageContext";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { MessageSquare, Send, CheckCircle2 } from "lucide-react";
 
 interface ComplaintFeedbackProps {
   complaintId: string;
   existingRating?: number;
   existingFeedback?: string;
-  t: any,
-  setSelected?:any
+  t: any;
+  setSelected?: any;
 }
 
-const ComplaintFeedback = ({ complaintId, existingRating, existingFeedback, t, setSelected }: ComplaintFeedbackProps) => {
-//   const { t } = useLanguage()
-  const queryClient = useQueryClient()
-  const [rating, setRating] = useState(existingRating || 0)
-  const [feedback, setFeedback] = useState(existingFeedback || '')
+const ComplaintFeedback = ({
+  complaintId,
+  existingRating,
+  existingFeedback,
+  t: propT,
+  setSelected,
+}: ComplaintFeedbackProps) => {
+  const languageContext = useLanguage();
+  const t = propT || languageContext?.t || ((en: string, hi: string) => en);
+  const queryClient = useQueryClient();
+  const [rating, setRating] = useState(existingRating || 0);
+  const [feedback, setFeedback] = useState(existingFeedback || "");
 
-  const isAlreadySubmitted = typeof existingRating === 'number' && existingRating > 0
+  const ratingLabels: Record<number, string> = {
+    1: t("Poor", "खराब"),
+    2: t("Fair", "औसत"),
+    3: t("Good", "अच्छा"),
+    4: t("Very Good", "बहुत अच्छा"),
+    5: t("Excellent", "उत्कृष्ट"),
+  };
+
+  const isAlreadySubmitted =
+    typeof existingRating === "number" && existingRating > 0;
 
   const mutation = useMutation({
-    mutationFn: () => postComplaintFeedback({ id: complaintId, data: { rating, feedbackText: feedback } }),
+    mutationFn: () =>
+      postComplaintFeedback({
+        id: complaintId,
+        data: { rating, feedbackText: feedback },
+      }),
     onSuccess: () => {
-      getSuccessToast(t('Feedback submitted successfully', 'प्रतिक्रिया सफलतापूर्वक सबमिट की गई'))
-      queryClient.invalidateQueries({ queryKey: ['grievance'] })
-      setSelected && setSelected((prev :any)=> ({...prev, rating, feedbackText: feedback }))
+      getSuccessToast(
+        t(
+          "Feedback submitted successfully",
+          "प्रतिक्रिया सफलतापूर्वक सबमिट की गई",
+        ),
+      );
+      queryClient.invalidateQueries({ queryKey: ["grievance"] });
+      setSelected &&
+        setSelected((prev: any) => ({
+          ...prev,
+          rating,
+          feedbackText: feedback,
+        }));
     },
     onError: (err: any) => {
-      getErrorToast(err)
-    }
-  })
+      getErrorToast(err);
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (rating === 0) {
-      getErrorToast({ message: t('Please select a rating before submitting', 'कृपया सबमिट करने से पहले रेटिंग चुनें') })
-      return
+      getErrorToast({
+        message: t(
+          "Please select a rating before submitting",
+          "कृपया सबमिट करने से पहले रेटिंग चुनें",
+        ),
+      });
+      return;
     }
-    mutation.mutate()
-  }
+    mutation.mutate();
+  };
 
   if (isAlreadySubmitted) {
     return (
       <div className="mt-6 p-4 bg-emerald-50/50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900 rounded-xl space-y-3">
         <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-semibold">
           <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-          <span>{t('Feedback Submitted', 'प्रतिक्रिया सबमिट की गई')}</span>
+          <span>{t("Feedback Submitted", "प्रतिक्रिया सबमिट की गई")}</span>
         </div>
         <div className="space-y-2 text-sm text-emerald-950 dark:text-emerald-100">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-emerald-800 dark:text-emerald-300">{t('Rating', 'रेटिंग')}:</span>
-            <Rating  rating={existingRating} editable={false} showValue={true} />
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-medium text-emerald-800 dark:text-emerald-300">
+              {t("Rating", "रेटिंग")}:
+            </span>
+            <Rating
+              rating={existingRating}
+              editable={false}
+              showValue={true}
+              ratingLabels={ratingLabels}
+            />
           </div>
           {existingFeedback && (
             <div>
-              <span className="font-medium text-emerald-800 dark:text-emerald-300">{t('Comments', 'टिप्पणियाँ')}:</span>
+              <span className="font-medium text-emerald-800 dark:text-emerald-300">
+                {t("Comments", "टिप्पणियाँ")}:
+              </span>
               <p className="mt-1 p-3 bg-card rounded-lg border border-emerald-100 dark:border-emerald-900 text-foreground italic">
                 "{existingFeedback}"
               </p>
@@ -68,40 +112,47 @@ const ComplaintFeedback = ({ complaintId, existingRating, existingFeedback, t, s
           )}
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="mt-6 p-4 bg-card border border-border rounded-xl space-y-4">
       <div className="flex items-center gap-2 font-semibold text-foreground">
         <MessageSquare className="w-5 h-5 text-primary" />
-        <h3>{t('Rate Resolution Experience', 'समाधान अनुभव को रेट करें')}</h3>
+        <h3>{t("Rate Resolution Experience", "समाधान अनुभव को रेट करें")}</h3>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <Label className="mb-2 block text-sm font-medium text-muted-foreground">
-            {t('How satisfied are you with the resolution? *', 'आप समाधान से कितने संतुष्ट हैं? *')}
+            {t(
+              "How satisfied are you with the resolution? *",
+              "आप समाधान से कितने संतुष्ट हैं? *",
+            )}
           </Label>
           <Rating
             rating={rating}
             editable={true}
             onRatingChange={(val) => setRating(val)}
             showValue={true}
+            ratingLabels={ratingLabels}
             size="lg"
             className="py-1"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="feedback-textarea" className="text-sm font-medium text-muted-foreground">
-            {t('Your Comments / Suggestions *', 'आपकी टिप्पणियाँ / सुझाव *')}
+          <Label
+            htmlFor="feedback-textarea"
+            className="text-sm font-medium text-muted-foreground"
+          >
+            {t("Your Comments / Suggestions *", "आपकी टिप्पणियाँ / सुझाव *")}
           </Label>
           <Textarea
             id="feedback-textarea"
             placeholder={t(
-              'Share your thoughts on the resolution or officer\'s conduct...',
-              'समाधान या अधिकारी के आचरण पर अपने विचार साझा करें...'
+              "Share your thoughts on the resolution or officer's conduct...",
+              "समाधान या अधिकारी के आचरण पर अपने विचार साझा करें...",
             )}
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
@@ -121,11 +172,11 @@ const ComplaintFeedback = ({ complaintId, existingRating, existingFeedback, t, s
           ) : (
             <Send className="w-4 h-4" />
           )}
-          {t('Submit Feedback', 'प्रतिक्रिया सबमिट करें')}
+          {t("Submit Feedback", "प्रतिक्रिया सबमिट करें")}
         </Button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default ComplaintFeedback
+export default ComplaintFeedback;
