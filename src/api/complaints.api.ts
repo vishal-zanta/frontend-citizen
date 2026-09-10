@@ -21,3 +21,15 @@ export const postComplaintFeedback = ({ id, data }: { id: string; data: { rating
 export const reopenComplaint = ({ id, data }: { id: string; data: { reOpenReason: string } }) => {
     return instance.post(`/grievances/citizen/${id}/reopen`, data)
 }
+
+export const getPublicComplaintStatus = ({
+  complaintId,
+  params,
+}: {
+  complaintId: string;
+  params: { captchaId: string; captchaValue: string };
+}) => {
+  return instance.get(`/grievances/citizen/public/status/${complaintId}`, {
+    params,
+  });
+};

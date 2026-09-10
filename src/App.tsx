@@ -27,6 +27,7 @@ import { saveVisitor } from "./api/global.api";
 import FullScreenLoader from "./components/FullScreenLoader";
 import LanguageContextProvider from "./context/LanguageContext";
 import ThemeContextProvider from "./context/ThemeContext";
+import CompliantDetails from "./pages/citizen/complaint-details";
 
 const RootLayout = () => {
   useEffect(() => {
@@ -118,6 +119,11 @@ const router = createBrowserRouter([
             element: <CitizenSettings />,
           },
         ],
+      },
+      {
+        path : "complaint",
+        element: <CompliantDetails/>
+
       },
       {
         path: "*",
