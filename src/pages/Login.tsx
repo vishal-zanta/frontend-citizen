@@ -163,7 +163,7 @@ export default function Login() {
             )
           : t("Verify your identity", "अपनी पहचान सत्यापित करें")
       }
-      footer={null}
+      footer={<Button variant="link" onClick={() => navigate("/complaint")} className="cursor-pointer">Track complaint</Button>}
     >
       {error && (
         <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm font-medium">
