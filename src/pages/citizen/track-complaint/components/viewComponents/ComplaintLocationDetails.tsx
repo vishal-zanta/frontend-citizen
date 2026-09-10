@@ -40,7 +40,9 @@ export default function ComplaintLocationDetails({
             <span className="text-xs text-muted-foreground block">
               {t("Division", "प्रमंडल")}
             </span>
-            <span className="font-medium text-foreground">{loc.division}</span>
+            <span className="font-medium text-foreground">
+              {getEntityLabel(loc.division, t)}
+            </span>
           </div>
         )}
         {loc.district && (
@@ -68,7 +70,9 @@ export default function ComplaintLocationDetails({
             <span className="text-xs text-muted-foreground block">
               {t("Block", "प्रखंड")}
             </span>
-            <span className="font-medium text-foreground">{loc.block}</span>
+            <span className="font-medium text-foreground">
+              {getEntityLabel(loc.block, t)}
+            </span>
           </div>
         )}
         {loc.panchayat && (
@@ -76,7 +80,9 @@ export default function ComplaintLocationDetails({
             <span className="text-xs text-muted-foreground block">
               {t("Panchayat", "पंचायत")}
             </span>
-            <span className="font-medium text-foreground">{loc.panchayat}</span>
+            <span className="font-medium text-foreground">
+              {getEntityLabel(loc.panchayat, t)}
+            </span>
           </div>
         )}
         {(loc.pincode || loc.pinCode) && (

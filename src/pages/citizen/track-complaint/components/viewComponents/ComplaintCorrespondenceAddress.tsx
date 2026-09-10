@@ -105,7 +105,7 @@ export default function ComplaintCorrespondenceAddress({
               {t("Panchayat", "पंचायत")}
             </span>
             <span className="font-medium text-foreground">
-              {effectiveCorrAddr.panchayat}
+              {getEntityLabel(effectiveCorrAddr.panchayat, t)}
             </span>
           </div>
         )}
@@ -115,7 +115,7 @@ export default function ComplaintCorrespondenceAddress({
               {t("Thana", "थाना")}
             </span>
             <span className="font-medium text-foreground">
-              {effectiveCorrAddr.thana}
+              {getEntityLabel(effectiveCorrAddr.thana, t)}
             </span>
           </div>
         )}
@@ -125,7 +125,7 @@ export default function ComplaintCorrespondenceAddress({
               {t("Village / Ward", "गाँव / वार्ड")}
             </span>
             <span className="font-medium text-foreground">
-              {effectiveCorrAddr.villageOrWard}
+              {getEntityLabel(effectiveCorrAddr.villageOrWard, t)}
             </span>
           </div>
         )}

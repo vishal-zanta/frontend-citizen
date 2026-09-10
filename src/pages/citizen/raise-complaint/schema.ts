@@ -136,7 +136,6 @@ export const grievanceSchema = z.object({
   classification: z.object({
     // subService: z.string().min(1, "Sub-service is required"),
 
-    
     nature: z.string().min(1, "Grievance type is required"),
     service: z.string().min(1, "Service is required"),
     department: z.string().min(1, "Department is required"),
