@@ -97,8 +97,6 @@ export default function RaiseComplaint({
     frequencyOptions,
     affectedBeneficiaryOptions,
     naturesLoading,
-    allDemography,
-    demographyLoading,
   } = useRaiseComplaintData(lang);
 
   // ── File attachments ──────────────────────────────────────────────────────
@@ -247,8 +245,6 @@ export default function RaiseComplaint({
             handleFileChange={handleFileChange}
             removeAttachment={removeAttachment}
             postComplaintsMutation={postComplaintsMutation}
-            allDemography={allDemography}
-            demographyLoading={demographyLoading}
             mbFile={mbFile}
             step={step}
             setStep={setStep}
@@ -277,8 +273,6 @@ interface FormWizardProps {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   removeAttachment: (index: number) => void;
   postComplaintsMutation: any;
-  allDemography?: any;
-  demographyLoading?: boolean;
   mbFile?: number;
   step?: number;
   setStep: any;
@@ -301,8 +295,6 @@ function FormWizard({
   handleFileChange,
   removeAttachment,
   postComplaintsMutation,
-  allDemography,
-  demographyLoading,
   mbFile,
   step,
   setStep,
@@ -427,11 +419,7 @@ function FormWizard({
 
         {step === 2 && (
           <div className="space-y-6">
-            <AddressSection
-              t={t}
-              allDemography={allDemography}
-              demographyLoading={demographyLoading}
-            />
+            <AddressSection t={t} />
           </div>
         )}
 
@@ -448,8 +436,6 @@ function FormWizard({
             />
             <LocationDetailsSection
               t={t}
-              allDemography={allDemography}
-              demographyLoading={demographyLoading}
             />
             {/* <EvidenceSection frequencyOptions={frequencyOptions} t={t} /> */}
 

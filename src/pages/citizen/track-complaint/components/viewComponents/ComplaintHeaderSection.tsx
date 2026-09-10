@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { StatusBadge } from "@/components/Badges";
 import { Button } from "@/components/ui/button";
+import { getEntityLabel } from "./utils";
 
 interface ComplaintHeaderSectionProps {
   complaint: any;
@@ -33,15 +34,22 @@ export default function ComplaintHeaderSection({
     complaint?.createdDate ||
     complaint?.timeline?.[0]?.createdAt;
 
+  const natureTitle =
+    getEntityLabel(c?.classification?.nature, t) || t("Complaint", "शिकायत");
+  const serviceTitle =
+    getEntityLabel(
+      c?.classification?.service ||
+        c?.service ||
+        c?.classification?.subService,
+      t,
+    ) || "";
+
   return (
     <>
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
         <div>
           <div className="text-xs text-muted-foreground mb-1">
-            {t(
-              `${c?.classification?.nature?.title || "Complaint"} ID`,
-              "आईडी",
-            )}
+            {natureTitle} {t("ID", "आईडी")}
           </div>
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
             <h2 className="text-lg sm:text-xl font-bold text-primary font-mono break-all">
@@ -49,16 +57,11 @@ export default function ComplaintHeaderSection({
             </h2>
             {complaint.status && <StatusBadge status={complaint.status} />}
           </div>
-          <p className="text-sm text-foreground font-medium">
-            {t(
-              complaint.classification?.service?.title ||
-                complaint.service?.title ||
-                complaint.classification?.subService?.title,
-              complaint.classification?.service?.titleHindi ||
-                complaint.service?.titleHindi ||
-                complaint.classification?.subService?.titleHindi,
-            )}
-          </p>
+          {serviceTitle && (
+            <p className="text-sm text-foreground font-medium">
+              {serviceTitle}
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-2 no-print self-start sm:self-auto">
           {canReopen && onOpenReopenDialog && (

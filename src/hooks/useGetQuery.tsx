@@ -18,11 +18,12 @@ export const useGetDepartments = (keys = [], params = {}, enabled = true) => {
   });
 };
 
-export const useGetServices = (keys = [], params = {}, enabled = true) => {
+export const useGetServices = (keys = [], params = {}, enabled = true, otherOptions= {}) => {
   return useQuery({
     queryKey: ["services", ...keys],
     queryFn: () => getServices(params),
     enabled: enabled,
+    ...otherOptions
   });
 };
 

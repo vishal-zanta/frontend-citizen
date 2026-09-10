@@ -107,3 +107,49 @@ export const getImageUrl = (url: string) => {
   // collapse multiple slashes, but skip the "://" after the protocol
   return combined.replace(/([^:]\/)\/+/g, "$1");
 };
+
+/**
+ * Extracts standard English and Hindi name labels from a string or populated object.
+ * Handles demographic address models (name_en, name_local), services/departments (title, titleHindi),
+ * standard labels (name, nameHindi), etc.
+ */
+export const getEntityName = (item: any): { name: string; nameHindi: string } => {
+  if (!item) return { name: "", nameHindi: "" };
+  if (typeof item === "string") {
+    return { name: item, nameHindi: item };
+  }
+  if (typeof item === "object") {
+    const name =
+      item.name_en ||
+      item.title ||
+      item.name ||
+      item.title_en ||
+      item.label ||
+      item.designationLabel ||
+      "";
+    const nameHindi =
+      item.name_local ||
+      item.titleHindi ||
+      item.nameHindi ||
+      item.name_hi ||
+      item.title_hi ||
+      item.labelHindi ||
+      name;
+
+    return { name, nameHindi };
+  }
+  return { name: String(item), nameHindi: String(item) };
+};
+
+/**
+ * Returns the localized label for a string or populated entity using the translation function `t`.
+ */
+export const getEntityLabel = (item: any, t?: (en: string, hi: string) => string) => {
+  if (!item) return "";
+  const { name, nameHindi } = getEntityName(item);
+  if (t) {
+    return t(name, nameHindi || name) || name || nameHindi || "";
+  }
+  return name || nameHindi || "";
+};
+

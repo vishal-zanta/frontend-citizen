@@ -100,14 +100,18 @@ export default function Login() {
   const verifyOtpMutation = useMutation({
     mutationFn: postLogin,
     onSuccess: (res: any) => {
-      getSuccessToast(t("Logged in successfully", "सफलतापूर्वक लॉग इन किया गया"));
+      getSuccessToast(
+        t("Logged in successfully", "सफलतापूर्वक लॉग इन किया गया"),
+      );
       const token = res?.data?.data?.token;
       if (token) {
         localStorage.setItem("usertoken", token);
         sessionStorage.setItem("usertoken", token);
         navigate("/citizen");
       } else {
-        setError(t("Token not found in response", "प्रतिक्रिया में टोकन नहीं मिला"));
+        setError(
+          t("Token not found in response", "प्रतिक्रिया में टोकन नहीं मिला"),
+        );
       }
     },
     onError: (err: any) => {
@@ -118,7 +122,12 @@ export default function Login() {
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone) {
-      setError(t("Please enter a valid phone number", "कृपया एक मान्य फ़ोन नंबर दर्ज करें"));
+      setError(
+        t(
+          "Please enter a valid phone number",
+          "कृपया एक मान्य फ़ोन नंबर दर्ज करें",
+        ),
+      );
       return;
     }
     if (!captcha) {
@@ -140,7 +149,9 @@ export default function Login() {
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otp.length !== 6) {
-      setError(t("Please enter a 6-digit OTP", "कृपया 6 अंकों का ओटीपी दर्ज करें"));
+      setError(
+        t("Please enter a 6-digit OTP", "कृपया 6 अंकों का ओटीपी दर्ज करें"),
+      );
       return;
     }
     setError("");
@@ -154,16 +165,24 @@ export default function Login() {
   return (
     <AuthLayout
       icon={LogIn}
-      title={t("Sahayog Helpline Portal", "सहयोग हेल्पलाइन पोर्टल")}
+      title={t("Sahyog Helpline Portal", "सहयोग हेल्पलाइन पोर्टल")}
       subtitle={
         step === "phone"
           ? t(
               "Enter your phone number to sign in or register",
-              "साइन इन या पंजीकरण करने के लिए अपना फ़ोन नंबर दर्ज करें"
+              "साइन इन या पंजीकरण करने के लिए अपना फ़ोन नंबर दर्ज करें",
             )
           : t("Verify your identity", "अपनी पहचान सत्यापित करें")
       }
-      footer={<Button variant="link" onClick={() => navigate("/complaint")} className="cursor-pointer">Track complaint</Button>}
+      footer={
+        <Button
+          variant="link"
+          onClick={() => navigate("/complaint")}
+          className="cursor-pointer"
+        >
+          Track complaint
+        </Button>
+      }
     >
       {error && (
         <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm font-medium">
@@ -175,7 +194,10 @@ export default function Login() {
         <form onSubmit={handleSendOtp} className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-sm font-semibold text-foreground">
+              <Label
+                htmlFor="phone"
+                className="text-sm font-semibold text-foreground"
+              >
                 {t("Phone Number", "फ़ोन नंबर")}
               </Label>
               <div className="relative">
@@ -185,7 +207,7 @@ export default function Login() {
                   countrySelectProps={{ disabled: true }}
                   placeholder={t(
                     "Enter your registered phone number",
-                    "अपना पंजीकृत फ़ोन नंबर दर्ज करें"
+                    "अपना पंजीकृत फ़ोन नंबर दर्ज करें",
                   )}
                   value={phone}
                   onChange={setPhone}
@@ -200,14 +222,20 @@ export default function Login() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="captcha" className="text-sm font-semibold text-foreground">
+              <Label
+                htmlFor="captcha"
+                className="text-sm font-semibold text-foreground"
+              >
                 {t("Security Code", "सुरक्षा कोड")}
               </Label>
 
               <div className="flex sm:flex-row flex-col sm:items-center gap-2">
                 <Input
                   id="captcha"
-                  placeholder={t("Enter security code", "सुरक्षा कोड दर्ज करें")}
+                  placeholder={t(
+                    "Enter security code",
+                    "सुरक्षा कोड दर्ज करें",
+                  )}
                   value={captcha}
                   onChange={(e) => setCaptcha(e.target.value)}
                   className="flex-1 !h-8.5 sm:!h-12"
@@ -278,16 +306,25 @@ export default function Login() {
         <form onSubmit={handleVerifyOtp} className="space-y-6">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label htmlFor="otp" className="text-sm font-semibold text-foreground">
+              <Label
+                htmlFor="otp"
+                className="text-sm font-semibold text-foreground"
+              >
                 {showResendCaptcha
-                  ? t("Enter new captcha to resend OTP", "ओटीपी पुनः भेजने के लिए नया कैप्चा दर्ज करें")
+                  ? t(
+                      "Enter new captcha to resend OTP",
+                      "ओटीपी पुनः भेजने के लिए नया कैप्चा दर्ज करें",
+                    )
                   : t("One-Time Password (OTP)", "वन-टाइम पासवर्ड (ओटीपी)")}
               </Label>
             </div>
 
             {!showResendCaptcha && (
               <p className="text-xs text-muted-foreground">
-                {t("Enter the 6-digit code sent to", "इस नंबर पर भेजा गया 6 अंकों का कोड दर्ज करें:")}{" "}
+                {t(
+                  "Enter the 6-digit code sent to",
+                  "इस नंबर पर भेजा गया 6 अंकों का कोड दर्ज करें:",
+                )}{" "}
                 <span className="font-semibold text-foreground">{phone}</span>
               </p>
             )}
@@ -336,7 +373,10 @@ export default function Login() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-2">
                   <Input
                     id="resendCaptcha"
-                    placeholder={t("Enter security code", "सुरक्षा कोड दर्ज करें")}
+                    placeholder={t(
+                      "Enter security code",
+                      "सुरक्षा कोड दर्ज करें",
+                    )}
                     value={resendCaptcha}
                     onChange={(e) => setResendCaptcha(e.target.value)}
                     className="flex-1 !h-8.5 sm:!h-12 text-sm"
@@ -420,7 +460,7 @@ export default function Login() {
                   <span className="text-xs text-muted-foreground font-medium">
                     {t(
                       `Resend OTP in ${resendTimer}s`,
-                      `${resendTimer}s में ओटीपी पुनः भेजें`
+                      `${resendTimer}s में ओटीपी पुनः भेजें`,
                     )}
                   </span>
                 ) : (
@@ -437,7 +477,7 @@ export default function Login() {
                   >
                     {t(
                       "Didn't receive code? Resend OTP",
-                      "कोड नहीं मिला? ओटीपी पुनः भेजें"
+                      "कोड नहीं मिला? ओटीपी पुनः भेजें",
                     )}
                   </button>
                 )}
@@ -455,7 +495,8 @@ export default function Login() {
                   }}
                   className="text-xs text-primary hover:underline font-medium inline-flex items-center gap-1 cursor-pointer"
                 >
-                  <ArrowLeft className="w-3 h-3" /> {t("Change Mobile Number", "मोबाइल नंबर बदलें")}
+                  <ArrowLeft className="w-3 h-3" />{" "}
+                  {t("Change Mobile Number", "मोबाइल नंबर बदलें")}
                 </button>
               </div>
             </div>

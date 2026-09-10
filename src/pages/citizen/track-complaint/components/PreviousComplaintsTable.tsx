@@ -3,6 +3,7 @@ import { StatusBadge } from "@/components/Badges";
 import { ComplaintDetailDialog } from "@/components/ComplaintDetailDialog";
 import LoaderErrWrapper from "@/components/LoaderErrWrapper";
 import { useNavigate } from "react-router-dom";
+import { getEntityLabel } from "@/utils/helpers";
 
 interface PreviousComplaintsTableProps {
   filteredComplaints: any[];
@@ -96,32 +97,26 @@ export default function PreviousComplaintsTable({
                       {c.grievanceId || "-"}
                     </td>
                     <td className="px-4 py-2.5 text-foreground">
-                      {typeof c.classification?.nature === "object"
-                        ? t(
-                            c.classification?.nature?.title,
-                            c.classification?.nature?.titleHindi,
-                          )
-                        : c.classification?.nature || "-"}
+                      {getEntityLabel(c.classification?.nature, t) || "-"}
                     </td>
                     <td className="px-4 py-2.5 text-foreground">
-                      {t(
-                        c?.location?.district?.name,
-                        c?.location?.district?.nameHindi,
+                      {getEntityLabel(
+                        c?.location?.district ||
+                          c?.citizenInfo?.address?.district ||
+                          c?.address?.district ||
+                          c?.districtName,
+                        t,
                       ) || "-"}
                     </td>
                     <td className="px-4 py-2.5 text-foreground">
-                      {t(
-                            c.classification?.department
-                              ?.title,
-                             c.classification?.department
-                              ?.titleHindi,
-                          )
-                       }
+                      {getEntityLabel(c.classification?.department, t) || "-"}
                     </td>
                     <td className="px-4 py-2.5 text-foreground">
-                      {t(
-                        c.classification?.service?.title,
-                        c.classification?.service?.titleHindi,
+                      {getEntityLabel(
+                        c.classification?.service ||
+                          c.service ||
+                          c.classification?.subService,
+                        t,
                       ) || "-"}
                     </td>
                     {/* <td className="px-4 py-2.5 text-foreground">

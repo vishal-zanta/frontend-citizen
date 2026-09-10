@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import RhfSelect from "@/components/rhfinputs/RhfSelect";
 import FormSection from "./FormSection";
@@ -26,8 +26,13 @@ export default function ClassificationSection({
 }: ClassificationSectionProps) {
   const { setValue, control } = useFormContext();
 
-  const selectedDepartment = useWatch({ control, name: "classification.department" });
+  const selectedDepartment = useWatch({
+    control,
+    name: "classification.department",
+  });
   const selectedService = useWatch({ control, name: "classification.service" });
+    const departmentRef = useRef(selectedDepartment);
+  
 
   const SERVICES_PARAMS = {
     page: 1,
@@ -40,6 +45,10 @@ export default function ClassificationSection({
     [selectedDepartment],
     SERVICES_PARAMS,
     !!selectedDepartment,
+    {
+      gcTime: 5 * 60 * 1000,
+      staleTime: 5 * 60 * 1000,
+    },
   );
 
   const serviceOptions = (servicesData?.data?.data?.docs ?? []).map(
@@ -55,11 +64,19 @@ export default function ClassificationSection({
   );
 
   useEffect(() => {
-    if (selectedDepartment) setValue("classification.service", "");
+    if (departmentRef.current && selectedDepartment !== departmentRef.current)
+      setValue("classification.service", "");
+
+    departmentRef.current = selectedDepartment;
   }, [selectedDepartment]);
 
   return (
-    <FormSection title={t("What does the complaint related to?", "शिकायत किससे संबंधित है?")}>
+    <FormSection
+      title={t(
+        "What does the complaint related to?",
+        "शिकायत किससे संबंधित है?",
+      )}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <RhfSelect
           name="classification.department"

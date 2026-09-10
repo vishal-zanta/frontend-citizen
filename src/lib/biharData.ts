@@ -4,7 +4,7 @@
 // ============================================================
 
 export const PORTAL_META = {
-  name: "Sahayog Helpline Portal",
+  name: "Sahyog Helpline Portal",
   nameHindi: "बिहार ई-शिकायत पोर्टल",
   tagline: "Good Governance is Public Service - Bihar Government.",
   dept: "",
@@ -1245,7 +1245,7 @@ export const DASHBOARD_KPIS = {
   todayResolved: 143,
   feedbacksReceived: 38642,
   socialMediaComplaints: 2341,
-  visitorCount : 100,
+  visitorCount: 100,
 };
 
 // ── Time-series: Daily complaint volume (last 30 days) ──

@@ -31,6 +31,7 @@ import {
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/context/LanguageContext";
+import { getEntityLabel } from "@/utils/helpers";
 
 // ── Field Visit Data (shared across pages) ──
 export const FIELD_VISIT_DATA = [
@@ -288,10 +289,12 @@ export function ComplaintDetailDialog({
                     {t("District:", "जिला:")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {complaint.address?.district?.name ||
-                      complaint?.address?.district ||
-                      complaint.districtName ||
-                      "N/A"}
+                    {getEntityLabel(
+                      complaint.location?.district ||
+                        complaint.address?.district ||
+                        complaint.districtName,
+                      t,
+                    ) || "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -300,9 +303,13 @@ export function ComplaintDetailDialog({
                     {t("Village / Ward:", "ग्राम / वार्ड:")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {complaint.address?.villageOrWard ||
-                      complaint.ulbName ||
-                      "N/A"}
+                    {getEntityLabel(
+                      complaint.location?.panchayat ||
+                        complaint.address?.panchayat ||
+                        complaint.address?.villageOrWard ||
+                        complaint.ulbName,
+                      t,
+                    ) || "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -311,7 +318,12 @@ export function ComplaintDetailDialog({
                     {t("Subdivision:", "अनुमंडल:")}
                   </span>
                   <span className="font-medium text-foreground">
-                    {complaint.address?.subdivision || complaint.ward || "N/A"}
+                    {getEntityLabel(
+                      complaint.location?.subdivision ||
+                        complaint.address?.subdivision ||
+                        complaint.ward,
+                      t,
+                    ) || "N/A"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -337,14 +349,12 @@ export function ComplaintDetailDialog({
                   {t("Service", "सेवा")}
                 </div>
                 <div className="font-medium text-xs sm:text-sm text-foreground">
-                  {t(
-                    complaint.classification?.service?.title ||
-                      complaint.classification?.subService?.title,
-                    complaint.classification?.service?.titleHindi ||
-                      complaint.classification?.subService?.titleHindi,
+                  {getEntityLabel(
+                    complaint.classification?.service ||
+                      complaint.classification?.subService ||
+                      complaint.service,
+                    t,
                   ) ||
-                    complaint.classification?.service?.title ||
-                    complaint.classification?.subService?.title ||
                     complaint.serviceName ||
                     "N/A"}
                 </div>

@@ -66,7 +66,7 @@ export default function ComplaintPermanentAddress({
               {t("Panchayat", "पंचायत")}
             </span>
             <span className="font-medium text-foreground">
-              {permAddr.panchayat}
+              {getEntityLabel(permAddr.panchayat, t)}
             </span>
           </div>
         )}
@@ -76,7 +76,7 @@ export default function ComplaintPermanentAddress({
               {t("Thana", "थाना")}
             </span>
             <span className="font-medium text-foreground">
-              {permAddr.thana}
+              {getEntityLabel(permAddr.thana, t)}
             </span>
           </div>
         )}
