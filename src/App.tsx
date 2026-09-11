@@ -23,11 +23,14 @@ import Login from "./pages/Login";
 import PageNotFound from "./lib/PageNotFound";
 import { getProfile } from "./api/auth.api";
 import { saveVisitor } from "./api/global.api";
+import SahyogLayout from "./pages/sahyog/layouts/SahyogLayout";
+import SahyogHomePage from "./pages/sahyog/pages/homepage";
 
 import FullScreenLoader from "./components/FullScreenLoader";
 import LanguageContextProvider from "./context/LanguageContext";
 import ThemeContextProvider from "./context/ThemeContext";
 import CompliantDetails from "./pages/citizen/complaint-details";
+import Faq from "./pages/sahyog/pages/faq";
 
 const RootLayout = () => {
   useEffect(() => {
@@ -83,12 +86,12 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        path: "",
-        element: <PortalHome />,
+        index: true,
+        element: <Navigate to={"/sahyog"} replace />,
       },
       {
         path: "login",
-        element: <Login />,
+        element: <PortalHome />,
       },
       {
         path: "citizen",
@@ -121,9 +124,26 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path : "complaint",
-        element: <CompliantDetails/>
-
+        path: "complaint",
+        element: <CompliantDetails />,
+      },
+      {
+        path: "sahyog",
+        element: <SahyogLayout />,
+        children: [
+          {
+            index: true,
+            element: <SahyogHomePage />,
+          },
+          {
+            path: "homepage",
+            element: <SahyogHomePage />,
+          },
+           {
+            path: "faq",
+            element: <Faq />,
+          },
+        ],
       },
       {
         path: "*",

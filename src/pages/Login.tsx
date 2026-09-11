@@ -63,9 +63,9 @@ export default function Login() {
   useEffect(() => {
     const token = localStorage.getItem("usertoken");
     if (!!token && state?.redirect !== false) {
-      navigate("/citizen");
+      navigate(state?.to || "/citizen");
     }
-  }, [navigate]);
+  }, [navigate, state]);
 
   const sendOtpMutation = useMutation({
     mutationFn: sendOtp,
@@ -107,7 +107,7 @@ export default function Login() {
       if (token) {
         localStorage.setItem("usertoken", token);
         sessionStorage.setItem("usertoken", token);
-        navigate("/citizen");
+        navigate(state?.to || "/citizen");
       } else {
         setError(
           t("Token not found in response", "प्रतिक्रिया में टोकन नहीं मिला"),
