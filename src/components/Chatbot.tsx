@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bot, Send, X } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 import { DISTRICTS, SERVICES } from "@/lib/biharData";
 import { addStoredComplaint, findComplaintById } from "@/lib/complaintStore";
 
@@ -417,17 +416,10 @@ export default function Chatbot({ role = "citizen" }: { role?: string }) {
       return;
     }
 
-    try {
-      const res = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are the AI Assistant for the Bihar Sahyog Helpline Portal (BUCGP). The user asked: "${text}". Provide a helpful, concise response (max 3 sentences) about Bihar government grievance services. Be friendly and practical. If the user seems to want to file a complaint, suggest clicking "File Complaint".`,
-      });
-      addBot(res as any, "quick");
-    } catch {
-      addBot(
-        `I understand you're asking about "${text}". I can help you with:\n• Filing a complaint\n• Tracking your complaint\n• Service & SLA info\n• Technical support\n\nClick a quick action below or type your question.`,
-        "quick",
-      );
-    }
+    addBot(
+      `I understand you're asking about "${text}". I can help you with:\n• Filing a complaint\n• Tracking your complaint\n• Service & SLA info\n• Technical support\n\nClick a quick action below or type your question.`,
+      "quick",
+    );
   };
 
   const renderActions = (actions: string | null | undefined) => {

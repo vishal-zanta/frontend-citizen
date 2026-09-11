@@ -138,7 +138,7 @@ const CompliantDetails = () => {
           "Enter your Tracking ID and security code to view status",
           "स्थिति देखने के लिए अपनी ट्रैकिंग आईडी और सुरक्षा कोड दर्ज करें",
         )}
-        footer={<Button variant="link" onClick={() => navigate("/")} className="cursor-pointer" >Back to login</Button>}
+        footer={<Button variant="link" onClick={() => navigate("/login")} className="cursor-pointer" >Back to login</Button>}
       >
         {error && (
           <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm font-medium">

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown, Bell, Menu, LogOut, Settings, CheckCircle2, AlertCircle, Info, Sun, Moon } from "lucide-react";
 import { useProfile } from "@/context/ProfileContext";
-import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/context/LanguageContext";
 import LangSelector from "@/components/LangSelector";
 import { useTheme } from "@/context/ThemeContext";
