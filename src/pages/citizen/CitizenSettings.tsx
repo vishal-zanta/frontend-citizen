@@ -3,8 +3,6 @@ import {
   ArrowLeft,
   User,
   LogOut,
-  Type,
-  Contrast,
   Globe,
   Save,
   MapPin,
@@ -72,8 +70,6 @@ export default function CitizenSettings() {
   const [errors, setErrors] = useState<{ fullName?: string; email?: string }>(
     {},
   );
-  const [fontScale, setFontScale] = useState("1");
-  const [highContrast, setHighContrast] = useState(false);
   const [saved, setSaved] = useState(false);
   const navigate = useNavigate();
 
@@ -137,27 +133,6 @@ export default function CitizenSettings() {
       }
     }
   }, [profileApiData, setLang]);
-
-  useEffect(() => {
-    try {
-      setFontScale(localStorage.getItem("bucgp_font_scale") || "1");
-      setHighContrast(localStorage.getItem("bucgp_high_contrast") === "true");
-    } catch {}
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty("--font-scale", fontScale);
-    try {
-      localStorage.setItem("bucgp_font_scale", fontScale);
-    } catch {}
-  }, [fontScale]);
-
-  useEffect(() => {
-    document.body.classList.toggle("high-contrast", highContrast);
-    try {
-      localStorage.setItem("bucgp_high_contrast", String(highContrast));
-    } catch {}
-  }, [highContrast]);
 
   const updateProfileMutation = useMutation({
     mutationFn: () => {
@@ -226,12 +201,12 @@ export default function CitizenSettings() {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-foreground">
-              {t("Settings", "सेटिंग्स")}
+              {t("Profile", "प्रोफ़ाइल")}
             </h1>
             <p className="text-sm text-muted-foreground mt-0.5">
               {t(
-                "Manage your profile, accessibility, and preferences.",
-                "अपनी प्रोफ़ाइल, पहुंच और प्राथमिकताएँ प्रबंधित करें।",
+                "Manage your profile and personal details.",
+                "अपनी प्रोफ़ाइल और व्यक्तिगत विवरण प्रबंधित करें।",
               )}
             </p>
           </div>
@@ -507,67 +482,6 @@ export default function CitizenSettings() {
                   ? t("Saved!", "सहेजा गया!")
                   : t("Save Profile", "प्रोफ़ाइल सहेजें")}
               </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Accessibility */}
-        <Card>
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Type className="w-4 h-4" /> {t("Accessibility", "पहुंच")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-4 sm:p-6 space-y-4">
-            <div>
-              <Label className="mb-2 block">
-                {t("Font Size", "फ़ॉन्ट आकार")}
-              </Label>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { v: "1", label: t("Normal", "सामान्य") },
-                  { v: "1.15", label: t("Large", "बड़ा") },
-                  { v: "1.3", label: t("Extra Large", "बहुत बड़ा") },
-                ].map((opt) => (
-                  <button
-                    key={opt.v}
-                    onClick={() => setFontScale(opt.v)}
-                    className={`px-4 py-2 rounded-lg text-sm border transition-colors cursor-pointer ${
-                      fontScale === opt.v
-                        ? "bg-primary text-white border-primary"
-                        : "border-border hover:bg-muted"
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <Label className="flex items-center gap-2">
-                  <Contrast className="w-4 h-4" />{" "}
-                  {t("High Contrast Mode", "उच्च कंट्रास्ट मोड")}
-                </Label>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {t(
-                    "Increases visual contrast for better readability",
-                    "बेहतर पठनीयता के लिए दृश्य कंट्रास्ट बढ़ाता है",
-                  )}
-                </p>
-              </div>
-              <button
-                onClick={() => setHighContrast(!highContrast)}
-                className={`w-12 h-6 rounded-full transition-colors cursor-pointer ${
-                  highContrast ? "bg-primary" : "bg-muted"
-                }`}
-              >
-                <div
-                  className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                    highContrast ? "translate-x-6" : "translate-x-1"
-                  }`}
-                />
-              </button>
             </div>
           </CardContent>
         </Card>

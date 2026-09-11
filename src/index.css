@@ -4,8 +4,35 @@
 @import "@fontsource-variable/geist";
 
 @custom-variant dark (&:is(.dark *));
+/* Accessibility */
+:root {
+  --font-scale: 1;
+  --letter-spacing: normal;
+  --line-height: normal;
+}
 
 @theme {
+    --text-xs: calc(0.75rem * var(--font-scale));
+  --text-xs--line-height: calc(1rem * var(--font-scale));
+  --text-sm: calc(0.875rem * var(--font-scale));
+  --text-sm--line-height: calc(1.25rem * var(--font-scale));
+  --text-base: calc(1rem * var(--font-scale));
+  --text-base--line-height: calc(1.5rem * var(--font-scale));
+  --text-lg: calc(1.125rem * var(--font-scale));
+  --text-lg--line-height: calc(1.75rem * var(--font-scale));
+  --text-xl: calc(1.25rem * var(--font-scale));
+  --text-xl--line-height: calc(1.75rem * var(--font-scale));
+  --text-2xl: calc(1.5rem * var(--font-scale));
+  --text-2xl--line-height: calc(2rem * var(--font-scale));
+  --text-3xl: calc(1.875rem * var(--font-scale));
+  --text-3xl--line-height: calc(2.25rem * var(--font-scale));
+  --text-4xl: calc(2.25rem * var(--font-scale));
+  --text-4xl--line-height: calc(2.5rem * var(--font-scale));
+  --text-5xl: calc(3rem * var(--font-scale));
+  --text-6xl: calc(3.75rem * var(--font-scale));
+  --text-7xl: calc(4.5rem * var(--font-scale));
+  --text-8xl: calc(6rem * var(--font-scale));
+  --text-9xl: calc(8rem * var(--font-scale));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
@@ -158,16 +185,15 @@
   --sidebar: hsl(222 47% 11%);
 }
 
-/* Accessibility */
-:root {
-  --font-scale: 1;
-}
+
 
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-body);
   font-size: calc(1rem * var(--font-scale));
+  letter-spacing: var(--letter-spacing, normal);
+  line-height: var(--line-height, normal);
 }
 
 body.high-contrast {

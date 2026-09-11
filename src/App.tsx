@@ -29,6 +29,7 @@ import SahyogHomePage from "./pages/sahyog/pages/homepage";
 import FullScreenLoader from "./components/FullScreenLoader";
 import LanguageContextProvider from "./context/LanguageContext";
 import ThemeContextProvider from "./context/ThemeContext";
+import AccessibilityProvider from "./context/AccessibilityContext";
 import CompliantDetails from "./pages/citizen/complaint-details";
 import Faq from "./pages/sahyog/pages/faq";
 
@@ -156,15 +157,17 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ThemeContextProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <ProfileProvider>
-          <LanguageContextProvider>
-            <RouterProvider router={router} />
-            {/* <Toaster /> */}
-            <SonnerToaster position="top-center" richColors />
-          </LanguageContextProvider>
-        </ProfileProvider>
-      </QueryClientProvider>
+      <AccessibilityProvider>
+        <QueryClientProvider client={queryClientInstance}>
+          <ProfileProvider>
+            <LanguageContextProvider>
+              <RouterProvider router={router} />
+              {/* <Toaster /> */}
+              <SonnerToaster position="top-center" richColors />
+            </LanguageContextProvider>
+          </ProfileProvider>
+        </QueryClientProvider>
+      </AccessibilityProvider>
     </ThemeContextProvider>
   );
 }

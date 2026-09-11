@@ -56,6 +56,18 @@ export default function LocationDetailsSection({
       )}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <RhfInput
+          name="location.addressLine"
+          label={t("Address Line", "पता विवरण")}
+          placeholder={t(
+            "House no., Street, Area, Landmark",
+            "मकान संख्या, सड़क, क्षेत्र, लैंडमार्क",
+          )}
+          required
+          maxLength={50}
+          className="md:col-span-2"
+        />
+
         <RhfSelect
           name="location.division"
           label={t("Division", "प्रमंडल")}

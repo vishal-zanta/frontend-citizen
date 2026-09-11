@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FileText, Search, Settings, MessageSquare } from "lucide-react";
+import { FileText, Search, Settings, MessageSquare, User } from "lucide-react";
 
 interface QuickActionsProps {
   t: (en: string, hi: string) => string;
@@ -38,10 +38,10 @@ export default function QuickActions({ t }: QuickActionsProps) {
         className="group bg-card rounded-xl border-2 border-purple-100 dark:border-slate-800 hover:border-purple-400 p-4 sm:p-6 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
       >
         <div className="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-          <Settings className="w-6 h-6" />
+          <User className="w-6 h-6" />
         </div>
         <h3 className="font-bold text-foreground">
-          {t("Settings", "सेटिंग्स")}
+          {t("Profile", "प्रोफाइल")}
         </h3>
       </Link>
 

@@ -27,6 +27,8 @@ const addressSchema = z.object({
     .min(1, "Thana is required")
     .max(50, "Thana cannot exceed 50 characters"),
   pincode: z.string().min(1, "Pincode is required"),
+  village: z.string().min(1, "Village is required"),
+  ps: z.string().min(1, "Post office  is required"),
 });
 
 const correspondenceAddressSchema = z
@@ -65,6 +67,16 @@ const correspondenceAddressSchema = z
       .optional()
       .or(z.literal("")),
     pincode: z.string().min(1, "Pincode is required"),
+    village: z
+      .string()
+      .max(50, "Village cannot exceed 50 characters")
+      .optional()
+      .or(z.literal("")),
+    ps: z
+      .string()
+      .max(50, "Post office cannot exceed 50 characters")
+      .optional()
+      .or(z.literal("")),
   })
   .superRefine((data, ctx) => {
     if (data.state === "Bihar") {
@@ -94,6 +106,20 @@ const correspondenceAddressSchema = z
           code: z.ZodIssueCode.custom,
           message: "Thana is required",
           path: ["thana"],
+        });
+      }
+      if (!data.village || data.village.trim() === "") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: " Village is required",
+          path: ["village"],
+        });
+      }
+      if (!data.ps || data.ps.trim() === "") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: " Post office is required",
+          path: ["ps"],
         });
       }
     } else {
@@ -179,6 +205,10 @@ export const grievanceSchema = z.object({
 
   // }),
   location: z.object({
+    addressLine: z
+      .string()
+      .min(1, "Address details are required")
+      .max(50, "Address details cannot exceed 50 characters"),
     division: z
       .string()
       .min(1, "Division is required")
@@ -224,6 +254,8 @@ export const defaultValues: GrievanceFormValues = {
       pincode: "",
       subdivision: "",
       thana: "",
+      ps: "",
+      village: "",
     },
   },
   classification: { nature: "", service: "", department: "" },
@@ -259,6 +291,8 @@ export const defaultValues: GrievanceFormValues = {
     thana: "",
     state: "Bihar",
     city: "",
+    ps: "",
+    village: "",
   },
   location: {
     block: "",
@@ -267,5 +301,6 @@ export const defaultValues: GrievanceFormValues = {
     panchayat: "",
     pincode: "",
     subdivision: "",
+    addressLine: "",
   },
 };
