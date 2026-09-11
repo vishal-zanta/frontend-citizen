@@ -38,6 +38,10 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
       formData.append("citizenInfo[address][panchayat]", citizenAddr.panchayat);
     if (citizenAddr.thana)
       formData.append("citizenInfo[address][thana]", citizenAddr.thana);
+    if (citizenAddr.village)
+      formData.append("citizenInfo[address][village]", citizenAddr.village);
+    if (citizenAddr.ps)
+      formData.append("citizenInfo[address][ps]", citizenAddr.ps);
     if (citizenAddr.pincode)
       formData.append("citizenInfo[address][pincode]", citizenAddr.pincode);
   }
@@ -97,6 +101,8 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
       formData.append("address[subdivision]", addr.subdivision);
     if (addr.panchayat) formData.append("address[panchayat]", addr.panchayat);
     if (addr.thana) formData.append("address[thana]", addr.thana);
+    if (addr.village) formData.append("address[village]", addr.village);
+    if (addr.ps) formData.append("address[ps]", addr.ps);
     if (addr.pincode) formData.append("address[pincode]", addr.pincode);
   }
 
@@ -106,6 +112,8 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
 
   const loc = (data as any).location;
   if (loc) {
+    if (loc.addressLine)
+      formData.append("location[addressLine]", loc.addressLine);
     if (loc.division) formData.append("location[division]", loc.division);
     if (loc.district) formData.append("location[district]", loc.district);
     if (loc.subdivision)

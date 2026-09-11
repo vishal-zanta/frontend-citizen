@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ChevronDown, Bell, Menu, LogOut, Settings, CheckCircle2, AlertCircle, Info, Sun, Moon } from "lucide-react";
+import { ChevronDown, Bell, Menu, LogOut, User, Settings, CheckCircle2, AlertCircle, Info, Sun, Moon } from "lucide-react";
 import { useProfile } from "@/context/ProfileContext";
 import { useLanguage } from "@/context/LanguageContext";
 import LangSelector from "@/components/LangSelector";
+import AccessibilityTools from "@/components/AccessibilityTools";
 import { useTheme } from "@/context/ThemeContext";
 
 const CITIZEN_NOTIFICATIONS = [
@@ -88,7 +89,11 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
         </span>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Accessibility Tools Popover */}
+        <AccessibilityTools />
+
+        {/* Language Selector */}
         <LangSelector />
 
         {/* Theme Toggle Button */}
@@ -104,33 +109,6 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
             <Moon className="w-5 h-5" />
           )}
         </button>
-
-        {/* Notifications */}
-        {/* <div ref={notifRef} className="relative">
-          <button
-            onClick={() => setShowNotifs(!showNotifs)}
-            className="p-2 hover:bg-muted text-muted-foreground hover:text-foreground rounded-lg transition-colors relative cursor-pointer"
-          >
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-          {showNotifs && (
-            <div className="absolute right-0 mt-1.5 w-80 bg-card rounded-xl border border-border shadow-lg py-1 z-50">
-              <div className="px-4 py-2 border-b border-border font-bold text-xs text-foreground">{t("Notifications", "सूचनाएं")}</div>
-              <div className="divide-y divide-border max-h-64 overflow-y-auto">
-                {CITIZEN_NOTIFICATIONS.map(n => (
-                  <div key={n.id} className="p-3 flex items-start gap-2.5 hover:bg-muted/50 transition-colors">
-                    <div className="mt-0.5 shrink-0">{notifIcon(n.type)}</div>
-                    <div>
-                      <div className="text-xs text-foreground font-medium leading-normal">{n.text}</div>
-                      <div className="text-[10px] text-muted-foreground mt-1">{n.time}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div> */}
 
         {/* User profile */}
         <div ref={profileRef} className="relative">
@@ -158,8 +136,8 @@ export default function TopBar({ onToggleSidebar, sidebarOpen }: TopBarProps) {
                 onClick={() => setShowProfile(false)}
                 className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition-colors"
               >
-                <Settings className="w-4 h-4 text-muted-foreground" />
-                {t("Settings", "सेटिंग्स")}
+                <User className="w-4 h-4 text-muted-foreground" />
+                {t("Profile", "प्रोफ़ाइल")}
               </Link>
               <button
                 onClick={handleLogout}

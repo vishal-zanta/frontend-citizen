@@ -116,6 +116,7 @@ const CompliantDetails = () => {
     setCaptcha("");
     setError("");
     refetchCaptcha();
+    navigate("/login")
   };
 
   if (step === 2) {
@@ -297,7 +298,7 @@ const Step2: React.FC<Step2Props> = ({ t, data, trackingId, onBack }) => {
             className="gap-2 cursor-pointer text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-4 h-4" />
-            {t("Back to search", "खोज पर वापस")}
+            {t("Back to login", "लॉगिन पर वापस")}
           </Button>
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 font-mono">

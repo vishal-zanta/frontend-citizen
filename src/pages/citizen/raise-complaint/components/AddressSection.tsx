@@ -112,6 +112,22 @@ export const PermanentAddress = ({ t }: { t: any }) => {
         />
 
         <RhfInput
+          name={`${prefix}.village`}
+          label={t("Village", "गाँव")}
+          placeholder={t("Enter Village", "गाँव दर्ज करें")}
+          required
+          maxLength={50}
+        />
+
+        <RhfInput
+          name={`${prefix}.ps`}
+          label={t("Post Office", "डाकघर")}
+          placeholder={t("Enter Post Office", "डाकघर दर्ज करें")}
+          required
+          maxLength={50}
+        />
+
+        <RhfInput
           name={`${prefix}.pincode`}
           label={t("Pin Code", "पिन कोड")}
           placeholder="800001"
@@ -188,7 +204,7 @@ export const CorrespondenceAddress = ({
     }));
   }, [selectedState]);
 
-  // Clear city, district, subdivision, thana, panchayat when state changes
+  // Clear city, district, subdivision, thana, panchayat, village, ps when state changes
   const prevStateRef = React.useRef(selectedState);
   React.useEffect(() => {
     if (
@@ -218,6 +234,14 @@ export const CorrespondenceAddress = ({
         shouldValidate: true,
       });
       setValue(`${prefix}.thana`, "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setValue(`${prefix}.village`, "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setValue(`${prefix}.ps`, "", {
         shouldDirty: true,
         shouldValidate: true,
       });
@@ -311,6 +335,22 @@ export const CorrespondenceAddress = ({
               isLoading={isThanasLoading}
               required
             />
+
+            <RhfInput
+              name={`${prefix}.village`}
+              label={t("Village", "गाँव")}
+              placeholder={t("Enter Village", "गाँव दर्ज करें")}
+              required
+              maxLength={50}
+            />
+
+            <RhfInput
+              name={`${prefix}.ps`}
+              label={t("Post Office", "डाकघर")}
+              placeholder={t("Enter Post Office", "डाकघर दर्ज करें")}
+              required
+              maxLength={50}
+            />
           </>
         ) : (
           <>
@@ -342,6 +382,20 @@ export const CorrespondenceAddress = ({
               name={`${prefix}.thana`}
               label={t("Select Thana", "थाना")}
               placeholder={t("Enter Thana", "थाना दर्ज करें")}
+              maxLength={50}
+            />
+
+            <RhfInput
+              name={`${prefix}.village`}
+              label={t("Village", "गाँव")}
+              placeholder={t("Enter Village", "गाँव दर्ज करें")}
+              maxLength={50}
+            />
+
+            <RhfInput
+              name={`${prefix}.ps`}
+              label={t("Post Office", "डाकघर")}
+              placeholder={t("Enter Post Office", "डाकघर दर्ज करें")}
               maxLength={50}
             />
           </>
@@ -449,6 +503,14 @@ export default function AddressSection({ t }: AddressSectionProps) {
         shouldDirty: true,
         shouldValidate: true,
       });
+      setValue("address.village", perm?.village || "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setValue("address.ps", perm?.ps || "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
       setValue("address.pincode", perm?.pincode || "", {
         shouldDirty: true,
         shouldValidate: true,
@@ -488,6 +550,12 @@ export default function AddressSection({ t }: AddressSectionProps) {
         shouldValidate: true,
       });
       setValue("address.thana", thanaLabel, {
+        shouldValidate: true,
+      });
+      setValue("address.village", permanentAddress?.village || "", {
+        shouldValidate: true,
+      });
+      setValue("address.ps", permanentAddress?.ps || "", {
         shouldValidate: true,
       });
       setValue("address.pincode", permanentAddress?.pincode || "", {
