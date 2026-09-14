@@ -1,5 +1,5 @@
 import React from "react";
-import { Phone, Mail, MapPin, ShieldCheck } from "lucide-react";
+import { Phone, Mail, MapPin, ShieldCheck, AlertCircle } from "lucide-react";
 import { useSahyogTranslation } from "../translations";
 
 export default function Footer() {
@@ -7,12 +7,14 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-[#0b1329] text-slate-300 pt-16 pb-8 border-t border-slate-800 text-xs" id="contact">
+      <footer className="bg-[#0b1329] text-slate-300 pt-14 pb-8 border-t border-slate-800 text-xs" id="contact">
         <div className="max-w-7xl mx-auto px-4 sm:px-8">
-          {/* Main 5-Column Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-12 border-b border-slate-800/80">
-            {/* Column 1: Sahyog Portal Description */}
-            <div className="lg:col-span-1 space-y-3">
+          
+          {/* Main 3-Column Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-10 border-b border-slate-800/80">
+            
+            {/* Column 1: Sahyog Helpline Portal Description */}
+            <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">
                   <ShieldCheck className="w-5 h-5" />
@@ -26,67 +28,7 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* Column 2: Key Links */}
-            <div>
-              <h4 className="font-bold text-white text-sm mb-4 tracking-wider flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                <span>{t.footer.keyLinks}</span>
-              </h4>
-              <ul className="space-y-2.5 text-slate-400">
-                <li>
-                  <a href="https://lokshikayat.bihar.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                    Lok Shikayat
-                  </a>
-                </li>
-                <li>
-                  <a href="https://loksamvad.bihar.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                    Loksamvad
-                  </a>
-                </li>
-                <li>
-                  <a href="https://bpsm.bihar.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                    BPSM Portal
-                  </a>
-                </li>
-                <li>
-                  <a href="https://jaankari.bihar.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                    JAANKARI Facilitation
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Column 3: Important Links */}
-            <div>
-              <h4 className="font-bold text-white text-sm mb-4 tracking-wider flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
-                <span>{t.footer.importantLinks}</span>
-              </h4>
-              <ul className="space-y-2.5 text-slate-400">
-                <li>
-                  <a href="https://state.bihar.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                    State Bihar Portal
-                  </a>
-                </li>
-                <li>
-                  <a href="https://cm.bihar.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                    CM Bihar
-                  </a>
-                </li>
-                <li>
-                  <a href="https://cmsecretariat.bihar.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                    CM Secretariat
-                  </a>
-                </li>
-                <li>
-                  <a href="https://cmrelieffund.bihar.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                    CM Relief Fund
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Column 4: Contact Us */}
+            {/* Column 2: Contact Us */}
             <div>
               <h4 className="font-bold text-white text-sm mb-4 tracking-wider flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -130,7 +72,7 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Column 5: Official Secretariat Address */}
+            {/* Column 3: Updated Official Address */}
             <div>
               <h4 className="font-bold text-white text-sm mb-4 tracking-wider flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-amber-500"></span>
@@ -142,11 +84,11 @@ export default function Footer() {
                   <strong className="text-white font-medium">{t.footer.addressText[0]}</strong><br />
                   {t.footer.addressText[1]}<br />
                   {t.footer.addressText[2]}<br />
-                  {t.footer.addressText[3]}<br />
-                  {t.footer.addressText[4]}
+                  {t.footer.addressText[3]}
                 </p>
               </div>
             </div>
+
           </div>
 
           {/* Copyright Sub-footer */}
@@ -161,13 +103,15 @@ export default function Footer() {
               </span>
             </div>
           </div>
+
         </div>
       </footer>
 
       {/* Mandatory Red Disclaimer Bar */}
-      <div className="bg-red-600 text-white py-2.5 px-4 text-center text-xs font-semibold tracking-wide border-t border-red-700">
+      <div className="bg-red-700 text-white py-2.5 px-4 text-center text-xs font-semibold tracking-wide border-t border-red-800 shadow-inner">
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
-          <span>{t.footer.disclaimer}</span>
+          <AlertCircle className="w-4 h-4 text-red-200 shrink-0" />
+          <p className="leading-snug">{t.footer.disclaimer}</p>
         </div>
       </div>
     </>

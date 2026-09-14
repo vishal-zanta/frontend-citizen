@@ -137,9 +137,10 @@ export const grievanceSchema = z.object({
   citizenInfo: z.object({
     fullName: z
       .string()
-      .max(50, "Full name cannot exceed 50 characters")
-      .optional()
-      .or(z.literal("")),
+      .min(1, "Name is required")
+      .max(50, "Full name cannot exceed 50 characters"),
+      // .optional()
+      // .or(z.literal("")),
     mobile: z
       .string()
       .min(13, "Mobile number must be at least 10 digits")

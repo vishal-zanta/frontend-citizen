@@ -90,10 +90,6 @@ export default function FeaturesAndFlow() {
                 ))}
               </div>
             </div>
-
-            <div className="mt-8 pt-4 border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-500">
-              <span className="font-medium">{t.featuresAndFlow.slaNote}</span>
-            </div>
           </div>
         </div>
       </div>

@@ -19,8 +19,7 @@ import { updateProfile } from "@/api/auth.api";
 import { getErrorToast, getSuccessToast } from "@/utils/helpers";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { useGetDemographics } from "@/hooks/useGetQuery";
-import subDivisionsData from "@/utils/sub-divisions.json";
+import { useGetAddressFields } from "@/pages/citizen/raise-complaint/hooks";
 
 interface CitizenAddress {
   addressLine: string;
@@ -28,6 +27,8 @@ interface CitizenAddress {
   subdivision: string;
   panchayat: string;
   thana: string;
+  village: string;
+  ps: string;
   pincode: string;
 }
 
@@ -64,6 +65,8 @@ export default function CitizenSettings() {
       subdivision: "",
       panchayat: "",
       thana: "",
+      village: "",
+      ps: "",
       pincode: "",
     },
   });
@@ -72,45 +75,27 @@ export default function CitizenSettings() {
   );
   const [saved, setSaved] = useState(false);
   const navigate = useNavigate();
-
   const queryClient = useQueryClient();
 
-  const API_PARAMS = {
-    page: 1,
-    limit: 500,
-    select: "title,titleHindi,name,nameHindi",
-  };
-
-  const { data: demographyData, isLoading: demographyLoading } =
-    useGetDemographics([], API_PARAMS);
-
-  const allDemography = (demographyData?.data?.data?.docs ?? []).map(
-    (d: any) => ({
-      label: lang === "hi" && d.nameHindi ? d.nameHindi : d.name,
-      value: d._id,
-      name: d.name,
-    }),
+  const {
+    districtOptions,
+    isDistrictsLoading,
+    blockOptions,
+    isBlocksLoading,
+    panchayatOptions,
+    isPanchayatsLoading,
+    thanaOptions,
+    isThanasLoading,
+  } = useGetAddressFields(
+    {
+      lang,
+      districtId: profile.address?.district,
+      blockId: profile.address?.subdivision,
+    },
+    {
+      isValueId: true,
+    },
   );
-
-  const selectedDistrict = React.useMemo(() => {
-    return allDemography?.find(
-      (d: any) => d.value === profile.address?.district,
-    );
-  }, [allDemography, profile.address?.district]);
-
-  const districtName = selectedDistrict?.name;
-
-  const subdivisionOptions = React.useMemo(() => {
-    if (!districtName) return [];
-    const subdivisions = (subDivisionsData as Record<string, string[]>)[
-      districtName
-    ];
-    if (!subdivisions) return [];
-    return subdivisions.map((sub: string) => ({
-      label: sub,
-      value: sub,
-    }));
-  }, [districtName]);
 
   useEffect(() => {
     if (profileApiData) {
@@ -125,6 +110,8 @@ export default function CitizenSettings() {
           subdivision: profileApiData.address?.subdivision || "",
           panchayat: profileApiData.address?.panchayat || "",
           thana: profileApiData.address?.thana || "",
+          village: profileApiData.address?.village || "",
+          ps: profileApiData.address?.ps || "",
           pincode: profileApiData.address?.pincode || "",
         },
       });
@@ -151,7 +138,6 @@ export default function CitizenSettings() {
         t("Profile updated successfully", "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई"),
       );
       queryClient.invalidateQueries({ queryKey: ["auth-profile"] });
-      console.log({ data: data?.data?.data });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     },
@@ -300,11 +286,11 @@ export default function CitizenSettings() {
               </div>
             </div>
 
-            {/* Address Details */}
+            {/* Address Details (Applicant Permanent Address format) */}
             <div className="pt-4 border-t border-border space-y-3">
               <div className="flex items-center gap-2 text-foreground font-semibold text-sm">
                 <MapPin className="w-4 h-4 text-primary" />
-                <span>{t("Address Details", "पता विवरण")}</span>
+                <span>{t("Applicant Permanent Address", "स्थायी पता")}</span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -318,14 +304,15 @@ export default function CitizenSettings() {
                       "House no., Street, Area",
                       "मकान संख्या, सड़क, क्षेत्र",
                     )}
+                    maxLength={50}
                     onChange={(e) =>
-                      setProfile({
-                        ...profile,
+                      setProfile((prev) => ({
+                        ...prev,
                         address: {
-                          ...profile.address,
+                          ...prev.address,
                           addressLine: e.target.value,
                         },
-                      })
+                      }))
                     }
                   />
                 </div>
@@ -336,28 +323,30 @@ export default function CitizenSettings() {
                   </Label>
                   <select
                     value={profile.address?.district || ""}
-                    disabled={demographyLoading}
+                    disabled={isDistrictsLoading}
                     onChange={(e) => {
-                      setProfile({
-                        ...profile,
+                      setProfile((prev) => ({
+                        ...prev,
                         address: {
-                          ...profile.address,
+                          ...prev.address,
                           district: e.target.value,
                           subdivision: "",
+                          panchayat: "",
+                          thana: "",
                         },
-                      });
+                      }));
                     }}
-                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option
                       value=""
                       className="bg-popover text-popover-foreground"
                     >
-                      {demographyLoading
+                      {isDistrictsLoading
                         ? t("Loading districts...", "जिले लोड हो रहे हैं...")
                         : t("Select District", "जिला चुनें")}
                     </option>
-                    {allDemography.map((d: any) => (
+                    {districtOptions.map((d: any) => (
                       <option
                         key={d.value}
                         value={d.value}
@@ -375,28 +364,32 @@ export default function CitizenSettings() {
                   </Label>
                   <select
                     value={profile.address?.subdivision || ""}
-                    disabled={!profile.address?.district}
-                    onChange={(e) =>
-                      setProfile({
-                        ...profile,
+                    disabled={!profile.address?.district || isBlocksLoading}
+                    onChange={(e) => {
+                      setProfile((prev) => ({
+                        ...prev,
                         address: {
-                          ...profile.address,
+                          ...prev.address,
                           subdivision: e.target.value,
+                          panchayat: "",
+                          thana: "",
                         },
-                      })
-                    }
-                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                      }));
+                    }}
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option
                       value=""
                       className="bg-popover text-popover-foreground"
                     >
-                      {t(
-                        "Select Block / Subdivision",
-                        "प्रखंड / अनुमंडल चुनें",
-                      )}
+                      {isBlocksLoading
+                        ? t("Loading blocks...", "प्रखंड लोड हो रहे हैं...")
+                        : t(
+                            "Select Block / Subdivision",
+                            "प्रखंड / अनुमंडल चुनें",
+                          )}
                     </option>
-                    {subdivisionOptions.map((sub: any) => (
+                    {blockOptions.map((sub: any) => (
                       <option
                         key={sub.value}
                         value={sub.value}
@@ -410,36 +403,118 @@ export default function CitizenSettings() {
 
                 <div>
                   <Label className="mb-1.5 block">
-                    {t("Panchayat", "पंचायत")}
+                    {t("Select Panchayat", "पंचायत")}
                   </Label>
-                  <Input
+                  <select
                     value={profile.address?.panchayat || ""}
-                    placeholder={t("Panchayat name", "पंचायत का नाम")}
+                    disabled={
+                      !profile.address?.subdivision || isPanchayatsLoading
+                    }
                     onChange={(e) =>
-                      setProfile({
-                        ...profile,
+                      setProfile((prev) => ({
+                        ...prev,
                         address: {
-                          ...profile.address,
+                          ...prev.address,
                           panchayat: e.target.value,
                         },
-                      })
+                      }))
+                    }
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <option
+                      value=""
+                      className="bg-popover text-popover-foreground"
+                    >
+                      {isPanchayatsLoading
+                        ? t("Loading panchayats...", "पंचायत लोड हो रहे हैं...")
+                        : t("Select Panchayat name", "पंचायत का नाम")}
+                    </option>
+                    {panchayatOptions.map((p: any) => (
+                      <option
+                        key={p.value}
+                        value={p.value}
+                        className="bg-popover text-popover-foreground"
+                      >
+                        {p.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <Label className="mb-1.5 block">
+                    {t("Select Thana", "थाना")}
+                  </Label>
+                  <select
+                    value={profile.address?.thana || ""}
+                    disabled={!profile.address?.subdivision || isThanasLoading}
+                    onChange={(e) =>
+                      setProfile((prev) => ({
+                        ...prev,
+                        address: {
+                          ...prev.address,
+                          thana: e.target.value,
+                        },
+                      }))
+                    }
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <option
+                      value=""
+                      className="bg-popover text-popover-foreground"
+                    >
+                      {isThanasLoading
+                        ? t("Loading thanas...", "थाना लोड हो रहे हैं...")
+                        : t("Select Thana", "थाना चुनें")}
+                    </option>
+                    {thanaOptions.map((th: any) => (
+                      <option
+                        key={th.value}
+                        value={th.value}
+                        className="bg-popover text-popover-foreground"
+                      >
+                        {th.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <Label className="mb-1.5 block">
+                    {t("Village", "गाँव")}
+                  </Label>
+                  <Input
+                    value={profile.address?.village || ""}
+                    placeholder={t("Enter Village", "गाँव दर्ज करें")}
+                    maxLength={50}
+                    onChange={(e) =>
+                      setProfile((prev) => ({
+                        ...prev,
+                        address: {
+                          ...prev.address,
+                          village: e.target.value,
+                        },
+                      }))
                     }
                   />
                 </div>
 
                 <div>
-                  <Label className="mb-1.5 block">{t("Thana", "थाना")}</Label>
+                  <Label className="mb-1.5 block">
+                    {t("Post Office", "डाकघर")}
+                  </Label>
                   <Input
-                    value={profile.address?.thana || ""}
-                    placeholder={t("Police Station / Thana", "थाना का नाम")}
+                    value={profile.address?.ps || ""}
+                    placeholder={t("Enter Post Office", "डाकघर दर्ज करें")}
+                    maxLength={50}
                     onChange={(e) =>
-                      setProfile({
-                        ...profile,
+                      setProfile((prev) => ({
+                        ...prev,
                         address: {
-                          ...profile.address,
-                          thana: e.target.value,
+                          ...prev.address,
+                          ps: e.target.value,
                         },
-                      })
+                      }))
                     }
                   />
                 </div>
@@ -452,15 +527,16 @@ export default function CitizenSettings() {
                     value={profile.address?.pincode || ""}
                     placeholder="800001"
                     maxLength={6}
+                    className="tracking-widest"
                     onChange={(e) => {
                       const val = e.target.value.replace(/\D/g, "");
-                      setProfile({
-                        ...profile,
+                      setProfile((prev) => ({
+                        ...prev,
                         address: {
-                          ...profile.address,
+                          ...prev.address,
                           pincode: val,
                         },
-                      });
+                      }));
                     }}
                   />
                 </div>

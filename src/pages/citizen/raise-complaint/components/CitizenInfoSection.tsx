@@ -21,6 +21,7 @@ export default function CitizenInfoSection({ t }: CitizenInfoSectionProps) {
           placeholder={t("Enter your full name", "अपना पूरा नाम दर्ज करें")}
           isLettersAllowed
           maxLength={50}
+          required
         />
         <RhfMobileInput
           name="citizenInfo.mobile"

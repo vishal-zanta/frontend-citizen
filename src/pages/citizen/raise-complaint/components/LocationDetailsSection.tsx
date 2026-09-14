@@ -58,7 +58,7 @@ export default function LocationDetailsSection({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <RhfInput
           name="location.addressLine"
-          label={t("Address Line", "पता विवरण")}
+          label={t("Exact place or landmark", "सटीक स्थान या स्थलचिह्न")}
           placeholder={t(
             "House no., Street, Area, Landmark",
             "मकान संख्या, सड़क, क्षेत्र, लैंडमार्क",

@@ -18,7 +18,8 @@ export default function TopBar() {
             <span>{t.topBar.helpline}</span>
           </a>
           <span className="text-slate-300 hidden sm:inline">|</span>
-          <span className="text-slate-600 font-semibold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded border border-emerald-200">
+          <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 font-semibold px-2.5 py-0.5 rounded border border-emerald-200">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             {t.topBar.available247}
           </span>
         </div>
