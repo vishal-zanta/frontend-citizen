@@ -115,9 +115,9 @@ export default function CitizenSettings() {
           pincode: profileApiData.address?.pincode || "",
         },
       });
-      if (profileApiData.preferredLanguage) {
-        setLang(profileApiData.preferredLanguage === "Hindi" ? "hi" : "en");
-      }
+      // if (profileApiData.preferredLanguage) {
+      //   setLang(profileApiData.preferredLanguage === "Hindi" ? "hi" : "en");
+      // }
     }
   }, [profileApiData, setLang]);
 
