@@ -147,7 +147,7 @@ export default function TrackWidget() {
             {/* Field 1: Tracking ID */}
             <div>
               <label className="block text-xs font-semibold text-blue-100 mb-1.5">
-                {t("Tracking ID", "ट्रैकिंग आईडी")} *
+                {sahyogT.trackWidget.trackingIdLabel} *
               </label>
               <div className="flex rounded-xl border border-white/20 shadow-xs focus-within:ring-2 focus-within:ring-blue-400 overflow-hidden bg-white">
                 <span className="inline-flex items-center px-3.5 bg-slate-100 text-slate-700 text-xs font-bold select-none border-r border-slate-200">
@@ -165,31 +165,25 @@ export default function TrackWidget() {
                     }
                     setTrackingNumber(val);
                   }}
-                  placeholder="2026-000031"
+                  placeholder={sahyogT.trackWidget.trackingIdPlaceholder}
                   className="flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium text-slate-900 placeholder-slate-400 focus:outline-none"
                   required
                 />
               </div>
               <p className="text-[11px] text-blue-200/80 mt-1">
-                {t(
-                  "Format: BR-YYYY-XXXXXX (e.g. BR-2026-000031)",
-                  "प्रारूप: BR-YYYY-XXXXXX (उदा. BR-2026-000031)",
-                )}
+                {sahyogT.trackWidget.trackingIdFormat}
               </p>
             </div>
 
             {/* Field 2: Captcha */}
             <div>
               <label className="block text-xs font-semibold text-blue-100 mb-1.5">
-                {t("Security Code", "सुरक्षा कोड")} *
+                {sahyogT.trackWidget.securityCodeLabel} *
               </label>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <input
                   type="text"
-                  placeholder={t(
-                    "Enter security code",
-                    "सुरक्षा कोड दर्ज करें",
-                  )}
+                  placeholder={sahyogT.trackWidget.securityCodePlaceholder}
                   value={captcha}
                   onChange={(e) => setCaptcha(e.target.value)}
                   className="flex-1 px-3.5 py-2.5 rounded-xl border border-white/20 bg-white text-slate-900 placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"

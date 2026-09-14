@@ -112,10 +112,7 @@ export default function ActionCards() {
       <div className="max-w-7xl mx-auto">
         {/* Section Title */}
         <div className="text-center mb-12">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#1C4D8D] bg-blue-100 px-3.5 py-1 rounded-full">
-            {t.actionCards.portalBadge}
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1C4D8D] mt-2">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1C4D8D]">
             {t.actionCards.heading}
           </h2>
           <div className="w-16 h-1 bg-[#C35504] mx-auto mt-2 rounded-full"></div>

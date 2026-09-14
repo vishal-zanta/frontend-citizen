@@ -85,6 +85,10 @@ export default function RaiseComplaint({
         email: profile?.email || "",
         mobile: mobileVal,
         preferredLanguage: profile?.preferredLanguage || "",
+        address : {
+          ...defaultValues.citizenInfo.address,
+          ...(profile?.address || {})
+        }
       },
     };
   }, [profile]);
