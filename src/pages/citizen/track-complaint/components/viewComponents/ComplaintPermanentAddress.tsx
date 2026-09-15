@@ -15,20 +15,32 @@ export default function ComplaintPermanentAddress({
   const hasPermAddr = Boolean(
     permAddr?.addressLine ||
       permAddr?.district ||
+      permAddr?.urbanPanchayat ||
+      permAddr?.ward ||
       permAddr?.block ||
       permAddr?.panchayat ||
+      permAddr?.village ||
       permAddr?.thana ||
-      permAddr?.pincode,
+      permAddr?.landmark ||
+      permAddr?.pincode ||
+      permAddr?.pinCode,
   );
 
   if (!hasPermAddr) return null;
 
   return (
     <div className="mt-4 pt-3 pb-4 border-b border-border">
-      <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
-        <MapPin className="w-4 h-4 text-primary shrink-0" />
-        {t("Permanent Address", "स्थायी पता")}
-      </h4>
+      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+        <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+          <MapPin className="w-4 h-4 text-primary shrink-0" />
+          {t("Permanent Address", "स्थायी पता")}
+        </h4>
+        {typeof permAddr.isUrban === "boolean" && (
+          <span className="border border-border/80 rounded-md px-2.5 py-0.5 text-xs font-medium text-foreground bg-muted/30">
+            {permAddr.isUrban ? t("Urban", "शहरी") : t("Rural", "ग्रामीण")}
+          </span>
+        )}
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm">
         {permAddr.addressLine && (
           <div className="sm:col-span-2 md:col-span-3">
@@ -47,6 +59,29 @@ export default function ComplaintPermanentAddress({
             </span>
             <span className="font-medium text-foreground">
               {getEntityLabel(permAddr.district, t)}
+            </span>
+          </div>
+        )}
+        {permAddr.urbanPanchayat && (
+          <div>
+            <span className="text-xs text-muted-foreground block">
+              {t(
+                "Municipal Corporation / Council / Nagar Panchayat",
+                "नगर निगम / नगर परिषद / नगर पंचायत",
+              )}
+            </span>
+            <span className="font-medium text-foreground">
+              {getEntityLabel(permAddr.urbanPanchayat, t)}
+            </span>
+          </div>
+        )}
+        {permAddr.ward && (
+          <div>
+            <span className="text-xs text-muted-foreground block">
+              {t("Ward", "वार्ड")}
+            </span>
+            <span className="font-medium text-foreground">
+              {getEntityLabel(permAddr.ward, t)}
             </span>
           </div>
         )}
@@ -70,6 +105,16 @@ export default function ComplaintPermanentAddress({
             </span>
           </div>
         )}
+        {permAddr.village && (
+          <div>
+            <span className="text-xs text-muted-foreground block">
+              {t("Village", "गाँव")}
+            </span>
+            <span className="font-medium text-foreground">
+              {getEntityLabel(permAddr.village, t)}
+            </span>
+          </div>
+        )}
         {permAddr.thana && (
           <div>
             <span className="text-xs text-muted-foreground block">
@@ -80,13 +125,23 @@ export default function ComplaintPermanentAddress({
             </span>
           </div>
         )}
-        {permAddr.pincode && (
+        {permAddr.landmark && (
+          <div>
+            <span className="text-xs text-muted-foreground block">
+              {t("Landmark", "लैंडमार्क")}
+            </span>
+            <span className="font-medium text-foreground">
+              {permAddr.landmark}
+            </span>
+          </div>
+        )}
+        {(permAddr.pincode || permAddr.pinCode) && (
           <div>
             <span className="text-xs text-muted-foreground block">
               {t("Pin Code", "पिन कोड")}
             </span>
             <span className="font-medium text-foreground">
-              {permAddr.pincode}
+              {permAddr.pincode || permAddr.pinCode}
             </span>
           </div>
         )}
@@ -94,3 +149,4 @@ export default function ComplaintPermanentAddress({
     </div>
   );
 }
+

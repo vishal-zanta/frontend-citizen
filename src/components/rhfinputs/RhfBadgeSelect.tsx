@@ -34,7 +34,7 @@ export default function RhfBadgeSelect({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <div className={cn("flex flex-col gap-1.5", className)}>
+        <div className={cn("flex flex-col gap-2", className)}>
           {label && (
             <Label
               className={cn(

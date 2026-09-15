@@ -84,8 +84,8 @@ export default function ComplaintDetailsView({
 
         <ComplaintCorrespondenceAddress
           address={corrAddr}
-          permanentAddress={permAddr}
-          isSameAddress={isSameAddress}
+          // permanentAddress={permAddr}
+          // isSameAddress={isSameAddress}
           t={t}
         />
 
