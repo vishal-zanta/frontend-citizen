@@ -15,7 +15,7 @@ export default function SahyogHomePage() {
       <GrievanceStats />
 
       {/* 3. 4 Quick Service Action Cards (01 to 04) */}
-      <ActionCards />
+      {/* <ActionCards /> */}
 
       {/* 4. Real-Time Grievance Tracker Widget */}
       <TrackWidget />

@@ -179,8 +179,8 @@ export const translations: Record<Language, Translations> = {
     featuresAndFlow: {
       featuresTitle: "प्रमुख विशेषताएं",
       featuresSubtitle: "पोर्टल की मुख्य सुविधाएं एवं क्षमताएं",
-      flowTitle: "यह कैसे कार्य करता है",
-      flowSubtitle: "शिकायत निवारण की 5-चरणीय प्रक्रिया",
+      flowTitle: "यह कैसे कार्य करता है - उपयोगकर्ता प्रवाह",
+      flowSubtitle: "शिकायत निवारण की संपूर्ण 4-चरणीय प्रक्रिया",
       secureBadge: "100% सुरक्षित एवं प्रमाणित रिकॉर्ड",
       slaNote: "औसत समाधान समय: 7-15 दिन",
       featuresList: [
@@ -196,28 +196,23 @@ export const translations: Record<Language, Translations> = {
       steps: [
         {
           step: 1,
-          title: "नागरिक ऑनलाइन या हेल्पलाइन 1100 पर शिकायत दर्ज करते हैं",
-          desc: "वेब पोर्टल या टोल-फ्री नंबर 1100 के माध्यम से विवरण व प्रमाण के साथ शिकायत दर्ज करें।",
+          title: "नागरिक ऑनलाइन शिकायत दर्ज करते हैं",
+          desc: "नागरिक वेब पोर्टल या टोल फ्री हेल्पलाइन 1100 के माध्यम से स्थान और साक्ष्य के साथ शिकायत दर्ज करते हैं",
         },
         {
           step: 2,
-          title: "शिकायत संबंधित विभाग को स्वतः अग्रेषित होती है",
-          desc: "सिस्टम द्वारा संबंधित विभाग व जिले के अधिकृत नोडल अधिकारी को मामला सौंपा जाता है।",
+          title: "विभागीय कार्रवाई एवं समाधान",
+          desc: "शिकायत संबंधित विभाग को सौंपी जाती है",
         },
         {
           step: 3,
-          title: "विभाग समस्या का निवारण कर स्थिति अपडेट करता है",
-          desc: "क्षेत्रीय अधिकारी मौके पर समाधान कर अधिकृत कार्रवाई रिपोर्ट (ATR) अपलोड करते हैं।",
+          title: "नागरिक प्रतिक्रिया एवं समापन",
+          desc: "शिकायत को नागरिक की संतुष्टि की स्पष्ट पुष्टि के बाद ही बंद किया जाता है\nनोट: यदि समस्या का समाधान नहीं होता है तो नागरिक 7 दिनों के भीतर शिकायत पुनः खोल सकते हैं",
         },
         {
           step: 4,
-          title: "नागरिक को समाधान की सूचना प्राप्त होती है",
-          desc: "शिकायतकर्ता को समाधान की संपूर्ण जानकारी एसएमएस एवं पोर्टल के माध्यम से मिलती है।",
-        },
-        {
-          step: 5,
-          title: "समय सीमा में समाधान न होने पर स्वतः एस्केलेशन",
-          desc: "निर्धारित समय में समाधान न मिलने पर मामला स्वतः उच्चाधिकारियों को स्थानांतरित हो जाता है।",
+          title: "ऑडिट, रिपोर्टिंग एवं निरंतर सुधार",
+          desc: "सभी कार्रवाइयां, संचार और स्थिति परिवर्तन:\n  o सिस्टम में दर्ज (लॉग) होते हैं\n  o संपूर्ण ऑडिट ट्रेल बनाए रखने के लिए समय-मुद्रित (टाइम-स्टैम्प) होते हैं",
         },
       ],
     },
@@ -376,8 +371,8 @@ export const translations: Record<Language, Translations> = {
     featuresAndFlow: {
       featuresTitle: "Key Features",
       featuresSubtitle: "Core platform capabilities & infrastructure",
-      flowTitle: "How It Works",
-      flowSubtitle: "End-to-end 5-step grievance disposal lifecycle",
+      flowTitle: "How It Works - user flow",
+      flowSubtitle: "End to end 4 step Grievance disposal lifecycle",
       secureBadge: "100% Secure & Tamper-Proof Logs",
       slaNote: "Average SLA Resolution: 7-15 Days",
       featuresList: [
@@ -393,28 +388,23 @@ export const translations: Record<Language, Translations> = {
       steps: [
         {
           step: 1,
-          title: "Citizen registers grievance online",
-          desc: "Citizen submits complaint via web portal or toll-free helpline 1100 with location & evidence.",
+          title: "Citizen register grievance online",
+          desc: "Citizen submit complaint via web portal or toll free helpline 1100 with location and evidence",
         },
         {
           step: 2,
-          title: "Grievance automatically forwarded to department",
-          desc: "System routes ticket via intelligent workflow to the designated departmental Nodal Officer.",
+          title: "Departmental Action and Resolution",
+          desc: "The grievance is assigned to the designated Department",
         },
         {
           step: 3,
-          title: "Department processes and updates status",
-          desc: "Field office/department resolves issue and uploads official Action Taken Report (ATR).",
+          title: "Citizen Feedback and Closure",
+          desc: "A grievance is closed only after explicit confirmation of citizen satisfaction\nNote: The citizen can reopen the grievance within 7 days if is not rectified",
         },
         {
           step: 4,
-          title: "Citizen receives notification",
-          desc: "Automated SMS/Email notification sent to citizen with complete resolution remarks.",
-        },
-        {
-          step: 5,
-          title: "Escalation if not resolved within timeline",
-          desc: "Automatic escalation to senior district/state authority if SLA turnaround time is breached.",
+          title: "Audit, Reporting and Continuous Improvement",
+          desc: "All actions, communications and status changes are:\no Logged in the system\no Time-stamped to maintain a complete audit trail",
         },
       ],
     },
