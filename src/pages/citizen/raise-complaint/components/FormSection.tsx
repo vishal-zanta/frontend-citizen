@@ -19,7 +19,7 @@ export default function FormSection({
         </h2>
         {action && <div>{action}</div>}
       </div>
-      <div className="p-3 sm:p-5 space-y-4">{children}</div>
+     {!!children &&  <div className="p-3 sm:p-5 space-y-4">{children}</div>}
     </div>
   );
 }
