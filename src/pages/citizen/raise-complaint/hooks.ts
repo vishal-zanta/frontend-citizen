@@ -10,14 +10,10 @@ import {
   getDistricts,
   getBlocks,
   getPanchayats,
-  getThanas,
+  getVillages,
+  getUlbs,
+  getWards,
 } from "@/api/address.api";
-import {
-  getDivisions,
-  getDistrictsByDivision,
-  getSubdivisionsByDistrict,
-  getBlocksBySubdivision,
-} from "@/api/location.api";
 
 export const useRaiseComplaintData = (lang: any) => {
   const API_PARAMS = {
@@ -107,23 +103,38 @@ export const useRaiseComplaintData = (lang: any) => {
   };
 };
 
-interface UseGetAddressFieldsProps {
+export interface UseGetAddressFieldsProps {
   districtId?: string;
   blockId?: string;
+  subdivisionId?: string;
+  panchayatId?: string;
+  ulbId?: string;
+  urbanPanchayatId?: string;
+  divisionId?: string;
   lang?: any;
   enabled?: boolean;
+  isUrban?:boolean
 }
 
 export const useGetAddressFields = (
   {
     districtId = "",
     blockId = "",
+    subdivisionId = "",
+    panchayatId = "",
+    ulbId = "",
+    urbanPanchayatId = "",
     lang = "en",
     enabled = true,
+    isUrban= false
   }: UseGetAddressFieldsProps = {},
-  { isValueId = true }: any,
+  { isValueId = true }: { isValueId?: boolean } = { isValueId: true },
 ) => {
+  const effectiveBlockId = blockId || subdivisionId || "";
+  const effectiveUlbId = ulbId || urbanPanchayatId || "";
   const CACHE_TIME = 5 * 60 * 1000;
+
+  // 1) Districts: GET /address/districts
   const {
     data: districtsData,
     isLoading: isDistrictsLoading,
@@ -137,6 +148,7 @@ export const useGetAddressFields = (
     staleTime: CACHE_TIME,
   });
 
+  // 2) Subdivision / Block: GET /address/districts/:districtId/blocks
   const {
     data: blocksData,
     isLoading: isBlocksLoading,
@@ -145,72 +157,66 @@ export const useGetAddressFields = (
   } = useQuery({
     queryKey: ["address-blocks", districtId],
     queryFn: () => getBlocks(districtId),
-    enabled: Boolean(enabled && districtId),
+    enabled: Boolean(enabled && districtId) && !isUrban,
     gcTime: CACHE_TIME,
     staleTime: CACHE_TIME,
   });
 
+  // 3) Panchayat: GET /address/blocks/:blockId/panchayats
   const {
     data: panchayatsData,
     isLoading: isPanchayatsLoading,
     error: panchayatsError,
     refetch: refetchPanchayats,
   } = useQuery({
-    queryKey: ["address-panchayats", blockId],
-    queryFn: () => getPanchayats(blockId),
-    enabled: Boolean(enabled && blockId),
+    queryKey: ["address-panchayats", effectiveBlockId],
+    queryFn: () => getPanchayats(effectiveBlockId),
+    enabled: Boolean(enabled && effectiveBlockId) && !isUrban,
     gcTime: CACHE_TIME,
     staleTime: CACHE_TIME,
   });
 
+  // 4) Village: GET /address/panchayats/:panchayatId/villages
   const {
-    data: thanasData,
-    isLoading: isThanasLoading,
-    error: thanasError,
-    refetch: refetchThanas,
+    data: villagesData,
+    isLoading: isVillagesLoading,
+    error: villagesError,
+    refetch: refetchVillages,
   } = useQuery({
-    queryKey: ["address-thanas", blockId],
-    queryFn: () => getThanas(blockId),
-    enabled: Boolean(enabled && blockId),
+    queryKey: ["address-villages", panchayatId],
+    queryFn: () => getVillages(panchayatId),
+    enabled: Boolean(enabled && panchayatId) && !isUrban,
     gcTime: CACHE_TIME,
     staleTime: CACHE_TIME,
   });
 
-  // useEffect(() => {
-  //   if (districtsData) {
-  //     console.log(
-  //       "Districts API Data:",
-  //       districtsData?.data?.data || districtsData?.data || districtsData,
-  //     );
-  //   }
-  // }, [districtsData]);
+  // 5) Urban Panchayat (ULBs): GET /address/districts/:districtId/ulbs
+  const {
+    data: ulbsData,
+    isLoading: isUlbsLoading,
+    error: ulbsError,
+    refetch: refetchUlbs,
+  } = useQuery({
+    queryKey: ["address-ulbs", districtId],
+    queryFn: () => getUlbs(districtId),
+    enabled: Boolean(enabled && districtId) && isUrban,
+    gcTime: CACHE_TIME,
+    staleTime: CACHE_TIME,
+  });
 
-  // useEffect(() => {
-  //   if (blocksData) {
-  //     console.log(
-  //       `Blocks API Data (districtId: ${districtId}):`,
-  //       blocksData?.data?.data || blocksData?.data || blocksData,
-  //     );
-  //   }
-  // }, [blocksData, districtId]);
-
-  // useEffect(() => {
-  //   if (panchayatsData) {
-  //     console.log(
-  //       `Panchayats API Data (blockId: ${blockId}):`,
-  //       panchayatsData?.data?.data || panchayatsData?.data || panchayatsData,
-  //     );
-  //   }
-  // }, [panchayatsData, blockId]);
-
-  // useEffect(() => {
-  //   if (thanasData) {
-  //     console.log(
-  //       `Thanas API Data (blockId: ${blockId}):`,
-  //       thanasData?.data?.data || thanasData?.data || thanasData,
-  //     );
-  //   }
-  // }, [thanasData, blockId]);
+  // 6) Wards: GET /address/ulbs/:ulbId/wards
+  const {
+    data: wardsData,
+    isLoading: isWardsLoading,
+    error: wardsError,
+    refetch: refetchWards,
+  } = useQuery({
+    queryKey: ["address-wards", effectiveUlbId],
+    queryFn: () => getWards(effectiveUlbId),
+    enabled: Boolean(enabled && effectiveUlbId) && isUrban,
+    gcTime: CACHE_TIME,
+    staleTime: CACHE_TIME,
+  });
 
   const getList = (res: any) => {
     if (Array.isArray(res?.data?.data?.docs)) return res.data.data.docs;
@@ -223,11 +229,13 @@ export const useGetAddressFields = (
   const districts = getList(districtsData);
   const blocks = getList(blocksData);
   const panchayats = getList(panchayatsData);
-  const thanas = getList(thanasData);
+  const villages = getList(villagesData);
+  const ulbs = getList(ulbsData);
+  const wards = getList(wardsData);
+
   const mapOptions = (arr = []) => {
     return arr.map((item: any) => ({
       label: lang == "hi" ? item.name_local : item.name_en,
-      // labelHindi: item.name_local,
       value: isValueId
         ? item._id
         : lang == "hi"
@@ -240,46 +248,69 @@ export const useGetAddressFields = (
   const districtOptions = mapOptions(districts);
   const blockOptions = mapOptions(blocks);
   const panchayatOptions = mapOptions(panchayats);
-  const thanaOptions = mapOptions(thanas);
+  const villageOptions = mapOptions(villages);
+  const urbanPanchayatOptions = mapOptions(ulbs);
+  const wardOptions = mapOptions(wards);
 
   return {
     districtsData,
     blocksData,
     panchayatsData,
-    thanasData,
+    villagesData,
+    ulbsData,
+    wardsData,
 
     districts,
     blocks,
     panchayats,
-    thanas,
+    villages,
+    ulbs,
+    wards,
 
     districtOptions,
     blockOptions,
-
+    subdivisionOptions: blockOptions,
     panchayatOptions,
-    thanaOptions,
+    villageOptions,
+    urbanPanchayatOptions,
+    ulbOptions: urbanPanchayatOptions,
+    wardOptions,
 
     isDistrictsLoading,
     isBlocksLoading,
+    isSubdivisionsLoading: isBlocksLoading,
     isPanchayatsLoading,
-    isThanasLoading,
+    isVillagesLoading,
+    isUlbsLoading,
+    isUrbanPanchayatsLoading: isUlbsLoading,
+    isWardsLoading,
     isLoading:
       isDistrictsLoading ||
       isBlocksLoading ||
       isPanchayatsLoading ||
-      isThanasLoading,
+      isVillagesLoading ||
+      isUlbsLoading ||
+      isWardsLoading,
 
     districtsError,
     blocksError,
     panchayatsError,
-    thanasError,
+    villagesError,
+    ulbsError,
+    urbanPanchayatsError: ulbsError,
+    wardsError,
 
     refetchDistricts,
     refetchBlocks,
     refetchPanchayats,
-    refetchThanas,
+    refetchVillages,
+    refetchUlbs,
+    refetchUrbanPanchayats: refetchUlbs,
+    refetchWards,
   };
 };
+
+export const useGetLocationAddressFields = useGetAddressFields;
 
 interface UseClearAddressFieldsProps {
   control: Control<any>;
@@ -292,291 +323,119 @@ export const useClearAddressFields = ({
   prefix,
   setValue,
 }: UseClearAddressFieldsProps) => {
+  const isUrban = useWatch({
+    control,
+    name: `${prefix}.isUrban`,
+  });
+
   const district = useWatch({
     control,
     name: `${prefix}.district`,
   });
 
-  const subdivision = useWatch({
+  const block = useWatch({
     control,
-    name: `${prefix}.subdivision`,
+    name: `${prefix}.block`,
   });
 
-  const prevDistrictRef = useRef(district);
-  const prevSubdivisionRef = useRef(subdivision);
+  const panchayat = useWatch({
+    control,
+    name: `${prefix}.panchayat`,
+  });
 
-  // When district changes, clear subdivision, panchayat, and thana
+  const urbanPanchayat = useWatch({
+    control,
+    name: `${prefix}.urbanPanchayat`,
+  });
+
+  const prevIsUrbanRef = useRef(isUrban);
+  const prevDistrictRef = useRef(district);
+  const prevBlockRef = useRef(block);
+  const prevPanchayatRef = useRef(panchayat);
+  const prevUrbanPanchayatRef = useRef(urbanPanchayat);
+
+  // When isUrban changes, clear corresponding fields
+  useEffect(() => {
+    if (
+      prevIsUrbanRef.current !== undefined &&
+      prevIsUrbanRef.current !== isUrban
+    ) {
+      if (isUrban) {
+        setValue(`${prefix}.block`, "");
+        setValue(`${prefix}.panchayat`, "");
+        setValue(`${prefix}.thana`, "");
+        setValue(`${prefix}.village`, "");
+      } else {
+        setValue(`${prefix}.urbanPanchayat`, "");
+        setValue(`${prefix}.ward`, "");
+      }
+    }
+    prevIsUrbanRef.current = isUrban;
+  }, [isUrban, prefix, setValue]);
+
+  // When district changes, clear block, panchayat, thana, village, urbanPanchayat, and ward
   useEffect(() => {
     if (
       prevDistrictRef.current !== undefined &&
       prevDistrictRef.current !== district
     ) {
-      setValue(`${prefix}.subdivision`, "", {
-        // shouldDirty: true,
-        // shouldValidate: true,
-      });
-      setValue(`${prefix}.panchayat`, "", {
-        // shouldDirty: true,
-        // shouldValidate: true,
-      });
-      setValue(`${prefix}.thana`, "", {
-        // shouldDirty: true,
-        // shouldValidate: true,
-      });
+      setValue(`${prefix}.block`, "");
+      setValue(`${prefix}.panchayat`, "");
+      setValue(`${prefix}.thana`, "");
+      setValue(`${prefix}.village`, "");
+      setValue(`${prefix}.urbanPanchayat`, "");
+      setValue(`${prefix}.ward`, "");
     }
     prevDistrictRef.current = district;
   }, [district, prefix, setValue]);
 
-  // When subdivision changes, clear panchayat and thana
-  useEffect(() => {
-    if (
-      prevSubdivisionRef.current !== undefined &&
-      prevSubdivisionRef.current !== subdivision
-    ) {
-      setValue(`${prefix}.panchayat`, "", {
-        // shouldDirty: true,
-        // shouldValidate: true,
-      });
-      setValue(`${prefix}.thana`, "", {
-        // shouldDirty: true,
-        // shouldValidate: true,
-      });
-    }
-    prevSubdivisionRef.current = subdivision;
-  }, [subdivision, prefix, setValue]);
-};
-
-
-// location 
-
-interface UseGetLocationAddressFieldsProps {
-  divisionId?: string;
-  districtId?: string;
-  subdivisionId?: string;
-  blockId?: string;
-  lang?: any;
-  enabled?: boolean;
-}
-
-export const useGetLocationAddressFields = (
-  {
-    divisionId = "",
-    districtId = "",
-    subdivisionId = "",
-    blockId = "",
-    lang = "en",
-    enabled = true,
-  }: UseGetLocationAddressFieldsProps = {},
-  { isValueId = true }: { isValueId?: boolean } = {},
-) => {
-  const CACHE_TIME = 5 * 60 * 1000;
-
-  const {
-    data: divisionsData,
-    isLoading: isDivisionsLoading,
-    error: divisionsError,
-  } = useQuery({
-    queryKey: ["divisions"],
-    queryFn: () => getDivisions(),
-    staleTime: CACHE_TIME,
-    gcTime: CACHE_TIME,
-    enabled,
-  });
-
-  const {
-    data: districtsData,
-    isLoading: isDistrictsLoading,
-    error: districtsError,
-  } = useQuery({
-    queryKey: ["districtsByDivision", divisionId],
-    queryFn: () => getDistrictsByDivision(divisionId),
-    staleTime: CACHE_TIME,
-    gcTime: CACHE_TIME,
-    enabled: Boolean(divisionId) && enabled,
-  });
-
-  const {
-    data: subdivisionsData,
-    isLoading: isSubdivisionsLoading,
-    error: subdivisionsError,
-  } = useQuery({
-    queryKey: ["subdivisionsByDistrict", districtId],
-    queryFn: () => getSubdivisionsByDistrict(districtId),
-    staleTime: CACHE_TIME,
-    gcTime: CACHE_TIME,
-    enabled: Boolean(districtId) && enabled,
-  });
-
-  const {
-    data: blocksData,
-    isLoading: isBlocksLoading,
-    error: blocksError,
-  } = useQuery({
-    queryKey: ["blocksBySubdivision", subdivisionId],
-    queryFn: () => getBlocksBySubdivision(subdivisionId),
-    staleTime: CACHE_TIME,
-    gcTime: CACHE_TIME,
-    enabled: Boolean(subdivisionId) && enabled,
-  });
-
-  const {
-    data: panchayatsData,
-    isLoading: isPanchayatsLoading,
-    error: panchayatsError,
-  } = useQuery({
-    queryKey: ["panchayats", blockId],
-    queryFn: () => getPanchayats(blockId),
-    staleTime: CACHE_TIME,
-    gcTime: CACHE_TIME,
-    enabled: Boolean(blockId) && enabled,
-  });
-
-  const getList = (res: any) => {
-    if (Array.isArray(res?.data?.data?.docs)) return res.data.data.docs;
-    if (Array.isArray(res?.data?.data)) return res.data.data;
-    if (Array.isArray(res?.data?.docs)) return res.data.docs;
-    if (Array.isArray(res?.data)) return res.data;
-    return [];
-  };
-
-  const divisions = getList(divisionsData);
-  const districts = getList(districtsData);
-  const subdivisions = getList(subdivisionsData);
-  const blocks = getList(blocksData);
-  const panchayats = getList(panchayatsData);
-
-  const mapOptions = (arr = []) => {
-    return arr.map((item: any) => ({
-      label: lang == "hi" ? item.name_local : item.name_en,
-      value: isValueId
-        ? item._id
-        : lang == "hi"
-          ? item.name_local
-          : item.name_en,
-      raw: item,
-    }));
-  };
-
-  const divisionOptions = mapOptions(divisions);
-  const districtOptions = mapOptions(districts);
-  const subdivisionOptions = mapOptions(subdivisions);
-  const blockOptions = mapOptions(blocks);
-  const panchayatOptions = mapOptions(panchayats);
-
-  return {
-    divisionsData,
-    districtsData,
-    subdivisionsData,
-    blocksData,
-    panchayatsData,
-
-    divisions,
-    districts,
-    subdivisions,
-    blocks,
-    panchayats,
-
-    divisionOptions,
-    districtOptions,
-    subdivisionOptions,
-    blockOptions,
-    panchayatOptions,
-
-    isDivisionsLoading,
-    isDistrictsLoading,
-    isSubdivisionsLoading,
-    isBlocksLoading,
-    isPanchayatsLoading,
-
-    divisionsError,
-    districtsError,
-    subdivisionsError,
-    blocksError,
-    panchayatsError,
-  };
-};
-
-interface UseClearLocationFieldsProps {
-  control: Control<any>;
-  setValue: (name: string, value: any, options?: any) => void;
-}
-
-export const useClearLocationFields = ({
-  control,
-  setValue,
-}: UseClearLocationFieldsProps) => {
-  const division = useWatch({
-    control,
-    name: "location.division",
-  });
-
-  const district = useWatch({
-    control,
-    name: "location.district",
-  });
-
-  const subdivision = useWatch({
-    control,
-    name: "location.subdivision",
-  });
-
-  const block = useWatch({
-    control,
-    name: "location.block",
-  });
-
-  const prevDivisionRef = useRef(division);
-  const prevDistrictRef = useRef(district);
-  const prevSubdivisionRef = useRef(subdivision);
-  const prevBlockRef = useRef(block);
-
-  // When division changes, clear district, subdivision, block, panchayat
-  useEffect(() => {
-    if (
-      prevDivisionRef.current !== undefined &&
-      prevDivisionRef.current !== division
-    ) {
-      setValue("location.district", "");
-      setValue("location.subdivision", "");
-      setValue("location.block", "");
-      setValue("location.panchayat", "");
-    }
-    prevDivisionRef.current = division;
-  }, [division, setValue]);
-
-  // When district changes, clear subdivision, block, panchayat
-  useEffect(() => {
-    if (
-      prevDistrictRef.current !== undefined &&
-      prevDistrictRef.current !== district
-    ) {
-      setValue("location.subdivision", "");
-      setValue("location.block", "");
-      setValue("location.panchayat", "");
-    }
-    prevDistrictRef.current = district;
-  }, [district, setValue]);
-
-  // When subdivision changes, clear block, panchayat
-  useEffect(() => {
-    if (
-      prevSubdivisionRef.current !== undefined &&
-      prevSubdivisionRef.current !== subdivision
-    ) {
-      setValue("location.block", "");
-      setValue("location.panchayat", "");
-    }
-    prevSubdivisionRef.current = subdivision;
-  }, [subdivision, setValue]);
-
-  // When block changes, clear panchayat
+  // When block changes, clear panchayat, village, and thana
   useEffect(() => {
     if (
       prevBlockRef.current !== undefined &&
       prevBlockRef.current !== block
     ) {
-      setValue("location.panchayat", "");
+      setValue(`${prefix}.panchayat`, "");
+      setValue(`${prefix}.village`, "");
+      setValue(`${prefix}.thana`, "");
     }
     prevBlockRef.current = block;
-  }, [block, setValue]);
+  }, [block, prefix, setValue]);
+
+  // When panchayat changes, clear village
+  useEffect(() => {
+    if (
+      prevPanchayatRef.current !== undefined &&
+      prevPanchayatRef.current !== panchayat
+    ) {
+      setValue(`${prefix}.village`, "");
+    }
+    prevPanchayatRef.current = panchayat;
+  }, [panchayat, prefix, setValue]);
+
+  // When urbanPanchayat changes, clear ward
+  useEffect(() => {
+    if (
+      prevUrbanPanchayatRef.current !== undefined &&
+      prevUrbanPanchayatRef.current !== urbanPanchayat
+    ) {
+      setValue(`${prefix}.ward`, "");
+    }
+    prevUrbanPanchayatRef.current = urbanPanchayat;
+  }, [urbanPanchayat, prefix, setValue]);
 };
+
+export const useClearLocationFields = ({
+  control,
+  setValue,
+}: {
+  control: Control<any>;
+  setValue: (name: string, value: any, options?: any) => void;
+}) => {
+  return useClearAddressFields({
+    control,
+    prefix: "location",
+    setValue,
+  });
+};
+

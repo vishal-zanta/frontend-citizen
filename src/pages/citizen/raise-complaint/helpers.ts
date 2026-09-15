@@ -22,6 +22,10 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
 
   const citizenAddr = (data.citizenInfo as any).address;
   if (citizenAddr) {
+    formData.append(
+      "citizenInfo[address][isUrban]",
+      String(Boolean(citizenAddr.isUrban)),
+    );
     if (citizenAddr.addressLine)
       formData.append(
         "citizenInfo[address][addressLine]",
@@ -29,26 +33,30 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
       );
     if (citizenAddr.district)
       formData.append("citizenInfo[address][district]", citizenAddr.district);
-    if (citizenAddr.subdivision)
+    if (citizenAddr.urbanPanchayat)
       formData.append(
-        "citizenInfo[address][subdivision]",
-        citizenAddr.subdivision,
+        "citizenInfo[address][urbanPanchayat]",
+        citizenAddr.urbanPanchayat,
       );
+    if (citizenAddr.ward)
+      formData.append("citizenInfo[address][ward]", citizenAddr.ward);
+    if (citizenAddr.block)
+      formData.append("citizenInfo[address][block]", citizenAddr.block);
     if (citizenAddr.panchayat)
       formData.append("citizenInfo[address][panchayat]", citizenAddr.panchayat);
     if (citizenAddr.thana)
       formData.append("citizenInfo[address][thana]", citizenAddr.thana);
     if (citizenAddr.village)
       formData.append("citizenInfo[address][village]", citizenAddr.village);
-    if (citizenAddr.ps)
-      formData.append("citizenInfo[address][ps]", citizenAddr.ps);
+    if (citizenAddr.landmark)
+      formData.append("citizenInfo[address][landmark]", citizenAddr.landmark);
     if (citizenAddr.pincode)
       formData.append("citizenInfo[address][pincode]", citizenAddr.pincode);
   }
 
   // formData.append("classification[subService]", data.classification.subService);
   formData.append("classification[nature]", data.classification.nature);
-    formData.append("classification[service]", data.classification.service);
+  formData.append("classification[service]", data.classification.service);
   formData.append("classification[department]", data.classification.department);
   // if ((data.classification as any).subject)
   //   formData.append("classification[subject]", (data.classification as any).subject);
@@ -90,19 +98,22 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
 
   const addr = data.address as any;
   if (addr) {
+    formData.append("address[isUrban]", String(Boolean(addr.isUrban)));
     if (addr.addressLine)
       formData.append("address[addressLine]", addr.addressLine);
-    if (addr.state)
-      formData.append("address[state]", addr.state);
-    if (addr.city)
-      formData.append("address[city]", addr.city);
+    if (addr.addressLine2)
+      formData.append("address[addressLine2]", addr.addressLine2);
+    if (addr.state) formData.append("address[state]", addr.state);
+    if (addr.city) formData.append("address[city]", addr.city);
     if (addr.district) formData.append("address[district]", addr.district);
-    if (addr.subdivision)
-      formData.append("address[subdivision]", addr.subdivision);
+    if (addr.urbanPanchayat)
+      formData.append("address[urbanPanchayat]", addr.urbanPanchayat);
+    if (addr.ward) formData.append("address[ward]", addr.ward);
+    if (addr.block) formData.append("address[block]", addr.block);
     if (addr.panchayat) formData.append("address[panchayat]", addr.panchayat);
     if (addr.thana) formData.append("address[thana]", addr.thana);
     if (addr.village) formData.append("address[village]", addr.village);
-    if (addr.ps) formData.append("address[ps]", addr.ps);
+    if (addr.landmark) formData.append("address[landmark]", addr.landmark);
     if (addr.pincode) formData.append("address[pincode]", addr.pincode);
   }
 
@@ -112,14 +123,19 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
 
   const loc = (data as any).location;
   if (loc) {
+    formData.append("location[isUrban]", String(Boolean(loc.isUrban)));
     if (loc.addressLine)
       formData.append("location[addressLine]", loc.addressLine);
-    if (loc.division) formData.append("location[division]", loc.division);
     if (loc.district) formData.append("location[district]", loc.district);
-    if (loc.subdivision)
-      formData.append("location[subdivision]", loc.subdivision);
+    if (loc.urbanPanchayat)
+      formData.append("location[urbanPanchayat]", loc.urbanPanchayat);
+    if (loc.ward) formData.append("location[ward]", loc.ward);
     if (loc.block) formData.append("location[block]", loc.block);
     if (loc.panchayat) formData.append("location[panchayat]", loc.panchayat);
+    if (loc.thana) formData.append("location[thana]", loc.thana);
+    if (loc.village) formData.append("location[village]", loc.village);
+    if (loc.landmark)
+      formData.append("location[landmark]", loc.landmark);
     if (loc.pincode) formData.append("location[pincode]", loc.pincode);
   }
 

@@ -319,7 +319,9 @@ export function ComplaintDetailDialog({
                   </span>
                   <span className="font-medium text-foreground">
                     {getEntityLabel(
-                      complaint.location?.subdivision ||
+                      complaint.location?.block ||
+                        complaint.location?.subdivision ||
+                        complaint.address?.block ||
                         complaint.address?.subdivision ||
                         complaint.ward,
                       t,
