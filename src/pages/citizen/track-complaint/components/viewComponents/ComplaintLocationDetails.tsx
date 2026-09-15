@@ -16,7 +16,7 @@ export default function ComplaintLocationDetails({
   const hasLocation = Boolean(
     loc.division ||
       loc.district ||
-      loc.subdivision ||
+      loc.block ||
       loc.block ||
       loc.panchayat ||
       loc.pincode ||
@@ -55,13 +55,13 @@ export default function ComplaintLocationDetails({
             </span>
           </div>
         )}
-        {loc.subdivision && (
+        {loc.block && (
           <div>
             <span className="text-xs text-muted-foreground block">
               {t("Subdivision", "अनुमंडल")}
             </span>
             <span className="font-medium text-foreground">
-              {getEntityLabel(loc.subdivision, t)}
+              {getEntityLabel(loc.block, t)}
             </span>
           </div>
         )}

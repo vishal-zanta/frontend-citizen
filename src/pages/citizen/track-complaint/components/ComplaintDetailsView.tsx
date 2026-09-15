@@ -55,7 +55,7 @@ export default function ComplaintDetailsView({
   const hasPermAddr = Boolean(
     permAddr?.addressLine ||
       permAddr?.district ||
-      permAddr?.subdivision ||
+      permAddr?.block ||
       permAddr?.panchayat ||
       permAddr?.thana ||
       permAddr?.pincode,

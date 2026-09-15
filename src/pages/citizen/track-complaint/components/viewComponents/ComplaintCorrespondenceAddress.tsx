@@ -30,7 +30,7 @@ export default function ComplaintCorrespondenceAddress({
       effectiveCorrAddr?.state ||
       effectiveCorrAddr?.city ||
       effectiveCorrAddr?.district ||
-      effectiveCorrAddr?.subdivision ||
+      effectiveCorrAddr?.block ||
       effectiveCorrAddr?.panchayat ||
       effectiveCorrAddr?.thana ||
       effectiveCorrAddr?.villageOrWard ||
@@ -89,13 +89,13 @@ export default function ComplaintCorrespondenceAddress({
             </span>
           </div>
         )}
-        {effectiveCorrAddr.subdivision && (
+        {effectiveCorrAddr.block && (
           <div>
             <span className="text-xs text-muted-foreground block">
               {t("Block / Subdivision", "प्रखंड / अनुमंडल")}
             </span>
             <span className="font-medium text-foreground">
-              {getEntityLabel(effectiveCorrAddr.subdivision, t)}
+              {getEntityLabel(effectiveCorrAddr.block, t)}
             </span>
           </div>
         )}

@@ -84,11 +84,11 @@ export default function RaiseComplaint({
         fullName: profile?.fullName || "",
         email: profile?.email || "",
         mobile: mobileVal,
-        preferredLanguage: profile?.preferredLanguage || "",
-        address : {
-          ...defaultValues.citizenInfo.address,
-          ...(profile?.address || {})
-        }
+        // preferredLanguage: profile?.preferredLanguage || "",
+        // address : {
+        //   ...defaultValues.citizenInfo.address,
+        //   ...(profile?.address || {})
+        // }
       },
     };
   }, [profile]);
@@ -319,25 +319,13 @@ function FormWizard({
       ]);
     } else if (step === 2) {
       isValid = await trigger([
-        "citizenInfo.address.addressLine",
-        "citizenInfo.address.district",
-        "citizenInfo.address.subdivision",
-        "citizenInfo.address.panchayat",
-        "citizenInfo.address.thana",
-        "citizenInfo.address.pincode",
-        "address.addressLine",
-        "address.state",
-        "address.city",
-        "address.district",
-        "address.subdivision",
-        "address.panchayat",
-        "address.thana",
-        "address.pincode",
+        "citizenInfo.address",
+        "address",
       ]);
     }
     if (isValid) {
       setStep((prev) => prev + 1);
-       window.scrollTo({top : 0, behavior : "instant"})
+      window.scrollTo({ top: 0, behavior: "instant" });
     }
   };
 
