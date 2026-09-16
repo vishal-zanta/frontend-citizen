@@ -13,6 +13,7 @@ import {
   getVillages,
   getUlbs,
   getWards,
+  getThanas,
 } from "@/api/address.api";
 
 export const useRaiseComplaintData = (lang: any) => {
@@ -157,7 +158,7 @@ export const useGetAddressFields = (
   } = useQuery({
     queryKey: ["address-blocks", districtId],
     queryFn: () => getBlocks(districtId),
-    enabled: Boolean(enabled && districtId) && !isUrban,
+    enabled: Boolean(enabled && districtId),
     gcTime: CACHE_TIME,
     staleTime: CACHE_TIME,
   });
@@ -218,6 +219,20 @@ export const useGetAddressFields = (
     staleTime: CACHE_TIME,
   });
 
+  // 7) Thanas: GET /address/districts/:districtId/thanas
+  const {
+    data: thanasData,
+    isLoading: isThanasLoading,
+    error: thanasError,
+    refetch: refetchThanas,
+  } = useQuery({
+    queryKey: ["address-thanas", districtId],
+    queryFn: () => getThanas(districtId),
+    enabled: Boolean(enabled && districtId),
+    gcTime: CACHE_TIME,
+    staleTime: CACHE_TIME,
+  });
+
   const getList = (res: any) => {
     if (Array.isArray(res?.data?.data?.docs)) return res.data.data.docs;
     if (Array.isArray(res?.data?.data)) return res.data.data;
@@ -232,6 +247,7 @@ export const useGetAddressFields = (
   const villages = getList(villagesData);
   const ulbs = getList(ulbsData);
   const wards = getList(wardsData);
+  const thanas = getList(thanasData);
 
   const mapOptions = (arr = []) => {
     return arr.map((item: any) => ({
@@ -251,6 +267,7 @@ export const useGetAddressFields = (
   const villageOptions = mapOptions(villages);
   const urbanPanchayatOptions = mapOptions(ulbs);
   const wardOptions = mapOptions(wards);
+  const thanaOptions = mapOptions(thanas);
 
   return {
     districtsData,
@@ -259,6 +276,7 @@ export const useGetAddressFields = (
     villagesData,
     ulbsData,
     wardsData,
+    thanasData,
 
     districts,
     blocks,
@@ -266,6 +284,7 @@ export const useGetAddressFields = (
     villages,
     ulbs,
     wards,
+    thanas,
 
     districtOptions,
     blockOptions,
@@ -275,6 +294,7 @@ export const useGetAddressFields = (
     urbanPanchayatOptions,
     ulbOptions: urbanPanchayatOptions,
     wardOptions,
+    thanaOptions,
 
     isDistrictsLoading,
     isBlocksLoading,
@@ -284,13 +304,15 @@ export const useGetAddressFields = (
     isUlbsLoading,
     isUrbanPanchayatsLoading: isUlbsLoading,
     isWardsLoading,
+    isThanasLoading,
     isLoading:
       isDistrictsLoading ||
       isBlocksLoading ||
       isPanchayatsLoading ||
       isVillagesLoading ||
       isUlbsLoading ||
-      isWardsLoading,
+      isWardsLoading ||
+      isThanasLoading,
 
     districtsError,
     blocksError,
@@ -299,6 +321,7 @@ export const useGetAddressFields = (
     ulbsError,
     urbanPanchayatsError: ulbsError,
     wardsError,
+    thanasError,
 
     refetchDistricts,
     refetchBlocks,
@@ -307,6 +330,7 @@ export const useGetAddressFields = (
     refetchUlbs,
     refetchUrbanPanchayats: refetchUlbs,
     refetchWards,
+    refetchThanas,
   };
 };
 
@@ -361,9 +385,7 @@ export const useClearAddressFields = ({
       prevIsUrbanRef.current !== isUrban
     ) {
       if (isUrban) {
-        setValue(`${prefix}.block`, "");
         setValue(`${prefix}.panchayat`, "");
-        setValue(`${prefix}.thana`, "");
         setValue(`${prefix}.village`, "");
       } else {
         setValue(`${prefix}.urbanPanchayat`, "");
@@ -389,7 +411,7 @@ export const useClearAddressFields = ({
     prevDistrictRef.current = district;
   }, [district, prefix, setValue]);
 
-  // When block changes, clear panchayat, village, and thana
+  // When block changes, clear panchayat and village
   useEffect(() => {
     if (
       prevBlockRef.current !== undefined &&
@@ -397,7 +419,6 @@ export const useClearAddressFields = ({
     ) {
       setValue(`${prefix}.panchayat`, "");
       setValue(`${prefix}.village`, "");
-      setValue(`${prefix}.thana`, "");
     }
     prevBlockRef.current = block;
   }, [block, prefix, setValue]);

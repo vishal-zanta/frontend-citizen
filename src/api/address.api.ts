@@ -36,3 +36,8 @@ export const getWards = async (ulbId: string, params = {}) => {
 };
 export const getWardsByUlb = getWards;
 
+// 7) GET thanas: /address/districts/:districtId/thanas
+export const getThanas = async (districtId: string, params = {}) => {
+  return instance.get(`/address/districts/${districtId}/thanas`, { params });
+};
+export const getThanasByDistrict = getThanas;

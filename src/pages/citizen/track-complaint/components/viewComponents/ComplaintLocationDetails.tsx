@@ -78,6 +78,16 @@ export default function ComplaintLocationDetails({
             </span>
           </div>
         )}
+        {(loc.block || loc.subdivision) && (
+          <div>
+            <span className="text-xs text-muted-foreground block">
+              {t("Block / Subdivision", "प्रखंड / अनुमंडल")}
+            </span>
+            <span className="font-medium text-foreground">
+              {getEntityLabel(loc.block || loc.subdivision, t)}
+            </span>
+          </div>
+        )}
         {loc.urbanPanchayat && (
           <div>
             <span className="text-xs text-muted-foreground block">
@@ -101,16 +111,7 @@ export default function ComplaintLocationDetails({
             </span>
           </div>
         )}
-        {(loc.block || loc.subdivision) && (
-          <div>
-            <span className="text-xs text-muted-foreground block">
-              {t("Block / Subdivision", "प्रखंड / अनुमंडल")}
-            </span>
-            <span className="font-medium text-foreground">
-              {getEntityLabel(loc.block || loc.subdivision, t)}
-            </span>
-          </div>
-        )}
+        
         {loc.panchayat && (
           <div>
             <span className="text-xs text-muted-foreground block">
