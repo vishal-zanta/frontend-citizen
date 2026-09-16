@@ -10,7 +10,10 @@ export default function HeaderBranding() {
     <header className="bg-white py-3.5 px-4 sm:px-8 border-b border-slate-200 shadow-2xs">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Left Branding Group */}
-        <Link to="/sahyog" className="flex flex-col sm:flex-row items-center gap-3.5 text-center sm:text-left group">
+        <Link
+          to="/sahyog"
+          className="flex flex-col sm:flex-row items-center gap-3.5 text-center sm:text-left group"
+        >
           {/* Bihar Govt Official Logo */}
           <div className="relative w-14 h-16 shrink-0 flex items-center justify-center">
             <img

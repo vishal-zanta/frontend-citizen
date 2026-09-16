@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { ChevronDown, Menu, X, FileText, UserCheck, HelpCircle } from "lucide-react";
+import {
+  ChevronDown,
+  Menu,
+  X,
+  FileText,
+  UserCheck,
+  HelpCircle,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSahyogTranslation } from "../translations";
 
@@ -16,10 +23,8 @@ export default function MainNavbar() {
     <nav className="bg-[#1C4D8D] text-white shadow-md relative z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="flex items-center justify-between h-14">
-          
           {/* Left Navigation: Exactly Home Page, Citizen Services (New Complaint, Registered User, FAQ) */}
           <div className="hidden lg:flex items-center gap-2 text-xs font-semibold">
-            
             {/* 1. Home Page */}
             <Link
               to="/sahyog"
@@ -63,7 +68,6 @@ export default function MainNavbar() {
                 </Link>
               </div>
             </div>
-
           </div>
 
           {/* Mobile Toggle Button */}
@@ -72,9 +76,12 @@ export default function MainNavbar() {
             className="lg:hidden p-2 rounded-lg hover:bg-blue-800 text-white cursor-pointer ml-auto"
             aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
-
         </div>
       </div>
 
