@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { Home } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import biharGovtLogo from "@/assets/bihar_govt.png";
 import cmPhoto from "@/assets/cm_photo.jpg";
@@ -46,6 +48,13 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
               ) : null}
             </div>
           </div>
+          <Link
+            to="/"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs border border-white/20 cursor-pointer active:scale-95"
+          >
+            <Home className="w-4 h-4" />
+            <span>{t("Home Page", "मुख्य पृष्ठ")}</span>
+          </Link>
 
           {/* <div className="hidden md:flex items-center gap-6 text-sm">
             <div className="text-center">
