@@ -43,6 +43,8 @@ export const PermanentAddress = ({ t }: { t: any }) => {
     isUrbanPanchayatsLoading,
     wardOptions,
     isWardsLoading,
+    thanaOptions,
+    isThanasLoading,
   } = useGetAddressFields(
     {
       lang,
@@ -98,6 +100,19 @@ export const PermanentAddress = ({ t }: { t: any }) => {
             required
           />
 
+          <RhfSelect
+            name={`${prefix}.block`}
+            label={t("Block / Subdivision", "प्रखंड / अनुमंडल")}
+            placeholder={t(
+              "Select Block / Subdivision",
+              "प्रखंड / अनुमंडल चुनें",
+            )}
+            options={blockOptions}
+            disabled={!selectedDistrictId || isBlocksLoading}
+            isLoading={isBlocksLoading}
+            required
+          />
+
           {isUrban ? (
             <>
               <RhfSelect
@@ -124,19 +139,6 @@ export const PermanentAddress = ({ t }: { t: any }) => {
           ) : (
             <>
               <RhfSelect
-                name={`${prefix}.block`}
-                label={t("Block / Subdivision", "प्रखंड / अनुमंडल")}
-                placeholder={t(
-                  "Select Block / Subdivision",
-                  "प्रखंड / अनुमंडल चुनें",
-                )}
-                options={blockOptions}
-                disabled={!selectedDistrictId || isBlocksLoading}
-                isLoading={isBlocksLoading}
-                required
-              />
-
-              <RhfSelect
                 name={`${prefix}.panchayat`}
                 label={t("Panchayat", "पंचायत")}
                 placeholder={t("Select Panchayat name", "पंचायत का नाम")}
@@ -154,15 +156,17 @@ export const PermanentAddress = ({ t }: { t: any }) => {
                 isLoading={isVillagesLoading}
                 disabled={!selectedPanchayatId || isVillagesLoading}
               />
-
-              <RhfInput
-                name={`${prefix}.thana`}
-                label={t("Thana", "थाना")}
-                placeholder={t("Enter Thana", "थाना दर्ज करें")}
-                maxLength={50}
-              />
             </>
           )}
+
+          <RhfSelect
+            name={`${prefix}.thana`}
+            label={t("Thana", "थाना")}
+            placeholder={t("Select Thana", "थाना चुनें")}
+            options={thanaOptions}
+            isLoading={isThanasLoading}
+            disabled={!selectedDistrictId || isThanasLoading}
+          />
 
           <RhfInput
             name={`${prefix}.landmark`}
@@ -243,6 +247,8 @@ export const CorrespondenceAddress = ({
     isUrbanPanchayatsLoading,
     wardOptions,
     isWardsLoading,
+    thanaOptions,
+    isThanasLoading,
   } = useGetAddressFields(
     {
       lang,
@@ -401,6 +407,18 @@ export const CorrespondenceAddress = ({
                   disabled={isDistrictsLoading}
                 />
 
+                <RhfSelect
+                  name={`${prefix}.block`}
+                  label={t("Block / Subdivision", "प्रखंड / अनुमंडल")}
+                  placeholder={t(
+                    "Select Block / Subdivision",
+                    "प्रखंड / अनुमंडल चुनें",
+                  )}
+                  options={blockOptions}
+                  disabled={!selectedDistrictId || isBlocksLoading}
+                  isLoading={isBlocksLoading}
+                />
+
                 {isUrban ? (
                   <>
                     <RhfSelect
@@ -430,18 +448,6 @@ export const CorrespondenceAddress = ({
                 ) : (
                   <>
                     <RhfSelect
-                      name={`${prefix}.block`}
-                      label={t("Block / Subdivision", "प्रखंड / अनुमंडल")}
-                      placeholder={t(
-                        "Select Block / Subdivision",
-                        "प्रखंड / अनुमंडल चुनें",
-                      )}
-                      options={blockOptions}
-                      disabled={!selectedDistrictId || isBlocksLoading}
-                      isLoading={isBlocksLoading}
-                    />
-
-                    <RhfSelect
                       name={`${prefix}.panchayat`}
                       label={t("Panchayat", "पंचायत")}
                       placeholder={t("Select Panchayat name", "पंचायत का नाम")}
@@ -461,15 +467,17 @@ export const CorrespondenceAddress = ({
                       isLoading={isVillagesLoading}
                       disabled={!selectedPanchayatId || isVillagesLoading}
                     />
-
-                    <RhfInput
-                      name={`${prefix}.thana`}
-                      label={t("Thana", "थाना")}
-                      placeholder={t("Enter Thana", "थाना दर्ज करें")}
-                      maxLength={50}
-                    />
                   </>
                 )}
+
+                <RhfSelect
+                  name={`${prefix}.thana`}
+                  label={t("Thana", "थाना")}
+                  placeholder={t("Select Thana", "थाना चुनें")}
+                  options={thanaOptions}
+                  isLoading={isThanasLoading}
+                  disabled={!selectedDistrictId || isThanasLoading}
+                />
 
                 <RhfInput
                   name={`${prefix}.landmark`}
@@ -522,6 +530,7 @@ export default function AddressSection({ t }: AddressSectionProps) {
     villageOptions,
     urbanPanchayatOptions,
     wardOptions,
+    thanaOptions,
   } = useGetAddressFields(
     {
       lang,
@@ -554,6 +563,12 @@ export default function AddressSection({ t }: AddressSectionProps) {
       )?.label ||
       perm?.panchayat ||
       "";
+    const thanaLabel =
+      thanaOptions.find(
+        (t: any) => t.value === perm?.thana || t.raw?._id === perm?.thana,
+      )?.label ||
+      perm?.thana ||
+      "";
     const villageLabel =
       villageOptions.find(
         (v: any) => v.value === perm?.village || v.raw?._id === perm?.village,
@@ -579,6 +594,7 @@ export default function AddressSection({ t }: AddressSectionProps) {
       districtLabel,
       blockLabel,
       panchayatLabel,
+      thanaLabel,
       villageLabel,
       urbanPanchayatLabel,
       wardLabel,
@@ -596,6 +612,7 @@ export default function AddressSection({ t }: AddressSectionProps) {
         districtLabel,
         blockLabel,
         panchayatLabel,
+        thanaLabel,
         villageLabel,
         urbanPanchayatLabel,
         wardLabel,
@@ -629,7 +646,7 @@ export default function AddressSection({ t }: AddressSectionProps) {
         shouldDirty: true,
         shouldValidate: true,
       });
-      setValue("address.thana", perm?.thana || "", {
+      setValue("address.thana", thanaLabel, {
         shouldDirty: true,
         shouldValidate: true,
       });
@@ -675,6 +692,7 @@ export default function AddressSection({ t }: AddressSectionProps) {
         districtLabel,
         blockLabel,
         panchayatLabel,
+        thanaLabel,
         villageLabel,
         urbanPanchayatLabel,
         wardLabel,
@@ -697,7 +715,7 @@ export default function AddressSection({ t }: AddressSectionProps) {
       setValue("address.panchayat", panchayatLabel, {
         shouldValidate: true,
       });
-      setValue("address.thana", permanentAddress?.thana || "", {
+      setValue("address.thana", thanaLabel, {
         shouldValidate: true,
       });
       setValue("address.village", villageLabel, {
@@ -725,6 +743,7 @@ export default function AddressSection({ t }: AddressSectionProps) {
     villageOptions,
     urbanPanchayatOptions,
     wardOptions,
+    thanaOptions,
     setValue,
   ]);
 

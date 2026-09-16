@@ -62,6 +62,16 @@ export default function ComplaintPermanentAddress({
             </span>
           </div>
         )}
+         {permAddr.block && (
+          <div>
+            <span className="text-xs text-muted-foreground block">
+              {t("Block / Subdivision", "प्रखंड / अनुमंडल")}
+            </span>
+            <span className="font-medium text-foreground">
+              {getEntityLabel(permAddr.block, t)}
+            </span>
+          </div>
+        )}
         {permAddr.urbanPanchayat && (
           <div>
             <span className="text-xs text-muted-foreground block">
@@ -85,16 +95,7 @@ export default function ComplaintPermanentAddress({
             </span>
           </div>
         )}
-        {permAddr.block && (
-          <div>
-            <span className="text-xs text-muted-foreground block">
-              {t("Block / Subdivision", "प्रखंड / अनुमंडल")}
-            </span>
-            <span className="font-medium text-foreground">
-              {getEntityLabel(permAddr.block, t)}
-            </span>
-          </div>
-        )}
+       
         {permAddr.panchayat && (
           <div>
             <span className="text-xs text-muted-foreground block">
