@@ -8,6 +8,7 @@ import { PORTAL_META, DASHBOARD_KPIS } from "@/lib/biharData";
 import { getVisitorCount } from "@/api/global.api";
 import LangSelector from "@/components/LangSelector";
 import { useLanguage } from "@/context/LanguageContext";
+import AvailbleDept from "./AvailbleDept";
 
 interface HomeLayoutProps {
   children?: React.ReactNode;
@@ -142,6 +143,10 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
           >
             {children}
           </div>
+        </div>
+
+        <div>
+          <AvailbleDept/>
         </div>
 
         <div className="text-center mt-12 text-xs text-muted-foreground">
