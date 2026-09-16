@@ -18,7 +18,7 @@ export default function SahyogHomePage() {
       {/* <ActionCards /> */}
 
       {/* 4. Real-Time Grievance Tracker Widget */}
-      <TrackWidget />
+      {/* <TrackWidget /> */}
 
       {/* 5. Key Features & How It Works (2-Column Grid) */}
       <FeaturesAndFlow />

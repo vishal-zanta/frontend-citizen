@@ -47,8 +47,8 @@ export default function MainNavbar() {
                   <span>{t.navbar.newComplaint}</span>
                 </Link>
                 <Link
-                  to="/login"
-                  state={{ to: "/citizen" }}
+                  to="/complaint"
+                  // state={{ to: "/citizen" }}
                   className="flex items-center gap-2 px-4 py-2.5 hover:bg-blue-50 hover:text-blue-700 text-xs font-medium transition-colors"
                 >
                   <UserCheck className="w-4 h-4 text-emerald-600" />
@@ -110,8 +110,7 @@ export default function MainNavbar() {
                 {t.navbar.newComplaint}
               </Link>
               <Link
-                to="/login"
-                state={{ to: "/citizen" }}
+                to="/complaint"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block py-1 hover:text-white"
               >

@@ -81,7 +81,7 @@ export const PermanentAddress = ({ t }: { t: any }) => {
             label={t("Address Line", "पता विवरण")}
             placeholder={t(
               "House no., Street, Area",
-              "मकान संख्या, सड़क, क्षेत्र",
+              "मकान संख्याा, सड़क, क्षेत्र",
             )}
             required
             maxLength={50}
@@ -106,10 +106,7 @@ export const PermanentAddress = ({ t }: { t: any }) => {
                   "Municipal Corporation / Council / Nagar Panchayat",
                   "नगर निगम / नगर परिषद / नगर पंचायत",
                 )}
-                placeholder={t(
-                  "Select Municipal Body",
-                  "नगर निकाय चुनें",
-                )}
+                placeholder={t("Select Municipal Body", "नगर निकाय चुनें")}
                 options={urbanPanchayatOptions}
                 isLoading={isUrbanPanchayatsLoading}
                 disabled={!selectedDistrictId || isUrbanPanchayatsLoading}
@@ -180,6 +177,7 @@ export const PermanentAddress = ({ t }: { t: any }) => {
             placeholder="800001"
             inputClassName="tracking-widest"
             isNumsOnly
+            required
             maxLength={6}
           />
         </div>
@@ -225,8 +223,11 @@ export const CorrespondenceAddress = ({
     (v: any) => v.value === selectedPanchayat || v.label === selectedPanchayat,
   )?.raw?._id;
 
-  const selectedUrbanPanchayatId = (urbanPanchayatOptionsRef.current || []).find(
-    (v: any) => v.value === selectedUrbanPanchayat || v.label === selectedUrbanPanchayat,
+  const selectedUrbanPanchayatId = (
+    urbanPanchayatOptionsRef.current || []
+  ).find(
+    (v: any) =>
+      v.value === selectedUrbanPanchayat || v.label === selectedUrbanPanchayat,
   )?.raw?._id;
 
   const {
@@ -353,14 +354,16 @@ export const CorrespondenceAddress = ({
               required
             />
 
-          {!isBihar &&  <RhfSelect
-              name={`${prefix}.city`}
-              label={t("City", "शहर")}
-              placeholder={t("Select City", "शहर चुनें")}
-              options={cityOptions}
-              disabled={!selectedState}
-              required={!isBihar}
-            />}
+            {!isBihar && (
+              <RhfSelect
+                name={`${prefix}.city`}
+                label={t("City", "शहर")}
+                placeholder={t("Select City", "शहर चुनें")}
+                options={cityOptions}
+                disabled={!selectedState}
+                required={!isBihar}
+              />
+            )}
           </div>
 
           {isBihar && (
@@ -380,7 +383,7 @@ export const CorrespondenceAddress = ({
               label={t("Address Line", "पता विवरण")}
               placeholder={t(
                 "House no., Street, Area",
-                "मकान संख्या, सड़क, क्षेत्र",
+                "मकान संख्याा, सड़क, क्षेत्र",
               )}
               required={!isBihar}
               maxLength={50}
@@ -494,6 +497,7 @@ export const CorrespondenceAddress = ({
               placeholder="800001"
               inputClassName="tracking-widest"
               isNumsOnly
+              required
               maxLength={6}
             />
           </div>
@@ -539,8 +543,7 @@ export default function AddressSection({ t }: AddressSectionProps) {
       "";
     const blockLabel =
       blockOptions.find(
-        (b: any) =>
-          b.value === perm?.block || b.raw?._id === perm?.block,
+        (b: any) => b.value === perm?.block || b.raw?._id === perm?.block,
       )?.label ||
       perm?.block ||
       "";
@@ -553,8 +556,7 @@ export default function AddressSection({ t }: AddressSectionProps) {
       "";
     const villageLabel =
       villageOptions.find(
-        (v: any) =>
-          v.value === perm?.village || v.raw?._id === perm?.village,
+        (v: any) => v.value === perm?.village || v.raw?._id === perm?.village,
       )?.label ||
       perm?.village ||
       "";
@@ -678,16 +680,12 @@ export default function AddressSection({ t }: AddressSectionProps) {
         wardLabel,
       } = getAddressLabels(permanentAddress);
 
-      setValue(
-        "address.isUrban",
-        Boolean(permanentAddress?.isUrban),
-        { shouldValidate: true },
-      );
-      setValue(
-        "address.addressLine",
-        permanentAddress?.addressLine || "",
-        { shouldValidate: true },
-      );
+      setValue("address.isUrban", Boolean(permanentAddress?.isUrban), {
+        shouldValidate: true,
+      });
+      setValue("address.addressLine", permanentAddress?.addressLine || "", {
+        shouldValidate: true,
+      });
       setValue("address.state", "Bihar", { shouldValidate: true });
       setValue("address.city", "", { shouldValidate: true });
       setValue("address.district", districtLabel, {
@@ -705,11 +703,9 @@ export default function AddressSection({ t }: AddressSectionProps) {
       setValue("address.village", villageLabel, {
         shouldValidate: true,
       });
-      setValue(
-        "address.urbanPanchayat",
-        urbanPanchayatLabel,
-        { shouldValidate: true },
-      );
+      setValue("address.urbanPanchayat", urbanPanchayatLabel, {
+        shouldValidate: true,
+      });
       setValue("address.ward", wardLabel, {
         shouldValidate: true,
       });
@@ -756,4 +752,3 @@ export default function AddressSection({ t }: AddressSectionProps) {
     </div>
   );
 }
-

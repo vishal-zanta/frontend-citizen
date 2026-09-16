@@ -31,7 +31,7 @@ export default function SearchComplaint({
           initialValue={searchId}
           handleDebouncedChange={setSearchId}
           placeholder={t(
-            "Enter Tracking ID ",
+            "Enter Tracking Number ",
             "शिकायत आईडी दर्ज करें ",
           )}
           className="flex-1"

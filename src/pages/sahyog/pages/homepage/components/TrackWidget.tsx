@@ -79,8 +79,8 @@ export default function TrackWidget() {
     if (!cleanedNumber) {
       setError(
         t(
-          "Please enter your Tracking ID",
-          "कृपया अपनी ट्रैकिंग आईडी दर्ज करें",
+          "Please enter your complaint number",
+          "कृपया अपनी शिकायत संख्या दर्ज करें",
         ),
       );
       return;
@@ -93,8 +93,8 @@ export default function TrackWidget() {
     if (!trackingRegex.test(fullTrackingId)) {
       setError(
         t(
-          "Invalid Tracking ID format. Expected format: BR-2026-000031",
-          "अमान्य ट्रैकिंग आईडी प्रारूप। अपेक्षित प्रारूप: BR-2026-000031",
+          "Invalid complaint number format. Expected format: BR-2026-000031",
+          "अमान्य शिकायत संख्या प्रारूप। अपेक्षित प्रारूप: BR-2026-000031",
         ),
       );
       return;
@@ -123,7 +123,10 @@ export default function TrackWidget() {
 
   return (
     <>
-      <section className="py-14 px-4 sm:px-8 bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 text-white relative overflow-hidden">
+      <section
+        id="track-widget"
+        className="py-14 px-4 sm:px-8 bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 text-white relative overflow-hidden"
+      >
         <div className="max-w-4xl mx-auto relative z-10 text-center">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             {sahyogT.trackWidget.heading}

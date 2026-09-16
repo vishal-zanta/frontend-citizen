@@ -75,8 +75,8 @@ const CompliantDetails = () => {
     if (!cleanedNumber) {
       setError(
         t(
-          "Please enter your Tracking ID",
-          "कृपया अपनी ट्रैकिंग आईडी दर्ज करें",
+          "Please enter your complaint number",
+          "कृपया अपनी शिकायत संख्या दर्ज करें",
         ),
       );
       return;
@@ -89,8 +89,8 @@ const CompliantDetails = () => {
     if (!trackingRegex.test(fullTrackingId)) {
       setError(
         t(
-          "Invalid Tracking ID format. Expected format: BR-2026-000031",
-          "अमान्य ट्रैकिंग आईडी प्रारूप। अपेक्षित प्रारूप: BR-2026-000031",
+          "Invalid complaint number format. Expected format: BR-2026-000031",
+          "अमान्य शिकायत संख्या प्रारूप। अपेक्षित प्रारूप: BR-2026-000031",
         ),
       );
       return;
@@ -116,7 +116,7 @@ const CompliantDetails = () => {
     setCaptcha("");
     setError("");
     refetchCaptcha();
-    navigate("/login")
+    navigate("/login");
   };
 
   if (step === 2) {
@@ -134,12 +134,20 @@ const CompliantDetails = () => {
     <HomeLayout>
       <AuthLayout
         icon={FileText}
-        title={t("Track Complaint Status", "शिकायत की स्थिति ट्रैक करें")}
+        title={t("Check complaint status", "शिकायत की स्थिति ट्रैक करें")}
         subtitle={t(
-          "Enter your Tracking ID and security code to view status",
-          "स्थिति देखने के लिए अपनी ट्रैकिंग आईडी और सुरक्षा कोड दर्ज करें",
+          "Enter your complaint number and security code to view status",
+          "स्थिति देखने के लिए अपनी शिकायत संख्या और सुरक्षा कोड दर्ज करें",
         )}
-        footer={<Button variant="link" onClick={() => navigate("/login")} className="cursor-pointer" >Back to login</Button>}
+        footer={
+          <Button
+            variant="link"
+            onClick={() => navigate("/login")}
+            className="cursor-pointer"
+          >
+            Back to login
+          </Button>
+        }
       >
         {error && (
           <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm font-medium">
@@ -155,7 +163,7 @@ const CompliantDetails = () => {
                 htmlFor="trackingId"
                 className="text-sm font-semibold text-foreground"
               >
-                {t("Tracking ID", "ट्रैकिंग आईडी")}
+                {t("Complaint number", "शिकायत संख्या")}
               </Label>
               <div className="flex rounded-lg border border-input shadow-xs focus-within:ring-2 focus-within:ring-ring focus-within:border-ring overflow-hidden bg-background">
                 <span className="inline-flex items-center px-3.5 bg-muted text-muted-foreground text-sm font-bold select-none border-r border-input">
@@ -332,5 +340,3 @@ const Step2: React.FC<Step2Props> = ({ t, data, trackingId, onBack }) => {
 };
 
 export default CompliantDetails;
-
-

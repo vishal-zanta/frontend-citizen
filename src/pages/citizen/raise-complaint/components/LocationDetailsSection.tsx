@@ -78,7 +78,7 @@ export default function LocationDetailsSection({
             label={t("Address Line", "सटीक स्थान या पता विवरण")}
             placeholder={t(
               "House no., Street, Area",
-              "मकान संख्या, सड़क, क्षेत्र",
+              "मकान संख्याा, सड़क, क्षेत्र",
             )}
             required
             maxLength={50}
@@ -103,10 +103,7 @@ export default function LocationDetailsSection({
                   "Municipal Corporation / Council / Nagar Panchayat",
                   "नगर निगम / नगर परिषद / नगर पंचायत",
                 )}
-                placeholder={t(
-                  "Select Municipal Body",
-                  "नगर निकाय चुनें",
-                )}
+                placeholder={t("Select Municipal Body", "नगर निकाय चुनें")}
                 options={urbanPanchayatOptions}
                 isLoading={isUrbanPanchayatsLoading}
                 disabled={!selectedDistrictId || isUrbanPanchayatsLoading}
@@ -177,6 +174,7 @@ export default function LocationDetailsSection({
             placeholder="800001"
             inputClassName="tracking-widest"
             isNumsOnly
+            required
             maxLength={6}
           />
         </div>
@@ -184,4 +182,3 @@ export default function LocationDetailsSection({
     </FormSection>
   );
 }
-
