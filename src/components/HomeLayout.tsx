@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Home } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import biharGovtLogo from "@/assets/bihar_govt.png";
@@ -19,19 +19,20 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
   isHidePhoto = false,
 }) => {
   const { t } = useLanguage();
-  const { data: visitorData } = useQuery({
-    queryKey: ["visitor-count"],
-    queryFn: getVisitorCount,
-  });
+  // const { data: visitorData } = useQuery({
+  //   queryKey: ["visitor-count"],
+  //   queryFn: getVisitorCount,
+  // });
+  const navigate = useNavigate();
 
-  const visitorCount = visitorData?.data?.data?.count ?? 0;
+  // const visitorCount = visitorData?.data?.data?.count ?? 0;
 
   return (
     <div className="min-h-screen relative bg-gradient-to-br from-slate-50 via-blue-50/30 to-sky-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-x-hidden transition-colors">
       {/* Header */}
       <div className="relative z-20 bg-gradient-to-r from-blue-950 via-blue-800 to-blue-600 dark:from-slate-900 dark:via-blue-950 dark:to-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div onClick={()=>navigate("/")} className="flex items-center gap-4 cursor-pointer">
             <div className="w-12 h-12 rounded-xl bg-white p-1.5 flex items-center justify-center shadow-sm">
               <img
                 src={biharGovtLogo}
