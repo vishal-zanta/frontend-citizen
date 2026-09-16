@@ -28,8 +28,12 @@ export default function TopBar() {
         <div className="flex items-center gap-4 ml-auto">
           <div className="flex items-center gap-1 text-slate-600 hidden sm:flex">
             <Mail className="w-3.5 h-3.5 text-[#0066B3]" />
-            <span className="font-semibold text-[#0066B3]">{t.topBar.email}</span>
-            <span className="italic text-slate-500">{t.topBar.emailPlaceholder}</span>
+            <span className="font-semibold text-[#0066B3]">
+              {t.topBar.email}
+            </span>
+            <span className="italic text-slate-500">
+              {t.topBar.emailPlaceholder}
+            </span>
           </div>
 
           <span className="text-slate-300">|</span>
