@@ -9,10 +9,13 @@ import { useLanguage } from "@/context/LanguageContext";
 
 interface HomeLayoutProps {
   children?: React.ReactNode;
-  isHidePhoto?:any
+  isHidePhoto?: any;
 }
 
-const HomeLayout: React.FC<HomeLayoutProps> = ({ children ,isHidePhoto= false }) => {
+const HomeLayout: React.FC<HomeLayoutProps> = ({
+  children,
+  isHidePhoto = false,
+}) => {
   const { t } = useLanguage();
   const { data: visitorData } = useQuery({
     queryKey: ["visitor-count"],
@@ -44,7 +47,7 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({ children ,isHidePhoto= false })
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-6 text-sm">
+          {/* <div className="hidden md:flex items-center gap-6 text-sm">
             <div className="text-center">
               <div className="text-2xl font-bold">
                 {DASHBOARD_KPIS.totalComplaints.toLocaleString("en-IN")}
@@ -79,10 +82,10 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({ children ,isHidePhoto= false })
                   : visitorCount}
               </div>
               <div className="text-[11px] text-white/60">
-                {t("Visitor Count", "आगंतुक संख्या")}
+                {t("Visitor Count", "आगंतुक संख्याा")}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -92,35 +95,41 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({ children ,isHidePhoto= false })
           <span className="text-blue-800 dark:text-blue-300 font-medium">
             {t(PORTAL_META.tagline, "सुशासन ही जनसेवा - बिहार सरकार")}
           </span>
-          <LangSelector/>
+          <LangSelector />
         </div>
-    </div>
+      </div>
 
       {/* Main content - CM card on left, Login form on right */}
-      <div className={`relative ${isHidePhoto ? "max-w-full" : "max-w-6xl"} mx-auto px-4 sm:px-6 py-8 sm:py-12`}>
+      <div
+        className={`relative ${isHidePhoto ? "max-w-full" : "max-w-6xl"} mx-auto px-4 sm:px-6 py-8 sm:py-12`}
+      >
         <div className="flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-16">
           {/* Dignitary / CM Card */}
-         {!isHidePhoto &&  <div className="flex flex-col items-center text-center p-4 w-full max-w-sm">
-            <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-2xl overflow-hidden bg-white/80 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-800 mb-4 flex items-center justify-center">
-              <img
-                src={cmPhoto}
-                alt={t("Shri Samrat Choudhary", "श्री सम्राट चौधरी")}
-                className="w-full h-full object-cover object-top"
-              />
+          {!isHidePhoto && (
+            <div className="flex flex-col items-center text-center p-4 w-full max-w-sm">
+              <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-2xl overflow-hidden bg-white/80 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-800 mb-4 flex items-center justify-center">
+                <img
+                  src={cmPhoto}
+                  alt={t("Shri Samrat Choudhary", "श्री सम्राट चौधरी")}
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+              <h2 className="text-2xl font-bold text-[#00388c] dark:text-blue-400 tracking-tight">
+                {t("Shri Samrat Choudhary", "श्री सम्राट चौधरी")}
+              </h2>
+              <p className="text-base font-semibold text-[#b82218] dark:text-red-400 mt-1">
+                {t("Honourable Chief Minister", "माननीय मुख्यमंत्री")}
+              </p>
+              <p className="text-sm text-muted-foreground mt-0.5 font-medium">
+                {t("Government of Bihar", "माननीय मुख्यमंत्री, बिहार")}
+              </p>
             </div>
-            <h2 className="text-2xl font-bold text-[#00388c] dark:text-blue-400 tracking-tight">
-              {t("Shri Samrat Choudhary", "श्री सम्राट चौधरी")}
-            </h2>
-            <p className="text-base font-semibold text-[#b82218] dark:text-red-400 mt-1">
-              {t("Honourable Chief Minister", "माननीय मुख्यमंत्री")}
-            </p>
-            <p className="text-sm text-muted-foreground mt-0.5 font-medium">
-              {t("Government of Bihar", "माननीय मुख्यमंत्री, बिहार")}
-            </p>
-          </div>}
+          )}
 
           {/* Right Side / Content */}
-          <div className={`w-full ${isHidePhoto ? "max-w-7xl" : "max-w-md"} flex flex-col items-center`}>
+          <div
+            className={`w-full ${isHidePhoto ? "max-w-7xl" : "max-w-md"} flex flex-col items-center`}
+          >
             {children}
           </div>
         </div>
@@ -128,12 +137,12 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({ children ,isHidePhoto= false })
         <div className="text-center mt-12 text-xs text-muted-foreground">
           {t(
             `${PORTAL_META.name} - ${PORTAL_META.version} - Government of Bihar - All Rights Reserved`,
-            `सहयोग हेल्पलाइन पोर्टल - ${PORTAL_META.version} - बिहार सरकार - सर्वाधिकार सुरक्षित`
+            `सहयोग हेल्पलाइन पोर्टल - ${PORTAL_META.version} - बिहार सरकार - सर्वाधिकार सुरक्षित`,
           )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomeLayout
+export default HomeLayout;

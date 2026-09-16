@@ -38,7 +38,7 @@ export default function ClassificationSection({
     page: 1,
     limit: 500,
     select: "title,titleHindi,name,nameHindi",
-    departmentId: selectedDepartment,
+    department: selectedDepartment,
   };
 
   const { data: servicesData, isLoading: servicesLoading } = useGetServices(

@@ -1,13 +1,15 @@
 import React from "react";
 import { Layers, Workflow, ShieldCheck } from "lucide-react";
+import userFlow from "@/assets/user-flow-steps.png";
 import { useSahyogTranslation } from "../../../translations";
 
 export default function FeaturesAndFlow() {
   const { t } = useSahyogTranslation();
 
   return (
-    <section className="py-16 px-4 sm:px-8 bg-white" id="how-it-works">
-      <div className="max-w-4xl mx-auto">
+    <section className=" bg-white" id="how-it-works">
+<img src={userFlow}/>
+      {/* <div className="max-w-4xl mx-auto">
         <div className="bg-slate-50/80 border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-md transition-all">
           <div className="flex items-center gap-3 pb-4 mb-6 border-b border-slate-200">
             <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/20">
@@ -40,7 +42,7 @@ export default function FeaturesAndFlow() {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }
