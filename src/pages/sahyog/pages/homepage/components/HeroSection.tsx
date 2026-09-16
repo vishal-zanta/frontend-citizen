@@ -1,4 +1,5 @@
 import React from "react";
+import banner from "@/assets/slider.jpeg";
 
 export default function HeroSection() {
   return (
@@ -6,7 +7,7 @@ export default function HeroSection() {
       <div className=" mx-auto">
         <div className="relative w-full   overflow-hidden shadow-xs">
           <img
-            src="/hero-banner.webp"
+            src={banner}
             alt="Sahyog Helpline Portal - Government of Bihar"
             className="object-cover w-full h-full "
           />
