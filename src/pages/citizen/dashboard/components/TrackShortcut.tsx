@@ -19,15 +19,15 @@ export default function TrackShortcut({ t }: TrackShortcutProps) {
         </h3>
         <p className="text-xs sm:text-sm text-muted-foreground mt-1">
           {t(
-            "Enter your Complaint ID on the Track page to view full timeline & status.",
-            "पूरी समयरेखा और स्थिति देखने के लिए ट्रैक पृष्ठ पर अपनी शिकायत आईडी दर्ज करें।"
+            "Enter your Complaint number on the Track page to view full timeline & status.",
+            "पूरी समयरेखा और स्थिति देखने के लिए ट्रैक पृष्ठ पर अपनी शिकायत संख्या दर्ज करें।"
           )}
         </p>
       </div>
       <Link to="/citizen/track" className="self-start sm:self-auto shrink-0">
         <Button className="bg-primary hover:bg-primary/90 text-xs sm:text-sm">
           <Search className="w-4 h-4 mr-1" />{" "}
-          {t("Track Complaint", "शिकायत ट्रैक करें")}
+          {t("Check Complaint Status", "शिकायत की स्थिति जांचें")}
         </Button>
       </Link>
     </div>

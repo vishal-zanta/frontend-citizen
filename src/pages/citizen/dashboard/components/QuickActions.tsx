@@ -17,7 +17,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
           <FileText className="w-6 h-6" />
         </div>
         <h3 className="font-bold text-foreground">
-          {t("Raise a Complaint", "शिकायत दर्ज करें")}
+          {t("Register Complaint", "शिकायत दर्ज करें")}
         </h3>
       </Link>
 
@@ -29,7 +29,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
           <Search className="w-6 h-6" />
         </div>
         <h3 className="font-bold text-foreground">
-          {t("Track a Complaint", "शिकायत ट्रैक करें")}
+          {t("Check Complaint Status", "शिकायत की स्थिति जांचें")}
         </h3>
       </Link>
 

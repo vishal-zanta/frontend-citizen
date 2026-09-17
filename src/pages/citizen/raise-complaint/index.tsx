@@ -212,7 +212,7 @@ export default function RaiseComplaint({
             </button>
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-foreground">
-                {t("Raise Complaint", "शिकायत दर्ज करें")}
+                {t("Register Complaint", "शिकायत दर्ज करें")}
               </h1>
               {/* <p className="text-sm text-muted-foreground mt-0.5">
                 {t(
