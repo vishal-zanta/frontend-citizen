@@ -88,6 +88,10 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
     "impact[vulnerability][economicallyWeakerSection]",
     String(data.impact.vulnerability.economicallyWeakerSection ?? false),
   );
+  formData.append(
+    "impact[vulnerability][general]",
+    String(data.impact.vulnerability.general ?? false),
+  );
 
   // if (data.communication.preferredMode)
   //   formData.append("communication[preferredMode]", data.communication.preferredMode);

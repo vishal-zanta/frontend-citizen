@@ -2,6 +2,7 @@ import React from "react";
 import { UserCheck, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSahyogTranslation } from "../translations";
+import { OFFICER_URL } from "@/utils/constants";
 
 export default function HeaderBranding() {
   const { t } = useSahyogTranslation();
@@ -49,7 +50,7 @@ export default function HeaderBranding() {
 
           {/* Officer Login Button */}
           <a
-            href="https://portal.lumirex.tech/"
+            href={OFFICER_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#1C4D8D] to-[#163c6f] hover:from-[#163c6f] hover:to-[#0F2A52] text-white font-bold text-xs shadow-xs hover:shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"

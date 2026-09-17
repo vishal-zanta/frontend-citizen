@@ -271,6 +271,8 @@ export const grievanceSchema = z.object({
       woman: z.boolean().optional(),
       personWithDisability: z.boolean().optional(),
       economicallyWeakerSection: z.boolean().optional(),
+      general: z.boolean().optional(),
+
     }),
   }),
   communication: z.object({
@@ -328,6 +330,7 @@ export const defaultValues: GrievanceFormValues = {
       woman: false,
       personWithDisability: false,
       economicallyWeakerSection: false,
+      general: false
     },
   },
   communication: {

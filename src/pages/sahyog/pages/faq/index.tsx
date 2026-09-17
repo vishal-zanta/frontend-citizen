@@ -206,7 +206,7 @@ export default function Faq() {
               <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                 {lang === "hi"
                   ? "क्या आपको अतिरिक्त सहायता चाहिए?"
-                  : "Still Have Questions or Need Help?"}
+                  : "Still Have Questions Or Need Help?"}
               </h3>
               <p className="text-xs text-slate-600 mt-1 max-w-md leading-relaxed">
                 {lang === "hi"
