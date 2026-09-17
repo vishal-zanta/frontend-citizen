@@ -17,7 +17,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCaptcha } from "@/api/auth.api";
 import { getPublicComplaintStatus } from "@/api/complaints.api";
 import LoaderErrWrapper from "@/components/LoaderErrWrapper";
-import { getErrorToast, getSuccessToast } from "@/utils/helpers";
+import {
+  getErrorToast,
+  getSuccessToast,
+  formatComplaintNumber,
+} from "@/utils/helpers";
 import ComplaintHeaderSection from "@/pages/citizen/track-complaint/components/viewComponents/ComplaintHeaderSection";
 import ComplaintTimeline from "@/components/ComplaintTimeline";
 import { useNavigate } from "react-router-dom";
@@ -173,15 +177,12 @@ const CompliantDetails = () => {
                   id="trackingId"
                   value={trackingNumber}
                   onChange={(e) => {
-                    let val = e.target.value;
-                    if (val.toUpperCase().startsWith("BR-")) {
-                      val = val.slice(3);
-                    } else if (val.toUpperCase().startsWith("BR")) {
-                      val = val.slice(2);
-                    }
-                    setTrackingNumber(val);
+                    setTrackingNumber(
+                      formatComplaintNumber(e.target.value, trackingNumber),
+                    );
                   }}
                   placeholder="2026-000031"
+                  maxLength={15}
                   className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 !h-10 sm:!h-12 text-sm font-medium"
                   required
                 />

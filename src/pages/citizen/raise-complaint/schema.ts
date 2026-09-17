@@ -139,6 +139,14 @@ const finalAddressSchema = z.object({
     .or(z.literal("")),
 });
 const addressSchema = locationOrPermanentAddress.superRefine((data, ctx) => {
+  if (!data.thana || data.thana.trim() === "") {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Field is required",
+      path: ["thana"],
+    });
+  }
+
   if (!!data.isUrban) {
     const requiredKeys = ["urbanPanchayat", "ward"];
     requiredKeys.forEach((key) => {
@@ -151,7 +159,7 @@ const addressSchema = locationOrPermanentAddress.superRefine((data, ctx) => {
       }
     });
   } else {
-    const requiredKeys = [ "panchayat"];
+    const requiredKeys = ["panchayat", "village"];
     requiredKeys.forEach((key) => {
       if (!data[key] || data[key].trim() === "") {
         ctx.addIssue({
@@ -175,29 +183,46 @@ const correspondenceAddressSchema = finalAddressSchema.superRefine(
     }
 
     if (data.state === "Bihar") {
-      // if (!!data.isUrban) {
-      //   const requiredKeys = ["urbanPanchayat", "ward"];
-      //   requiredKeys.forEach((key) => {
-      //     if (!data[key] || data[key].trim() === "") {
-      //       ctx.addIssue({
-      //         code: z.ZodIssueCode.custom,
-      //         message: "Field is required",
-      //         path: [key],
-      //       });
-      //     }
-      //   });
-      // } else {
-      //   const requiredKeys = ["block", "panchayat"];
-      //   requiredKeys.forEach((key) => {
-      //     if (!data[key] || data[key].trim() === "") {
-      //       ctx.addIssue({
-      //         code: z.ZodIssueCode.custom,
-      //         message: "Field is required",
-      //         path: [key],
-      //       });
-      //     }
-      //   });
-      // }
+      const requiredFields = [
+        "addressLine",
+        "district",
+        "block",
+        "pincode",
+        "thana",
+      ];
+      requiredFields.forEach((key) => {
+        if (!data[key] || data[key].trim() === "") {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Field is required",
+            path: [key],
+          });
+        }
+      });
+
+      if (!!data.isUrban) {
+        const requiredKeys = ["urbanPanchayat", "ward"];
+        requiredKeys.forEach((key) => {
+          if (!data[key] || data[key].trim() === "") {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "Field is required",
+              path: [key],
+            });
+          }
+        });
+      } else {
+        const requiredKeys = ["panchayat", "village"];
+        requiredKeys.forEach((key) => {
+          if (!data[key] || data[key].trim() === "") {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "Field is required",
+              path: [key],
+            });
+          }
+        });
+      }
     } else {
       const requiredKeys = ["addressLine", "city"];
       requiredKeys.forEach((key) => {
@@ -209,13 +234,6 @@ const correspondenceAddressSchema = finalAddressSchema.superRefine(
           });
         }
       });
-      // if (!data.city || data.city.trim() === "") {
-      //   ctx.addIssue({
-      //     code: z.ZodIssueCode.custom,
-      //     message: "Field is required",
-      //     path: ["city"],
-      //   });
-      // }
     }
   },
 );

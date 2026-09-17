@@ -125,6 +125,7 @@ export const PermanentAddress = ({ t }: { t: any }) => {
                 options={urbanPanchayatOptions}
                 isLoading={isUrbanPanchayatsLoading}
                 disabled={!selectedDistrictId || isUrbanPanchayatsLoading}
+                required
               />
 
               <RhfSelect
@@ -134,6 +135,7 @@ export const PermanentAddress = ({ t }: { t: any }) => {
                 options={wardOptions}
                 isLoading={isWardsLoading}
                 disabled={!selectedUrbanPanchayatId || isWardsLoading}
+                required
               />
             </>
           ) : (
@@ -155,6 +157,7 @@ export const PermanentAddress = ({ t }: { t: any }) => {
                 options={villageOptions}
                 isLoading={isVillagesLoading}
                 disabled={!selectedPanchayatId || isVillagesLoading}
+                required
               />
             </>
           )}
@@ -166,6 +169,7 @@ export const PermanentAddress = ({ t }: { t: any }) => {
             options={thanaOptions}
             isLoading={isThanasLoading}
             disabled={!selectedDistrictId || isThanasLoading}
+            required
           />
 
           <RhfInput
@@ -391,7 +395,7 @@ export const CorrespondenceAddress = ({
                 "House no., Street, Area",
                 "मकान संख्याा, सड़क, क्षेत्र",
               )}
-              required={!isBihar}
+              required
               maxLength={50}
               className="md:col-span-2"
             />
@@ -405,6 +409,7 @@ export const CorrespondenceAddress = ({
                   options={districtOptions}
                   isLoading={isDistrictsLoading}
                   disabled={isDistrictsLoading}
+                  required
                 />
 
                 <RhfSelect
@@ -417,6 +422,7 @@ export const CorrespondenceAddress = ({
                   options={blockOptions}
                   disabled={!selectedDistrictId || isBlocksLoading}
                   isLoading={isBlocksLoading}
+                  required
                 />
 
                 {isUrban ? (
@@ -434,6 +440,7 @@ export const CorrespondenceAddress = ({
                       options={urbanPanchayatOptions}
                       isLoading={isUrbanPanchayatsLoading}
                       disabled={!selectedDistrictId || isUrbanPanchayatsLoading}
+                      required
                     />
 
                     <RhfSelect
@@ -443,6 +450,7 @@ export const CorrespondenceAddress = ({
                       options={wardOptions}
                       isLoading={isWardsLoading}
                       disabled={!selectedUrbanPanchayatId || isWardsLoading}
+                      required
                     />
                   </>
                 ) : (
@@ -454,6 +462,7 @@ export const CorrespondenceAddress = ({
                       options={panchayatOptions}
                       disabled={!selectedBlockId || isPanchayatsLoading}
                       isLoading={isPanchayatsLoading}
+                      required
                     />
 
                     <RhfSelect
@@ -466,6 +475,7 @@ export const CorrespondenceAddress = ({
                       options={villageOptions}
                       isLoading={isVillagesLoading}
                       disabled={!selectedPanchayatId || isVillagesLoading}
+                      required
                     />
                   </>
                 )}
@@ -477,6 +487,7 @@ export const CorrespondenceAddress = ({
                   options={thanaOptions}
                   isLoading={isThanasLoading}
                   disabled={!selectedDistrictId || isThanasLoading}
+                  required
                 />
 
                 <RhfInput
