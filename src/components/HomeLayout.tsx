@@ -43,7 +43,7 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
             </div>
             <div>
               <div className="text-xl font-bold">
-                {t(PORTAL_META.name, "सहयोग हेल्पलाइन पोर्टल")}
+                {t(PORTAL_META.name, "बिहार सहयोग हेल्पलाइन")}
               </div>
               {PORTAL_META.dept ? (
                 <div className="text-sm text-white/70">{PORTAL_META.dept}</div>
@@ -132,7 +132,7 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
                 {t("Honourable Chief Minister", "माननीय मुख्यमंत्री")}
               </p>
               <p className="text-sm text-muted-foreground mt-0.5 font-medium">
-                {t("Government of Bihar", "माननीय मुख्यमंत्री, बिहार")}
+                {t("Government of Bihar", "बिहार सरकार")}
               </p>
             </div>
           )}
@@ -152,7 +152,7 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
         <div className="text-center mt-12 text-xs text-muted-foreground">
           {t(
             `${PORTAL_META.name} - ${PORTAL_META.version} - Government of Bihar - All Rights Reserved`,
-            `सहयोग हेल्पलाइन पोर्टल - ${PORTAL_META.version} - बिहार सरकार - सर्वाधिकार सुरक्षित`,
+            `बिहार सहयोग हेल्पलाइन - ${PORTAL_META.version} - बिहार सरकार - सर्वाधिकार सुरक्षित`,
           )}
         </div>
       </div>

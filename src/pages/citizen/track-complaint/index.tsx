@@ -28,9 +28,9 @@ export default function TrackComplaint({
   const [searchId, setSearchId] = useState("");
   const statusFilter = searchParams.get("status");
 
-// ────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────
 
-  // ── API Queries 
+  // ── API Queries
   // Fetch paginated history list
   const {
     data: listData,
@@ -39,7 +39,7 @@ export default function TrackComplaint({
   } = useGetComplaints(
     [page, limit, searchId, statusFilter],
     { page, limit, search: searchId, status: statusFilter },
-    !complaintId
+    !complaintId,
   );
   const compl = listData?.data?.data?.docs || [];
   const totalPages = listData?.data?.data?.pagination?.totalPages || 1;
@@ -60,8 +60,6 @@ export default function TrackComplaint({
       setSearchId(complaintId);
     }
   }, [complaintId]);
-
-
 
   // Apply frontend filter based on backend status values
   const filteredComplaints = compl;
@@ -87,10 +85,10 @@ export default function TrackComplaint({
 
   const handleBack = () => {
     // if (showDetails) {
-      setSearchId("");
-      setSearchParams({}, {replace : true});
+    setSearchId("");
+    setSearchParams({}, { replace: true });
     // } else {
-      navigate(-1);
+    navigate(-1);
     // }
   };
 
@@ -109,13 +107,22 @@ export default function TrackComplaint({
             </button>
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-foreground">
-                {statusFilter === "resolved"
+                {statusFilter?.toUpperCase() === "RESOLVED"
                   ? t("Resolved Complaints", "हल की गई शिकायतें")
-                  : statusFilter === "in_progress"
-                  ? t("In-Progress Complaints", "प्रगति पर शिकायतें")
-                  : statusFilter === "escalated"
-                  ? t("Escalated Complaints", "गंभीर शिकायतें")
-                  : t("Check Complaint Status", "शिकायत की स्थिति जांचें")}
+                  : statusFilter?.toUpperCase() === "IN_PROGRESS"
+                    ? t("In-Progress Complaints", "प्रगति पर शिकायतें")
+                    : statusFilter?.toUpperCase() === "CLOSED"
+                      ? t("Closed Complaints", "बंद शिकायतें")
+                      : statusFilter?.toUpperCase() === "REOPENED"
+                        ? t("Reopened Complaints", "पुनः खोली गई शिकायतें")
+                        : statusFilter?.toUpperCase() === "OPEN"
+                          ? t("Open Complaints", "लंबित शिकायतें")
+                          : statusFilter?.toUpperCase() === "ESCALATED"
+                            ? t("Escalated Complaints", "गंभीर शिकायतें")
+                            : t(
+                                "Check Complaint Status",
+                                "शिकायत की स्थिति देखें",
+                              )}
               </h1>
               {/* <p className="text-sm text-muted-foreground mt-0.5">
                 {t(
@@ -153,15 +160,15 @@ export default function TrackComplaint({
                     <Search className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
                     <p className="text-muted-foreground">
                       {t(
-                        "No complaint found with ID",
-                        "इस आईडी के साथ कोई शिकायत नहीं मिली",
+                        "No complaint found with number",
+                        "इस संख्या के साथ कोई शिकायत नहीं मिली",
                       )}{" "}
                       "{complaintId}".
                     </p>
                     <p className="text-xs text-muted-foreground mt-2">
                       {t(
-                        "Try check your previous complaints table or check the ID again.",
-                        "अपनी पिछली शिकायतों की तालिका देखें या आईडी दोबारा जांचें।",
+                        "Try check your previous complaints table or check the complaint number again.",
+                        "अपनी पिछली शिकायतों की तालिका देखें या संख्या दोबारा देखें।",
                       )}
                     </p>
                   </div>

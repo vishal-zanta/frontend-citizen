@@ -15,6 +15,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3002
+    port: 3002,
+    allowedHosts: ["uninvited-suffice-depict.ngrok-free.dev"]
   }
 })

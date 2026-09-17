@@ -51,7 +51,7 @@ export default function PreviousComplaintsTable({
                     {t("S.No.", "क्र.सं.")}
                   </th>
                   <th className="px-4 py-3 font-medium">
-                    {t("ID", "शिकायत आईडी")}
+                    {t("Complaint Number", "शिकायत संख्या")}
                   </th>
                   <th className="px-4 py-3 font-medium">
                     {t("Nature", "प्रकृति")}

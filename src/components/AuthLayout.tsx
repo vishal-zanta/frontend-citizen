@@ -21,11 +21,11 @@ export default function AuthLayout({
           {/* <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary mb-3">
             <Icon className="w-6 h-6 text-primary-foreground" aria-hidden="true" />
           </div> */}
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground capitalize">
             {title}
           </h1>
           {subtitle && (
-            <p className="text-sm text-muted-foreground mt-1.5">{subtitle}</p>
+            <p className="text-sm text-muted-foreground mt-1.5 capitalize">{subtitle}</p>
           )}
         </div>
         <div className="bg-card rounded-2xl shadow-sm border border-border p-4 sm:p-6">

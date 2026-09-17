@@ -122,7 +122,7 @@ export const translations: Record<Language, Translations> = {
       langSelect: "भाषा चुनें",
     },
     header: {
-      title: "सहयोग हेल्पलाइन पोर्टल",
+      title: "बिहार सहयोग हेल्पलाइन",
       govt: "बिहार सरकार",
       citizenLogin: "नागरिक लॉगिन",
       officerLogin: "अधिकारी लॉगिन",
@@ -131,7 +131,7 @@ export const translations: Record<Language, Translations> = {
       home: "मुख्य पृष्ठ",
       citizenServices: "नागरिक सेवाएं",
       newComplaint: "नई शिकायत दर्ज करें",
-      registeredUser: "शिकायत की स्थिति जांचें",
+      registeredUser: "शिकायत की स्थिति देखें",
       importantLinks: "महत्वपूर्ण लिंक",
       faq: "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
       rti: "आरटीआई (जानकारी पोर्टल)",
@@ -153,7 +153,7 @@ export const translations: Record<Language, Translations> = {
       withinDeadline: "समय सीमा के भीतर",
       totalLodged: "कुल दर्ज शिकायतें",
       totalResolved: "कुल निराकृत शिकायतें",
-      grievanceStatus: "शिकायत की स्थिति जांचें",
+      grievanceStatus: "शिकायत की स्थिति देखें",
       registerGrievance: "शिकायत / मांग सुझाव दर्ज करें",
     },
     actionCards: {
@@ -163,7 +163,7 @@ export const translations: Record<Language, Translations> = {
       card1Desc:
         "ऑनलाइन शिकायत। हमारे डिजिटल पोर्टल के माध्यम से अपनी शिकायत दर्ज करें।",
       card1Btn: "शिकायत दर्ज करें",
-      card2Title: "शिकायत की स्थिति जांचें",
+      card2Title: "शिकायत की स्थिति देखें",
       card2Desc:
         "कार्यवाही का विवरण। मोबाइल के माध्यम से वर्तमान स्थिति जानें।",
       card2Btn: "स्थिति देखें",
@@ -175,7 +175,7 @@ export const translations: Record<Language, Translations> = {
       card4Btn: "प्रतिक्रिया दें",
     },
     trackWidget: {
-      heading: "शिकायत की स्थिति जांचें",
+      heading: "शिकायत की स्थिति देखें",
       subheading:
         "स्थिति देखने के लिए अपनी शिकायत संख्या और सुरक्षा कोड दर्ज करें",
       trackingIdLabel: "शिकायत संख्या",
@@ -229,8 +229,7 @@ export const translations: Record<Language, Translations> = {
     },
     faqs: {
       title: "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
-      subtitle:
-        "बिहार सहयोग पोर्टल – दिशानिर्देश एवं आवश्यक जानकारियां",
+      subtitle: "बिहार सहयोग पोर्टल – दिशानिर्देश एवं आवश्यक जानकारियां",
       items: [
         {
           question: "1. बिहार सहयोग पोर्टल क्या है?",
@@ -276,7 +275,7 @@ export const translations: Record<Language, Translations> = {
     },
     footer: {
       portalDesc:
-        "सहयोग हेल्पलाइन पोर्टल बिहार सरकार का एक पारदर्शी एवं समयबद्ध डिजिटल माध्यम है, जो नागरिकों को उनकी समस्याओं के समाधान हेतु सीधे संबंधित विभागों से जोड़ता है।",
+        "बिहार सहयोग हेल्पलाइन बिहार सरकार का एक पारदर्शी एवं समयबद्ध डिजिटल माध्यम है, जो नागरिकों को उनकी समस्याओं के समाधान हेतु सीधे संबंधित विभागों से जोड़ता है।",
       keyLinks: "मुख्य लिंक",
       importantLinks: "महत्वपूर्ण लिंक",
       contactUs: "संपर्क करें",
@@ -304,7 +303,7 @@ export const translations: Record<Language, Translations> = {
       langSelect: "Select Language",
     },
     header: {
-      title: "Sahyog Helpline Portal",
+      title: "Bihar Sahyog Helpline",
       govt: "Government of Bihar",
       citizenLogin: "Citizen Login",
       officerLogin: "Officer Login",
@@ -360,7 +359,8 @@ export const translations: Record<Language, Translations> = {
     },
     trackWidget: {
       heading: "Check complaint status",
-      subheading: "Enter your complaint number and security code to view status",
+      subheading:
+        "Enter your complaint number and security code to view status",
       trackingIdLabel: "Complaint number",
       trackingIdPlaceholder: "2026-000031",
       trackingIdFormat: "Format: BR-YYYY-XXXXXX (e.g. BR-2026-000031)",
@@ -412,8 +412,7 @@ export const translations: Record<Language, Translations> = {
     },
     faqs: {
       title: "Frequently Asked Questions (FAQ)",
-      subtitle:
-        "Bihar Sahyog Portal – Guidelines & Information",
+      subtitle: "Bihar Sahyog Portal – Guidelines & Information",
       items: [
         {
           question: "1. What is Bihar Sahyog Portal?",
@@ -459,7 +458,7 @@ export const translations: Record<Language, Translations> = {
     },
     footer: {
       portalDesc:
-        "Sahyog Helpline Portal provides a transparent and efficient platform for citizens to register and track complaints online. The system ensures timely resolution of grievances by connecting citizens directly with concerned departments through a structured digital workflow.",
+        "Bihar Sahyog Helpline provides a transparent and efficient platform for citizens to register and track complaints online. The system ensures timely resolution of grievances by connecting citizens directly with concerned departments through a structured digital workflow.",
       keyLinks: "Key Links",
       importantLinks: "Important Links",
       contactUs: "Contact Us",

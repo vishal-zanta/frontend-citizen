@@ -8,7 +8,7 @@ export default function HeroSection() {
         <div className="relative w-full   overflow-hidden shadow-xs">
           <img
             src={banner}
-            alt="Sahyog Helpline Portal - Government of Bihar"
+            alt="Bihar Sahyog Helpline - Government of Bihar"
             className="object-cover w-full h-full "
           />
         </div>

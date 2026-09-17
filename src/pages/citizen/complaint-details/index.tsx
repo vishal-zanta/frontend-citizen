@@ -134,7 +134,7 @@ const CompliantDetails = () => {
     <HomeLayout>
       <AuthLayout
         icon={FileText}
-        title={t("Check complaint status", "शिकायत की स्थिति जांचें")}
+        title={t("Check complaint status", "शिकायत की स्थिति देखें")}
         subtitle={t(
           "Enter your complaint number and security code to view status",
           "स्थिति देखने के लिए अपनी शिकायत संख्या और सुरक्षा कोड दर्ज करें",
@@ -143,7 +143,7 @@ const CompliantDetails = () => {
           <Button
             variant="link"
             onClick={() => navigate("/login")}
-            className="cursor-pointer"
+            className="cursor-pointer capitalize"
           >
             Back to login
           </Button>
@@ -303,7 +303,7 @@ const Step2: React.FC<Step2Props> = ({ t, data, trackingId, onBack }) => {
             variant="link"
             size="sm"
             onClick={onBack}
-            className="gap-2 cursor-pointer text-muted-foreground hover:text-foreground"
+            className="gap-2 cursor-pointer text-muted-foreground hover:text-foreground capitalize"
           >
             <ArrowLeft className="w-4 h-4" />
             {t("Back to login", "लॉगिन पर वापस")}
