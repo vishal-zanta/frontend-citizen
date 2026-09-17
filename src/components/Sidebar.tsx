@@ -27,7 +27,6 @@ import biharGovtLogo from "@/assets/bihar_govt.png";
 import { PORTAL_META } from "@/lib/biharData";
 import { useLanguage } from "@/context/LanguageContext";
 
-
 // Simple stub for FileBarChart since it was omitted from Lucide imports in build to avoid error
 const FileBarChart = LayoutDashboard;
 
@@ -81,7 +80,7 @@ const roleConfig: Record<string, RoleConfig> = {
           },
           {
             label: "Check Complaint Status",
-            labelHindi: "शिकायत की स्थिति जांचें",
+            labelHindi: "शिकायत की स्थिति देखें",
             path: "/citizen/track",
             icon: Search,
           },
@@ -163,7 +162,6 @@ export default function Sidebar({
               <X className="w-5 h-5" />
             </button>
           </div>
-
 
           {/* User Info banner */}
           {/* <div className="px-4 py-3 border-b border-sidebar-border/50 bg-sidebar-accent/10 shrink-0">

@@ -8,7 +8,7 @@ interface QuickActionsProps {
 
 export default function QuickActions({ t }: QuickActionsProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       <Link
         to="/citizen/raise"
         className="group bg-card rounded-xl border-2 border-blue-100 dark:border-slate-800 hover:border-primary p-4 sm:p-6 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
@@ -29,11 +29,11 @@ export default function QuickActions({ t }: QuickActionsProps) {
           <Search className="w-6 h-6" />
         </div>
         <h3 className="font-bold text-foreground">
-          {t("Check Complaint Status", "शिकायत की स्थिति जांचें")}
+          {t("Check Complaint Status", "शिकायत की स्थिति देखें")}
         </h3>
       </Link>
 
-      <Link
+      {/* <Link
         to="/citizen/settings"
         className="group bg-card rounded-xl border-2 border-purple-100 dark:border-slate-800 hover:border-purple-400 p-4 sm:p-6 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
       >
@@ -43,7 +43,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
         <h3 className="font-bold text-foreground">
           {t("Profile", "प्रोफाइल")}
         </h3>
-      </Link>
+      </Link> */}
 
       <Link
         to="/citizen/feedback"

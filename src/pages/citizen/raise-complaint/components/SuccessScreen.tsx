@@ -51,7 +51,7 @@ export default function SuccessScreen({
       navigator.clipboard.writeText(grievanceId);
       setCopied(true);
       getSuccessToast(
-        t("Grievance ID copied to clipboard", "शिकायत आईडी कॉपी हो गई"),
+        t("Complaint number copied to clipboard", "शिकायत संख्या कॉपी हो गई"),
       );
       setTimeout(() => setCopied(false), 2000);
     }
@@ -88,7 +88,7 @@ export default function SuccessScreen({
                 <button
                   type="button"
                   onClick={handleCopy}
-                  title={t("Copy ID", "आईडी कॉपी करें")}
+                  title={t("Copy number", "संख्या कॉपी करें")}
                   className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                 >
                   {copied ? (

@@ -49,7 +49,7 @@ export default function ComplaintHeaderSection({
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
         <div>
           <div className="text-xs text-muted-foreground mb-1">
-            {natureTitle} {t("ID", "आईडी")}
+            {natureTitle} {t("Number", "संख्या")}
           </div>
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
             <h2 className="text-lg sm:text-xl font-bold text-primary font-mono break-all">

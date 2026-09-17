@@ -721,7 +721,7 @@ export function FieldVisitDetailDialog({
             </div>
             <div className="bg-muted/50 rounded-lg p-3">
               <div className="text-xs text-muted-foreground mb-1">
-                {t("Complaint ID", "शिकायत आईडी")}
+                {t("Complaint number", "शिकायत संख्या")}
               </div>
               <ComplaintId id={visit.complaintId} />
             </div>

@@ -165,7 +165,7 @@ export default function Login() {
   return (
     <AuthLayout
       icon={LogIn}
-      title={t("Sahyog Helpline Portal", "सहयोग हेल्पलाइन पोर्टल")}
+      title={t("Bihar Sahyog Helpline", "बिहार सहयोग हेल्पलाइन")}
       subtitle={
         step === "phone"
           ? t(
@@ -178,9 +178,9 @@ export default function Login() {
         <Button
           variant="link"
           onClick={() => navigate("/complaint")}
-          className="cursor-pointer"
+          className="cursor-pointer capitalize"
         >
-          {t("Check complaint status", "शिकायत की स्थिति जांचें")}
+          {t("Check complaint status", "शिकायत की स्थिति देखें")}
         </Button>
       }
     >
@@ -206,8 +206,8 @@ export default function Login() {
                   defaultCountry="IN"
                   countrySelectProps={{ disabled: true }}
                   placeholder={t(
-                    "Enter your registered phone number",
-                    "अपना पंजीकृत फ़ोन नंबर दर्ज करें",
+                    "Enter your phone number",
+                    "अपना फ़ोन नंबर दर्ज करें",
                   )}
                   value={phone}
                   onChange={setPhone}

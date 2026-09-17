@@ -4,11 +4,11 @@
 // ============================================================
 
 export const PORTAL_META = {
-  name: "Sahyog Helpline Portal",
+  name: "Bihar Sahyog Helpline",
   nameHindi: "बिहार ई-शिकायत पोर्टल",
   tagline: "Good Governance is Public Service - Bihar Government.",
   dept: "",
-  version: "v2.4.1",
+  version: "v1.0.0",
   lastSync: "",
 };
 
