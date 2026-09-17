@@ -153,3 +153,55 @@ export const getEntityLabel = (item: any, t?: (en: string, hi: string) => string
   return name || nameHindi || "";
 };
 
+/**
+ * Automatically formats complaint numbers into YYYY-XXXXXX format.
+ * Automatically inserts '-' after 4 digits (year).
+ * Handles copy-pasting of full IDs (e.g. BR-2026-000031, BR2026000031, 2026000031),
+ * typing character-by-character, backspacing, and deletion without getting stuck.
+ */
+export const formatComplaintNumber = (
+  rawInput: string,
+  prevValue: string = "",
+): string => {
+  if (!rawInput) return "";
+
+  // 1. Strip leading BR prefix with optional spaces, dashes, or underscores (e.g. "BR-", "BR - ", "BR_", "BR", "br-", etc.)
+  const cleaned = rawInput.trim().replace(/^BR[\s\-_]*/i, "");
+
+  // 2. Extract digits only (since complaint format is BR-YYYY-XXXXXX where YYYY is year and XXXXXX is serial)
+  const digits = cleaned.replace(/\D/g, "");
+
+  if (!digits) {
+    return "";
+  }
+
+  // Cap at 14 digits (4 for year + up to 10 for serial)
+  const cappedDigits = digits.slice(0, 14);
+
+  // If fewer than 4 digits (e.g. '2', '20', '202')
+  if (cappedDigits.length < 4) {
+    return cappedDigits;
+  }
+
+  // If exactly 4 digits (e.g. '2026')
+  if (cappedDigits.length === 4) {
+    const prevDigits = prevValue.replace(/\D/g, "");
+
+    // Check if the user is deleting the hyphen (was at "2026-" and backspaced to "2026")
+    const isDeleting =
+      prevValue.endsWith("-") &&
+      cleaned === cappedDigits &&
+      prevDigits.length === 4;
+
+    if (!isDeleting) {
+      return `${cappedDigits}-`;
+    }
+    return cappedDigits;
+  }
+
+  // If more than 4 digits (e.g. '2026000031')
+  const year = cappedDigits.slice(0, 4);
+  const serial = cappedDigits.slice(4);
+  return `${year}-${serial}`;
+};
+
