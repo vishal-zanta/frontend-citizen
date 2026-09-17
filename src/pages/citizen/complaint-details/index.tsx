@@ -134,7 +134,7 @@ const CompliantDetails = () => {
     <HomeLayout>
       <AuthLayout
         icon={FileText}
-        title={t("Check complaint status", "शिकायत की स्थिति ट्रैक करें")}
+        title={t("Check complaint status", "शिकायत की स्थिति जांचें")}
         subtitle={t(
           "Enter your complaint number and security code to view status",
           "स्थिति देखने के लिए अपनी शिकायत संख्या और सुरक्षा कोड दर्ज करें",
@@ -269,7 +269,7 @@ const CompliantDetails = () => {
             ) : (
               <>
                 <Search className="mr-2 h-4 w-4" />
-                {t("Track Status", "स्थिति देखें")}
+                {t("Check complaint status", "स्थिति देखें")}
               </>
             )}
           </Button>

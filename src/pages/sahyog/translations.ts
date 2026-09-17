@@ -175,7 +175,7 @@ export const translations: Record<Language, Translations> = {
       card4Btn: "प्रतिक्रिया दें",
     },
     trackWidget: {
-      heading: "शिकायत की स्थिति जाने",
+      heading: "शिकायत की स्थिति जांचें",
       subheading:
         "स्थिति देखने के लिए अपनी शिकायत संख्या और सुरक्षा कोड दर्ज करें",
       trackingIdLabel: "शिकायत संख्या",
@@ -313,7 +313,7 @@ export const translations: Record<Language, Translations> = {
       home: "Home Page",
       citizenServices: "Citizen Services",
       newComplaint: "New Complaint",
-      registeredUser: "Check complaint status",
+      registeredUser: "Check Complaint Status",
       importantLinks: "Important Links",
       faq: "FAQ",
       rti: "RTI (Jaankari Portal)",
@@ -366,7 +366,7 @@ export const translations: Record<Language, Translations> = {
       trackingIdFormat: "Format: BR-YYYY-XXXXXX (e.g. BR-2026-000031)",
       securityCodeLabel: "Security Code",
       securityCodePlaceholder: "Enter security code",
-      btn: "Track Status",
+      btn: "Check complaint status",
       smsQuery: "Instant SMS Status Query",
       downloadAtr: "Download Action Taken Report (ATR)",
     },

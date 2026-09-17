@@ -89,7 +89,7 @@ export default function GrievanceStats() {
 
                 {/* Middle Title */}
                 <div className="my-auto py-2">
-                  <span className="text-slate-800 font-medium text-sm sm:text-[15px] leading-snug">
+                  <span className="text-slate-800 font-medium text-sm sm:text-[15px] leading-snug capitalize">
                     {card.title}
                   </span>
                 </div>
