@@ -180,7 +180,7 @@ export default function Login() {
           onClick={() => navigate("/complaint")}
           className="cursor-pointer"
         >
-          Track complaint
+          {t("Check complaint status", "शिकायत की स्थिति जांचें")}
         </Button>
       }
     >

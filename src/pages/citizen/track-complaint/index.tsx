@@ -115,7 +115,7 @@ export default function TrackComplaint({
                   ? t("In-Progress Complaints", "प्रगति पर शिकायतें")
                   : statusFilter === "escalated"
                   ? t("Escalated Complaints", "गंभीर शिकायतें")
-                  : t("Track Complaint", "शिकायत ट्रैक करें")}
+                  : t("Check Complaint Status", "शिकायत की स्थिति जांचें")}
               </h1>
               {/* <p className="text-sm text-muted-foreground mt-0.5">
                 {t(

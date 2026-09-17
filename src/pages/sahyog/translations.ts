@@ -153,7 +153,7 @@ export const translations: Record<Language, Translations> = {
       withinDeadline: "समय सीमा के भीतर",
       totalLodged: "कुल दर्ज शिकायतें",
       totalResolved: "कुल निराकृत शिकायतें",
-      grievanceStatus: "शिकायत की स्थिति",
+      grievanceStatus: "शिकायत की स्थिति जांचें",
       registerGrievance: "शिकायत / मांग सुझाव दर्ज करें",
     },
     actionCards: {
@@ -163,7 +163,7 @@ export const translations: Record<Language, Translations> = {
       card1Desc:
         "ऑनलाइन शिकायत। हमारे डिजिटल पोर्टल के माध्यम से अपनी शिकायत दर्ज करें।",
       card1Btn: "शिकायत दर्ज करें",
-      card2Title: "शिकायत की स्थिति",
+      card2Title: "शिकायत की स्थिति जांचें",
       card2Desc:
         "कार्यवाही का विवरण। मोबाइल के माध्यम से वर्तमान स्थिति जानें।",
       card2Btn: "स्थिति देखें",
@@ -335,7 +335,7 @@ export const translations: Record<Language, Translations> = {
       withinDeadline: "Within Deadline",
       totalLodged: "Total lodged complaints",
       totalResolved: "Total complaints resolved",
-      grievanceStatus: "Check Complaint status",
+      grievanceStatus: "Check Complaint Status",
       registerGrievance: "Register complaint / demand suggestion",
     },
     actionCards: {
@@ -344,8 +344,8 @@ export const translations: Record<Language, Translations> = {
       card1Title: "Complaint Registration",
       card1Desc:
         "Complaint Online. File your complaint through our digital portal.",
-      card1Btn: "File complaint",
-      card2Title: "Complaint Status",
+      card1Btn: "Register Complaint",
+      card2Title: "Check Complaint Status",
       card2Desc:
         "Details of proceedings. Know the current status through mobile.",
       card2Btn: "View Status",

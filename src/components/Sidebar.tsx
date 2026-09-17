@@ -74,14 +74,14 @@ const roleConfig: Record<string, RoleConfig> = {
         titleHindi: "शिकायतें",
         items: [
           {
-            label: "Raise Complaint",
+            label: "Register Complaint",
             labelHindi: "शिकायत दर्ज करें",
             path: "/citizen/raise",
             icon: FileText,
           },
           {
-            label: "Track Complaint",
-            labelHindi: "शिकायत ट्रैक करें",
+            label: "Check Complaint Status",
+            labelHindi: "शिकायत की स्थिति जांचें",
             path: "/citizen/track",
             icon: Search,
           },

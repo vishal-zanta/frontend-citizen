@@ -7,8 +7,8 @@ const WELCOME =
   "Namaste! 🙏 Welcome to Bihar Sahyog Helpline AI Assistant.\n\nI can help you:\n📝 File a complaint (right here in chat!)\n🔍 Track your complaint status\n💡 Get answers about services & SLA\n🛠️ Technical support\n\nHow can I help you today?";
 
 const QUICK_ACTIONS = [
-  { label: "📝 File Complaint", action: "raise" },
-  { label: "🔍 Track Complaint", action: "track" },
+  { label: "📝 Register Complaint", action: "raise" },
+  { label: "🔍 Check Complaint Status", action: "track" },
   { label: "💡 Common Issues", action: "templates" },
   { label: "🛠️ Technical Help", action: "technical" },
 ];
@@ -94,7 +94,7 @@ const KB = [
   {
     keywords: ["document", "upload", "photo"],
     response:
-      "Yes! You can upload photos and supporting documents when filing a complaint. Geo-tagged photos are especially helpful. Just click 'Raise Complaint' in the sidebar and upload on Step 3.",
+      "Yes! You can upload photos and supporting documents when filing a complaint. Geo-tagged photos are especially helpful. Just click 'Register Complaint' in the sidebar and upload on Step 3.",
   },
   {
     keywords: ["track", "status"],
