@@ -40,9 +40,9 @@ export default function ComplaintDetailsView({
 
   const canReopen = Boolean(
     complaint?.status &&
-      ["RESOLVED", "CLOSED"].includes(complaint.status) &&
-      isWithin7Days &&
-      (complaint?._id || complaint?.id),
+    ["RESOLVED", "CLOSED"].includes(complaint.status) &&
+    isWithin7Days &&
+    (complaint?._id || complaint?.id),
   );
 
   if (!complaint) return null;
@@ -54,19 +54,19 @@ export default function ComplaintDetailsView({
 
   const hasPermAddr = Boolean(
     permAddr?.addressLine ||
-      permAddr?.district ||
-      permAddr?.block ||
-      permAddr?.panchayat ||
-      permAddr?.thana ||
-      permAddr?.pincode,
+    permAddr?.district ||
+    permAddr?.block ||
+    permAddr?.panchayat ||
+    permAddr?.thana ||
+    permAddr?.pincode,
   );
 
   const isSameAddress = Boolean(
     complaint?.isCrpEqualPerAdd ||
-      (!corrAddr?.addressLine &&
-        !corrAddr?.district &&
-        !corrAddr?.pincode &&
-        hasPermAddr),
+    (!corrAddr?.addressLine &&
+      !corrAddr?.district &&
+      !corrAddr?.pincode &&
+      hasPermAddr),
   );
 
   return (
@@ -120,7 +120,7 @@ export default function ComplaintDetailsView({
       {complaint.timeline && complaint.timeline.length > 0 && (
         <div className="bg-card rounded-xl border border-border p-4 sm:p-6">
           <h3 className="font-bold text-foreground mb-4">
-            {t("Complaint Timeline", "शिकायत समयरेखा")} -{" "}
+            {t("Complaint Timeline", "शिकायत समयसीमा")} -{" "}
             {t("End-to-End Lifecycle", "संपूर्ण जीवनचक्र")}
           </h3>
           <ComplaintTimeline events={complaint.timeline} t={t} />

@@ -127,7 +127,7 @@ export default function TrackComplaint({
               {/* <p className="text-sm text-muted-foreground mt-0.5">
                 {t(
                   "Enter your Complaint ID to view status, timeline, and officer details.",
-                  "स्थिति, समयरेखा और अधिकारी विवरण देखने के लिए अपनी शिकायत आईडी दर्ज करें।",
+                  "स्थिति, समयसीमा और अधिकारी विवरण देखने के लिए अपनी शिकायत आईडी दर्ज करें।",
                 )}
               </p> */}
             </div>
