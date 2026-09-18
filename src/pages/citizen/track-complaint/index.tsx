@@ -3,14 +3,19 @@ import { ArrowLeft, Search } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PortalLayout from "@/components/PortalLayout";
 import CenterLayout from "@/components/CenterLayout";
-import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 import LoaderErrWrapper from "@/components/LoaderErrWrapper";
+import { useQuery } from "@tanstack/react-query";
 
 import ComplaintDetailsView from "./components/ComplaintDetailsView";
 import SearchComplaint from "./components/SearchComplaint";
 import PreviousComplaintsTable from "./components/PreviousComplaintsTable";
 import { useGetComplaints, useGetComplaintById } from "@/hooks/useGetQuery";
+import { getExternalComplaintsById } from "@/api/externalDept.api";
+import {
+  getExternalDepartment,
+  isExternalDepartment,
+} from "@/utils/departments";
 import Pagination from "@/components/Pagination";
 import usePagination from "@/hooks/usePagination";
 
@@ -24,9 +29,15 @@ export default function TrackComplaint({
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const complaintId = searchParams.get("complaint") || searchParams.get("id");
+  const grievanceTypeParam = searchParams.get("grievanceType");
+  const departmentCodeParam = searchParams.get("departmentCode");
   const { page, limit, ...pageProps } = usePagination();
   const [searchId, setSearchId] = useState("");
   const statusFilter = searchParams.get("status");
+
+  const isExternal =
+    grievanceTypeParam === "EXTERNAL" ||
+    Boolean(departmentCodeParam && isExternalDepartment(departmentCodeParam));
 
   // ────────────────────────────────────────────────────────────
 
@@ -44,15 +55,35 @@ export default function TrackComplaint({
   const compl = listData?.data?.data?.docs || [];
   const totalPages = listData?.data?.data?.pagination?.totalPages || 1;
 
-  // Fetch individual details if tracking a specific ID
+  // Fetch individual details if tracking a specific ID (Internal)
   const {
     data: detailData,
-    isLoading: isDetailLoading,
-    error: detailError,
-  } = useGetComplaintById([complaintId], { _id: complaintId }, !!complaintId);
-  const complaint = detailData?.data?.data;
+    isLoading: isInternalLoading,
+    error: internalError,
+  } = useGetComplaintById(
+    [complaintId],
+    { _id: complaintId },
+    Boolean(complaintId && !isExternal),
+  );
 
-  const { t, lang, toggle } = useLanguage();
+  // Fetch individual details if tracking a specific ID (External)
+  const {
+    data: externalDetailData,
+    isLoading: isExternalLoading,
+    error: externalError,
+  } = useQuery({
+    queryKey: ["external-complaint", complaintId],
+    queryFn: () => getExternalComplaintsById(complaintId || ""),
+    enabled: Boolean(complaintId && isExternal),
+  });
+
+  const isDetailLoading = isExternal ? isExternalLoading : isInternalLoading;
+  const detailError = isExternal ? externalError : internalError;
+  const complaint = isExternal
+    ? externalDetailData?.data?.data
+    : detailData?.data?.data;
+
+  const { t } = useLanguage();
 
   // Update input if URL param changes (e.g. user clicks "View Full Timeline")
   useEffect(() => {
@@ -73,7 +104,24 @@ export default function TrackComplaint({
   };
 
   const handleQuickTrack = (c: any) => {
-    setSearchParams({ complaint: c._id || c.id });
+    const isExt =
+      c.grievanceType === "EXTERNAL" ||
+      c.isExternal === true ||
+      Boolean(c.departmentCode);
+    const gType = isExt ? "EXTERNAL" : c.grievanceType || "INTERNAL";
+    const deptCode =
+      c.departmentCode ||
+      c.classification?.departmentCode ||
+      (isExt ? c.classification?.department : undefined);
+
+    const params: Record<string, string> = {
+      complaint: c._id || c.id,
+      grievanceType: gType,
+    };
+    if (isExt && deptCode) {
+      params.departmentCode = deptCode;
+    }
+    setSearchParams(params);
   };
 
   const handlePrint = () => {
@@ -84,13 +132,14 @@ export default function TrackComplaint({
   const showNotFound = showDetails && !isDetailLoading && !complaint;
 
   const handleBack = () => {
-    // if (showDetails) {
     setSearchId("");
     setSearchParams({}, { replace: true });
-    // } else {
     navigate(-1);
-    // }
   };
+
+  const deptCode = complaint?.departmentCode || departmentCodeParam;
+  const externalDept = deptCode ? getExternalDepartment(deptCode) : null;
+  const ExternalViewComponent = externalDept?.viewComponent;
 
   return (
     <PortalLayout role={role}>
@@ -124,36 +173,26 @@ export default function TrackComplaint({
                                 "शिकायत की स्थिति देखें",
                               )}
               </h1>
-              {/* <p className="text-sm text-muted-foreground mt-0.5">
-                {t(
-                  "Enter your Complaint ID to view status, timeline, and officer details.",
-                  "स्थिति, समयसीमा और अधिकारी विवरण देखने के लिए अपनी शिकायत आईडी दर्ज करें।",
-                )}
-              </p> */}
             </div>
           </div>
         </div>
 
         {showDetails ? (
           <div className="space-y-4">
-            {/* <Button
-              onClick={() => {
-                setSearchId("");
-                setSearchParams({});
-              }}
-              variant="link"
-              className="px-0 text-primary hover:underline flex items-center gap-1 no-print mb-2 cursor-pointer"
-            >
-              &larr;{" "}
-              {t("Back to Search & History", "खोज और इतिहास पर वापस जाएं")}
-            </Button> */}
             <LoaderErrWrapper isLoading={isDetailLoading} error={detailError}>
               {complaint ? (
-                <ComplaintDetailsView
-                  complaint={complaint}
-                  t={t}
-                  onPrint={handlePrint}
-                />
+                isExternal && ExternalViewComponent ? (
+                  <ExternalViewComponent
+                    data={complaint}
+                    onPrint={handlePrint}
+                  />
+                ) : (
+                  <ComplaintDetailsView
+                    complaint={complaint}
+                    t={t}
+                    onPrint={handlePrint}
+                  />
+                )
               ) : (
                 showNotFound && (
                   <div className="bg-card rounded-xl border border-border p-12 text-center no-print mb-6">

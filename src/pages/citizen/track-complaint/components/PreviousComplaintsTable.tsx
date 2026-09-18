@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBadge } from "@/components/Badges";
 import { ComplaintDetailDialog } from "@/components/ComplaintDetailDialog";
 import LoaderErrWrapper from "@/components/LoaderErrWrapper";
 import { useNavigate } from "react-router-dom";
 import { getEntityLabel } from "@/utils/helpers";
+import { getExternalDepartment } from "@/utils/departments";
+import { getFormsFields } from "@/lib/idb";
 
 interface PreviousComplaintsTableProps {
   filteredComplaints: any[];
@@ -21,22 +23,31 @@ export default function PreviousComplaintsTable({
   error,
 }: PreviousComplaintsTableProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  console.log({ filteredComplaints });
+  const [masterDataMap, setMasterDataMap] = useState<Record<string, any>>({});
   const nav = useNavigate();
+
+  useEffect(() => {
+    async function loadMasterData() {
+      try {
+        const [edu, food, health] = await Promise.all([
+          getFormsFields("EDUCATION"),
+          getFormsFields("FOOD"),
+          getFormsFields("HEALTH"),
+        ]);
+        setMasterDataMap({
+          EDUCATION: edu?.fields,
+          FOOD: food?.fields,
+          HEALTH: health?.fields,
+        });
+      } catch (err) {
+        console.error("Error loading cached master data:", err);
+      }
+    }
+    loadMasterData();
+  }, []);
 
   return (
     <div className="bg-card rounded-xl border border-border overflow-hidden mb-6 no-print">
-      {/* <div className="px-5 py-3 border-b border-border">
-        <h3 className="font-bold text-foreground">
-          {t("Your Previous Complaints", "आपकी पिछली शिकायतें")}
-        </h3>
-        <p className="text-xs text-muted-foreground mt-0.5">
-          {t(
-            "Click any complaint to view full details",
-            "पूर्ण विवरण देखने के लिए किसी भी शिकायत पर क्लिक करें",
-          )}
-        </p>
-      </div> */}
       <div className="overflow-x-auto">
         <LoaderErrWrapper isLoading={isLoading} error={error}>
           {!isLoading && !error && filteredComplaints.length === 0 ? (
@@ -65,85 +76,130 @@ export default function PreviousComplaintsTable({
                   <th className="px-4 py-3 font-medium min-w-[150px]">
                     {t("Service", "सेवा")}
                   </th>
-                  {/* <th className="px-4 py-3 font-medium min-w-[180px]">
-                    {t("Sub-Service", "उप-सेवा")}
-                  </th> */}
                   <th className="px-4 py-3 font-medium">
                     {t("Status", "स्थिति")}
                   </th>
                   <th className="px-4 py-3 font-medium">
                     {t("Raised On", "दर्ज तिथि")}
                   </th>
-                  <th className="px-4 py-3 font-medium">
-                    {t("Assigned Officer", "नियुक्त अधिकारी")}
-                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border whitespace-nowrap">
-                {filteredComplaints.map((c, idx) => (
-                  <tr
-                    key={c._id || c.id || idx}
-                    onClick={() => {
-                      nav(`/citizen/track?complaint=${c._id || c.id}`)
-                      // setSelectedId(c._id || c.id)
-                    }
-                    }
-                    className="hover:bg-[#155DFC]/10 dark:hover:bg-muted/50 cursor-pointer transition-colors"
-                  >
-                    <td className="px-4 py-2.5 text-muted-foreground font-mono text-xs text-center">
-                      {idx + 1}
-                    </td>
-                    <td className="px-4 py-2.5 font-mono text-primary font-semibold hover:underline">
-                      {c.grievanceId || "-"}
-                    </td>
-                    <td className="px-4 py-2.5 text-foreground">
-                      {getEntityLabel(c.classification?.nature, t) || "-"}
-                    </td>
-                    <td className="px-4 py-2.5 text-foreground">
-                      {getEntityLabel(
-                        c?.location?.district ||
-                          c?.citizenInfo?.address?.district ||
-                          c?.address?.district ||
-                          c?.districtName,
-                        t,
-                      ) || "-"}
-                    </td>
-                    <td className="px-4 py-2.5 text-foreground">
-                      {getEntityLabel(c.classification?.department, t) || "-"}
-                    </td>
-                    <td className="px-4 py-2.5 text-foreground">
-                      {getEntityLabel(
-                        c.classification?.service ||
-                          c.service ||
-                          c.classification?.subService,
-                        t,
-                      ) || "-"}
-                    </td>
-                    {/* <td className="px-4 py-2.5 text-foreground">
-                      {t(
-                        c.classification?.subService?.title,
-                        c.classification?.subService?.titleHindi,
-                      ) || "-"}
-                    </td> */}
-                    <td className="px-4 py-2.5">
-                      <StatusBadge status={c.status} />
-                    </td>
-                    <td className="px-4 py-2.5 text-muted-foreground">
-                      {c.createdAt
-                        ? new Date(c.createdAt).toLocaleDateString("en-IN", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })
-                        : "-"}
-                    </td>
-                    <td className="px-4 py-2.5 text-muted-foreground">
-                      {c.assignedOfficer?.fullName ||
-                        c.assignedOfficer?.name ||
-                        t("Not assigned", "नियुक्त नहीं")}
-                    </td>
-                  </tr>
-                ))}
+                {filteredComplaints.map((c, idx) => {
+                  const isExternal =
+                    c.grievanceType === "EXTERNAL" ||
+                    c.isExternal === true ||
+                    Boolean(c.departmentCode);
+                  const grievanceType = isExternal
+                    ? "EXTERNAL"
+                    : c.grievanceType || "INTERNAL";
+                  const departmentCode =
+                    c.departmentCode ||
+                    c.classification?.departmentCode ||
+                    (isExternal ? c.classification?.department : undefined);
+
+                  const externalDept = departmentCode
+                    ? getExternalDepartment(departmentCode)
+                    : null;
+                  const externalRowData = externalDept?.getTableRowData?.(
+                    c,
+                    t,
+                    masterDataMap[departmentCode || ""],
+                  );
+
+                  const complaintNumber =
+                    isExternal && externalRowData?.complaintNumber
+                      ? externalRowData.complaintNumber
+                      : c.grievanceId || "-";
+
+                  const nature =
+                    isExternal && externalRowData?.nature
+                      ? externalRowData.nature
+                      : getEntityLabel(c.classification?.nature, t) || "-";
+
+                  const district =
+                    isExternal && externalRowData?.district
+                      ? externalRowData.district
+                      : getEntityLabel(
+                          c?.location?.district ||
+                            c?.citizenInfo?.address?.district ||
+                            c?.address?.district ||
+                            c?.districtName,
+                          t,
+                        ) || "-";
+
+                  const department =
+                    isExternal && externalRowData?.department
+                      ? externalRowData.department
+                      : getEntityLabel(c.classification?.department, t) || "-";
+
+                  const service =
+                    isExternal && externalRowData?.service
+                      ? externalRowData.service
+                      : getEntityLabel(
+                          c.classification?.service ||
+                            c.service ||
+                            c.classification?.subService,
+                          t,
+                        ) || "-";
+
+                  const status =
+                    isExternal && externalRowData?.status
+                      ? externalRowData.status
+                      : c.status || "PENDING";
+
+                  const raisedOn =
+                    isExternal && externalRowData?.raisedOn
+                      ? externalRowData.raisedOn
+                      : c.createdAt;
+
+                  return (
+                    <tr
+                      key={c._id || c.id || idx}
+                      onClick={() => {
+                        const params = new URLSearchParams();
+                        const complaintId = c._id || c.id;
+                        if (complaintId) {
+                          params.set("complaint", complaintId);
+                        }
+                        params.set("grievanceType", grievanceType);
+                        if (isExternal && departmentCode) {
+                          params.set("departmentCode", departmentCode);
+                        }
+
+                        nav(`/citizen/track?${params.toString()}`);
+                      }}
+                      className="hover:bg-[#155DFC]/10 dark:hover:bg-muted/50 cursor-pointer transition-colors"
+                    >
+                      <td className="px-4 py-2.5 text-muted-foreground font-mono text-xs text-center">
+                        {idx + 1}
+                      </td>
+                      <td className="px-4 py-2.5 font-mono text-primary font-semibold hover:underline">
+                        {complaintNumber}
+                      </td>
+                      <td className="px-4 py-2.5 text-foreground">{nature}</td>
+                      <td className="px-4 py-2.5 text-foreground">{district}</td>
+                      <td className="px-4 py-2.5 text-foreground">
+                        {department}
+                      </td>
+                      <td className="px-4 py-2.5 text-foreground truncate max-w-100">
+                        {service}
+                      </td>
+                      <td className="px-4 py-2.5">
+                        <StatusBadge status={status} />
+                      </td>
+                      <td className="px-4 py-2.5 text-muted-foreground">
+                        {raisedOn
+                          ? new Date(raisedOn).toLocaleDateString("en-IN", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })
+                          : "-"}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           )}

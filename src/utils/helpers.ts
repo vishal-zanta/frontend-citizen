@@ -1,8 +1,12 @@
 import { toast } from "sonner";
 import { IMG_BASE_URL } from "./constants";
 
-export const getSuccessToast = (description: string) => {
-  toast.success(description);
+export const getSuccessToast = (title: string, description?: string) => {
+  if (description) {
+    toast.success(title, { description });
+  } else {
+    toast.success(title);
+  }
 };
 
 export const getErrorToast = (err: any) => {

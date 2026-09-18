@@ -7,6 +7,7 @@ interface LoaderErrWrapperProps {
   error?: any;
   children: React.ReactNode;
   loaderClassName?: string;
+  loadingText?: string;
 }
 
 const LoaderErrWrapper: React.FC<LoaderErrWrapperProps> = ({
@@ -14,16 +15,20 @@ const LoaderErrWrapper: React.FC<LoaderErrWrapperProps> = ({
   error,
   children,
   loaderClassName,
+  loadingText,
 }) => {
   if (isLoading) {
     return (
       <div
         className={clsx(
-          "flex items-center justify-center h-full py-4",
+          "flex flex-col gap-2 items-center justify-center h-full py-8 min-h-40",
           loaderClassName,
         )}
       >
         <ClipLoader color="#0A5ADB" size={32} />
+        {loadingText && (
+          <p className="text-xs text-muted-foreground font-medium">{loadingText}</p>
+        )}
       </div>
     );
   }
