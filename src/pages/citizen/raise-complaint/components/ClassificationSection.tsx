@@ -13,6 +13,7 @@ interface ClassificationSectionProps {
   naturesLoading: boolean;
   t: any;
   lang?: any;
+  isDepartmentFixed?: boolean;
 }
 
 export default function ClassificationSection({
@@ -23,6 +24,7 @@ export default function ClassificationSection({
   naturesLoading,
   t,
   lang,
+  isDepartmentFixed,
 }: ClassificationSectionProps) {
   const { setValue, control } = useFormContext();
 
@@ -87,7 +89,7 @@ export default function ClassificationSection({
               : t("Select department", "विभाग चुनें")
           }
           options={departmentOptions}
-          disabled={departmentsLoading}
+          disabled={departmentsLoading || isDepartmentFixed}
           required
         />
 

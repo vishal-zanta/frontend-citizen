@@ -3,6 +3,8 @@ import { Building2, AlertCircle, RefreshCw } from "lucide-react";
 import { useGetDepartments } from "@/hooks/useGetQuery";
 import { useLanguage } from "@/context/LanguageContext";
 
+import { departmentsList } from "@/utils/departments";
+
 const API_PARAMS = {
   page: 1,
   limit: 500,
@@ -19,10 +21,10 @@ const AvailbleDept: React.FC = () => {
     refetch,
   } = useGetDepartments([], API_PARAMS);
 
-  // Map departments to concise single label based on language
+  // Map departments to concise single label based on language (including external departments)
   const departments = useMemo(() => {
     const docs = departmentsData?.data?.data?.docs ?? [];
-    return docs
+    const internalList = docs
       .map((d: any, index: number) => {
         const titleEn = (d.title || d.name || "").trim();
         const titleHi = (d.titleHindi || d.nameHindi || "").trim();
@@ -35,6 +37,15 @@ const AvailbleDept: React.FC = () => {
         };
       })
       .filter((dept: any) => Boolean(dept.label));
+
+    const externalList = departmentsList
+      .filter((d) => !d.isHide)
+      .map((d) => ({
+        id: `ext-${d.key}`,
+        label: lang === "hi" && d.nameHindi ? d.nameHindi : d.name,
+      }));
+
+    return [...internalList, ...externalList];
   }, [departmentsData, lang]);
 
   return (

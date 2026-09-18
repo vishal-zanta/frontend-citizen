@@ -1,18 +1,10 @@
-import React, { useRef, useState, useMemo } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useState, useMemo, useEffect } from "react";
+import { ArrowLeft, Building2, Search, Sparkles } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 
 import PortalLayout from "@/components/PortalLayout";
 import RhfWrapper from "@/components/RhfWrapper";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useLanguage } from "@/context/LanguageContext";
 
 import { useRaiseComplaintData } from "./hooks";
@@ -21,8 +13,6 @@ import { defaultValues, grievanceSchema, GrievanceFormValues } from "./schema";
 import CitizenInfoSection from "./components/CitizenInfoSection";
 import ClassificationSection from "./components/ClassificationSection";
 import LocationDetailsSection from "./components/LocationDetailsSection";
-import EvidenceSection from "./components/EvidenceSection";
-
 import ImpactSection from "./components/ImpactSection";
 import AddressSection from "./components/AddressSection";
 import CommunicationSection from "./components/CommunicationSection";
@@ -34,9 +24,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getErrorToast, getSuccessToast } from "@/utils/helpers";
 import SuccessScreen from "./components/SuccessScreen";
 import { postComplaints } from "@/api/complaints.api";
+import { postExternalComplaint } from "@/api/externalDept.api";
 import CenterLayout from "@/components/CenterLayout";
 import { useProfile } from "@/context/ProfileContext";
 import { useGetConfig } from "@/hooks/query/useGetConfig";
+import { departmentsList, getExternalDepartment } from "@/utils/departments";
+import { Input } from "@/components/ui/input";
 
 interface RaiseComplaintProps {
   role?: string;
@@ -45,11 +38,20 @@ interface RaiseComplaintProps {
 export default function RaiseComplaint({
   role = "citizen",
 }: RaiseComplaintProps) {
-  const { t, lang, setLang } = useLanguage();
+  const { t, lang } = useLanguage();
   const qc = useQueryClient();
   const { profile } = useProfile();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [step, setStep] = useState(1);
+  const [selectedDept, setSelectedDept] = useState<string>(() => {
+    return searchParams.get("dept") || "";
+  });
+  const [externalComplaintId, setExternalComplaintId] = useState<string | null>(
+    null,
+  );
+  const [searchQuery, setSearchQuery] = useState("");
 
   const steps = [
     {
@@ -70,28 +72,8 @@ export default function RaiseComplaint({
   ];
 
   const { data: configData } = useGetConfig();
-  // console.log("configData:", configData?.data?.data);
   const mbFile = configData?.data?.data?.grievanceMaxUploadSizeMB || 1;
   const MAX_FILE_LIMIT = mbFile * 1024 * 1024;
-
-  const computedDefaultValues = useMemo(() => {
-    let mobileVal = profile?.mobile || "";
-
-    return {
-      ...defaultValues,
-      citizenInfo: {
-        ...defaultValues.citizenInfo,
-        fullName: profile?.fullName || "",
-        email: profile?.email || "",
-        mobile: mobileVal,
-        // preferredLanguage: profile?.preferredLanguage || "",
-        // address : {
-        //   ...defaultValues.citizenInfo.address,
-        //   ...(profile?.address || {})
-        // }
-      },
-    };
-  }, [profile]);
 
   const {
     departmentOptions,
@@ -102,6 +84,98 @@ export default function RaiseComplaint({
     affectedBeneficiaryOptions,
     naturesLoading,
   } = useRaiseComplaintData(lang);
+
+  // Sync state with URL params
+  useEffect(() => {
+    const deptParam = searchParams.get("dept");
+    if (deptParam && deptParam !== selectedDept) {
+      setSelectedDept(deptParam);
+    } else if (!deptParam && selectedDept) {
+      setSelectedDept("");
+    }
+  }, [searchParams]);
+
+  const handleSelectDept = (key: string) => {
+    setSelectedDept(key);
+    setStep(1);
+    setSearchParams(
+      (params) => {
+        if (key) {
+          params.set("dept", key);
+        } else {
+          params.delete("dept");
+        }
+        return params;
+      },
+      { replace: true },
+    );
+  };
+
+  // Combine internal and external departments for selection boxes
+  const allDepartmentBoxes = useMemo(() => {
+    const externalBoxes = departmentsList
+      .filter((d) => !d.isHide)
+      .map((d) => ({
+        id: d.key,
+        key: d.key,
+        name: d.name,
+        nameHindi: d.nameHindi || d.name,
+        isExternal: true,
+      }));
+
+    const internalBoxes = (departmentOptions || []).map((d: any) => ({
+      id: d.value,
+      key: d.value,
+      name: d.label,
+      nameHindi: d.titleHindi || d.nameHindi || d.label,
+      isExternal: false,
+    }));
+
+    return [...externalBoxes, ...internalBoxes];
+  }, [departmentOptions]);
+
+  const filteredDepartments = useMemo(() => {
+    if (!searchQuery.trim()) return allDepartmentBoxes;
+    const q = searchQuery.toLowerCase().trim();
+    return allDepartmentBoxes.filter(
+      (d) =>
+        d.name?.toLowerCase().includes(q) ||
+        d.nameHindi?.toLowerCase().includes(q),
+    );
+  }, [allDepartmentBoxes, searchQuery]);
+
+  // Check if selected department is external
+  const selectedExternalDept = useMemo(() => {
+    if (!selectedDept) return null;
+    return getExternalDepartment(selectedDept);
+  }, [selectedDept]);
+
+  const selectedDepartmentItem = useMemo(() => {
+    if (!selectedDept) return null;
+    return (
+      allDepartmentBoxes.find(
+        (d) => d.key === selectedDept || d.id === selectedDept,
+      ) || null
+    );
+  }, [selectedDept, allDepartmentBoxes]);
+
+  const computedDefaultValues = useMemo(() => {
+    const mobileVal = profile?.mobile || "";
+
+    return {
+      ...defaultValues,
+      citizenInfo: {
+        ...defaultValues.citizenInfo,
+        fullName: profile?.fullName || "",
+        email: profile?.email || "",
+        mobile: mobileVal,
+      },
+      classification: {
+        ...defaultValues.classification,
+        department: selectedDept || "",
+      },
+    };
+  }, [profile, selectedDept]);
 
   // ── File attachments ──────────────────────────────────────────────────────
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -148,14 +222,15 @@ export default function RaiseComplaint({
     setAttachments((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // ── Submit ────────────────────────────────────────────────────────────────
+  // ── Submissions ───────────────────────────────────────────────────────────
   const [submitted, setSubmitted] = useState<any>([false, null]);
-  // const [submitting, setSubmitting] = useState(false);
 
   const postComplaintsMutation = useMutation({
     mutationFn: postComplaints,
     onSuccess: (data) => {
-      getSuccessToast("Complaint register successfully");
+      getSuccessToast(
+        t("Complaint registered successfully", "शिकायत सफलतापूर्वक दर्ज की गई"),
+      );
       qc.invalidateQueries({ queryKey: ["grievance"] });
       console.log(data);
       setSubmitted([true, data]);
@@ -165,9 +240,26 @@ export default function RaiseComplaint({
     },
   });
 
-  const handleSubmit = (data: GrievanceFormValues) => {
+  const postExternalComplaintMutation = useMutation({
+    mutationFn: postExternalComplaint,
+    onSuccess: (data: any) => {
+      const extId = data?.data?.data?.externalComplaintId;
+      getSuccessToast(
+        t("Complaint registered successfully", "शिकायत सफलतापूर्वक दर्ज की गई"),
+        extId,
+      );
+      qc.invalidateQueries({ queryKey: ["external-grievances"] });
+      setExternalComplaintId(extId || null);
+      setSubmitted([true, data]);
+    },
+    onError: (err) => {
+      getErrorToast(err);
+    },
+  });
+
+  const handleInternalSubmit = (data: GrievanceFormValues) => {
     const formData = getFormData(data, attachments);
-    console.log("Final  FormData:", Object.fromEntries(formData as any));
+    console.log("Final FormData:", Object.fromEntries(formData as any));
     postComplaintsMutation.mutate(formData);
   };
 
@@ -179,19 +271,125 @@ export default function RaiseComplaint({
         t={t}
         onReset={() => {
           setSubmitted([false, null]);
+          setExternalComplaintId(null);
           setAttachments([]);
           setFileError("");
+          setSelectedDept("");
+          setSearchParams((params) => {
+            params.delete("dept");
+            return params;
+          });
         }}
         data={submitted?.[1]}
+        externalComplaintId={externalComplaintId}
         grievanceNatureOptions={grievanceNatureOptions}
       />
     );
   }
 
-  // ── Form ──────────────────────────────────────────────────────────────────
+  // ── Department Selection Screen ───────────────────────────────────────────
+  if (!selectedDept) {
+    return (
+      <PortalLayout>
+        <CenterLayout className="p-4 sm:p-6">
+          <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="p-2 rounded-lg border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                title={t("Back", "पीछे जाएं")}
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+                  {t("Register Complaint", "शिकायत दर्ज करें")}
+                </h1>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  {t(
+                    "Please choose a department to proceed with your complaint",
+                    "शिकायत दर्ज करने के लिए कृपया एक विभाग चुनें",
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Search bar */}
+          <div className="mb-6 relative max-w-md">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t("Search department...", "विभाग खोजें...")}
+              className="pl-10 h-11 rounded-xl bg-card border-border shadow-xs"
+            />
+          </div>
+
+          {/* Departments Grid Boxes */}
+          {departmentsLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-24 rounded-2xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-800 animate-pulse"
+                />
+              ))}
+            </div>
+          ) : filteredDepartments.length === 0 ? (
+            <div className="text-center py-12 border border-dashed border-border rounded-2xl bg-card/50">
+              <Building2 className="w-10 h-10 text-muted-foreground mx-auto mb-2 opacity-50" />
+              <p className="text-sm text-muted-foreground font-medium">
+                {t("No departments found", "कोई विभाग नहीं मिला")}
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+              {filteredDepartments.map((dept) => {
+                const label =
+                  lang === "hi" && dept.nameHindi ? dept.nameHindi : dept.name;
+
+                return (
+                  <button
+                    key={dept.key}
+                    type="button"
+                    onClick={() => handleSelectDept(dept.key)}
+                    className="group relative flex flex-col justify-between p-4 rounded-2xl bg-card hover:bg-blue-50/60 dark:hover:bg-blue-950/30 border border-border hover:border-blue-500 dark:hover:border-blue-600 transition-all duration-200 shadow-xs hover:shadow-md text-left cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors flex items-center justify-center shrink-0">
+                        <Building2 className="w-5 h-5" />
+                      </div>
+                    
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                        {t(label, dept.nameHindi)}
+                      </h3>
+                      {/* <p className="text-[11px] text-muted-foreground mt-1 line-clamp-1">
+                        {lang === "hi" ? dept.name : dept.nameHindi || ""}
+                      </p> */}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </CenterLayout>
+      </PortalLayout>
+    );
+  }
+
+  // ── Selected Department Form Screen ───────────────────────────────────────
+  const selectedDeptTitle = selectedDepartmentItem
+    ? lang === "hi" && selectedDepartmentItem.nameHindi
+      ? selectedDepartmentItem.nameHindi
+      : selectedDepartmentItem.name
+    : selectedDept;
+
   return (
     <PortalLayout>
-      {/* <div className="p-6 max-w-6xl mx-auto"> */}
       <CenterLayout className="p-4 sm:p-6">
         {/* Page header */}
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -199,10 +397,12 @@ export default function RaiseComplaint({
             <button
               type="button"
               onClick={() => {
-                if (step > 1) {
+                if (selectedExternalDept) {
+                  handleSelectDept("");
+                } else if (step > 1) {
                   setStep((prev) => prev - 1);
                 } else {
-                  navigate(-1);
+                  handleSelectDept("");
                 }
               }}
               className="p-2 rounded-lg border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
@@ -214,49 +414,74 @@ export default function RaiseComplaint({
               <h1 className="text-xl sm:text-2xl font-bold text-foreground">
                 {t("Register Complaint", "शिकायत दर्ज करें")}
               </h1>
-              {/* <p className="text-sm text-muted-foreground mt-0.5">
-                {t(
-                  "Fields marked * are required.",
-                  "* चिह्नित फ़ील्ड अनिवार्य हैं।",
-                )}
-              </p> */}
             </div>
+          </div>
+
+          {/* Current selected department badge & change action */}
+          <div className="flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-xl px-3 py-1.5">
+            <Building2 className="w-4 h-4 text-primary shrink-0" />
+            <div className="text-xs">
+              <span className="text-muted-foreground font-medium mr-1">
+                {t("Department:", "विभाग:")}
+              </span>
+              <span className="font-semibold text-foreground">
+                {selectedDeptTitle}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleSelectDept("")}
+              className="ml-2 text-xs font-semibold text-primary hover:underline cursor-pointer"
+            >
+              {t("Change", "बदलें")}
+            </button>
           </div>
         </div>
 
-        <RhfWrapper
-          initialValues={computedDefaultValues}
-          isValidation
-          validationSchema={grievanceSchema}
-          validationOn="onChange"
-          onSubmit={handleSubmit}
-          onError={(err) => console.log("Errors ", err)}
-          className="space-y-6"
-        >
-          <FormWizard
-            t={t}
-            lang={lang}
-            departmentOptions={departmentOptions}
-            departmentsLoading={departmentsLoading}
-            departmentsError={departmentsError}
-            grievanceNatureOptions={grievanceNatureOptions}
-            naturesLoading={naturesLoading}
-            frequencyOptions={frequencyOptions}
-            affectedBeneficiaryOptions={affectedBeneficiaryOptions}
-            fileInputRef={fileInputRef}
-            attachments={attachments}
-            fileError={fileError}
-            handleFileChange={handleFileChange}
-            removeAttachment={removeAttachment}
-            postComplaintsMutation={postComplaintsMutation}
-            mbFile={mbFile}
-            step={step}
-            setStep={setStep}
-            steps={steps}
+        {/* Render External Department Form or Internal 3-Step Wizard */}
+        {selectedExternalDept?.component ? (
+          <selectedExternalDept.component
+            selectedDept={selectedExternalDept.key}
+            onSuccess={(payload: any) =>
+              postExternalComplaintMutation.mutate(payload)
+            }
+            isLoading={postExternalComplaintMutation.isPending}
           />
-        </RhfWrapper>
+        ) : (
+          <RhfWrapper
+            key={selectedDept}
+            initialValues={computedDefaultValues}
+            isValidation
+            validationSchema={grievanceSchema}
+            validationOn="onChange"
+            onSubmit={handleInternalSubmit}
+            onError={(err) => console.log("Errors ", err)}
+            className="space-y-6"
+          >
+            <FormWizard
+              t={t}
+              lang={lang}
+              departmentOptions={departmentOptions}
+              departmentsLoading={departmentsLoading}
+              departmentsError={departmentsError}
+              grievanceNatureOptions={grievanceNatureOptions}
+              naturesLoading={naturesLoading}
+              frequencyOptions={frequencyOptions}
+              affectedBeneficiaryOptions={affectedBeneficiaryOptions}
+              fileInputRef={fileInputRef}
+              attachments={attachments}
+              fileError={fileError}
+              handleFileChange={handleFileChange}
+              removeAttachment={removeAttachment}
+              postComplaintsMutation={postComplaintsMutation}
+              mbFile={mbFile}
+              step={step}
+              setStep={setStep}
+              steps={steps}
+            />
+          </RhfWrapper>
+        )}
       </CenterLayout>
-      {/* </div> */}
     </PortalLayout>
   );
 }
@@ -291,7 +516,6 @@ function FormWizard({
   departmentsError,
   grievanceNatureOptions,
   naturesLoading,
-  frequencyOptions,
   affectedBeneficiaryOptions,
   fileInputRef,
   attachments,
@@ -314,24 +538,20 @@ function FormWizard({
         "citizenInfo.mobile",
         "citizenInfo.alternateMobile",
         "citizenInfo.email",
-        // "citizenInfo.preferredLanguage",
         "communication.feedbackConsent",
       ]);
     } else if (step === 2) {
-      isValid = await trigger([
-        "citizenInfo.address",
-        "address",
-      ]);
+      isValid = await trigger(["citizenInfo.address", "address"]);
     }
     if (isValid) {
-      setStep((prev) => prev + 1);
+      setStep((prev: number) => prev + 1);
       window.scrollTo({ top: 0, behavior: "instant" });
     }
   };
 
   const handleBack = () => {
-    setStep((prev) => Math.max(1, prev - 1));
-     window.scrollTo({top : 0, behavior : "instant"})
+    setStep((prev: number) => Math.max(1, prev - 1));
+    window.scrollTo({ top: 0, behavior: "instant" });
   };
 
   return (
@@ -343,13 +563,15 @@ function FormWizard({
           {/* Progress Line */}
           <div
             className="h-full bg-blue-600 rounded-full transition-all duration-300 ease-out"
-            style={{ width: `${((step - 1) / (steps.length - 1)) * 100}%` }}
+            style={{
+              width: `${(((step || 1) - 1) / (steps.length - 1)) * 100}%`,
+            }}
           />
         </div>
 
-        {steps.map((s) => {
+        {steps.map((s: any) => {
           const isActive = step === s.id;
-          const isCompleted = step > s.id;
+          const isCompleted = (step || 1) > s.id;
           return (
             <div key={s.id} className="flex flex-col items-center gap-1.5">
               <div
@@ -391,9 +613,6 @@ function FormWizard({
                 >
                   {s.label}
                 </p>
-                {/* <p className="text-[10px] text-muted-foreground hidden sm:block">
-                  {s.description}
-                </p> */}
               </div>
             </div>
           );
@@ -401,7 +620,7 @@ function FormWizard({
       </div>
 
       {/* Step Content */}
-      <div className=" ">
+      <div>
         {step === 1 && (
           <div className="space-y-6">
             <CitizenInfoSection t={t} />
@@ -425,12 +644,9 @@ function FormWizard({
               naturesLoading={naturesLoading}
               t={t}
               lang={lang}
+              isDepartmentFixed={true}
             />
-            <LocationDetailsSection
-              t={t}
-            />
-            {/* <EvidenceSection frequencyOptions={frequencyOptions} t={t} /> */}
-
+            <LocationDetailsSection t={t} />
             <ImpactSection
               affectedBeneficiaryOptions={affectedBeneficiaryOptions}
               t={t}
@@ -449,7 +665,7 @@ function FormWizard({
       </div>
 
       <FormButtonsFooter
-        step={step}
+        step={step || 1}
         handleBack={handleBack}
         handleNext={handleNext}
         t={t}

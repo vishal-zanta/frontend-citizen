@@ -31,32 +31,24 @@ type PhoneInputProps = Omit<
 
 const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
   React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
-    ({ className, onChange, value, ...props }, ref) => {
+    ({ className, onChange, value, disabled, ...props }, ref) => {
       return (
         <RPNInput.default
           ref={ref}
-          className={cn("flex", className)}
+          className={cn("flex", disabled && "cursor-not-allowed", className)}
           flagComponent={FlagComponent}
           countrySelectComponent={CountrySelect}
           inputComponent={InputComponent}
           smartCaret={false}
           value={value || undefined}
-          /**
-           * Handles the onChange event.
-           *
-           * react-phone-number-input might trigger the onChange event as undefined
-           * when a valid phone number is not entered. To prevent this,
-           * the value is coerced to an empty string.
-           *
-           * @param {E164Number | undefined} value - The entered value
-           */
-         
+          disabled={disabled}
           {...props}
-           onChange={(value) => {
+          onChange={(value) => {
+            if (disabled) return;
             const stripped = (value || "").replace(/\s+/g, "");
             // remove the leading country calling code (e.g. +91) to count only the national digits
             const nationalDigits = stripped.replace(/^\+\d{1,2}/, "");
-       
+
             if (nationalDigits.length <= 10) {
               onChange?.(value || ("" as RPNInput.Value));
             }
@@ -70,29 +62,30 @@ PhoneInput.displayName = "PhoneInput";
 const InputComponent = React.forwardRef<
   HTMLInputElement,
   React.ComponentProps<"input">
->(({ className, onChange, ...props }, ref) => {
+>(({ className, onChange, disabled, ...props }, ref) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (disabled) return;
     let val = e.target.value.replace(/\D/g, "");
-  const nationalDigits = val.replace(/^\+\d{1,2}/, "");
-   if (nationalDigits.length <= 10) {
-              onChange?.(e);
-            }
-
-    // onChange?.(e);
+    const nationalDigits = val.replace(/^\+\d{1,2}/, "");
+    if (nationalDigits.length <= 10) {
+      onChange?.(e);
+    }
   };
 
   return (
     <Input
-      className={cn("rounded-e-lg rounded-s-none h-full", className)}
+      className={cn(
+        "rounded-e-lg rounded-s-none h-full disabled:bg-muted/70 disabled:text-muted-foreground disabled:cursor-not-allowed",
+        className,
+      )}
+      disabled={disabled}
       {...props}
       onChange={handleChange}
-      // maxLength={10}
       ref={ref}
     />
   );
 });
 InputComponent.displayName = "InputComponent";
-
 
 type CountryEntry = { label: string; value: RPNInput.Country | undefined };
 
@@ -118,6 +111,7 @@ const CountrySelect = ({
       open={isOpen}
       modal
       onOpenChange={(open) => {
+        if (disabled) return;
         setIsOpen(open);
         open && setSearchValue("");
       }}
@@ -126,7 +120,7 @@ const CountrySelect = ({
         <Button
           type="button"
           variant="outline"
-          className="flex gap-1 rounded-e-none rounded-s-lg border-r-0 px-3 focus:z-10 h-full"
+          className="flex gap-1 rounded-e-none rounded-s-lg border-r-0 px-3 focus:z-10 h-full disabled:bg-muted/70 disabled:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-100"
           disabled={disabled}
         >
           <FlagComponent

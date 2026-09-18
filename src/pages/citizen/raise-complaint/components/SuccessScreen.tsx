@@ -11,6 +11,7 @@ interface SuccessScreenProps {
   onReset: () => void;
   data: any;
   grievanceNatureOptions?: any[];
+  externalComplaintId?: string | null;
 }
 
 export default function SuccessScreen({
@@ -19,10 +20,16 @@ export default function SuccessScreen({
   onReset,
   data,
   grievanceNatureOptions = [],
+  externalComplaintId,
 }: SuccessScreenProps) {
   const [copied, setCopied] = useState(false);
   const finalData = data?.data?.data || data?.data || data;
-  const grievanceId = finalData?.grievanceId || finalData?.id || finalData?._id;
+  const grievanceId =
+    externalComplaintId ||
+    finalData?.externalComplaintId ||
+    finalData?.grievanceId ||
+    finalData?.id ||
+    finalData?._id;
 
   const natureVal = finalData?.classification?.nature;
   let natureTitleEn = "Complaint";
