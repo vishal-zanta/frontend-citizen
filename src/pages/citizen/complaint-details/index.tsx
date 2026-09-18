@@ -328,7 +328,7 @@ const Step2: React.FC<Step2Props> = ({ t, data, trackingId, onBack }) => {
           {data?.timeline && data.timeline.length > 0 && (
             <div className="bg-card rounded-xl border border-border p-4 sm:p-6">
               <h3 className="font-bold text-foreground mb-4">
-                {t("Complaint Timeline", "शिकायत समयरेखा")} -{" "}
+                {t("Complaint Timeline", "शिकायत समयसीमा")} -{" "}
                 {t("End-to-End Lifecycle", "संपूर्ण जीवनचक्र")}
               </h3>
               <ComplaintTimeline events={data.timeline} t={t} />

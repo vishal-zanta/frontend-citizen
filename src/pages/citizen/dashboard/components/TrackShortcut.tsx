@@ -20,7 +20,7 @@ export default function TrackShortcut({ t }: TrackShortcutProps) {
         <p className="text-xs sm:text-sm text-muted-foreground mt-1">
           {t(
             "Enter your Complaint number on the Track page to view full timeline & status.",
-            "पूरी समयरेखा और स्थिति देखने के लिए ट्रैक पृष्ठ पर अपनी शिकायत संख्या दर्ज करें।",
+            "पूरी समयसीमा और स्थिति देखने के लिए ट्रैक पृष्ठ पर अपनी शिकायत संख्या दर्ज करें।",
           )}
         </p>
       </div>

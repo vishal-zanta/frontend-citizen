@@ -402,7 +402,7 @@ export function ComplaintDetailDialog({
                 to={`/citizen/track?complaint=${complaint._id || complaint.id}`}
                 className="flex items-center gap-1 text-xs sm:text-sm text-primary hover:underline"
               >
-                {t("View Full Timeline", "पूरी समयरेखा देखें")}{" "}
+                {t("View Full Timeline", "पूरी समयसीमा देखें")}{" "}
                 <ExternalLink className="w-3 h-3" />
               </Link>
             </div>
