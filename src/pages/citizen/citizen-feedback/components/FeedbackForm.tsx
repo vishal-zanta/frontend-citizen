@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, Loader2, Search, X, CheckCircle2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { getComplaints } from "@/api/complaints.api";
@@ -26,6 +26,7 @@ interface Complaint {
     state?: string;
   };
   createdAt?: string;
+  updatedAt?: string;
 }
 
 // ─── Custom Complaint Dropdown ────────────────────────────────────────────────
@@ -319,6 +320,16 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
   const [selected, setSelected] = useState<Complaint | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
+  const filedDateVal = selected?.updatedAt;
+
+  const isWithin7Days = useMemo(() => {
+    if (!filedDateVal) return false;
+    const filedDate = new Date(filedDateVal);
+    if (isNaN(filedDate.getTime())) return false;
+    const diffTime = Date.now() - filedDate.getTime();
+    return diffTime >= 0 && diffTime <= 7 * 24 * 60 * 60 * 1000;
+  }, [filedDateVal]);
+
   // ── Success screen ────────────────────────────────────────────────────────
   if (submitted) {
     return (
@@ -394,16 +405,19 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
       </div>
 
       {/* ── Feedback section (ComplaintFeedback) ─── */}
-      {selected && (
-        <ComplaintFeedback
-          key={selected._id}
-          complaintId={selected._id}
-          existingRating={selected.rating}
-          existingFeedback={selected.feedbackText}
-          setSelected={setSelected}
-          t={t}
-        />
-      )}
+      {selected?.status &&
+        (feedbackStatus.includes(selected.status.toString()) ||
+          selected?.rating) && (
+          <ComplaintFeedback
+            key={selected._id}
+            complaintId={selected._id}
+            existingRating={selected.rating}
+            existingFeedback={selected.feedbackText}
+            isWithin7Days={isWithin7Days}
+            setSelected={setSelected}
+            t={t}
+          />
+        )}
     </div>
   );
 }
