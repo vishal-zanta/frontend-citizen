@@ -308,8 +308,8 @@ export default function RaiseComplaint({
                 </h1>
                 <p className="text-sm text-muted-foreground mt-0.5">
                   {t(
-                    "Please choose a department to proceed with your complaint",
-                    "शिकायत दर्ज करने के लिए कृपया एक विभाग चुनें",
+                    "Currently, complaints can be registered for the following departments",
+                    "वर्तमान में निम्न विभागों से संबंधित शिकायत दर्ज कर सकते है",
                   )}
                 </p>
               </div>
@@ -361,7 +361,6 @@ export default function RaiseComplaint({
                       <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors flex items-center justify-center shrink-0">
                         <Building2 className="w-5 h-5" />
                       </div>
-                    
                     </div>
                     <div>
                       <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">

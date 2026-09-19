@@ -22,6 +22,15 @@ export const reopenComplaint = ({ id, data }: { id: string; data: { reOpenReason
     return instance.post(`/grievances/citizen/${id}/reopen`, data)
 }
 
+export const resolveComplaint = ({ id, data }: { id: string; data?: { remarks?: string } }) => {
+    return instance.post(`/grievances/citizen/${id}/resolve`, data || {}).catch((err) => {
+        if (err?.response?.status === 404) {
+            return instance.post(`/grievance/citizen/${id}/resolve`, data || {});
+        }
+        throw err;
+    });
+}
+
 export const getPublicComplaintStatus = ({
   complaintId,
   params,

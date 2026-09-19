@@ -8,6 +8,8 @@ import LoaderErrWrapper from "@/components/LoaderErrWrapper";
 import { useProfile } from "@/context/ProfileContext";
 import { formatMobile } from "../../department-helpers";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 const defaultValues = {
   tenantId: "bh.health",
   dateOfIncident: "",
@@ -71,6 +73,7 @@ const HealthDepartmentForm: React.FC<HealthDeptFormProps> = ({
     error,
   } = usePostPreCall("HEALTH");
   const { profile } = useProfile();
+  const { t } = useLanguage();
 
   const formattedMobile = useMemo(() => {
     return formatMobile(profile?.mobile);
@@ -91,7 +94,7 @@ const HealthDepartmentForm: React.FC<HealthDeptFormProps> = ({
     <LoaderErrWrapper
       isLoading={isFormOptionsLoading}
       error={error}
-      loadingText={"Loading fields options...."}
+      loadingText={t("Loading fields options....", "फ़ील्ड विकल्प लोड हो रहे हैं...")}
     >
       <RhfWrapper
         key={formattedMobile + (profile?.fullName || "")}

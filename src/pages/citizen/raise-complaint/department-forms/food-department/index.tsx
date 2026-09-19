@@ -7,6 +7,7 @@ import validationSchema from "./schema";
 import { getFinalFoodData } from "./helpers";
 import { useProfile } from "@/context/ProfileContext";
 import { formatMobile } from "../../department-helpers";
+import { useLanguage } from "@/context/LanguageContext";
 
 const defaultValues = {
   name: "",
@@ -33,6 +34,7 @@ const FoodDepartmentForm: React.FC<FoodDepartmentFormProps> = ({
   isLoading,
   selectedDept = "FOOD",
 }) => {
+  const { t } = useLanguage();
   const {
     options,
     error,
@@ -56,7 +58,7 @@ const FoodDepartmentForm: React.FC<FoodDepartmentFormProps> = ({
     <LoaderErrWrapper
       isLoading={isOptionsLoading}
       error={error}
-      loadingText="Loading form options..."
+      loadingText={t("Loading form options...", "फ़ॉर्म विकल्प लोड हो रहे हैं...")}
     >
       <RhfWrapper
         key={formattedMobile + (profile?.fullName || "")}

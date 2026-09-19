@@ -251,11 +251,11 @@ export const useGetAddressFields = (
 
   const mapOptions = (arr = []) => {
     return arr.map((item: any) => ({
-      label: lang == "hi" ? item.name_local : item.name_en,
+      label: lang == "hi" ? (item?.name_local ?? item.name_en) : item.name_en,
       value: isValueId
         ? item._id
         : lang == "hi"
-          ? item.name_local
+          ? (item?.name_local ?? item.name_en)
           : item.name_en,
       raw: item,
     }));
