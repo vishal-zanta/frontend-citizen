@@ -24,7 +24,7 @@ interface ComplaintFeedbackProps {
   existingFeedback?: string;
   t: any;
   setSelected?: any;
-  isWithin7Days:boolean
+  isWithin7Days?:boolean
 }
 
 const ComplaintFeedback = ({
