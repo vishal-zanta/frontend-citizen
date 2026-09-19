@@ -198,6 +198,6 @@ export const getPriorityBadgeMeta = (priority: string) => {
   };
 };
 
-export const feedbackStatus = ["RESOLVED", "CLOSED"];
+export const feedbackStatus = [ "CLOSED"];
 
 export const OFFICER_URL = "https://portal.lumirex.tech/"

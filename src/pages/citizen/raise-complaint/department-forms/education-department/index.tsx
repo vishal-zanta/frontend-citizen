@@ -7,6 +7,7 @@ import { getFinalData } from "./helpers";
 import validationSchema from "./schema";
 import { useProfile } from "@/context/ProfileContext";
 import { formatMobile } from "../../department-helpers";
+import { useLanguage } from "@/context/LanguageContext";
 
 const defaultValue = {
   externalRef: "",
@@ -53,6 +54,7 @@ const EducationDeptForm: React.FC<EducationDeptFormProps> = ({
     isLoading: isFieldsLoading,
   } = useGetFieldsOptions(selectedDept);
   const { profile } = useProfile();
+  const { t } = useLanguage();
 
   const formattedMobile = useMemo(() => {
     return formatMobile(profile?.mobile);
@@ -73,7 +75,7 @@ const EducationDeptForm: React.FC<EducationDeptFormProps> = ({
     <LoaderErrWrapper
       isLoading={isFieldsLoading}
       error={error}
-      loadingText="Loading form options..."
+      loadingText={t("Loading form options...", "फ़ॉर्म विकल्प लोड हो रहे हैं...")}
     >
       <RhfWrapper
         key={formattedMobile + (profile?.fullName || "")}

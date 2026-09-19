@@ -24,11 +24,9 @@ export default function ComplaintDetailsView({
   onPrint,
 }: ComplaintDetailsViewProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
 
-  const filedDateVal =
-    complaint?.createdAt ||
-    complaint?.createdDate ||
-    complaint?.timeline?.[0]?.createdAt;
+  const filedDateVal = complaint?.updatedAt;
 
   const isWithin7Days = useMemo(() => {
     if (!filedDateVal) return false;
@@ -40,9 +38,9 @@ export default function ComplaintDetailsView({
 
   const canReopen = Boolean(
     complaint?.status &&
-    ["RESOLVED", "CLOSED"].includes(complaint.status) &&
+    ["CLOSED", "RESOLVED"].includes(complaint.status) &&
     isWithin7Days &&
-    (complaint?._id || complaint?.id),
+    (complaint?._id || complaint?.id) && (complaint?.rating || complaint?.feedbackText),
   );
 
   if (!complaint) return null;
@@ -78,6 +76,7 @@ export default function ComplaintDetailsView({
           onPrint={onPrint}
           canReopen={canReopen}
           onOpenReopenDialog={() => setIsDialogOpen(true)}
+          
         />
 
         <ComplaintPermanentAddress address={permAddr} t={t} />
@@ -96,14 +95,16 @@ export default function ComplaintDetailsView({
         <ComplaintEvidenceSection complaint={complaint} t={t} />
 
         {complaint?.status &&
-          feedbackStatus.includes(complaint.status.toString()) && (
+         ( feedbackStatus.includes(complaint.status.toString()) || complaint?.rating) && (
             <ComplaintFeedback
               complaintId={complaint?._id}
               existingRating={complaint?.rating}
               existingFeedback={complaint?.feedbackText}
+              isWithin7Days={isWithin7Days}
               t={t}
             />
           )}
+          {/* {complaint?.rating} */}
 
         {complaint.deptTransfer && (
           <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 rounded-lg text-sm text-amber-800 dark:text-amber-200">

@@ -1,22 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { Loader2, Send } from "lucide-react";
 import React from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface FormWrappersProps {
-  heading?: string;
+  heading?: React.ReactNode;
   isLoading?: boolean;
   children: React.ReactNode;
 }
 
 const FormWrappers: React.FC<FormWrappersProps> = ({
-  heading = "Raise New Grievance",
+  heading,
   isLoading,
   children,
 }) => {
+  const { t } = useLanguage();
+  const defaultHeading = t("Raise New Grievance", "नई शिकायत दर्ज करें");
+
   return (
-    <div className="bg-card border border-border rounded-xl px-0 sm:px-0 p-4 sm:p-6 shadow-sm space-y-6">
-      <h2 className="text-xl font-bold text-foreground border-b border-border pb-3 px-4">
-        {heading}
+    <div className="bg-card border border-border rounded-xl px-0 sm:px-0 p-4 sm:p-6 sm:pt-0 shadow-sm space-y-6">
+      <h2 className="text-xl font-bold text-foreground border-b border-border py-3 px-4">
+        {heading || defaultHeading}
       </h2>
 
       {children}
@@ -32,7 +36,7 @@ const FormWrappers: React.FC<FormWrappersProps> = ({
           ) : (
             <Send className="w-4 h-4 mr-2" />
           )}
-          Submit Grievance
+          {t("Submit Grievance", "शिकायत दर्ज करें")}
         </Button>
       </div>
     </div>
