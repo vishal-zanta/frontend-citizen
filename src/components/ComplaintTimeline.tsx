@@ -116,7 +116,7 @@ export default function ComplaintTimeline({ events, t }: ComplaintTimelineProps)
 
       {[...(events || [])].reverse().map((event, i) => {
         const Icon = iconMap[event.type] || FilePlus2;
-        const actorName = event.actor?.name || event.actor?.role || translate("System", "सिस्टम");
+        const actorName =  event.actor?.role || event.actor?.name || translate("System", "सिस्टम");
         
         const descEn =
           event.metadata?.description ||
