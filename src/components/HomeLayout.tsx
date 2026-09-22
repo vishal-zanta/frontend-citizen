@@ -116,7 +116,7 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
       >
         <div className="flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-16">
           {/* Dignitary / CM Card */}
-          {!isHidePhoto && (
+          {/* {!isHidePhoto && (
             <div className="flex flex-col items-center text-center p-4 w-full max-w-sm">
               <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-2xl overflow-hidden bg-white/80 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-800 mb-4 flex items-center justify-center">
                 <img
@@ -135,7 +135,7 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
                 {t("Government of Bihar", "बिहार सरकार")}
               </p>
             </div>
-          )}
+          )} */}
 
           {/* Right Side / Content */}
           <div

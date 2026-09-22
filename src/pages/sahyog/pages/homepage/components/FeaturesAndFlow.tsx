@@ -1,14 +1,15 @@
-import React from "react";
-import { Layers, Workflow, ShieldCheck } from "lucide-react";
+
 import userFlow from "@/assets/user-flow-steps.png";
-import { useSahyogTranslation } from "../../../translations";
+import userFlowEng from "@/assets/user-flow-steps-eng.png";
+
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function FeaturesAndFlow() {
-  const { t } = useSahyogTranslation();
+  const {t} = useLanguage();
 
   return (
     <section className=" bg-white" id="how-it-works">
-<img src={userFlow}/>
+<img src={t(userFlowEng, userFlow)}/>
       {/* <div className="max-w-4xl mx-auto">
         <div className="bg-slate-50/80 border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-md transition-all">
           <div className="flex items-center gap-3 pb-4 mb-6 border-b border-slate-200">
