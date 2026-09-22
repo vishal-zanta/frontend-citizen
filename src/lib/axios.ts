@@ -22,9 +22,9 @@ instance.interceptors.response.use(
   },
   (err) => {
     if (err.response?.status === 401) {
-      // localStorage.removeItem("usertoken");
-      // sessionStorage.removeItem("usertoken");
-      // window.location.href = "/";
+      localStorage.removeItem("usertoken");
+      sessionStorage.removeItem("usertoken");
+      window.location.href = "/";
     }
     return Promise.reject(err);
   },
