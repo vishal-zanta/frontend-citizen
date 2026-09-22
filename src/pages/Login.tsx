@@ -243,9 +243,9 @@ export default function Login() {
                 />
                 <div className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 shrink-0">
                   <LoaderErrWrapper
-                    isLoading={isLoading || isRefetching}
+                    isLoading={ isLoading || isRefetching}
                     error={queryError}
-                    loaderClassName={"pt-0 pb-0 "}
+                    loaderClassName={"!pt-0 !pb-0 !min-h-0 "}
                   >
                     <div className="flex items-center justify-center bg-white dark:bg-slate-100 border border-border rounded-lg h-12 select-none w-32 shrink-0 overflow-hidden">
                       {data?.data ? (

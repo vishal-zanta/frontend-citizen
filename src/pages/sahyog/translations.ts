@@ -14,6 +14,8 @@ export interface Translations {
     email: string;
     emailPlaceholder: string;
     langSelect: string;
+    noticeBadge?: string;
+    noticeText?: string;
   };
   header: {
     title: string;
@@ -120,6 +122,8 @@ export const translations: Record<Language, Translations> = {
       email: "ईमेल आईडी:",
       emailPlaceholder: "(प्रस्तावित)",
       langSelect: "भाषा चुनें",
+      noticeBadge: "सूचना",
+      noticeText: "बिहार सहयोग पोर्टल एवं हेल्पलाइन 1100 (टोल-फ्री) नागरिकों की सेवा में 24×7 उपलब्ध है। अपनी शिकायत ऑनलाइन दर्ज करें अथवा स्थिति ट्रैक करें।",
     },
     header: {
       title: "बिहार सहयोग हेल्पलाइन",
@@ -151,7 +155,7 @@ export const translations: Record<Language, Translations> = {
       officerAssigned: "अधिकारी नियुक्त",
       overdueIssues: "अतिदेय मामले",
       withinDeadline: "समय सीमा के भीतर",
-      totalLodged: "कुल दर्ज शिकायतें",
+      totalLodged: "कुल पंजीकृत शिकायतें",
       totalResolved: "कुल निराकृत शिकायतें",
       grievanceStatus: "शिकायत की स्थिति देखें",
       registerGrievance: "शिकायत / मांग सुझाव दर्ज करें",
@@ -301,6 +305,8 @@ export const translations: Record<Language, Translations> = {
       email: "Email ID:",
       emailPlaceholder: "(to be proposed)",
       langSelect: "Select Language",
+      noticeBadge: "Notice",
+      noticeText: "Bihar Sahyog Portal & Helpline 1100 (Toll-Free) is available 24×7 for citizen assistance. Register your grievance online or track grievance status in real-time.",
     },
     header: {
       title: "Bihar Sahyog Helpline",
@@ -332,7 +338,7 @@ export const translations: Record<Language, Translations> = {
       officerAssigned: "Officer Assigned",
       overdueIssues: "Overdue Issues",
       withinDeadline: "Within Deadline",
-      totalLodged: "Total lodged complaints",
+      totalLodged: "Total registered complaints",
       totalResolved: "Total complaints resolved",
       grievanceStatus: "Check Complaint Status",
       registerGrievance: "Register complaint / demand suggestion",
