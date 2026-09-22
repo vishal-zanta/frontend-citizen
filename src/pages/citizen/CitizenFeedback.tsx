@@ -88,7 +88,7 @@ export default function CitizenFeedback() {
         <p className="text-sm text-muted-foreground mb-6">
           {t(
             "Rate your experience with a resolved complaint.",
-            "अपनी हल की गई शिकायत के अनुभव को रेट करें।",
+            "अपनी समाधान की गई शिकायत के अनुभव को रेट करें।",
           )}
         </p>
 
@@ -96,7 +96,7 @@ export default function CitizenFeedback() {
           {/* Select resolved complaint */}
           <div>
             <Label className="mb-1.5 block">
-              {t("Select Resolved Complaint *", "हल की गई शिकायत चुनें *")}
+              {t("Select Resolved Complaint *", "समाधान की गई शिकायत चुनें *")}
             </Label>
             <Select
               value={complaintId}
@@ -106,7 +106,7 @@ export default function CitizenFeedback() {
                 <SelectValue
                   placeholder={t(
                     "Select a resolved complaint",
-                    "हल की गई शिकायत चुनें",
+                    "समाधान की गई शिकायत चुनें",
                   )}
                 />
               </SelectTrigger>
@@ -201,7 +201,7 @@ export default function CitizenFeedback() {
           <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 rounded-lg text-sm text-amber-800 dark:text-amber-200">
             {t(
               "You have no resolved complaints to give feedback on yet.",
-              "आपकी कोई हल की गई शिकायत नहीं है जिस पर प्रतिक्रिया दी जा सके।",
+              "आपकी कोई समाधान की गई शिकायत नहीं है जिस पर प्रतिक्रिया दी जा सके।",
             )}
           </div>
         )}

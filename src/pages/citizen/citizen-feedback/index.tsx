@@ -31,7 +31,7 @@ export default function CitizenFeedback() {
               {/* <p className="text-sm text-muted-foreground mt-0.5">
                 {t(
                   "Rate your experience with a resolved complaint.",
-                  "अपनी हल की गई शिकायत के अनुभव को रेट करें।"
+                  "अपनी समाधान की गई शिकायत के अनुभव को रेट करें।"
                 )}
               </p> */}
             </div>

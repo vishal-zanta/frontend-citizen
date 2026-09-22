@@ -53,14 +53,14 @@ export default function CitizenDashboard() {
       filter: "IN_PROGRESS",
     },
     {
-      label: t("Resolved", "हल"),
+      label: t("Resolved", "समाधान की गई"),
       value: resolvedCount,
       color: "text-emerald-600",
       bg: "bg-emerald-50",
       filter: "RESOLVED",
     },
     {
-      label: t("Escalated", "स्थानांतरित"),
+      label: t("Escalated", "हस्तांतरित किया गया"),
       value: escalatedCount,
       color: "text-red-600",
       bg: "bg-red-50",

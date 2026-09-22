@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 import { isAlpha, isValidNumber } from "@/utils/helpers";
+import Translate from "@/components/Translate";
 
 interface RhfInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -17,8 +18,8 @@ interface RhfInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
   disabled?: boolean;
   isDisableFutureDates?: boolean;
-  isNumsOnly?:boolean
-  isLettersAllowed?:boolean
+  isNumsOnly?: boolean;
+  isLettersAllowed?: boolean;
 }
 
 export default function RhfInput({
@@ -32,13 +33,15 @@ export default function RhfInput({
   required = false,
   disabled = false,
   isDisableFutureDates = false,
-  isNumsOnly=false,
-  isLettersAllowed= false,
+  isNumsOnly = false,
+  isLettersAllowed = false,
 
   ...props
 }: RhfInputProps) {
   const { control } = useFormContext();
   const [showPassword, setShowPassword] = useState(false);
+
+  const isShowTranslate = type !== "password" && type !== "date" && !isNumsOnly;
 
   const inputType =
     type === "password" ? (showPassword ? "text" : "password") : type;
@@ -65,8 +68,8 @@ export default function RhfInput({
             <Input
               id={name}
               type={inputType}
-              onFocus={(e)=> {
-                if(inputType == "date"){
+              onFocus={(e) => {
+                if (inputType == "date") {
                   e.target.showPicker();
                 }
               }}
@@ -74,7 +77,7 @@ export default function RhfInput({
               disabled={disabled}
               className={cn(
                 error && "border-destructive focus-visible:ring-destructive",
-                type === "password" && "pr-10",
+                (type === "password" || isShowTranslate) && "pr-10",
                 inputClassName,
               )}
               max={
@@ -83,7 +86,7 @@ export default function RhfInput({
                   : props?.max
               }
               {...field}
-               onChange={(e) => {
+              onChange={(e) => {
                 if (isNumsOnly && !isValidNumber(e.target.value)) {
                   return;
                 }
@@ -91,7 +94,6 @@ export default function RhfInput({
                   return;
                 }
                 field.onChange(e);
-                
               }}
               {...props}
             />
@@ -108,6 +110,19 @@ export default function RhfInput({
                 )}
               </button>
             )}
+            {/* {isShowTranslate && (
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground">
+                <Translate
+                  name={name}
+                  control={control}
+                  onTranslateDone={(translatedText) => {
+                    if (translatedText) {
+                      field.onChange(translatedText);
+                    }
+                  }}
+                />
+              </div>
+            )} */}
           </div>
           {error && (
             <span className="text-destructive text-xs font-medium">
