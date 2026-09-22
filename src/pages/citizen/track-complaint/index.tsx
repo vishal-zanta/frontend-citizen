@@ -157,7 +157,7 @@ export default function TrackComplaint({
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-foreground">
                 {statusFilter?.toUpperCase() === "RESOLVED"
-                  ? t("Resolved Complaints", "हल की गई शिकायतें")
+                  ? t("Resolved Complaints", "समाधान की गई शिकायतें")
                   : statusFilter?.toUpperCase() === "IN_PROGRESS"
                     ? t("In-Progress Complaints", "प्रगति पर शिकायतें")
                     : statusFilter?.toUpperCase() === "CLOSED"
@@ -167,7 +167,7 @@ export default function TrackComplaint({
                         : statusFilter?.toUpperCase() === "OPEN"
                           ? t("Open Complaints", "लंबित शिकायतें")
                           : statusFilter?.toUpperCase() === "ESCALATED"
-                            ? t("Escalated Complaints", "गंभीर शिकायतें")
+                            ? t("Escalated Complaints", "हस्तांतरित शिकायतें")
                             : t(
                                 "Check Complaint Status",
                                 "शिकायत की स्थिति देखें",

@@ -106,7 +106,7 @@ const AvailbleDept: React.FC = () => {
               </div>
               <span
                 title={dept.label}
-                className="text-xs font-medium text-slate-700 dark:text-slate-200 group-hover:text-[#00388c] dark:group-hover:text-blue-300 transition-colors line-clamp-1 leading-normal"
+                className="text-sm font-semibold text-slate-700 dark:text-slate-200 group-hover:text-[#00388c] dark:group-hover:text-blue-300 transition-colors line-clamp-2 leading-normal"
               >
                 {dept.label}
               </span>

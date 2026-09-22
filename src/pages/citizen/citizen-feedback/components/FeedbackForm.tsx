@@ -176,7 +176,7 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
           <span className="flex-1 text-left text-muted-foreground">
             {t(
               "Search or select a resolved complaint…",
-              "हल की गई शिकायत खोजें…",
+              "समाधान की गई शिकायत खोजें…",
             )}
           </span>
         )}
@@ -240,7 +240,7 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
               <div className="py-8 text-center text-sm text-muted-foreground">
                 {t(
                   "No resolved complaints found.",
-                  "कोई हल की गई शिकायत नहीं मिली।",
+                  "कोई समाधान की गई शिकायत नहीं मिली।",
                 )}
               </div>
             ) : (
@@ -368,13 +368,13 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
       {/* ── Complaint selector ─── */}
       <div className="space-y-1.5">
         <Label className="text-sm font-medium">
-          {t("Select Resolved Complaint", "हल की गई शिकायत चुनें")}
+          {t("Select Resolved Complaint", "समाधान की गई शिकायत चुनें")}
           <span className="text-destructive ml-0.5">*</span>
         </Label>
         <p className="text-xs text-muted-foreground mt-1 mb-2">
           {t(
             "Only Resolved and Closed complaints are listed. Scroll inside the dropdown to load more.",
-            "केवल हल की गई और बंद शिकायतें सूची में हैं। अधिक के लिए ड्रॉपडाउन में स्क्रॉल करें।",
+            "केवल समाधान की गई और बंद शिकायतें सूची में हैं। अधिक के लिए ड्रॉपडाउन में स्क्रॉल करें।",
           )}
         </p>
         <ComplaintDropdown

@@ -14,17 +14,23 @@ const LanguageContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { profile } = useProfile();
-  const [lang, setLang] = useState("en");
+  // const { profile } = useProfile();
+  const [lang, setLang] = useState(
+    () => sessionStorage.getItem("citizen-lang") || "hi",
+  );
 
-  useEffect(() => {
-    if (profile?.preferredLanguage === "Hindi") {
-      setLang("hi");
-    }
-  }, [profile]);
+  // useEffect(() => {
+  //   if (profile?.preferredLanguage === "Hindi") {
+  //     setLang("hi");
+  //   }
+  // }, [profile]);
 
   const toggle = useCallback(() => {
-    setLang((prev) => (prev === "en" ? "hi" : "en"));
+    setLang((prev) => {
+      const updatedLang = prev === "en" ? "hi" : "en";
+      sessionStorage.setItem("citizen-lang", updatedLang);
+      return updatedLang;
+    });
   }, []);
 
   const t = useCallback(

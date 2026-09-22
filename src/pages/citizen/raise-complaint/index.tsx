@@ -363,7 +363,7 @@ export default function RaiseComplaint({
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                      <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
                         {t(label, dept.nameHindi)}
                       </h3>
                       {/* <p className="text-[11px] text-muted-foreground mt-1 line-clamp-1">
