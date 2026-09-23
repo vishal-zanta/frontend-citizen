@@ -3,6 +3,7 @@ import { StatusBadge } from "@/components/Badges";
 import { ComplaintDetailDialog } from "@/components/ComplaintDetailDialog";
 import LoaderErrWrapper from "@/components/LoaderErrWrapper";
 import { useNavigate } from "react-router-dom";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { getEntityLabel } from "@/utils/helpers";
 import { getExternalDepartment } from "@/utils/departments";
 import { getFormsFields } from "@/lib/idb";
@@ -13,6 +14,9 @@ interface PreviousComplaintsTableProps {
   Pagination: React.ReactNode;
   isLoading: boolean;
   error: any;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc" | string;
+  onSortChange?: (sortBy?: string, sortOrder?: string) => void;
 }
 
 export default function PreviousComplaintsTable({
@@ -21,10 +25,28 @@ export default function PreviousComplaintsTable({
   Pagination,
   isLoading,
   error,
+  sortBy,
+  sortOrder,
+  onSortChange,
 }: PreviousComplaintsTableProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [masterDataMap, setMasterDataMap] = useState<Record<string, any>>({});
   const nav = useNavigate();
+
+  const handleSortRaisedOn = () => {
+    const isRaisedOn = sortBy === "createdAt";
+
+    if (!isRaisedOn || !sortOrder) {
+      // Stage 1: default -> asc
+      onSortChange?.("createdAt", "asc");
+    } else if (sortOrder === "asc") {
+      // Stage 2: asc -> desc
+      onSortChange?.("createdAt", "desc");
+    } else {
+      // Stage 3: desc -> default
+      onSortChange?.(undefined, undefined);
+    }
+  };
 
   useEffect(() => {
     async function loadMasterData() {
@@ -79,8 +101,23 @@ export default function PreviousComplaintsTable({
                   <th className="px-4 py-3 font-medium">
                     {t("Status", "स्थिति")}
                   </th>
-                  <th className="px-4 py-3 font-medium">
-                    {t("Raised On", "दर्ज तिथि")}
+                  <th
+                    onClick={handleSortRaisedOn}
+                    className="px-4 py-3 font-medium cursor-pointer select-none hover:text-foreground transition-colors group"
+                    title={t("Click to sort by date", "दिनांक अनुसार क्रमबद्ध करने के लिए क्लिक करें")}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span>{t("Raised On", "दर्ज तिथि")}</span>
+                      {( sortBy === "createdAt") ? (
+                        sortOrder === "asc" ? (
+                          <ArrowUp className="w-3.5 h-3.5 text-primary" />
+                        ) : (
+                          <ArrowDown className="w-3.5 h-3.5 text-primary" />
+                        )
+                      ) : (
+                        <ArrowUpDown className="w-3.5 h-3.5 text-muted-foreground/50 group-hover:text-foreground transition-colors" />
+                      )}
+                    </div>
                   </th>
                 </tr>
               </thead>

@@ -22,6 +22,7 @@ export interface Translations {
     govt: string;
     citizenLogin: string;
     officerLogin: string;
+    cceLogin: string;
   };
   navbar: {
     home: string;
@@ -130,6 +131,7 @@ export const translations: Record<Language, Translations> = {
       govt: "बिहार सरकार",
       citizenLogin: "नागरिक लॉगिन",
       officerLogin: "अधिकारी लॉगिन",
+      cceLogin: "सीसीई लॉगिन",
     },
     navbar: {
       home: "मुख्य पृष्ठ",
@@ -313,6 +315,7 @@ export const translations: Record<Language, Translations> = {
       govt: "Government of Bihar",
       citizenLogin: "Citizen Login",
       officerLogin: "Officer Login",
+      cceLogin: "CCE Login",
     },
     navbar: {
       home: "Home Page",
