@@ -1,11 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {
+  Monitor,
+  Clock,
+  ClipboardCheck,
+  ShieldAlert,
+  RotateCcw,
+  CheckCircle2,
+  FileText,
+  LucideIcon,
+} from "lucide-react";
 
 interface StatItem {
   label: string;
   value: number;
-  color: string;
-  bg: string;
+  color?: string;
+  bg?: string;
   filter: string;
 }
 
@@ -13,92 +23,115 @@ interface StatsGridProps {
   stats: StatItem[];
 }
 
-const COLOR_THEMES: Record<string, { border: string; bg: string; text: string }> = {
+interface ThemeConfig {
+  borderHover: string;
+  bgIcon: string;
+  iconColor: string;
+  icon: LucideIcon;
+}
+
+const COLOR_THEMES: Record<string, ThemeConfig> = {
   all: {
-    border: "border-blue-100 dark:border-slate-800 hover:border-primary",
-    bg: "bg-blue-50 dark:bg-blue-950/50",
-    text: "text-primary",
+    borderHover: "hover:border-[#6C4FC7]/40",
+    bgIcon: "bg-[#F1EBFE] dark:bg-[#6C4FC7]/20",
+    iconColor: "text-[#6C4FC7] dark:text-[#9d85ea]",
+    icon: Monitor,
   },
   ALL: {
-    border: "border-blue-100 dark:border-slate-800 hover:border-primary",
-    bg: "bg-blue-50 dark:bg-blue-950/50",
-    text: "text-primary",
-  },
-  RESOLVED: {
-    border: "border-emerald-100 dark:border-slate-800 hover:border-emerald-400",
-    bg: "bg-emerald-50 dark:bg-emerald-950/50",
-    text: "text-emerald-600 dark:text-emerald-400",
-  },
-  resolved: {
-    border: "border-emerald-100 dark:border-slate-800 hover:border-emerald-400",
-    bg: "bg-emerald-50 dark:bg-emerald-950/50",
-    text: "text-emerald-600 dark:text-emerald-400",
-  },
-  CLOSED: {
-    border: "border-slate-200 dark:border-slate-800 hover:border-slate-400",
-    bg: "bg-slate-100 dark:bg-slate-900",
-    text: "text-slate-600 dark:text-slate-400",
-  },
-  closed: {
-    border: "border-slate-200 dark:border-slate-800 hover:border-slate-400",
-    bg: "bg-slate-100 dark:bg-slate-900",
-    text: "text-slate-600 dark:text-slate-400",
+    borderHover: "hover:border-[#6C4FC7]/40",
+    bgIcon: "bg-[#F1EBFE] dark:bg-[#6C4FC7]/20",
+    iconColor: "text-[#6C4FC7] dark:text-[#9d85ea]",
+    icon: Monitor,
   },
   IN_PROGRESS: {
-    border: "border-amber-100 dark:border-slate-800 hover:border-amber-400",
-    bg: "bg-amber-50 dark:bg-amber-950/50",
-    text: "text-amber-600 dark:text-amber-400",
+    borderHover: "hover:border-[#F16521]/40",
+    bgIcon: "bg-[#FEF1EB] dark:bg-[#F16521]/20",
+    iconColor: "text-[#F16521] dark:text-[#f79261]",
+    icon: Clock,
   },
   in_progress: {
-    border: "border-amber-100 dark:border-slate-800 hover:border-amber-400",
-    bg: "bg-amber-50 dark:bg-amber-950/50",
-    text: "text-amber-600 dark:text-amber-400",
+    borderHover: "hover:border-[#F16521]/40",
+    bgIcon: "bg-[#FEF1EB] dark:bg-[#F16521]/20",
+    iconColor: "text-[#F16521] dark:text-[#f79261]",
+    icon: Clock,
   },
-  REOPENED: {
-    border: "border-yellow-100 dark:border-slate-800 hover:border-yellow-400",
-    bg: "bg-yellow-50 dark:bg-yellow-950/50",
-    text: "text-yellow-600 dark:text-yellow-400",
+  RESOLVED: {
+    borderHover: "hover:border-[#67B10D]/40",
+    bgIcon: "bg-[#EAF7D8] dark:bg-[#67B10D]/20",
+    iconColor: "text-[#67B10D] dark:text-[#88d927]",
+    icon: ClipboardCheck,
   },
-  reopened: {
-    border: "border-yellow-100 dark:border-slate-800 hover:border-yellow-400",
-    bg: "bg-yellow-50 dark:bg-yellow-950/50",
-    text: "text-yellow-600 dark:text-yellow-400",
-  },
-  OPEN: {
-    border: "border-blue-100 dark:border-slate-800 hover:border-blue-400",
-    bg: "bg-blue-50 dark:bg-blue-950/50",
-    text: "text-blue-600 dark:text-blue-400",
-  },
-  open: {
-    border: "border-blue-100 dark:border-slate-800 hover:border-blue-400",
-    bg: "bg-blue-50 dark:bg-blue-950/50",
-    text: "text-blue-600 dark:text-blue-400",
+  resolved: {
+    borderHover: "hover:border-[#67B10D]/40",
+    bgIcon: "bg-[#EAF7D8] dark:bg-[#67B10D]/20",
+    iconColor: "text-[#67B10D] dark:text-[#88d927]",
+    icon: ClipboardCheck,
   },
   ESCALATED: {
-    border: "border-red-100 dark:border-slate-800 hover:border-red-400",
-    bg: "bg-red-50 dark:bg-red-950/50",
-    text: "text-red-600 dark:text-red-400",
+    borderHover: "hover:border-[#DC2626]/40",
+    bgIcon: "bg-[#FEE2E2] dark:bg-[#DC2626]/20",
+    iconColor: "text-[#DC2626] dark:text-[#ef4444]",
+    icon: ShieldAlert,
   },
   escalated: {
-    border: "border-red-100 dark:border-slate-800 hover:border-red-400",
-    bg: "bg-red-50 dark:bg-red-950/50",
-    text: "text-red-600 dark:text-red-400",
+    borderHover: "hover:border-[#DC2626]/40",
+    bgIcon: "bg-[#FEE2E2] dark:bg-[#DC2626]/20",
+    iconColor: "text-[#DC2626] dark:text-[#ef4444]",
+    icon: ShieldAlert,
+  },
+  REOPENED: {
+    borderHover: "hover:border-yellow-500/40",
+    bgIcon: "bg-yellow-50 dark:bg-yellow-950/40",
+    iconColor: "text-yellow-600 dark:text-yellow-400",
+    icon: RotateCcw,
+  },
+  reopened: {
+    borderHover: "hover:border-yellow-500/40",
+    bgIcon: "bg-yellow-50 dark:bg-yellow-950/40",
+    iconColor: "text-yellow-600 dark:text-yellow-400",
+    icon: RotateCcw,
+  },
+  CLOSED: {
+    borderHover: "hover:border-slate-400/40",
+    bgIcon: "bg-slate-100 dark:bg-slate-800",
+    iconColor: "text-slate-600 dark:text-slate-400",
+    icon: CheckCircle2,
+  },
+  closed: {
+    borderHover: "hover:border-slate-400/40",
+    bgIcon: "bg-slate-100 dark:bg-slate-800",
+    iconColor: "text-slate-600 dark:text-slate-400",
+    icon: CheckCircle2,
+  },
+  OPEN: {
+    borderHover: "hover:border-[#1C4D8D]/40",
+    bgIcon: "bg-[#EBF2FA] dark:bg-[#1C4D8D]/20",
+    iconColor: "text-[#1C4D8D] dark:text-[#60a5fa]",
+    icon: FileText,
+  },
+  open: {
+    borderHover: "hover:border-[#1C4D8D]/40",
+    bgIcon: "bg-[#EBF2FA] dark:bg-[#1C4D8D]/20",
+    iconColor: "text-[#1C4D8D] dark:text-[#60a5fa]",
+    icon: FileText,
   },
 };
 
 export default function StatsGrid({ stats }: StatsGridProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
       {stats.map((s, i) => {
         const theme =
           COLOR_THEMES[s.filter] ||
           COLOR_THEMES[s.filter?.toUpperCase()] ||
           COLOR_THEMES[s.filter?.toLowerCase()] || {
-            border: "border-border hover:border-primary",
-            bg: s.bg || "bg-muted",
-            text: s.color || "text-foreground",
+            borderHover: "hover:border-primary/40",
+            bgIcon: "bg-muted",
+            iconColor: "text-primary",
+            icon: Monitor,
           };
 
+        const Icon = theme.icon;
         const targetUrl =
           s.filter && s.filter.toLowerCase() !== "all"
             ? `/citizen/track?status=${s.filter}`
@@ -108,16 +141,23 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           <Link
             key={i}
             to={targetUrl}
-            className={`group bg-card rounded-xl border-2 ${theme.border} p-4 sm:p-6 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg`}
+            className={`group bg-white dark:bg-card rounded-2xl p-5 sm:p-6 border border-slate-200/90 dark:border-border shadow-xs hover:shadow-md transition-all duration-300 flex items-center gap-4 sm:gap-5 hover:-translate-y-0.5 ${theme.borderHover}`}
           >
             <div
-              className={`w-12 h-12 rounded-xl ${theme.bg} ${theme.text} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform font-bold text-lg sm:text-xl`}
+              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl ${theme.bgIcon} flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-300`}
             >
-              {s.value}
+              <Icon
+                className={`w-7 h-7 sm:w-8 sm:h-8 ${theme.iconColor} stroke-[2.2]`}
+              />
             </div>
-            <h3 className="font-bold text-foreground">
-              {s.label}
-            </h3>
+            <div className="min-w-0 flex-1">
+              <div className="text-slate-600 dark:text-muted-foreground font-medium text-xs sm:text-[14px] leading-tight group-hover:text-foreground transition-colors">
+                {s.label}
+              </div>
+              <div className="font-extrabold text-2xl sm:text-3xl text-slate-950 dark:text-foreground tracking-tight mt-1">
+                {s.value}
+              </div>
+            </div>
           </Link>
         );
       })}

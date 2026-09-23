@@ -1,32 +1,24 @@
 import React from "react";
 import SearchDebounced from "@/components/debounced/SearchDebounced";
-import { Button } from "@/components/ui/button";
 
 interface SearchComplaintProps {
   searchId: string;
   setSearchId: (id: string) => void;
-  quickTrackIds: any[];
+  quickTrackIds?: any[];
   t: any;
-  onQuickTrack: (complaint: any) => void;
+  onQuickTrack?: (complaint: any) => void;
+  filterNode?: React.ReactNode;
 }
 
 export default function SearchComplaint({
   searchId,
   setSearchId,
-  quickTrackIds,
   t,
-  onQuickTrack,
+  filterNode,
 }: SearchComplaintProps) {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchId.trim()) {
-      onQuickTrack({ _id: searchId.trim() });
-    }
-  };
-
   return (
-    <div className="bg-card rounded-xl border border-border p-4 sm:p-5 mb-6 no-print">
-      <form onSubmit={handleSubmit} className="flex gap-2 sm:gap-3">
+    <div className="bg-card rounded-xl border border-border p-3 sm:p-4 mb-6 no-print">
+      <div className="flex items-center gap-2 sm:gap-3">
         <SearchDebounced
           initialValue={searchId}
           handleDebouncedChange={setSearchId}
@@ -35,33 +27,10 @@ export default function SearchComplaint({
             "शिकायत संख्या दर्ज करें ",
           )}
           className="flex-1"
-          inputClassName="h-11 text-xs sm:text-sm"
+          inputClassName="h-10 text-xs sm:text-sm"
         />
-        {/* <Button type="submit" className="h-11 bg-primary hover:bg-primary/90 px-4 sm:px-6 font-semibold text-xs sm:text-sm shrink-0">
-          {t("Track", "ट्रैक करें")}
-        </Button> */}
-      </form>
-      {/* {quickTrackIds.length > 0 && (
-        <div className="mt-3 text-xs text-muted-foreground">
-          <span>
-            {t(
-              "Try tracking these complaints: ",
-              "ये शिकायतें ट्रैक करने का प्रयास करें: ",
-            )}
-          </span>
-          <div className="inline-flex flex-wrap gap-2 mt-1">
-            {quickTrackIds.map((c) => (
-              <button
-                key={c._id || c.id}
-                onClick={() => onQuickTrack(c)}
-                className="px-3 py-1 bg-muted hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:text-primary rounded-full font-mono text-xs transition-colors cursor-pointer"
-              >
-                {c.grievanceId || c.id}
-              </button>
-            ))}
-          </div>
-        </div>
-      )} */}
+        {filterNode}
+      </div>
     </div>
   );
 }

@@ -1,11 +1,13 @@
 import React from "react";
-import { UserCheck, User } from "lucide-react";
+import { UserCheck, User, Headphones } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSahyogTranslation } from "../translations";
 import { OFFICER_URL } from "@/utils/constants";
 
 export default function HeaderBranding() {
   const { t } = useSahyogTranslation();
+
+  const cceLoginUrl = `${OFFICER_URL.endsWith("/") ? OFFICER_URL : OFFICER_URL + "/"}?role=cce`;
 
   return (
     <header className="bg-white py-3.5 px-4 sm:px-8 border-b border-slate-200 shadow-2xs">
@@ -37,23 +39,34 @@ export default function HeaderBranding() {
           </div>
         </Link>
 
-        {/* Right Side: Two Login Buttons (Citizen Login & Officer Login) */}
-        <div className="flex items-center gap-3 shrink-0">
+        {/* Right Side: Login Buttons (Citizen Login, CCE Login & Officer Login) */}
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 flex-wrap justify-center">
           {/* Citizen Login Button */}
           <Link
             to="/login"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
             <User className="w-4 h-4" />
             <span>{t.header.citizenLogin}</span>
           </Link>
+
+          {/* CCE Login Button */}
+          <a
+            href={cceLoginUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            <Headphones className="w-4 h-4" />
+            <span>{t.header.cceLogin || "CCE Login"}</span>
+          </a>
 
           {/* Officer Login Button */}
           <a
             href={OFFICER_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#1C4D8D] to-[#163c6f] hover:from-[#163c6f] hover:to-[#0F2A52] text-white font-bold text-xs shadow-xs hover:shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-gradient-to-r from-[#1C4D8D] to-[#163c6f] hover:from-[#163c6f] hover:to-[#0F2A52] text-white font-bold text-xs shadow-xs hover:shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
             <UserCheck className="w-4 h-4" />
             <span>{t.header.officerLogin}</span>

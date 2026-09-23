@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { ArrowLeft, Search } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PortalLayout from "@/components/PortalLayout";
@@ -10,7 +10,12 @@ import { useQuery } from "@tanstack/react-query";
 import ComplaintDetailsView from "./components/ComplaintDetailsView";
 import SearchComplaint from "./components/SearchComplaint";
 import PreviousComplaintsTable from "./components/PreviousComplaintsTable";
-import { useGetComplaints, useGetComplaintById } from "@/hooks/useGetQuery";
+import Filter from "@/components/Filter";
+import {
+  useGetComplaints,
+  useGetComplaintById,
+  useGetDepartments,
+} from "@/hooks/useGetQuery";
 import { getExternalComplaintsById } from "@/api/externalDept.api";
 import {
   getExternalDepartment,
@@ -27,19 +32,63 @@ export default function TrackComplaint({
   role = "citizen",
 }: TrackComplaintProps) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const complaintId = searchParams.get("complaint") || searchParams.get("id");
   const grievanceTypeParam = searchParams.get("grievanceType");
   const departmentCodeParam = searchParams.get("departmentCode");
   const { page, limit, ...pageProps } = usePagination();
   const [searchId, setSearchId] = useState("");
-  const statusFilter = searchParams.get("status");
+  const [filters, setFilters] = useState<Record<string, any>>({});
+  const [sortBy, setSortBy] = useState<string | undefined>();
+  const [sortOrder, setSortOrder] = useState<string | undefined>();
+
+  const statusFilter = filters.status;
+  const departmentFilter = filters.department;
 
   const isExternal =
     grievanceTypeParam === "EXTERNAL" ||
     Boolean(departmentCodeParam && isExternalDepartment(departmentCodeParam));
 
   // ────────────────────────────────────────────────────────────
+
+  // Fetch departments for filter dropdown
+  const { data: deptRes } = useGetDepartments();
+  const departmentsList = deptRes?.data?.data?.docs || deptRes?.data?.data || [];
+
+  const filterOptions = useMemo(() => {
+    return [
+      {
+        filterKey: "department",
+        label: "Department",
+        labelHindi: "विभाग",
+        isMultiple: true,
+        options: (Array.isArray(departmentsList) ? departmentsList : []).map(
+          (d: any) => ({
+            label: t(
+              d.title || d.name_en || d.name || "",
+              d.titleHindi || d.name_local || d.title || d.name || ""
+            ),
+            value: d._id || d.id,
+          })
+        ),
+      },
+      {
+        filterKey: "status",
+        label: "Status",
+        labelHindi: "स्थिति",
+        isMultiple: true,
+        options: [
+          { label: t("Pending", "लंबित"), value: "PENDING" },
+          { label: t("In Progress", "प्रगति पर"), value: "IN_PROGRESS" },
+          { label: t("Resolved", "समाधान की गई"), value: "RESOLVED" },
+          { label: t("Closed", "बंद"), value: "CLOSED" },
+          { label: t("Reopened", "पुनः खोली गई"), value: "REOPENED" },
+          { label: t("Escalated", "हस्तांतरित"), value: "ESCALATED" },
+        ],
+      },
+    ];
+  }, [departmentsList, t]);
 
   // ── API Queries
   // Fetch paginated history list
@@ -48,8 +97,24 @@ export default function TrackComplaint({
     isLoading: isListLoading,
     error: listError,
   } = useGetComplaints(
-    [page, limit, searchId, statusFilter],
-    { page, limit, search: searchId, status: statusFilter },
+    [
+      page,
+      limit,
+      searchId,
+      statusFilter,
+      departmentFilter,
+      sortBy,
+      sortOrder,
+    ],
+    {
+      page,
+      limit,
+      search: searchId || undefined,
+      status: statusFilter || undefined,
+      department: departmentFilter || undefined,
+      sortBy: sortBy || undefined,
+      sortOrder: sortOrder || undefined,
+    },
     !complaintId,
   );
   const compl = listData?.data?.data?.docs || [];
@@ -82,8 +147,6 @@ export default function TrackComplaint({
   const complaint = isExternal
     ? externalDetailData?.data?.data
     : detailData?.data?.data;
-
-  const { t } = useLanguage();
 
   // Update input if URL param changes (e.g. user clicks "View Full Timeline")
   useEffect(() => {
@@ -220,9 +283,14 @@ export default function TrackComplaint({
             <SearchComplaint
               searchId={searchId}
               setSearchId={setSearchId}
-              quickTrackIds={quickTrackComplaints}
               t={t}
-              onQuickTrack={handleQuickTrack}
+              filterNode={
+                <Filter
+                  filters={filters}
+                  setFilters={setFilters}
+                  filterOptions={filterOptions}
+                />
+              }
             />
 
             <PreviousComplaintsTable
@@ -230,6 +298,12 @@ export default function TrackComplaint({
               t={t}
               isLoading={isListLoading}
               error={listError}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              onSortChange={(newSortBy, newSortOrder) => {
+                setSortBy(newSortBy);
+                setSortOrder(newSortOrder);
+              }}
               Pagination={
                 <Pagination
                   page={page}
