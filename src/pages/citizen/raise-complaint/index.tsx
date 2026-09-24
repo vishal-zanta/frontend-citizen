@@ -131,7 +131,7 @@ export default function RaiseComplaint({
       isExternal: false,
     }));
 
-    return [...externalBoxes, ...internalBoxes];
+    return [...internalBoxes, ...externalBoxes];
   }, [departmentOptions]);
 
   const filteredDepartments = useMemo(() => {

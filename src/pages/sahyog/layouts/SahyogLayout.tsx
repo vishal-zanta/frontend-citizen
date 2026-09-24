@@ -4,6 +4,7 @@ import TopBar from "./TopBar";
 import HeaderBranding from "./HeaderBranding";
 import MainNavbar from "./MainNavbar";
 import Footer from "./Footer";
+import Chatbot from "@/pages/chatbot";
 
 export default function SahyogLayout() {
   return (
@@ -24,6 +25,9 @@ export default function SahyogLayout() {
 
       {/* Footer & Red Disclaimer Banner */}
       <Footer />
+
+      {/* Floating Chatbot Assistant on Bottom Right */}
+      <Chatbot />
     </div>
   );
 }
