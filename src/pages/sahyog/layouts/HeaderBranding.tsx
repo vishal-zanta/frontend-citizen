@@ -50,17 +50,6 @@ export default function HeaderBranding() {
             <span>{t.header.citizenLogin}</span>
           </Link>
 
-          {/* CCE Login Button */}
-          <a
-            href={cceLoginUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
-          >
-            <Headphones className="w-4 h-4" />
-            <span>{t.header.cceLogin || "CCE Login"}</span>
-          </a>
-
           {/* Officer Login Button */}
           <a
             href={OFFICER_URL}
@@ -71,6 +60,19 @@ export default function HeaderBranding() {
             <UserCheck className="w-4 h-4" />
             <span>{t.header.officerLogin}</span>
           </a>
+
+          {/* CCE Login Button */}
+          <a
+            href={cceLoginUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            <Headphones className="w-4 h-4" />
+            <span>{t.header.cceLogin}</span>
+          </a>
+
+          
         </div>
       </div>
     </header>
