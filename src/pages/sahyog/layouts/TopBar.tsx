@@ -55,14 +55,17 @@ export default function TopBar() {
 
           {/* Right Side: Email placeholder & Language Select */}
           <div className="flex items-center gap-4 ml-auto">
-            <div className="flex items-center gap-1 text-slate-600 hidden sm:flex">
+            <div className="flex items-center gap-1.5 text-slate-600 hidden sm:flex">
               <Mail className="w-3.5 h-3.5 text-[#0066B3]" />
               <span className="font-semibold text-[#0066B3]">
                 {t.topBar.email}
               </span>
-              <span className="italic text-slate-500">
-                {t.topBar.emailPlaceholder}
-              </span>
+              <a
+                href="mailto:sahyoghelpline@bihar.gov.in"
+                className="text-slate-700 hover:text-[#1C4D8D] hover:underline font-medium"
+              >
+                sahyoghelpline@bihar.gov.in
+              </a>
             </div>
 
             <span className="text-slate-300">|</span>

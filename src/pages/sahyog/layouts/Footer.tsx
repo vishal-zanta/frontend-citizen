@@ -44,9 +44,12 @@ export default function Footer() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-blue-400 shrink-0" />
-                  <span className="text-[11px] italic text-slate-400">
-                    {t.topBar.emailPlaceholder}
-                  </span>
+                  <a
+                    href="mailto:sahyoghelpline@bihar.gov.in"
+                    className="text-slate-300 hover:text-white transition-colors"
+                  >
+                    sahyoghelpline@bihar.gov.in
+                  </a>
                 </li>
                 <li className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-indigo-400 shrink-0" />
