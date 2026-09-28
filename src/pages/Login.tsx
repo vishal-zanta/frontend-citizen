@@ -250,7 +250,7 @@ export default function Login() {
                     <div className="flex items-center justify-center bg-white dark:bg-slate-100 border border-border rounded-lg h-12 select-none w-32 shrink-0 overflow-hidden">
                       {data?.data ? (
                         <div
-                          className="w-full h-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-auto"
+                          className="w-full h-full flex items-center justify-center   [&_svg]:h-full [&_svg]:w-auto"
                           dangerouslySetInnerHTML={{ __html: data.data }}
                         />
                       ) : (

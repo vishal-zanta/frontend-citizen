@@ -274,3 +274,7 @@ th {
 input[type="date"]{
   display: block !important;
 }
+
+.black-white {
+  filter: grayscale(1) contrast(100%);
+}

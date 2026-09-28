@@ -309,11 +309,11 @@ const Step2: React.FC<Step2Props> = ({ t, data, trackingId, onBack }) => {
             <ArrowLeft className="w-4 h-4" />
             {t("Back to login", "लॉगिन पर वापस")}
           </Button>
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 font-mono">
               {trackingId}
             </span>
-          </div>
+          </div> */}
         </div>
 
         <div className="print-area space-y-6">
@@ -328,8 +328,7 @@ const Step2: React.FC<Step2Props> = ({ t, data, trackingId, onBack }) => {
           {data?.timeline && data.timeline.length > 0 && (
             <div className="bg-card rounded-xl border border-border p-4 sm:p-6">
               <h3 className="font-bold text-foreground mb-4">
-                {t("Complaint Timeline", "शिकायत समयसीमा")} -{" "}
-                {t("End-to-End Lifecycle", "संपूर्ण जीवनचक्र")}
+                {t("End to End Complaint Lifecycle", "शिकायत का संपूर्ण जीवनचक्र")}
               </h3>
               <ComplaintTimeline events={data.timeline} t={t} />
             </div>

@@ -39,11 +39,11 @@ export const ChatComplaintDetailsModal: React.FC<
             <DialogTitle className="text-base sm:text-lg font-bold">
               {t("Complaint Details", "शिकायत का विवरण")}
             </DialogTitle>
-            {trackingId && (
+            {/* {trackingId && (
               <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 font-mono ml-2">
                 {trackingId}
               </span>
-            )}
+            )} */}
           </div>
 
           <div className="flex items-center gap-2 mr-6">
@@ -73,8 +73,7 @@ export const ChatComplaintDetailsModal: React.FC<
           {complaint?.timeline && complaint.timeline.length > 0 && (
             <div className="bg-card rounded-xl border border-border p-4 sm:p-6 shadow-2xs">
               <h3 className="font-bold text-foreground mb-4 text-sm sm:text-base">
-                {t("Complaint Timeline", "शिकायत समयसीमा")} -{" "}
-                {t("End-to-End Lifecycle", "संपूर्ण जीवनचक्र")}
+                {t("End to End Complaint Lifecycle", "शिकायत का संपूर्ण जीवनचक्र")}
               </h3>
               <ComplaintTimeline events={complaint.timeline} t={t} />
             </div>
