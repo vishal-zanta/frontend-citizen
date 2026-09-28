@@ -130,7 +130,7 @@ export const translations: Record<Language, Translations> = {
       title: "बिहार सहयोग हेल्पलाइन",
       govt: "बिहार सरकार",
       citizenLogin: "नागरिक लॉगिन",
-      officerLogin: "अधिकारी लॉगिन",
+      officerLogin: "आधिकारिक लॉगिन",
       cceLogin: "सीसीई लॉगिन",
     },
     navbar: {
@@ -314,7 +314,7 @@ export const translations: Record<Language, Translations> = {
       title: "Bihar Sahyog Helpline",
       govt: "Government of Bihar",
       citizenLogin: "Citizen Login",
-      officerLogin: "Officer Login",
+      officerLogin: "Official Login",
       cceLogin: "CCE Login",
     },
     navbar: {
