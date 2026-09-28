@@ -13,6 +13,11 @@ import SearchComplaint from "../track-complaint/components/SearchComplaint";
 import Filter from "@/components/Filter";
 import PreviousComplaintsTable from "../track-complaint/components/PreviousComplaintsTable";
 import { useGetComplaints, useGetDepartments } from "@/hooks/useGetQuery";
+import {
+  departmentsList as externalDepartmentsList,
+  isExternalDepartment,
+} from "@/utils/departments";
+import { STATUS_ACTIONS } from "@/utils/constants";
 import Pagination from "@/components/Pagination";
 import usePagination from "@/hooks/usePagination";
 
@@ -26,47 +31,58 @@ export default function CitizenDashboard() {
   const statusFilter = filters.status;
   const departmentFilter = filters.department;
 
+  const isExternal = Boolean(
+    departmentFilter && isExternalDepartment(departmentFilter));
+
   const { data: res, isLoading, error } = useQuery({
     queryKey: ["citizen-dashboard-analytics"],
     queryFn: getDashboardAnalytics,
   });
 
   const { data: deptRes } = useGetDepartments();
-  const departmentsList = deptRes?.data?.data?.docs || deptRes?.data?.data || [];
+  const apiDepartmentsList = deptRes?.data?.data?.docs || deptRes?.data?.data || [];
 
   const filterOptions = useMemo(() => {
+    const internalOptions = (Array.isArray(apiDepartmentsList) ? apiDepartmentsList : []).map(
+      (d: any) => ({
+        label: t(
+          d.title || d.name_en || d.name || "",
+          d.titleHindi || d.name_local || d.title || d.name || ""
+        ),
+        value: d._id || d.id,
+      })
+    );
+
+    const externalOptions = externalDepartmentsList
+      .filter((dept) => !dept.isHide)
+      .map((dept) => ({
+        label: t(dept.name, dept.nameHindi || dept.name),
+        value: dept.key,
+      }));
+
     return [
       {
         filterKey: "department",
         label: "Department",
         labelHindi: "विभाग",
-        isMultiple: true,
-        options: (Array.isArray(departmentsList) ? departmentsList : []).map(
-          (d: any) => ({
-            label: t(
-              d.title || d.name_en || d.name || "",
-              d.titleHindi || d.name_local || d.title || d.name || ""
-            ),
-            value: d._id || d.id,
-          })
-        ),
+        isMultiple: false,
+        options: [...internalOptions, ...externalOptions],
       },
       {
         filterKey: "status",
         label: "Status",
         labelHindi: "स्थिति",
         isMultiple: true,
-        options: [
-          { label: t("Pending", "लंबित"), value: "PENDING" },
-          { label: t("In Progress", "प्रगति पर"), value: "IN_PROGRESS" },
-          { label: t("Resolved", "समाधान की गई"), value: "RESOLVED" },
-          { label: t("Closed", "बंद"), value: "CLOSED" },
-          { label: t("Reopened", "पुनः खोली गई"), value: "REOPENED" },
-          { label: t("Escalated", "हस्तांतरित"), value: "ESCALATED" },
-        ],
+        options: STATUS_ACTIONS.map((action) => ({
+          label: t(
+            action.badgeLabel || action.label,
+            action.badgeLabel || action.label
+          ),
+          value: action.value,
+        })),
       },
     ];
-  }, [departmentsList, t]);
+  }, [apiDepartmentsList, t]);
 
   const { page, limit, ...pageProps } = usePagination();
   const {
@@ -88,7 +104,8 @@ export default function CitizenDashboard() {
       limit,
       search: searchId || undefined,
       status: statusFilter || undefined,
-      department: departmentFilter || undefined,
+      department: !isExternal && departmentFilter ? departmentFilter : undefined,
+      departmentCode: isExternal && departmentFilter ? departmentFilter : undefined,
       sortBy: sortBy || undefined,
       sortOrder: sortOrder || undefined,
     }
@@ -99,39 +116,61 @@ export default function CitizenDashboard() {
   const totalPages = listData?.data?.data?.pagination?.totalPages || 1;
 
   const totalCount = analytics?.totalComplaints ?? 0;
-  const inProgressCount = analytics?.inProgress ?? 0;
-  const resolvedCount = analytics?.resolved ?? 0;
-  const escalatedCount = analytics?.escalated ?? 0;
+  const openCount = analytics?.OPEN ?? analytics?.open ?? 0;
+  const pendingCount = analytics?.PENDING ?? analytics?.pending ?? 0;
+  const inProgressCount = analytics?.IN_PROGRESS ?? analytics?.inProgress ?? 0;
+  const resolvedCount = analytics?.RESOLVED ?? analytics?.resolved ?? 0;
+  const closedCount = analytics?.CLOSED ?? analytics?.closed ?? 0;
+  const reopenedCount = analytics?.REOPENED ?? analytics?.reopened ?? 0;
+  const escalatedCount = analytics?.ESCALATED ?? analytics?.escalated ?? 0;
+  const rejectedCount = analytics?.REJECTED ?? analytics?.rejected ?? 0;
 
   const stats = [
     {
       label: t("Total Raised", "कुल दर्ज"),
       value: totalCount,
-      color: "text-primary",
-      bg: "bg-blue-50",
       filter: "all",
+    },
+    {
+      label: t("Pending", "लंबित"),
+      value: openCount,
+      filter: "OPEN",
+    },
+    {
+      label: t("Approval Pending", "स्वीकृति लंबित"),
+      value: pendingCount,
+      filter: "PENDING",
     },
     {
       label: t("In Progress", "प्रगति पर"),
       value: inProgressCount,
-      color: "text-amber-600",
-      bg: "bg-amber-50",
       filter: "IN_PROGRESS",
     },
     {
       label: t("Resolved", "समाधान की गई"),
       value: resolvedCount,
-      color: "text-emerald-600",
-      bg: "bg-emerald-50",
       filter: "RESOLVED",
     },
     {
-      label: t("Escalated", "हस्तांतरित किया गया"),
+      label: t("Closed", "बंद"),
+      value: closedCount,
+      filter: "CLOSED",
+    },
+    {
+      label: t("Reopened", "पुनः खोली गई"),
+      value: reopenedCount,
+      filter: "REOPENED",
+    },
+    {
+      label: t("Escalated", "हस्तांतरित"),
       value: escalatedCount,
-      color: "text-red-600",
-      bg: "bg-red-50",
       filter: "ESCALATED",
     },
+    // {
+    //   label: t("Rejected", "अस्वीकृत"),
+    //   value: rejectedCount,
+    //   filter: "REJECTED",
+    // },
   ];
 
   return (

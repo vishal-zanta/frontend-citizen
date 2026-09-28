@@ -1,9 +1,11 @@
 import React from "react";
 import { Phone, Mail, MapPin, ShieldCheck, AlertCircle } from "lucide-react";
 import { useSahyogTranslation } from "../translations";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
   const { t } = useSahyogTranslation();
+  const { t: translate } = useLanguage();
 
   return (
     <>
@@ -107,7 +109,7 @@ export default function Footer() {
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-center sm:text-left text-[11px]">
             <div>{t.footer.copyright}</div>
             <div className="flex items-center gap-2">
-              <span>Designed & Developed by</span>
+              <span>{translate("Designed & Developed by", "द्वारा डिज़ाइन एवं विकसित")}</span>
               <span className="font-bold text-white bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
                 {t.footer.developedBy}
               </span>

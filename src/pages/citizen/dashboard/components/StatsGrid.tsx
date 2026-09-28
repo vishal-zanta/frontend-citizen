@@ -8,6 +8,10 @@ import {
   RotateCcw,
   CheckCircle2,
   FileText,
+  Hourglass,
+  XCircle,
+  Activity,
+  Layers,
   LucideIcon,
 } from "lucide-react";
 
@@ -35,91 +39,115 @@ const COLOR_THEMES: Record<string, ThemeConfig> = {
     borderHover: "hover:border-[#6C4FC7]/40",
     bgIcon: "bg-[#F1EBFE] dark:bg-[#6C4FC7]/20",
     iconColor: "text-[#6C4FC7] dark:text-[#9d85ea]",
-    icon: Monitor,
+    icon: Layers,
   },
   ALL: {
     borderHover: "hover:border-[#6C4FC7]/40",
     bgIcon: "bg-[#F1EBFE] dark:bg-[#6C4FC7]/20",
     iconColor: "text-[#6C4FC7] dark:text-[#9d85ea]",
-    icon: Monitor,
+    icon: Layers,
+  },
+  OPEN: {
+    borderHover: "hover:border-[#2563EB]/40",
+    bgIcon: "bg-[#EFF6FF] dark:bg-[#2563EB]/20",
+    iconColor: "text-[#2563EB] dark:text-[#60a5fa]",
+    icon: FileText,
+  },
+  open: {
+    borderHover: "hover:border-[#2563EB]/40",
+    bgIcon: "bg-[#EFF6FF] dark:bg-[#2563EB]/20",
+    iconColor: "text-[#2563EB] dark:text-[#60a5fa]",
+    icon: FileText,
+  },
+  PENDING: {
+    borderHover: "hover:border-[#D97706]/40",
+    bgIcon: "bg-[#FEF3C7] dark:bg-[#D97706]/20",
+    iconColor: "text-[#D97706] dark:text-[#fbbf24]",
+    icon: Hourglass,
+  },
+  pending: {
+    borderHover: "hover:border-[#D97706]/40",
+    bgIcon: "bg-[#FEF3C7] dark:bg-[#D97706]/20",
+    iconColor: "text-[#D97706] dark:text-[#fbbf24]",
+    icon: Hourglass,
   },
   IN_PROGRESS: {
-    borderHover: "hover:border-[#F16521]/40",
-    bgIcon: "bg-[#FEF1EB] dark:bg-[#F16521]/20",
-    iconColor: "text-[#F16521] dark:text-[#f79261]",
-    icon: Clock,
+    borderHover: "hover:border-[#EA580C]/40",
+    bgIcon: "bg-[#FFF7ED] dark:bg-[#EA580C]/20",
+    iconColor: "text-[#EA580C] dark:text-[#fb923c]",
+    icon: Activity,
   },
   in_progress: {
-    borderHover: "hover:border-[#F16521]/40",
-    bgIcon: "bg-[#FEF1EB] dark:bg-[#F16521]/20",
-    iconColor: "text-[#F16521] dark:text-[#f79261]",
-    icon: Clock,
+    borderHover: "hover:border-[#EA580C]/40",
+    bgIcon: "bg-[#FFF7ED] dark:bg-[#EA580C]/20",
+    iconColor: "text-[#EA580C] dark:text-[#fb923c]",
+    icon: Activity,
   },
   RESOLVED: {
-    borderHover: "hover:border-[#67B10D]/40",
-    bgIcon: "bg-[#EAF7D8] dark:bg-[#67B10D]/20",
-    iconColor: "text-[#67B10D] dark:text-[#88d927]",
+    borderHover: "hover:border-[#16A34A]/40",
+    bgIcon: "bg-[#F0FDF4] dark:bg-[#16A34A]/20",
+    iconColor: "text-[#16A34A] dark:text-[#4ade80]",
     icon: ClipboardCheck,
   },
   resolved: {
-    borderHover: "hover:border-[#67B10D]/40",
-    bgIcon: "bg-[#EAF7D8] dark:bg-[#67B10D]/20",
-    iconColor: "text-[#67B10D] dark:text-[#88d927]",
+    borderHover: "hover:border-[#16A34A]/40",
+    bgIcon: "bg-[#F0FDF4] dark:bg-[#16A34A]/20",
+    iconColor: "text-[#16A34A] dark:text-[#4ade80]",
     icon: ClipboardCheck,
+  },
+  CLOSED: {
+    borderHover: "hover:border-[#64748B]/40",
+    bgIcon: "bg-[#F1F5F9] dark:bg-[#64748B]/20",
+    iconColor: "text-[#64748B] dark:text-[#94a3b8]",
+    icon: CheckCircle2,
+  },
+  closed: {
+    borderHover: "hover:border-[#64748B]/40",
+    bgIcon: "bg-[#F1F5F9] dark:bg-[#64748B]/20",
+    iconColor: "text-[#64748B] dark:text-[#94a3b8]",
+    icon: CheckCircle2,
+  },
+  REOPENED: {
+    borderHover: "hover:border-[#7C3AED]/40",
+    bgIcon: "bg-[#F5F3FF] dark:bg-[#7C3AED]/20",
+    iconColor: "text-[#7C3AED] dark:text-[#a78bfa]",
+    icon: RotateCcw,
+  },
+  reopened: {
+    borderHover: "hover:border-[#7C3AED]/40",
+    bgIcon: "bg-[#F5F3FF] dark:bg-[#7C3AED]/20",
+    iconColor: "text-[#7C3AED] dark:text-[#a78bfa]",
+    icon: RotateCcw,
   },
   ESCALATED: {
     borderHover: "hover:border-[#DC2626]/40",
-    bgIcon: "bg-[#FEE2E2] dark:bg-[#DC2626]/20",
-    iconColor: "text-[#DC2626] dark:text-[#ef4444]",
+    bgIcon: "bg-[#FEF2F2] dark:bg-[#DC2626]/20",
+    iconColor: "text-[#DC2626] dark:text-[#f87171]",
     icon: ShieldAlert,
   },
   escalated: {
     borderHover: "hover:border-[#DC2626]/40",
-    bgIcon: "bg-[#FEE2E2] dark:bg-[#DC2626]/20",
-    iconColor: "text-[#DC2626] dark:text-[#ef4444]",
+    bgIcon: "bg-[#FEF2F2] dark:bg-[#DC2626]/20",
+    iconColor: "text-[#DC2626] dark:text-[#f87171]",
     icon: ShieldAlert,
   },
-  REOPENED: {
-    borderHover: "hover:border-yellow-500/40",
-    bgIcon: "bg-yellow-50 dark:bg-yellow-950/40",
-    iconColor: "text-yellow-600 dark:text-yellow-400",
-    icon: RotateCcw,
-  },
-  reopened: {
-    borderHover: "hover:border-yellow-500/40",
-    bgIcon: "bg-yellow-50 dark:bg-yellow-950/40",
-    iconColor: "text-yellow-600 dark:text-yellow-400",
-    icon: RotateCcw,
-  },
-  CLOSED: {
-    borderHover: "hover:border-slate-400/40",
-    bgIcon: "bg-slate-100 dark:bg-slate-800",
-    iconColor: "text-slate-600 dark:text-slate-400",
-    icon: CheckCircle2,
-  },
-  closed: {
-    borderHover: "hover:border-slate-400/40",
-    bgIcon: "bg-slate-100 dark:bg-slate-800",
-    iconColor: "text-slate-600 dark:text-slate-400",
-    icon: CheckCircle2,
-  },
-  OPEN: {
-    borderHover: "hover:border-[#1C4D8D]/40",
-    bgIcon: "bg-[#EBF2FA] dark:bg-[#1C4D8D]/20",
-    iconColor: "text-[#1C4D8D] dark:text-[#60a5fa]",
-    icon: FileText,
-  },
-  open: {
-    borderHover: "hover:border-[#1C4D8D]/40",
-    bgIcon: "bg-[#EBF2FA] dark:bg-[#1C4D8D]/20",
-    iconColor: "text-[#1C4D8D] dark:text-[#60a5fa]",
-    icon: FileText,
-  },
+  // REJECTED: {
+  //   borderHover: "hover:border-[#991B1B]/40",
+  //   bgIcon: "bg-[#FEE2E2] dark:bg-[#991B1B]/20",
+  //   iconColor: "text-[#991B1B] dark:text-[#fca5a5]",
+  //   icon: XCircle,
+  // },
+  // rejected: {
+  //   borderHover: "hover:border-[#991B1B]/40",
+  //   bgIcon: "bg-[#FEE2E2] dark:bg-[#991B1B]/20",
+  //   iconColor: "text-[#991B1B] dark:text-[#fca5a5]",
+  //   icon: XCircle,
+  // },
 };
 
 export default function StatsGrid({ stats }: StatsGridProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3.5 sm:gap-4">
       {stats.map((s, i) => {
         const theme =
           COLOR_THEMES[s.filter] ||
@@ -141,20 +169,20 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           <Link
             key={i}
             to={targetUrl}
-            className={`group bg-white dark:bg-card rounded-2xl p-5 sm:p-6 border border-slate-200/90 dark:border-border shadow-xs hover:shadow-md transition-all duration-300 flex items-center gap-4 sm:gap-5 hover:-translate-y-0.5 ${theme.borderHover}`}
+            className={`group bg-white dark:bg-card rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-border shadow-xs hover:shadow-md transition-all duration-300 flex items-center gap-3.5 sm:gap-4 hover:-translate-y-0.5 ${theme.borderHover}`}
           >
             <div
-              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl ${theme.bgIcon} flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-300`}
+              className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl ${theme.bgIcon} flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-300`}
             >
               <Icon
-                className={`w-7 h-7 sm:w-8 sm:h-8 ${theme.iconColor} stroke-[2.2]`}
+                className={`w-6 h-6 sm:w-7 sm:h-7 ${theme.iconColor} stroke-[2.2]`}
               />
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-slate-600 dark:text-muted-foreground font-medium text-xs sm:text-[14px] leading-tight group-hover:text-foreground transition-colors">
+              <div className="text-slate-600 dark:text-muted-foreground font-medium text-xs sm:text-sm leading-tight group-hover:text-foreground transition-colors truncate">
                 {s.label}
               </div>
-              <div className="font-extrabold text-2xl sm:text-3xl text-slate-950 dark:text-foreground tracking-tight mt-1">
+              <div className="font-extrabold text-xl sm:text-2xl text-slate-950 dark:text-foreground tracking-tight mt-1">
                 {s.value}
               </div>
             </div>
@@ -164,4 +192,5 @@ export default function StatsGrid({ stats }: StatsGridProps) {
     </div>
   );
 }
+
 

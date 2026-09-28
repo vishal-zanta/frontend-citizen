@@ -297,7 +297,7 @@ export const translations: Record<Language, Translations> = {
       copyright: "© बिहार सरकार | सर्वाधिकार सुरक्षित",
       developedBy: "BSEDC (BELTRON)",
       disclaimer:
-        "अस्वीकरण (Disclaimer): इस वेबसाइट पर उपलब्ध अंग्रेजी सामग्री को आधिकारिक और प्रामाणिक संस्करण माना जाएगा। हिंदी सामग्री केवल अनुवाद और उपयोगकर्ता की सुविधा के लिए प्रदान की गई है। किसी भी विसंगति या व्याख्या में अंतर की स्थिति में अंग्रेजी संस्करण मान्य होगा।",
+        "अस्वीकरण : इस वेबसाइट पर उपलब्ध अंग्रेजी सामग्री को आधिकारिक और प्रामाणिक संस्करण माना जाएगा। हिंदी सामग्री केवल अनुवाद और उपयोगकर्ता की सुविधा के लिए प्रदान की गई है। किसी भी विसंगति या व्याख्या में अंतर की स्थिति में अंग्रेजी संस्करण मान्य होगा।",
     },
   },
   en: {
@@ -342,7 +342,7 @@ export const translations: Record<Language, Translations> = {
       overdueIssues: "Overdue Issues",
       withinDeadline: "Within Deadline",
       totalLodged: "Total registered complaints",
-      totalResolved: "Total complaints resolved",
+      totalResolved: "Total resolved complaints",
       grievanceStatus: "Check Complaint Status",
       registerGrievance: "Register complaint / demand suggestion",
     },

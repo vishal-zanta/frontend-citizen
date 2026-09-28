@@ -33,7 +33,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
       title: t("Complaint Status", "शिकायत की स्थिति"),
       subtitle: t(
         "Track real-time progress and action taken status",
-        "अपनी शिकायत संख्या दर्ज कर वर्तमान स्थिति और रिपोर्ट देखें"
+        "अपनी शिकायत संख्या दर्ज कर वर्तमान शिकायत की स्थिति और रिपोर्ट देखें"
       ),
       actionText: t("Check Status", "स्थिति देखें"),
       icon: LineChart,
@@ -47,7 +47,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
       title: t("Citizen Feedback", "नागरिक प्रतिक्रिया"),
       subtitle: t(
         "Share your satisfaction rating & feedback on resolution",
-        "शिकायत समाधान के संबंध में अपनी प्रतिक्रिया और रेटिंग दें"
+        "शिकायत समाधान के संबंध में अपनी शिकायत की प्रतिक्रिया और रेटिंग दें"
       ),
       actionText: t("Give Feedback", "प्रतिक्रिया दें"),
       icon: MessageSquareHeart,
@@ -82,7 +82,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
               <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-foreground group-hover:text-primary transition-colors">
                 {card.title}
               </h3>
-              <p className="text-slate-600 dark:text-muted-foreground text-xs sm:text-sm mt-1.5 leading-relaxed">
+              <p className="text-slate-600 dark:text-muted-foreground text-xs sm:text-xs mt-1.5 leading-relaxed">
                 {card.subtitle}
               </p>
             </div>
