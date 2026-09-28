@@ -58,6 +58,15 @@ export const STATUS_ACTIONS = [
     value: "OPEN",
     icon: Clock,
     color: "bg-blue-600 hover:bg-blue-700",
+    badgeLabel: "Open",
+    badgeClass:
+      "bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900",
+  },
+    {
+    label: "Pending",
+    value: "PENDING",
+    icon: Clock,
+    color: "bg-blue-600 hover:bg-blue-700",
     badgeLabel: "Pending",
     badgeClass:
       "bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900",

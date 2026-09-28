@@ -39,13 +39,13 @@ export default function Filter({
   const { t } = useLanguage();
 
   const hasActiveFilters = Object.values(filters).some(
-    (val) => val !== undefined && val !== ""
+    (val) => val !== undefined && val !== "",
   );
 
   const handleSelectFilter = (
     key: string,
     value: any,
-    isMultiple: boolean = false
+    isMultiple: boolean = false,
   ) => {
     if (setFilters) {
       setFilters((prev) => {
@@ -63,7 +63,8 @@ export default function Filter({
           } else {
             updatedVals = [...currentVals, strVal];
           }
-          finalValue = updatedVals.length > 0 ? updatedVals.join(",") : undefined;
+          finalValue =
+            updatedVals.length > 0 ? updatedVals.join(",") : undefined;
         }
 
         if (finalValue === undefined || finalValue === "") {
@@ -145,7 +146,7 @@ export default function Filter({
                       handleSelectFilter(
                         opt.filterKey,
                         subOpt.value,
-                        opt.isMultiple
+                        opt.isMultiple,
                       )
                     }
                     className={`cursor-pointer text-xs py-1.5 ${

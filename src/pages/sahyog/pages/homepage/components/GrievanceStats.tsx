@@ -34,7 +34,7 @@ export default function GrievanceStats() {
         t.stats.totalResolved ||
         (lang === "hi"
           ? "कुल निराकृत शिकायतें"
-          : "Total complaints resolved"),
+          : "Total resolved complaints"),
       value: "516",
       icon: ClipboardCheck,
       iconColor: "text-[#67B10D]",
@@ -63,7 +63,7 @@ export default function GrievanceStats() {
       title: lang === "hi" ? "शिकायत की स्थिति" : "Complaint Status",
       subtitle:
         lang === "hi"
-          ? "अपनी शिकायत संख्या दर्ज कर वर्तमान स्थिति और रिपोर्ट देखें"
+          ? "अपनी शिकायत संख्या दर्ज कर वर्तमान शिकायत की स्थिति और रिपोर्ट देखें"
           : "Track real-time progress and action taken status",
       actionText: lang === "hi" ? "स्थिति देखें" : "Check Status",
       icon: LineChart,
@@ -77,7 +77,7 @@ export default function GrievanceStats() {
       title: lang === "hi" ? "नागरिक प्रतिक्रिया" : "Citizen Feedback",
       subtitle:
         lang === "hi"
-          ? "शिकायत समाधान के संबंध में अपनी प्रतिक्रिया और रेटिंग दें"
+          ? "शिकायत समाधान के संबंध में अपनी शिकायत की प्रतिक्रिया और रेटिंग दें"
           : "Share your satisfaction rating & feedback on resolution",
       actionText: lang === "hi" ? "प्रतिक्रिया दें" : "Give Feedback",
       icon: MessageSquareHeart,
@@ -145,7 +145,7 @@ export default function GrievanceStats() {
                   <h3 className="text-lg sm:text-xl font-bold text-slate-900 group-hover:text-primary transition-colors">
                     {card.title}
                   </h3>
-                  <p className="text-slate-600 text-xs sm:text-sm mt-2 leading-relaxed">
+                  <p className="text-slate-600 text-xs sm:text-xs mt-2 ">
                     {card.subtitle}
                   </p>
                 </div>

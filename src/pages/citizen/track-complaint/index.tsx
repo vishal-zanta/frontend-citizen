@@ -21,6 +21,7 @@ import {
   getExternalDepartment,
   isExternalDepartment,
 } from "@/utils/departments";
+import { STATUS_ACTIONS } from "@/utils/constants";
 import Pagination from "@/components/Pagination";
 import usePagination from "@/hooks/usePagination";
 
@@ -39,7 +40,10 @@ export default function TrackComplaint({
   const departmentCodeParam = searchParams.get("departmentCode");
   const { page, limit, ...pageProps } = usePagination();
   const [searchId, setSearchId] = useState("");
-  const [filters, setFilters] = useState<Record<string, any>>({});
+  const [filters, setFilters] = useState<Record<string, any>>({
+    status : searchParams.get("status") ?? ""
+  });
+  console.log("FILTERS : " ,filters);
   const [sortBy, setSortBy] = useState<string | undefined>();
   const [sortOrder, setSortOrder] = useState<string | undefined>();
 
@@ -78,14 +82,13 @@ export default function TrackComplaint({
         label: "Status",
         labelHindi: "स्थिति",
         isMultiple: true,
-        options: [
-          { label: t("Pending", "लंबित"), value: "PENDING" },
-          { label: t("In Progress", "प्रगति पर"), value: "IN_PROGRESS" },
-          { label: t("Resolved", "समाधान की गई"), value: "RESOLVED" },
-          { label: t("Closed", "बंद"), value: "CLOSED" },
-          { label: t("Reopened", "पुनः खोली गई"), value: "REOPENED" },
-          { label: t("Escalated", "हस्तांतरित"), value: "ESCALATED" },
-        ],
+        options: STATUS_ACTIONS.map((action) => ({
+          label: t(
+            action.badgeLabel || action.label,
+            action.badgeLabel || action.label
+          ),
+          value: action.value,
+        })),
       },
     ];
   }, [departmentsList, t]);
