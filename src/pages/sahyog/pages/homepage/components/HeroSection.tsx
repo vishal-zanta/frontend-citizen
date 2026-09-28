@@ -1,5 +1,5 @@
 import React from "react";
-import banner from "@/assets/slider.jpeg";
+import banner from "@/assets/slider-2.jpeg";
 
 export default function HeroSection() {
   return (

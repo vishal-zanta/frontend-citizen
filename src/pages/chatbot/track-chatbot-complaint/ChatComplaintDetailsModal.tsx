@@ -47,7 +47,7 @@ export const ChatComplaintDetailsModal: React.FC<
           </div>
 
           <div className="flex items-center gap-2 mr-6">
-            <button
+            {/* <button
               type="button"
               onClick={handlePrint}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-xs font-medium hover:bg-muted transition-colors cursor-pointer"
@@ -55,7 +55,7 @@ export const ChatComplaintDetailsModal: React.FC<
             >
               <Printer className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">{t("Print", "प्रिंट")}</span>
-            </button>
+            </button> */}
           </div>
         </DialogHeader>
 
@@ -65,7 +65,8 @@ export const ChatComplaintDetailsModal: React.FC<
             <ComplaintHeaderSection
               complaint={complaint}
               t={t}
-              onPrint={handlePrint}
+              onPrint={null}
+
             />
           </div>
 
