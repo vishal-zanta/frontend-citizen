@@ -137,6 +137,11 @@ const finalAddressSchema = z.object({
     .max(50, "Address details cannot exceed 50 characters")
     .optional()
     .or(z.literal("")),
+landmark: z
+    .string()
+    .max(50, "Landmark cannot exceed 50 characters")
+    .optional()
+    .or(z.literal("")),
 });
 const addressSchema = locationOrPermanentAddress.superRefine((data, ctx) => {
   if (!data.thana || data.thana.trim() === "") {
@@ -371,6 +376,8 @@ export const defaultValues: GrievanceFormValues = {
     urbanPanchayat: "",
     ward: "",
     addressLine2: "",
+    landmark: "",
+   
   },
   location: {
     isUrban: false,
