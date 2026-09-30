@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { ChevronDown, Loader2, Search, X, CheckCircle2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { getComplaints } from "@/api/complaints.api";
@@ -6,6 +12,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { feedbackStatus } from "@/utils/constants";
 import ComplaintFeedback from "@/pages/citizen/track-complaint/components/ComplaintFeedback";
 import { Button } from "@/components/ui/button";
+import { getEntityLabel } from "@/utils/helpers";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -16,7 +23,7 @@ interface Complaint {
   rating?: number;
   feedbackText?: string;
   classification?: {
-    subService?: {
+    service?: {
       title?: string;
       titleHindi?: string;
     };
@@ -170,7 +177,7 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
         {value ? (
           <span className="flex-1 text-left truncate font-medium">
             {value.grievanceId} -{" "}
-            {value.classification?.subService?.title ?? ""}
+            {getEntityLabel(value.classification?.service ?? "")}
           </span>
         ) : (
           <span className="flex-1 text-left text-muted-foreground">
@@ -263,19 +270,21 @@ function ComplaintDropdown({ value, onChange, t }: ComplaintDropdownProps) {
                         >
                           {c.grievanceId}
                         </span>
-                        {alreadyRated && (
-                          <span className="text-[10px] font-medium bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full">
-                            {t("Feedback given", "प्रतिक्रिया दी गई")}
-                          </span>
-                        )}
-                        {active && !alreadyRated && (
-                          <span className="text-[10px] font-medium bg-primary/15 text-primary px-1.5 py-0.5 rounded-full">
-                            {t("Selected", "चुना गया")}
-                          </span>
-                        )}
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {alreadyRated ? (
+                            <span className="text-[10px] font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-1.5 py-0.5 rounded-full">
+                              {t("Feedback given", "प्रतिक्रिया दी गई")}
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-medium bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400 px-1.5 py-0.5 rounded-full">
+                              {t("Feedback Pending", "प्रतिक्रिया लंबित")}
+                            </span>
+                          )}
+                        </div>
                       </div>
                       <span className="text-xs text-muted-foreground truncate">
-                        {c.classification?.subService?.title ?? ""}{" "}
+                        {/* { c.classification?.service?.title ?? ""} */}
+                        {getEntityLabel(c.classification?.service ?? "")}{" "}
                         {c.address?.district?.name
                           ? `· ${c.address.district?.name}`
                           : ""}
@@ -390,12 +399,23 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
               <span className="font-semibold text-foreground">
                 {selected.grievanceId}
               </span>
-              <span className="text-[11px] bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800/40 px-2 py-0.5 rounded-full font-medium">
-                {selected.status}
-              </span>
+              <div className="flex items-center gap-1.5">
+                {typeof selected.rating === "number" && selected.rating > 0 ? (
+                  <span className="text-[10px] font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-1.5 py-0.5 rounded-full">
+                    {t("Feedback given", "प्रतिक्रिया दी गई")}
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-medium bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400 px-1.5 py-0.5 rounded-full">
+                    {t("Feedback Pending", "प्रतिक्रिया लंबित")}
+                  </span>
+                )}
+                <span className="text-[11px] bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800/40 px-2 py-0.5 rounded-full font-medium">
+                  {selected.status}
+                </span>
+              </div>
             </div>
             <p className="text-muted-foreground text-xs">
-              {selected.classification?.subService?.title ?? ""}
+              {getEntityLabel(selected.classification?.service)}
               {selected.address?.district?.name
                 ? ` · ${selected.address.district?.name}`
                 : ""}
