@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PaginationProps {
   page: number;
@@ -34,6 +35,8 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPage,
   limitOptions = [10, 20, 50],
 }) => {
+  const languageContext = useLanguage();
+  const t = languageContext?.t || ((en: string, hi: string) => en);
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
     const maxVisible = 5;
@@ -44,7 +47,6 @@ const Pagination: React.FC<PaginationProps> = ({
       }
     } else {
       pages.push(1);
-
       const start = Math.max(2, page - 1);
       const end = Math.min(totalPage - 1, page + 1);
 
@@ -71,7 +73,9 @@ const Pagination: React.FC<PaginationProps> = ({
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 py-2 px-4 border-t border-border bg-card">
       {/* Rows per page Selector */}
       <div className="flex items-center gap-2 text-sm text-foreground">
-        <span className="text-xs text-foreground font-medium">Page size:</span>
+        <span className="text-xs text-foreground font-medium">
+          {t("Page size:", "पृष्ठ आकार:")}
+        </span>
         <Select
           value={String(limit)}
           onValueChange={(val) => {
@@ -98,6 +102,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <PaginationItem>
             <PaginationPrevious
               onClick={() => page > 1 && setPage(page - 1)}
+              label={t("Previous", "पिछला")}
               className={cn(
                 "cursor-pointer select-none text-xs text-foreground",
                 page <= 1 && "pointer-events-none opacity-50",
@@ -130,6 +135,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <PaginationItem>
             <PaginationNext
               onClick={() => page < totalPage && setPage(page + 1)}
+              label={t("Next", "अगला")}
               className={cn(
                 "cursor-pointer select-none text-xs text-foreground",
                 page >= totalPage && "pointer-events-none opacity-50",

@@ -1,19 +1,22 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { getStatusBadgeMeta, getPriorityBadgeMeta } from "@/utils/constants";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface StatusBadgeProps {
   status: string;
 }
 
 export function StatusBadge({ status }: StatusBadgeProps) {
+  const languageContext = useLanguage();
+  const t = languageContext?.t || ((en: string, _hi: string) => en);
   const meta = getStatusBadgeMeta(status);
   return (
     <Badge
       variant="outline"
       className={`text-xs font-medium text-nowrap ${meta.badgeClass}`}
     >
-       Status: {meta.badgeLabel}
+      {t("Status", "स्थिति")}: {t(meta.badgeLabel, meta.badgeLabelHindi || meta.badgeLabel)}
     </Badge>
   );
 }
@@ -23,13 +26,15 @@ interface PriorityBadgeProps {
 }
 
 export function PriorityBadge({ priority }: PriorityBadgeProps) {
+  const languageContext = useLanguage();
+  const t = languageContext?.t || ((en: string, _hi: string) => en);
   const meta = getPriorityBadgeMeta(priority);
   return (
     <Badge
       variant="outline"
       className={`text-xs font-medium text-nowrap ${meta.badgeClass}`}
     >
-      Priority : {meta.badgeLabel}
+      {t("Priority", "प्राथमिकता")}: {t(meta.badgeLabel, meta.badgeLabelHindi || meta.badgeLabel)}
     </Badge>
   );
 }

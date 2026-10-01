@@ -33,7 +33,7 @@ export default function QuickActions({ t }: QuickActionsProps) {
       title: t("Complaint Status", "शिकायत की स्थिति"),
       subtitle: t(
         "Track real-time progress and action taken status",
-        "अपनी शिकायत संख्या दर्ज कर वर्तमान शिकायत की स्थिति और रिपोर्ट देखें"
+        "अपनी शिकायत संख्या दर्ज कर वर्तमान शिकायत की स्थिति देखें"
       ),
       actionText: t("Check Status", "स्थिति देखें"),
       icon: LineChart,

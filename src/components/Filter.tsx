@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import useSyncSearchParams from "@/hooks/useSyncSearchParams";
 
 export interface FilterOptionItem {
   label: string;
@@ -29,14 +30,17 @@ export interface FilterProps {
   filters?: Record<string, any>;
   setFilters?: React.Dispatch<React.SetStateAction<Record<string, any>>>;
   filterOptions?: FilterOption[];
+  onReset?: () => void;
 }
 
 export default function Filter({
   filters = {},
   setFilters,
   filterOptions = [],
+  onReset,
 }: FilterProps) {
   const { t } = useLanguage();
+  useSyncSearchParams(filters, setFilters);
 
   const hasActiveFilters = Object.values(filters).some(
     (val) => val !== undefined && val !== "",
@@ -79,7 +83,9 @@ export default function Filter({
   };
 
   const handleClearAll = () => {
-    if (setFilters) {
+    if (onReset) {
+      onReset();
+    } else if (setFilters) {
       setFilters({});
     }
   };

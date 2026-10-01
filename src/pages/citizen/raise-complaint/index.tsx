@@ -345,17 +345,17 @@ export default function RaiseComplaint({
               <span className="text-muted-foreground font-medium mr-1">
                 {t("Department:", "विभाग:")}
               </span>
-              <span className="font-semibold text-foreground">
+              <span className="font-semibold text-foreground capitalize">
                 {selectedDeptTitle}
               </span>
             </div>
-            <button
+            {/* <button
               type="button"
               onClick={() => handleSelectDept("")}
               className="ml-2 text-xs font-semibold text-primary hover:underline cursor-pointer"
             >
               {t("Change", "बदलें")}
-            </button>
+            </button> */}
           </div>
         </div>
 

@@ -102,7 +102,7 @@ export const ChatComplaintCard: React.FC<ChatComplaintCardProps> = ({
         <span
           className={`px-2.5 py-1 text-[11px] font-bold rounded-full border shrink-0 ${statusMeta.badgeClass}`}
         >
-          {t(statusMeta.badgeLabel, statusMeta.badgeLabel)}
+          {t(statusMeta.badgeLabel, statusMeta.badgeLabelHindi || statusMeta.badgeLabel)}
         </span>
       </div>
 

@@ -7,8 +7,8 @@ export const getComplaintById = (params: any) => {
   return instance.get(`/grievances/citizen/${params?._id}`, { params });
 };
 
-export const postComplaints = (data: any) => {
-  return instance.post("/grievances/citizen", data);
+export const postComplaints = (data: any, params= {}) => {
+  return instance.post("/grievances/citizen", data, {params });
 };
 
 export const postComplaintFeedback = ({

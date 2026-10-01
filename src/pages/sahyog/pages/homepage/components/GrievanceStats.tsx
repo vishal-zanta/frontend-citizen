@@ -63,7 +63,7 @@ export default function GrievanceStats() {
       title: lang === "hi" ? "शिकायत की स्थिति" : "Complaint Status",
       subtitle:
         lang === "hi"
-          ? "अपनी शिकायत संख्या दर्ज कर वर्तमान शिकायत की स्थिति और रिपोर्ट देखें"
+          ? "अपनी शिकायत संख्या दर्ज कर वर्तमान शिकायत की स्थिति देखें"
           : "Track real-time progress and action taken status",
       actionText: lang === "hi" ? "स्थिति देखें" : "Check Status",
       icon: LineChart,
