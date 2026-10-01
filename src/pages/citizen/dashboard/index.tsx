@@ -76,7 +76,7 @@ export default function CitizenDashboard() {
         options: STATUS_ACTIONS.map((action) => ({
           label: t(
             action.badgeLabel || action.label,
-            action.badgeLabel || action.label
+            action.badgeLabelHindi || action.labelHindi || action.badgeLabel || action.label,
           ),
           value: action.value,
         })),

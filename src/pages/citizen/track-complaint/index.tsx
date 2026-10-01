@@ -18,6 +18,7 @@ import {
 } from "@/hooks/useGetQuery";
 import { getExternalComplaintsById } from "@/api/externalDept.api";
 import {
+  departmentsList as externalDepartmentsList,
   getExternalDepartment,
   isExternalDepartment,
 } from "@/utils/departments";
@@ -50,6 +51,10 @@ export default function TrackComplaint({
   const statusFilter = filters.status;
   const departmentFilter = filters.department;
 
+  const isDeptExternal = Boolean(
+    departmentFilter && isExternalDepartment(departmentFilter)
+  );
+
   const isExternal =
     grievanceTypeParam === "EXTERNAL" ||
     Boolean(departmentCodeParam && isExternalDepartment(departmentCodeParam));
@@ -58,24 +63,33 @@ export default function TrackComplaint({
 
   // Fetch departments for filter dropdown
   const { data: deptRes } = useGetDepartments();
-  const departmentsList = deptRes?.data?.data?.docs || deptRes?.data?.data || [];
+  const apiDepartmentsList = deptRes?.data?.data?.docs || deptRes?.data?.data || [];
 
   const filterOptions = useMemo(() => {
+    const internalOptions = (
+      Array.isArray(apiDepartmentsList) ? apiDepartmentsList : []
+    ).map((d: any) => ({
+      label: t(
+        d.title || d.name_en || d.name || "",
+        d.titleHindi || d.name_local || d.title || d.name || ""
+      ),
+      value: d._id || d.id,
+    }));
+
+    const externalOptions = externalDepartmentsList
+      .filter((dept) => !dept.isHide)
+      .map((dept) => ({
+        label: t(dept.name, dept.nameHindi || dept.name),
+        value: dept.key,
+      }));
+
     return [
       {
         filterKey: "department",
         label: "Department",
         labelHindi: "विभाग",
-        isMultiple: true,
-        options: (Array.isArray(departmentsList) ? departmentsList : []).map(
-          (d: any) => ({
-            label: t(
-              d.title || d.name_en || d.name || "",
-              d.titleHindi || d.name_local || d.title || d.name || ""
-            ),
-            value: d._id || d.id,
-          })
-        ),
+        isMultiple: false,
+        options: [...internalOptions, ...externalOptions],
       },
       {
         filterKey: "status",
@@ -85,13 +99,13 @@ export default function TrackComplaint({
         options: STATUS_ACTIONS.map((action) => ({
           label: t(
             action.badgeLabel || action.label,
-            action.badgeLabel || action.label
+            action.badgeLabelHindi || action.labelHindi || action.badgeLabel || action.label,
           ),
           value: action.value,
         })),
       },
     ];
-  }, [departmentsList, t]);
+  }, [apiDepartmentsList, t]);
 
   // ── API Queries
   // Fetch paginated history list
@@ -114,7 +128,10 @@ export default function TrackComplaint({
       limit,
       search: searchId || undefined,
       status: statusFilter || undefined,
-      department: departmentFilter || undefined,
+      department:
+        !isDeptExternal && departmentFilter ? departmentFilter : undefined,
+      departmentCode:
+        isDeptExternal && departmentFilter ? departmentFilter : undefined,
       sortBy: sortBy || undefined,
       sortOrder: sortOrder || undefined,
     },

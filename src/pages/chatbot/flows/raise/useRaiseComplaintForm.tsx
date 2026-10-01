@@ -265,7 +265,7 @@ export default function useRaiseComplaintForm({
 
       const formData = getFormData(submissionData, []);
       console.log("Final FormData:", Object.fromEntries(formData as any));
-      const res: any = await postComplaints(formData);
+      const res: any = await postComplaints(formData, {isChatBot: true});
       const resData = res?.data?.data || res?.data || {};
       const generatedId =
         resData?.externalComplaintId ||
