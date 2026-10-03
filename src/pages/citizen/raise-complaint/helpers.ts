@@ -125,6 +125,13 @@ export const getFormData = (data: GrievanceFormValues, attachments = []) => {
     formData.append("isCrpEqualPerAdd", String((data as any).isCrpEqualPerAdd));
   }
 
+  if (typeof (data as any).isLocationEqualPerAdd !== "undefined") {
+    formData.append(
+      "isLocationEqualPerAdd",
+      String((data as any).isLocationEqualPerAdd),
+    );
+  }
+
   const loc = (data as any).location;
   if (loc) {
     formData.append("location[isUrban]", String(Boolean(loc.isUrban)));

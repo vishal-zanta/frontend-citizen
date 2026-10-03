@@ -303,6 +303,7 @@ export const grievanceSchema = z.object({
     feedbackConsent: z.boolean().optional(),
   }),
   isCrpEqualPerAdd: z.boolean().optional(),
+  isLocationEqualPerAdd : z.boolean().optional(),
   address: correspondenceAddressSchema,
 
   //  z.object({
@@ -361,6 +362,7 @@ export const defaultValues: GrievanceFormValues = {
     feedbackConsent: false,
   },
   isCrpEqualPerAdd: false,
+  isLocationEqualPerAdd: false,
 
   address: {
     isUrban: false,
