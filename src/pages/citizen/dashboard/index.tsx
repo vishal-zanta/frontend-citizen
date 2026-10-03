@@ -124,6 +124,33 @@ export default function CitizenDashboard() {
   const reopenedCount = analytics?.REOPENED ?? analytics?.reopened ?? 0;
   const escalatedCount = analytics?.ESCALATED ?? analytics?.escalated ?? 0;
   const rejectedCount = analytics?.REJECTED ?? analytics?.rejected ?? 0;
+  const externalStatusCount = useMemo(() => {
+    if (!analytics || typeof analytics !== "object") return 0;
+    const presentKeys = new Set([
+      "totalcomplaints",
+      "total",
+      "open",
+      "pending",
+      "inprogress",
+      "in_progress",
+      "resolved",
+      "closed",
+      "reopened",
+      "escalated",
+      "rejected",
+    ]);
+
+    return Object.entries(analytics).reduce((sum, [key, val]) => {
+      const normalizedKey = key.toLowerCase().replace(/[^a-z0-9]/g, "");
+      if (!presentKeys.has(normalizedKey) && !presentKeys.has(key.toLowerCase())) {
+        const count = typeof val === "number" ? val : Number(val);
+        if (!isNaN(count)) {
+          return sum + count;
+        }
+      }
+      return sum;
+    }, 0);
+  }, [analytics]);
 
   const stats = [
     {
@@ -165,6 +192,13 @@ export default function CitizenDashboard() {
       label: t("Escalated", "हस्तांतरित"),
       value: escalatedCount,
       filter: "ESCALATED",
+    },
+    {
+      label: t("External Status", "बाहरी स्थिति"),
+      value: externalStatusCount,
+      filter: "EXTERNAL_STATUS",
+      navigate: false,
+      // navigateTo : `/citizen/track?filter.department=${externalDepartmentsList.filter((dept)=> !dept.isHide).map((dept) => dept.key).join(",")}`
     },
     // {
     //   label: t("Rejected", "अस्वीकृत"),

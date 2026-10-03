@@ -13,6 +13,7 @@ import {
   Activity,
   Layers,
   LucideIcon,
+  ExternalLink,
 } from "lucide-react";
 
 interface StatItem {
@@ -21,6 +22,9 @@ interface StatItem {
   color?: string;
   bg?: string;
   filter: string;
+  navigate?: boolean;
+  navigateTo?:string;
+
 }
 
 interface StatsGridProps {
@@ -131,6 +135,18 @@ const COLOR_THEMES: Record<string, ThemeConfig> = {
     iconColor: "text-[#DC2626] dark:text-[#f87171]",
     icon: ShieldAlert,
   },
+  EXTERNAL_STATUS: {
+    borderHover: "hover:border-[#0284C7]/40",
+    bgIcon: "bg-[#E0F2FE] dark:bg-[#0284C7]/20",
+    iconColor: "text-[#0284C7] dark:text-[#38bdf8]",
+    icon: ExternalLink,
+  },
+  external_status: {
+    borderHover: "hover:border-[#0284C7]/40",
+    bgIcon: "bg-[#E0F2FE] dark:bg-[#0284C7]/20",
+    iconColor: "text-[#0284C7] dark:text-[#38bdf8]",
+    icon: ExternalLink,
+  },
   // REJECTED: {
   //   borderHover: "hover:border-[#991B1B]/40",
   //   bgIcon: "bg-[#FEE2E2] dark:bg-[#991B1B]/20",
@@ -160,10 +176,12 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           };
 
         const Icon = theme.icon;
-        const targetUrl =
+        const targetUrl = s.navigate === false ? null : (
+          s.navigateTo? s.navigateTo:
           s.filter && s.filter.toLowerCase() !== "all"
-            ? `/citizen/track?status=${s.filter}`
-            : "/citizen/track";
+          ? `/citizen/track?status=${s.filter}`
+          : "/citizen/track"
+        );
 
         return (
           <Link
