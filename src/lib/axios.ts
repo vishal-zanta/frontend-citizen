@@ -7,7 +7,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const token =
-      localStorage.getItem("usertoken") || sessionStorage.getItem("usertoken");
+      sessionStorage.getItem("usertoken") || localStorage.getItem("usertoken")  ;
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
@@ -22,9 +22,9 @@ instance.interceptors.response.use(
   },
   (err) => {
     if (err.response?.status === 401) {
-      // localStorage.removeItem("usertoken");
-      // sessionStorage.removeItem("usertoken");
-      // window.location.href = "/";
+      localStorage.removeItem("usertoken");
+      sessionStorage.removeItem("usertoken");
+      window.location.href = "/";
     }
     return Promise.reject(err);
   },
