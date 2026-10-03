@@ -9,6 +9,8 @@ import { getVisitorCount } from "@/api/global.api";
 import LangSelector from "@/components/LangSelector";
 import { useLanguage } from "@/context/LanguageContext";
 import AvailbleDept from "./AvailbleDept";
+import TopBar from "@/pages/sahyog/layouts/TopBar";
+import HeaderBranding from "@/pages/sahyog/layouts/HeaderBranding";
 
 interface HomeLayoutProps {
   children?: React.ReactNode;
@@ -31,7 +33,7 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
   return (
     <div className="min-h-screen relative bg-gradient-to-br from-slate-50 via-blue-50/30 to-sky-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-x-hidden transition-colors">
       {/* Header */}
-      <div className="relative z-20 bg-gradient-to-r from-blue-950 via-blue-800 to-blue-600 dark:from-slate-900 dark:via-blue-950 dark:to-blue-900 text-white">
+      {/* <div className="relative z-20 bg-gradient-to-r from-blue-950 via-blue-800 to-blue-600 dark:from-slate-900 dark:via-blue-950 dark:to-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           <div onClick={()=>navigate("/")} className="flex items-center gap-4 cursor-pointer">
             <div className="w-12 h-12 rounded-xl bg-white p-1.5 flex items-center justify-center shadow-sm">
@@ -58,57 +60,22 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({
             <span>{t("Home Page", "मुख्य पृष्ठ")}</span>
           </Link>
 
-          {/* <div className="hidden md:flex items-center gap-6 text-sm">
-            <div className="text-center">
-              <div className="text-2xl font-bold">
-                {DASHBOARD_KPIS.totalComplaints.toLocaleString("en-IN")}
-              </div>
-              <div className="text-[11px] text-white/60">
-                {t("Total Complaints", "कुल शिकायतें")}
-              </div>
-            </div>
-            <div className="w-px h-10 bg-white/20"></div>
-            <div className="text-center">
-              <div className="text-2xl font-bold">
-                {DASHBOARD_KPIS.resolved.toLocaleString("en-IN")}
-              </div>
-              <div className="text-[11px] text-white/60">
-                {t("Resolved", "निस्तारित")}
-              </div>
-            </div>
-            <div className="w-px h-10 bg-white/20"></div>
-            <div className="text-center">
-              <div className="text-2xl font-bold">
-                {DASHBOARD_KPIS.citizenSatisfaction}/5
-              </div>
-              <div className="text-[11px] text-white/60">
-                {t("Satisfaction", "संतुष्टि")}
-              </div>
-            </div>
-            <div className="w-px h-10 bg-white/20"></div>
-            <div className="text-center">
-              <div className="text-2xl font-bold">
-                {typeof visitorCount === "number"
-                  ? visitorCount.toLocaleString("en-IN")
-                  : visitorCount}
-              </div>
-              <div className="text-[11px] text-white/60">
-                {t("Visitor Count", "आगंतुक संख्याा")}
-              </div>
-            </div>
-          </div> */}
+    
         </div>
-      </div>
+      </div> */}
 
       {/* Tagline banner */}
-      <div className="relative z-20 bg-blue-50 dark:bg-slate-900/80 border-b border-blue-100 dark:border-slate-800">
+      {/* <div className="relative z-20 bg-blue-50 dark:bg-slate-900/80 border-b border-blue-100 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between text-sm">
           <span className="text-blue-800 dark:text-blue-300 font-medium">
             {t(PORTAL_META.tagline, "सुशासन ही जनसेवा - बिहार सरकार")}
           </span>
           <LangSelector />
         </div>
-      </div>
+      </div> */}
+
+      <TopBar/>
+      <HeaderBranding/>
 
       {/* Main content - CM card on left, Login form on right */}
       <div
