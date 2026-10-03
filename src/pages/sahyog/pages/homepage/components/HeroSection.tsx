@@ -7,7 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 export default function HeroSection() {
   const {t} = useLanguage();
   return (
-    <section className="w-full bg-[#f8fafc] border-b border-slate-200/80">
+    <section className="w-full bg-[#f1f5f9] border-b border-slate-200/80">
       <div className=" mx-auto">
         <div className="relative w-full   overflow-hidden shadow-xs">
           <img
