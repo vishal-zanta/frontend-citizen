@@ -239,4 +239,4 @@ export const getPriorityBadgeMeta = (priority: string) => {
 
 export const feedbackStatus = [ "CLOSED"];
 
-export const OFFICER_URL = import.meta.env.VITE_OFFICER_URL;
+export const OFFICER_URL = import.meta.env.VITE_OFFICER_URL || "https://portal.lumirex.tech/";
