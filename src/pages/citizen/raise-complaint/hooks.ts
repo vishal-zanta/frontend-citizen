@@ -114,7 +114,7 @@ export interface UseGetAddressFieldsProps {
   divisionId?: string;
   lang?: any;
   enabled?: boolean;
-  isUrban?:boolean
+  isUrban?: boolean;
 }
 
 export const useGetAddressFields = (
@@ -127,7 +127,7 @@ export const useGetAddressFields = (
     urbanPanchayatId = "",
     lang = "en",
     enabled = true,
-    isUrban= false
+    isUrban = false,
   }: UseGetAddressFieldsProps = {},
   { isValueId = true }: { isValueId?: boolean } = { isValueId: true },
 ) => {
@@ -340,12 +340,14 @@ interface UseClearAddressFieldsProps {
   control: Control<any>;
   prefix: string;
   setValue: UseFormSetValue<any>;
+  enabled?: boolean;
 }
 
 export const useClearAddressFields = ({
   control,
   prefix,
   setValue,
+  enabled = true,
 }: UseClearAddressFieldsProps) => {
   const isUrban = useWatch({
     control,
@@ -380,6 +382,7 @@ export const useClearAddressFields = ({
 
   // When isUrban changes, clear corresponding fields
   useEffect(() => {
+    if (!enabled) return;
     if (
       prevIsUrbanRef.current !== undefined &&
       prevIsUrbanRef.current !== isUrban
@@ -393,10 +396,12 @@ export const useClearAddressFields = ({
       }
     }
     prevIsUrbanRef.current = isUrban;
-  }, [isUrban, prefix, setValue]);
+  }, [isUrban, prefix, setValue, enabled]);
 
   // When district changes, clear block, panchayat, thana, village, urbanPanchayat, and ward
   useEffect(() => {
+    if (!enabled) return;
+
     if (
       prevDistrictRef.current !== undefined &&
       prevDistrictRef.current !== district
@@ -409,22 +414,23 @@ export const useClearAddressFields = ({
       setValue(`${prefix}.ward`, "");
     }
     prevDistrictRef.current = district;
-  }, [district, prefix, setValue]);
+  }, [district, prefix, setValue, enabled]);
 
   // When block changes, clear panchayat and village
   useEffect(() => {
-    if (
-      prevBlockRef.current !== undefined &&
-      prevBlockRef.current !== block
-    ) {
+    if (!enabled) return;
+
+    if (prevBlockRef.current !== undefined && prevBlockRef.current !== block) {
       setValue(`${prefix}.panchayat`, "");
       setValue(`${prefix}.village`, "");
     }
     prevBlockRef.current = block;
-  }, [block, prefix, setValue]);
+  }, [block, prefix, setValue, enabled]);
 
   // When panchayat changes, clear village
   useEffect(() => {
+    if (!enabled) return;
+
     if (
       prevPanchayatRef.current !== undefined &&
       prevPanchayatRef.current !== panchayat
@@ -432,10 +438,12 @@ export const useClearAddressFields = ({
       setValue(`${prefix}.village`, "");
     }
     prevPanchayatRef.current = panchayat;
-  }, [panchayat, prefix, setValue]);
+  }, [panchayat, prefix, setValue, enabled]);
 
   // When urbanPanchayat changes, clear ward
   useEffect(() => {
+    if (!enabled) return;
+
     if (
       prevUrbanPanchayatRef.current !== undefined &&
       prevUrbanPanchayatRef.current !== urbanPanchayat
@@ -443,20 +451,22 @@ export const useClearAddressFields = ({
       setValue(`${prefix}.ward`, "");
     }
     prevUrbanPanchayatRef.current = urbanPanchayat;
-  }, [urbanPanchayat, prefix, setValue]);
+  }, [urbanPanchayat, prefix, setValue, enabled]);
 };
 
 export const useClearLocationFields = ({
   control,
   setValue,
+  enabled = true,
 }: {
   control: Control<any>;
   setValue: (name: string, value: any, options?: any) => void;
+  enabled?: boolean;
 }) => {
   return useClearAddressFields({
     control,
     prefix: "location",
     setValue,
+    enabled: !!enabled,
   });
 };
-

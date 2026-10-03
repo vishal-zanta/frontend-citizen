@@ -53,7 +53,8 @@ export default function useRaiseComplaintForm({
     communication: {
       feedbackConsent: true,
     },
-    isCrpEqualPerAdd: true,
+    isCrpEqualPerAdd: false,
+    isLocationEqualPerAdd: false,
     address: {
       ...defaultValues.address,
       state: "Bihar",
@@ -260,7 +261,8 @@ export default function useRaiseComplaintForm({
           ...finalValues.address,
           state: finalValues.address.state || "Bihar",
         },
-        isCrpEqualPerAdd: true,
+        isCrpEqualPerAdd: Boolean(finalValues.isCrpEqualPerAdd),
+        isLocationEqualPerAdd: Boolean(finalValues.isLocationEqualPerAdd),
       };
 
       const formData = getFormData(submissionData, []);
@@ -338,6 +340,63 @@ export default function useRaiseComplaintForm({
         ),
       });
     }
+  };
+
+  // ── Helper to resolve labels for Permanent Address ─────────────────────────
+  const getAddressLabels = (perm: any) => {
+    const districtLabel =
+      permAddressFields.districtOptions.find(
+        (d: any) => d.value === perm?.district || d.raw?._id === perm?.district,
+      )?.label ||
+      perm?.district ||
+      "";
+    const blockLabel =
+      permAddressFields.blockOptions.find(
+        (b: any) => b.value === perm?.block || b.raw?._id === perm?.block,
+      )?.label ||
+      perm?.block ||
+      "";
+    const panchayatLabel =
+      permAddressFields.panchayatOptions.find(
+        (p: any) => p.value === perm?.panchayat || p.raw?._id === perm?.panchayat,
+      )?.label ||
+      perm?.panchayat ||
+      "";
+    const thanaLabel =
+      permAddressFields.thanaOptions.find(
+        (t: any) => t.value === perm?.thana || t.raw?._id === perm?.thana,
+      )?.label ||
+      perm?.thana ||
+      "";
+    const villageLabel =
+      permAddressFields.villageOptions.find(
+        (v: any) => v.value === perm?.village || v.raw?._id === perm?.village,
+      )?.label ||
+      perm?.village ||
+      "";
+    const urbanPanchayatLabel =
+      permAddressFields.urbanPanchayatOptions.find(
+        (u: any) =>
+          u.value === perm?.urbanPanchayat || u.raw?._id === perm?.urbanPanchayat,
+      )?.label ||
+      perm?.urbanPanchayat ||
+      "";
+    const wardLabel =
+      permAddressFields.wardOptions.find(
+        (w: any) => w.value === perm?.ward || w.raw?._id === perm?.ward,
+      )?.label ||
+      perm?.ward ||
+      "";
+
+    return {
+      districtLabel,
+      blockLabel,
+      panchayatLabel,
+      thanaLabel,
+      villageLabel,
+      urbanPanchayatLabel,
+      wardLabel,
+    };
   };
 
   // ── Step Questions (Built Dynamically Based on State: Bihar vs Other) ────────
@@ -899,78 +958,196 @@ export default function useRaiseComplaintForm({
         },
       },
 
-      // ── ADDRESS 2: CORRESPONDENCE ADDRESS ───────────────────────────────────
-      // 13. Correspondence State (gives option to select state)
+      // 13. Same as Permanent Address for Correspondence
       {
-        id: "corr-q-state",
-        text: "[Correspondence Address] Please select your State:",
-        textHindi: "[पत्राचार का पता] अपना राज्य चुनें:",
+        id: "form-q-isCrpEqualPerAdd",
+        text: "Is Correspondence Address equal to Permanent Address?",
+        textHindi: "क्या पत्राचार का पता स्थायी पते के समान है?",
         InputComponent: ChatSelectInput,
         InputProps: {
-          placeholder: t("Select State", "राज्य चुनें"),
-          options: stateOptions,
-          isSearchable: true,
+          placeholder: t("Select option", "विकल्प चुनें"),
+          options: [
+            { label: t("Yes", "हाँ"), value: "true" },
+            { label: t("No", "नहीं"), value: "false" },
+          ],
           required: true,
-          value: complaintForm.address.state,
+          value:
+            complaintForm.isCrpEqualPerAdd === true
+              ? "true"
+              : complaintForm.isCrpEqualPerAdd === false
+              ? "false"
+              : "",
           onChange: (val: string) => {
-            setComplaintForm((p) => ({
-              ...p,
-              address: {
-                ...p.address,
-                state: val,
-                city: "",
-                addressLine: "",
-                addressLine2: "",
-                district: "",
-                block: "",
-                panchayat: "",
-                village: "",
-                urbanPanchayat: "",
-                ward: "",
-                thana: "",
-                landmark: "",
-                pincode: "",
-              },
-            }));
-            setCorrIds({
-              districtId: "",
-              blockId: "",
-              panchayatId: "",
-              urbanPanchayatId: "",
-            });
+            const isSame = val === "true";
+            if (isSame) {
+              const perm = complaintForm.citizenInfo.address;
+              const {
+                districtLabel,
+                blockLabel,
+                panchayatLabel,
+                thanaLabel,
+                villageLabel,
+                urbanPanchayatLabel,
+                wardLabel,
+              } = getAddressLabels(perm);
+
+              setComplaintForm((p) => ({
+                ...p,
+                isCrpEqualPerAdd: true,
+                address: {
+                  ...p.address,
+                  isUrban: Boolean(perm?.isUrban),
+                  addressLine: perm?.addressLine || "",
+                  state: "Bihar",
+                  city: "",
+                  district: districtLabel,
+                  block: blockLabel,
+                  panchayat: panchayatLabel,
+                  thana: thanaLabel,
+                  village: villageLabel,
+                  urbanPanchayat: urbanPanchayatLabel,
+                  ward: wardLabel,
+                  landmark: perm?.landmark || "",
+                  pincode: perm?.pincode || "",
+                },
+              }));
+              setCorrIds({
+                districtId: perm?.district || "",
+                blockId: perm?.block || "",
+                panchayatId: perm?.panchayat || "",
+                urbanPanchayatId: perm?.urbanPanchayat || "",
+              });
+            } else {
+              setComplaintForm((p) => ({
+                ...p,
+                isCrpEqualPerAdd: false,
+              }));
+            }
           },
           onSend: (val: string) => {
-            handleSendMessage(val);
-            setComplaintForm((p) => ({
-              ...p,
-              address: {
-                ...p.address,
-                state: val,
-                city: "",
-                addressLine: "",
-                addressLine2: "",
-                district: "",
-                block: "",
-                panchayat: "",
-                village: "",
-                urbanPanchayat: "",
-                ward: "",
-                thana: "",
-                landmark: "",
-                pincode: "",
-              },
-            }));
-            setCorrIds({
-              districtId: "",
-              blockId: "",
-              panchayatId: "",
-              urbanPanchayatId: "",
-            });
+            const isSame = val === "true";
+            handleSendMessage(isSame ? t("Yes", "हाँ") : t("No", "नहीं"));
+            if (isSame) {
+              const perm = complaintForm.citizenInfo.address;
+              const {
+                districtLabel,
+                blockLabel,
+                panchayatLabel,
+                thanaLabel,
+                villageLabel,
+                urbanPanchayatLabel,
+                wardLabel,
+              } = getAddressLabels(perm);
+
+              setComplaintForm((p) => ({
+                ...p,
+                isCrpEqualPerAdd: true,
+                address: {
+                  ...p.address,
+                  isUrban: Boolean(perm?.isUrban),
+                  addressLine: perm?.addressLine || "",
+                  state: "Bihar",
+                  city: "",
+                  district: districtLabel,
+                  block: blockLabel,
+                  panchayat: panchayatLabel,
+                  thana: thanaLabel,
+                  village: villageLabel,
+                  urbanPanchayat: urbanPanchayatLabel,
+                  ward: wardLabel,
+                  landmark: perm?.landmark || "",
+                  pincode: perm?.pincode || "",
+                },
+              }));
+              setCorrIds({
+                districtId: perm?.district || "",
+                blockId: perm?.block || "",
+                panchayatId: perm?.panchayat || "",
+                urbanPanchayatId: perm?.urbanPanchayat || "",
+              });
+            } else {
+              setComplaintForm((p) => ({
+                ...p,
+                isCrpEqualPerAdd: false,
+              }));
+            }
             setFormStep((prev) => prev + 1);
           },
         },
       },
     ];
+
+    // ── ADDRESS 2: CORRESPONDENCE ADDRESS ───────────────────────────────────
+    // Correspondence State (gives option to select state)
+    const corrStateQuestion = {
+      id: "corr-q-state",
+      text: "[Correspondence Address] Please select your State:",
+      textHindi: "[पत्राचार का पता] अपना राज्य चुनें:",
+      InputComponent: ChatSelectInput,
+      InputProps: {
+        placeholder: t("Select State", "राज्य चुनें"),
+        options: stateOptions,
+        isSearchable: true,
+        required: true,
+        value: complaintForm.address.state,
+        onChange: (val: string) => {
+          setComplaintForm((p) => ({
+            ...p,
+            address: {
+              ...p.address,
+              state: val,
+              city: "",
+              addressLine: "",
+              addressLine2: "",
+              district: "",
+              block: "",
+              panchayat: "",
+              village: "",
+              urbanPanchayat: "",
+              ward: "",
+              thana: "",
+              landmark: "",
+              pincode: "",
+            },
+          }));
+          setCorrIds({
+            districtId: "",
+            blockId: "",
+            panchayatId: "",
+            urbanPanchayatId: "",
+          });
+        },
+        onSend: (val: string) => {
+          handleSendMessage(val);
+          setComplaintForm((p) => ({
+            ...p,
+            address: {
+              ...p.address,
+              state: val,
+              city: "",
+              addressLine: "",
+              addressLine2: "",
+              district: "",
+              block: "",
+              panchayat: "",
+              village: "",
+              urbanPanchayat: "",
+              ward: "",
+              thana: "",
+              landmark: "",
+              pincode: "",
+            },
+          }));
+          setCorrIds({
+            districtId: "",
+            blockId: "",
+            panchayatId: "",
+            urbanPanchayatId: "",
+          });
+          setFormStep((prev) => prev + 1);
+        },
+      },
+    };
 
     // Correspondence Address Branching: Bihar vs Outside Bihar
     const correspondenceList: any[] = isBihar
@@ -1515,8 +1692,8 @@ export default function useRaiseComplaintForm({
           },
         ];
 
-    // Classification, Incident Location & Impact Questions
-    const remainingList: any[] = [
+    // ── CLASSIFICATION ───────────────────────────────────────────────────────
+    const classificationList: any[] = [
       // ── CLASSIFICATION ───────────────────────────────────────────────────────
       // Service / Category (Department won't arrive again)
       {
@@ -1612,8 +1789,92 @@ export default function useRaiseComplaintForm({
           },
         },
       },
+    ];
 
-      // ── ADDRESS 3: INCIDENT LOCATION ─────────────────────────────────────────
+    // ── ADDRESS 3: INCIDENT LOCATION ─────────────────────────────────────────
+    // Incident Location: Same as Permanent Address
+    const isLocationEqualQuestion = {
+      id: "form-q-isLocationEqualPerAdd",
+      text: "[Incident Location] Is Location Address equal to Permanent Address?",
+      textHindi: "[घटना का स्थान] क्या घटना का स्थान स्थायी पते के समान है?",
+      InputComponent: ChatSelectInput,
+      InputProps: {
+        placeholder: t("Select option", "विकल्प चुनें"),
+        options: [
+          { label: t("Yes", "हाँ"), value: "true" },
+          { label: t("No", "नहीं"), value: "false" },
+        ],
+        required: true,
+        value:
+          complaintForm.isLocationEqualPerAdd === true
+            ? "true"
+            : complaintForm.isLocationEqualPerAdd === false
+            ? "false"
+            : "",
+        onChange: (val: string) => {
+          const isSame = val === "true";
+          if (isSame) {
+            const perm = complaintForm.citizenInfo.address;
+            setComplaintForm((p) => ({
+              ...p,
+              isLocationEqualPerAdd: true,
+              location: {
+                ...p.location,
+                isUrban: Boolean(perm?.isUrban),
+                addressLine: perm?.addressLine || "",
+                district: perm?.district || "",
+                block: perm?.block || "",
+                panchayat: perm?.panchayat || "",
+                village: perm?.village || "",
+                urbanPanchayat: perm?.urbanPanchayat || "",
+                ward: perm?.ward || "",
+                thana: perm?.thana || "",
+                landmark: perm?.landmark || "",
+                pincode: perm?.pincode || "",
+              },
+            }));
+          } else {
+            setComplaintForm((p) => ({
+              ...p,
+              isLocationEqualPerAdd: false,
+            }));
+          }
+        },
+        onSend: (val: string) => {
+          const isSame = val === "true";
+          handleSendMessage(isSame ? t("Yes", "हाँ") : t("No", "नहीं"));
+          if (isSame) {
+            const perm = complaintForm.citizenInfo.address;
+            setComplaintForm((p) => ({
+              ...p,
+              isLocationEqualPerAdd: true,
+              location: {
+                ...p.location,
+                isUrban: Boolean(perm?.isUrban),
+                addressLine: perm?.addressLine || "",
+                district: perm?.district || "",
+                block: perm?.block || "",
+                panchayat: perm?.panchayat || "",
+                village: perm?.village || "",
+                urbanPanchayat: perm?.urbanPanchayat || "",
+                ward: perm?.ward || "",
+                thana: perm?.thana || "",
+                landmark: perm?.landmark || "",
+                pincode: perm?.pincode || "",
+              },
+            }));
+          } else {
+            setComplaintForm((p) => ({
+              ...p,
+              isLocationEqualPerAdd: false,
+            }));
+          }
+          setFormStep((prev) => prev + 1);
+        },
+      },
+    };
+
+    const locationList: any[] = [
       // Incident Location: Area Type
       {
         id: "loc-q-urban",
@@ -1981,8 +2242,10 @@ export default function useRaiseComplaintForm({
           },
         },
       },
+    ];
 
-      // ── IMPACT ───────────────────────────────────────────────────────────────
+    // ── IMPACT ───────────────────────────────────────────────────────────────
+    const impactList: any[] = [
       // Affected Beneficiary
       {
         id: "form-q-beneficiary",
@@ -2068,7 +2331,22 @@ export default function useRaiseComplaintForm({
       },
     ];
 
-    return [...initialList, ...correspondenceList, ...remainingList];
+    const correspondenceSection: any[] = complaintForm.isCrpEqualPerAdd
+      ? []
+      : [corrStateQuestion, ...correspondenceList];
+
+    const locationSection: any[] = complaintForm.isLocationEqualPerAdd
+      ? []
+      : locationList;
+
+    return [
+      ...initialList,
+      ...correspondenceSection,
+      ...classificationList,
+      isLocationEqualQuestion,
+      ...locationSection,
+      ...impactList,
+    ];
   }, [
     complaintForm,
     departmentsLoading,
