@@ -11,7 +11,7 @@ const ImpactSection = () => {
       aria-label={t("Complaint statistics", "शिकायत के आंकड़े")}
       className="max-w-[1240px] mx-auto w-[calc(100%-32px)] sm:w-[calc(100%-80px)] py-8 sm:py-9"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_0.9fr] items-center gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr] items-center gap-6 sm:gap-8">
         {/* Intro */}
         <div>
           <span className="text-xs font-bold tracking-widest text-[#204e83] uppercase block mb-1.5">
@@ -53,7 +53,7 @@ const ImpactSection = () => {
         </div>
 
         {/* Mini Chart */}
-        <div className="hidden lg:block sm:border-l border-[#dce5ed] sm:pl-6">
+        {/* <div className="hidden lg:block sm:border-l border-[#dce5ed] sm:pl-6">
           <div className="w-full h-2.5 bg-[#e0eaf3] rounded-full overflow-hidden">
             <div
               className="h-full bg-[#078374] rounded-full transition-all duration-700"
@@ -63,7 +63,7 @@ const ImpactSection = () => {
           <span className="text-xs text-[#647587] block mt-2 font-medium">
             {t(content.impact.chartNote.en, content.impact.chartNote.hi)}
           </span>
-        </div>
+        </div> */}
       </div>
     </section>
   );
