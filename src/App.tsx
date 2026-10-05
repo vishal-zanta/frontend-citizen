@@ -32,6 +32,7 @@ import ThemeContextProvider from "./context/ThemeContext";
 import AccessibilityProvider from "./context/AccessibilityContext";
 import CompliantDetails from "./pages/citizen/complaint-details";
 import Faq from "./pages/sahyog/pages/faq";
+import SahyogPageVariant1 from "./pages/sahyog-variants/1";
 
 const RootLayout = () => {
   useEffect(() => {
@@ -151,7 +152,16 @@ const router = createBrowserRouter([
         path: "complaint",
         element: <CompliantDetails />,
       },
- 
+        {
+          path : "sahyog-variant",
+          element : <Outlet/>,
+          children : [
+            {
+              path : "1",
+              element: <SahyogPageVariant1/>
+            }
+          ]
+        },
       {
         path: "*",
         element: <PageNotFound />,
