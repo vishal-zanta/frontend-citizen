@@ -27,7 +27,7 @@ export default function MainNavbar() {
           <div className="hidden lg:flex items-center gap-2 text-xs font-semibold">
             {/* 1. Home Page */}
             <Link
-              to="/sahyog"
+              to="/"
               className="px-4 py-2.5 rounded-lg hover:bg-blue-800/80 transition-colors font-medium text-white"
             >
               {t.navbar.home}
@@ -89,7 +89,7 @@ export default function MainNavbar() {
       {mobileMenuOpen && (
         <div className="lg:hidden bg-[#163c6f] border-t border-blue-800 px-6 py-4 space-y-2 text-xs">
           <Link
-            to="/sahyog"
+            to="/"
             onClick={() => setMobileMenuOpen(false)}
             className="block py-2 text-white font-medium border-b border-blue-800"
           >

@@ -86,9 +86,32 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     children: [
+      // {
+      //   index: true,
+      //   element: <Navigate to={"/sahyog"} replace />,
+      // },
+       {
+        path: "/",
+        element: <SahyogLayout />,
+        children: [
+          {
+            index: true,
+            element: <SahyogHomePage />,
+          },
+          {
+            path: "sahyog/homepage",
+            element: <SahyogHomePage />,
+          },
+           {
+            path: "sahyog/faq",
+            element: <Faq />,
+          },
+        ],
+      },
       {
-        index: true,
-        element: <Navigate to={"/sahyog"} replace />,
+        path : "/sahyog",
+        element: <Navigate to={"/"} replace />
+        
       },
       {
         path: "login",
@@ -128,24 +151,7 @@ const router = createBrowserRouter([
         path: "complaint",
         element: <CompliantDetails />,
       },
-      {
-        path: "sahyog",
-        element: <SahyogLayout />,
-        children: [
-          {
-            index: true,
-            element: <SahyogHomePage />,
-          },
-          {
-            path: "homepage",
-            element: <SahyogHomePage />,
-          },
-           {
-            path: "faq",
-            element: <Faq />,
-          },
-        ],
-      },
+ 
       {
         path: "*",
         element: <PageNotFound />,
