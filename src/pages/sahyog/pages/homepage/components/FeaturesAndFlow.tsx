@@ -1,5 +1,5 @@
 
-import userFlow from "@/assets/user-flow-steps.png";
+import userFlow from "@/assets/user-flow-steps.jpeg";
 import userFlowEng from "@/assets/user-flow-steps-eng.png";
 
 import { useLanguage } from "@/context/LanguageContext";
