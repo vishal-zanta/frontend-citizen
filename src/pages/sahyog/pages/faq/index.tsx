@@ -40,7 +40,7 @@ export default function Faq() {
       <div className="bg-slate-100 border-b border-slate-200 py-3 px-4 sm:px-8">
         <div className="max-w-5xl mx-auto flex items-center gap-2 text-xs text-slate-500 font-medium">
           <Link
-            to="/sahyog"
+            to="/"
             className="hover:text-[#1C4D8D] flex items-center gap-1"
           >
             <HomeIcon className="w-3.5 h-3.5" />
