@@ -268,6 +268,7 @@ export default function useRaiseComplaintForm({
       const res: any = await postComplaints(formData, {isChatBot: true});
       const resData = res?.data?.data || res?.data || {};
       const generatedId =
+        resData?.internalId || 
         resData?.externalComplaintId ||
         resData?.grievanceId ||
         resData?.id ||

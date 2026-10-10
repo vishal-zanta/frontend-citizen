@@ -244,7 +244,7 @@ export default function RaiseComplaint({
   const postExternalComplaintMutation = useMutation({
     mutationFn: postExternalComplaint,
     onSuccess: (data: any) => {
-      const extId = data?.data?.data?.externalComplaintId;
+      const extId = data?.data?.data?.internalId ||  data?.data?.data?.externalComplaintId;
       getSuccessToast(
         t("Complaint registered successfully", "शिकायत सफलतापूर्वक दर्ज की गई"),
         extId,
