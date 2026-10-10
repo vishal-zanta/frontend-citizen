@@ -209,34 +209,10 @@ export const CorrespondenceAddress = ({
 
   const isUrban = watch(`${prefix}.isUrban`);
   const selectedState = watch(`${prefix}.state`);
-  const selectedDistrict = watch(`${prefix}.district`);
-  const selectedBlock = watch(`${prefix}.block`);
-  const selectedPanchayat = watch(`${prefix}.panchayat`);
-  const selectedUrbanPanchayat = watch(`${prefix}.urbanPanchayat`);
-
-  const districtOptionsRef = useRef<any[]>([]);
-  const blocksOptionsRef = useRef<any[]>([]);
-  const panchayatOptionsRef = useRef<any[]>([]);
-  const urbanPanchayatOptionsRef = useRef<any[]>([]);
-
-  const selectedDistrictId = (districtOptionsRef.current || []).find(
-    (v: any) => v.value === selectedDistrict || v.label === selectedDistrict,
-  )?.raw?._id;
-
-  const selectedBlockId = (blocksOptionsRef.current || []).find(
-    (v: any) => v.value === selectedBlock || v.label === selectedBlock,
-  )?.raw?._id;
-
-  const selectedPanchayatId = (panchayatOptionsRef.current || []).find(
-    (v: any) => v.value === selectedPanchayat || v.label === selectedPanchayat,
-  )?.raw?._id;
-
-  const selectedUrbanPanchayatId = (
-    urbanPanchayatOptionsRef.current || []
-  ).find(
-    (v: any) =>
-      v.value === selectedUrbanPanchayat || v.label === selectedUrbanPanchayat,
-  )?.raw?._id;
+  const selectedDistrictId = watch(`${prefix}.district`);
+  const selectedBlockId = watch(`${prefix}.block`);
+  const selectedPanchayatId = watch(`${prefix}.panchayat`);
+  const selectedUrbanPanchayatId = watch(`${prefix}.urbanPanchayat`);
 
   const {
     districtOptions,
@@ -263,14 +239,9 @@ export const CorrespondenceAddress = ({
       isUrban,
     },
     {
-      isValueId: false,
+      isValueId: true,
     },
   );
-
-  districtOptionsRef.current = districtOptions;
-  blocksOptionsRef.current = blockOptions;
-  panchayatOptionsRef.current = panchayatOptions;
-  urbanPanchayatOptionsRef.current = urbanPanchayatOptions;
 
   useClearAddressFields({
     control,
@@ -527,90 +498,11 @@ export const CorrespondenceAddress = ({
 };
 
 export default function AddressSection({ t }: AddressSectionProps) {
-  const { lang } = useLanguage();
   const { watch, setValue, getValues } = useFormContext();
   const isCrpEqualPerAdd = watch("isCrpEqualPerAdd");
   const permanentAddress = watch("citizenInfo.address");
   const correspondenceState = watch("address.state");
   const isBihar = correspondenceState === "Bihar";
-
-  const {
-    districtOptions,
-    blockOptions,
-    panchayatOptions,
-    villageOptions,
-    urbanPanchayatOptions,
-    wardOptions,
-    thanaOptions,
-  } = useGetAddressFields(
-    {
-      lang,
-      districtId: permanentAddress?.district,
-      blockId: permanentAddress?.block,
-      panchayatId: permanentAddress?.panchayat,
-      urbanPanchayatId: permanentAddress?.urbanPanchayat,
-      isUrban: permanentAddress?.isUrban,
-    },
-    { isValueId: true },
-  );
-
-  const getAddressLabels = (perm: any) => {
-    const districtLabel =
-      districtOptions.find(
-        (d: any) => d.value === perm?.district || d.raw?._id === perm?.district,
-      )?.label ||
-      perm?.district ||
-      "";
-    const blockLabel =
-      blockOptions.find(
-        (b: any) => b.value === perm?.block || b.raw?._id === perm?.block,
-      )?.label ||
-      perm?.block ||
-      "";
-    const panchayatLabel =
-      panchayatOptions.find(
-        (p: any) =>
-          p.value === perm?.panchayat || p.raw?._id === perm?.panchayat,
-      )?.label ||
-      perm?.panchayat ||
-      "";
-    const thanaLabel =
-      thanaOptions.find(
-        (t: any) => t.value === perm?.thana || t.raw?._id === perm?.thana,
-      )?.label ||
-      perm?.thana ||
-      "";
-    const villageLabel =
-      villageOptions.find(
-        (v: any) => v.value === perm?.village || v.raw?._id === perm?.village,
-      )?.label ||
-      perm?.village ||
-      "";
-    const urbanPanchayatLabel =
-      urbanPanchayatOptions.find(
-        (u: any) =>
-          u.value === perm?.urbanPanchayat ||
-          u.raw?._id === perm?.urbanPanchayat,
-      )?.label ||
-      perm?.urbanPanchayat ||
-      "";
-    const wardLabel =
-      wardOptions.find(
-        (w: any) => w.value === perm?.ward || w.raw?._id === perm?.ward,
-      )?.label ||
-      perm?.ward ||
-      "";
-
-    return {
-      districtLabel,
-      blockLabel,
-      panchayatLabel,
-      thanaLabel,
-      villageLabel,
-      urbanPanchayatLabel,
-      wardLabel,
-    };
-  };
 
   const handleToggleSameAddress = (checked: boolean) => {
     setValue("isCrpEqualPerAdd", checked, {
@@ -619,15 +511,6 @@ export default function AddressSection({ t }: AddressSectionProps) {
     });
     if (checked) {
       const perm = getValues("citizenInfo.address");
-      const {
-        districtLabel,
-        blockLabel,
-        panchayatLabel,
-        thanaLabel,
-        villageLabel,
-        urbanPanchayatLabel,
-        wardLabel,
-      } = getAddressLabels(perm);
 
       setValue("address.isUrban", Boolean(perm?.isUrban), {
         shouldDirty: true,
@@ -645,31 +528,31 @@ export default function AddressSection({ t }: AddressSectionProps) {
         shouldDirty: true,
         shouldValidate: true,
       });
-      setValue("address.district", districtLabel, {
+      setValue("address.district", perm?.district || "", {
         shouldDirty: true,
         shouldValidate: true,
       });
-      setValue("address.block", blockLabel, {
+      setValue("address.block", perm?.block || "", {
         shouldDirty: true,
         shouldValidate: true,
       });
-      setValue("address.panchayat", panchayatLabel, {
+      setValue("address.panchayat", perm?.panchayat || "", {
         shouldDirty: true,
         shouldValidate: true,
       });
-      setValue("address.thana", thanaLabel, {
+      setValue("address.thana", perm?.thana || "", {
         shouldDirty: true,
         shouldValidate: true,
       });
-      setValue("address.village", villageLabel, {
+      setValue("address.village", perm?.village || "", {
         shouldDirty: true,
         shouldValidate: true,
       });
-      setValue("address.urbanPanchayat", urbanPanchayatLabel, {
+      setValue("address.urbanPanchayat", perm?.urbanPanchayat || "", {
         shouldDirty: true,
         shouldValidate: true,
       });
-      setValue("address.ward", wardLabel, {
+      setValue("address.ward", perm?.ward || "", {
         shouldDirty: true,
         shouldValidate: true,
       });
@@ -699,43 +582,39 @@ export default function AddressSection({ t }: AddressSectionProps) {
 
   React.useEffect(() => {
     if (isCrpEqualPerAdd) {
-      const {
-        districtLabel,
-        blockLabel,
-        panchayatLabel,
-        thanaLabel,
-        villageLabel,
-        urbanPanchayatLabel,
-        wardLabel,
-      } = getAddressLabels(permanentAddress);
-
-      setValue("address.isUrban", Boolean(permanentAddress?.isUrban), {
-        shouldValidate: true,
-      });
-      setValue("address.addressLine", permanentAddress?.addressLine || "", {
-        shouldValidate: true,
-      });
+      setValue(
+        "address.isUrban",
+        Boolean(permanentAddress?.isUrban),
+        { shouldValidate: true },
+      );
+      setValue(
+        "address.addressLine",
+        permanentAddress?.addressLine || "",
+        { shouldValidate: true },
+      );
       setValue("address.state", "Bihar", { shouldValidate: true });
       setValue("address.city", "", { shouldValidate: true });
-      setValue("address.district", districtLabel, {
+      setValue("address.district", permanentAddress?.district || "", {
         shouldValidate: true,
       });
-      setValue("address.block", blockLabel, {
+      setValue("address.block", permanentAddress?.block || "", {
         shouldValidate: true,
       });
-      setValue("address.panchayat", panchayatLabel, {
+      setValue("address.panchayat", permanentAddress?.panchayat || "", {
         shouldValidate: true,
       });
-      setValue("address.thana", thanaLabel, {
+      setValue("address.thana", permanentAddress?.thana || "", {
         shouldValidate: true,
       });
-      setValue("address.village", villageLabel, {
+      setValue("address.village", permanentAddress?.village || "", {
         shouldValidate: true,
       });
-      setValue("address.urbanPanchayat", urbanPanchayatLabel, {
-        shouldValidate: true,
-      });
-      setValue("address.ward", wardLabel, {
+      setValue(
+        "address.urbanPanchayat",
+        permanentAddress?.urbanPanchayat || "",
+        { shouldValidate: true },
+      );
+      setValue("address.ward", permanentAddress?.ward || "", {
         shouldValidate: true,
       });
       setValue("address.landmark", permanentAddress?.landmark || "", {
@@ -748,13 +627,6 @@ export default function AddressSection({ t }: AddressSectionProps) {
   }, [
     isCrpEqualPerAdd,
     JSON.stringify(permanentAddress),
-    districtOptions,
-    blockOptions,
-    panchayatOptions,
-    villageOptions,
-    urbanPanchayatOptions,
-    wardOptions,
-    thanaOptions,
     setValue,
   ]);
 

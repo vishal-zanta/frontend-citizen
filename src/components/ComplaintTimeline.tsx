@@ -13,6 +13,7 @@ import {
   Clock,
   Send,
   ArrowRight,
+  PhoneOutgoing,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -40,6 +41,7 @@ const iconMap: Record<string, React.ComponentType<any>> = {
   STATUS_UPDATED: CheckCircle2,
   COMMENT_ADDED: MessageSquare,
   GEOTAGGED_IMAGE_UPLOADED: Camera,
+  CALL_OUTBOUND: PhoneOutgoing,
 };
 
 const eventTranslations: Record<string, { en: string; hi: string }> = {
@@ -66,6 +68,7 @@ const eventTranslations: Record<string, { en: string; hi: string }> = {
   STATUS_UPDATED: { en: "Status Updated", hi: "स्थिति अपडेट की गई" },
   COMMENT_ADDED: { en: "Comment Added", hi: "टिप्पणी जोड़ी गई" },
   GEOTAGGED_IMAGE_UPLOADED: { en: "Geo-tagged Photo Uploaded", hi: "जियो-टैग फोटो अपलोड की गई" },
+  CALL_OUTBOUND: { en: "Outbound Call", hi: "आउटबाउंड कॉल" },
 };
 
 interface TimelineEvent {
