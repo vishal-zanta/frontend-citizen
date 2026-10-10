@@ -122,6 +122,7 @@ const FoodDeptView = ({
   if (!data) return null;
 
   const externalId =
+  data?.internalId || 
     data?.externalComplaintId ||
     payload?.grievanceID ||
     data?._id ||
@@ -149,7 +150,7 @@ const FoodDeptView = ({
           <div className="flex items-start justify-between flex-wrap gap-2">
             <div>
               <p className="text-[11px] text-muted-foreground mb-0.5">
-                External Complaint ID
+                 Complaint ID
               </p>
               <div className="flex items-center gap-2 flex-wrap">
                 <h2 className="text-sm font-bold text-primary font-mono">
@@ -197,6 +198,7 @@ const FoodDeptView = ({
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           {/* Grievance Information */}
           <SectionCard title="Grievance Information" icon={FileText}>
+            <InfoRow icon={Hash} label="External Complaint Id" value={data?.externalComplaintId} />
             <InfoRow icon={Tag} label="Grievance Type" value={typeLabel} />
             <InfoRow icon={Hash} label="Category" value={categoryLabel} />
             <InfoRow icon={UserCheck} label="Assigned Officer / Unit" value={payload?.assignTo} />

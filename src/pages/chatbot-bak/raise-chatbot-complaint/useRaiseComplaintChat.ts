@@ -799,6 +799,7 @@ export const useRaiseComplaintChat = () => {
         ...resData,
         grievanceId:
           resData?.grievanceId ||
+          resData?.internalId || 
           resData?.externalComplaintId ||
           resData?._id ||
           complaintId,

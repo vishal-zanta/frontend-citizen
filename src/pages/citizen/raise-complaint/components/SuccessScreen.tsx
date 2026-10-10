@@ -26,6 +26,7 @@ export default function SuccessScreen({
   const finalData = data?.data?.data || data?.data || data;
   const grievanceId =
     externalComplaintId ||
+    finalData?.internalId ||
     finalData?.externalComplaintId ||
     finalData?.grievanceId ||
     finalData?.id ||

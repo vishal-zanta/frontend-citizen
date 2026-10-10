@@ -128,7 +128,7 @@ const EducationDepartmentDetailView = ({
 
   if (!data) return null;
 
-  const externalId = data?.externalComplaintId || payload?.externalRef || "N/A";
+  const externalId = data?.internalId ||  data?.externalComplaintId || payload?.externalRef || "N/A";
 
   const registeredAtFormatted = payload?.registeredAt
     ? moment(payload.registeredAt).format("DD MMM YYYY, hh:mm A")
@@ -160,7 +160,7 @@ const EducationDepartmentDetailView = ({
           <div className="flex items-start justify-between flex-wrap gap-2">
             <div>
               <p className="text-[11px] text-muted-foreground mb-0.5">
-                External Complaint ID
+                 Complaint ID
               </p>
               <div className="flex items-center gap-2 flex-wrap">
                 <h2 className="text-sm font-bold text-primary font-mono">
@@ -203,6 +203,11 @@ const EducationDepartmentDetailView = ({
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           {/* Classification & Grievance Details */}
           <SectionCard title="Complaint Details" icon={FileText}>
+            <InfoRow
+              icon={Hash}
+              label="External Complaint Id"
+              value={data?.externalComplaintId}
+            />
             {payload?.type && (
               <div className="flex items-start gap-3 py-2.5 border-b border-border/50">
                 <div className="mt-0.5 shrink-0">

@@ -58,7 +58,7 @@ export const departmentsList: ExternalDepartmentItem[] = [
       const payload = data?.departmentPayload || {};
       const address = payload?.address || {};
       return {
-        complaintNumber: data?.externalComplaintId || data?._id || "-",
+        complaintNumber: data?.internalId ||  data?.externalComplaintId || data?._id || "-",
         nature: payload?.type || (t ? t("Grievance", "शिकायत") : "COMPLAINT"),
         district: address?.district || "-",
         department: t
@@ -98,8 +98,7 @@ export const departmentsList: ExternalDepartmentItem[] = [
         (location?.districtCode ? String(location?.districtCode) : "-");
 
       return {
-        complaintNumber:
-          data?.externalComplaintId || payload?.externalRef || data?._id || "-",
+        complaintNumber:data?.internalId || data?.externalComplaintId || payload?.externalRef || data?._id || "-",
         nature: payload?.type || (t ? t("Grievance", "शिकायत") : "COMPLAINT"),
         district: districtLabel,
         department: t
@@ -143,8 +142,7 @@ export const departmentsList: ExternalDepartmentItem[] = [
           : payload?.address || "-");
 
       return {
-        complaintNumber:
-          data?.externalComplaintId || payload?.grievanceID || data?._id || "-",
+        complaintNumber:data?.internalId ||  data?.externalComplaintId || payload?.grievanceID || data?._id || "-",
         nature: t ? t("Grievance", "शिकायत") : "COMPLAINT",
         district: districtLabel,
         department: t
