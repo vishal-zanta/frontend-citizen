@@ -98,12 +98,12 @@ export const content = {
   },
   impact: {
     kicker: {
-      hi: "एक नज़र में सहयोग",
-      en: "SAHYOG AT A GLANCE",
+      hi: "आपकी समस्या, हमारा समाधान",
+      en: "Your Problem, Our Solution",
     },
     heading: {
-      hi: "हर आवाज़ महत्वपूर्ण है।",
-      en: "Every voice matters.",
+      hi: "बिहार सहयोग, हर कदम आपके साथ।",
+      en: "Bihar Sahayog, With You at Every Step.",
     },
     registeredCount: "1,126",
     registeredLabel: {
@@ -232,7 +232,7 @@ export const content = {
           en: "Complaint registered",
         },
         description: {
-          hi: "ऑपरेटर शिकायत का पंजीकरण करेंगे और विभाग के अधिकारी को शिकायत प्रेषित करेंगे।",
+          hi: "ऑपरेटर शिकायत का पंजीकरण दर्ज करेंगे और विभाग के अधिकारी को शिकायत प्रेषित करेंगे।",
           en: "The operator registers the complaint and sends it to the departmental officer.",
         },
       },
@@ -248,7 +248,7 @@ export const content = {
           en: "Departmental action",
         },
         description: {
-          hi: "विभाग के अधिकारी द्वारा शिकायत का समाधान किया जाएगा।",
+          hi: "विभाग के अधिकारी द्वारा शिकायत का समाधान किए जाएंगे।",
           en: "The departmental officer resolves the complaint.",
         },
       },
