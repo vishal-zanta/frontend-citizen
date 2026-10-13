@@ -9,7 +9,7 @@ export default function FeaturesAndFlow() {
 
   return (
     <section className=" bg-white" id="how-it-works">
-<img src={t(userFlowEng, userFlow)}/>
+      <img src={t(userFlowEng, userFlow)}/>
       {/* <div className="max-w-4xl mx-auto">
         <div className="bg-slate-50/80 border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-md transition-all">
           <div className="flex items-center gap-3 pb-4 mb-6 border-b border-slate-200">

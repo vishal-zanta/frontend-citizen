@@ -104,28 +104,20 @@ export default function CitizenDashboard() {
       limit,
       search: searchId || undefined,
       status: statusFilter || undefined,
-      department:
-        !isExternal && departmentFilter ? departmentFilter : undefined,
-      departmentCode:
-        isExternal && departmentFilter ? departmentFilter : undefined,
+      department: departmentFilter || undefined ,
+      //   !isExternal && departmentFilter ? departmentFilter : undefined,
+      // departmentCode:
+      //   isExternal && departmentFilter ? departmentFilter : undefined,
       sortBy: sortBy || undefined,
       sortOrder: sortOrder || undefined,
     },
   );
 
   const analytics = res?.data?.data;
+  console.log({ analytics });
   const filteredComplaints = listData?.data?.data?.docs || [];
   const totalPages = listData?.data?.data?.pagination?.totalPages || 1;
 
-  const totalCount = analytics?.totalComplaints ?? 0;
-  const openCount = analytics?.OPEN ?? analytics?.open ?? 0;
-  const pendingCount = analytics?.PENDING ?? analytics?.pending ?? 0;
-  const inProgressCount = analytics?.IN_PROGRESS ?? analytics?.inProgress ?? 0;
-  const resolvedCount = analytics?.RESOLVED ?? analytics?.resolved ?? 0;
-  const closedCount = analytics?.CLOSED ?? analytics?.closed ?? 0;
-  const reopenedCount = analytics?.REOPENED ?? analytics?.reopened ?? 0;
-  const escalatedCount = analytics?.ESCALATED ?? analytics?.escalated ?? 0;
-  const rejectedCount = analytics?.REJECTED ?? analytics?.rejected ?? 0;
   const externalStatusCount = useMemo(() => {
     if (!analytics || typeof analytics !== "object") return 0;
     const presentKeys = new Set([
@@ -140,6 +132,9 @@ export default function CitizenDashboard() {
       "reopened",
       "escalated",
       "rejected",
+      "internalagg",
+      "externalagg",
+      "internalstatus",
     ]);
 
     return Object.entries(analytics).reduce((sum, [key, val]) => {
@@ -156,6 +151,100 @@ export default function CitizenDashboard() {
       return sum;
     }, 0);
   }, [analytics]);
+
+  const externalAggTotal = useMemo(() => {
+    if (Array.isArray(analytics?.externalAgg)) {
+      return analytics.externalAgg.reduce(
+        (sum: number, item: any) => sum + (Number(item?.count) || 0),
+        0,
+      );
+    }
+    return externalStatusCount;
+  }, [analytics?.externalAgg, externalStatusCount]);
+
+  const internalAggTotal = useMemo(() => {
+    if (Array.isArray(analytics?.internalAgg)) {
+      return analytics.internalAgg.reduce(
+        (sum: number, item: any) => sum + (Number(item?.count) || 0),
+        0,
+      );
+    }
+    if (Array.isArray(analytics?.internalStatus)) {
+      return analytics.internalStatus.reduce(
+        (sum: number, item: any) => sum + (Number(item?.count) || 0),
+        0,
+      );
+    }
+    return 0;
+  }, [analytics?.internalAgg, analytics?.internalStatus]);
+
+  const getInternalCount = (status: string) => {
+    if (Array.isArray(analytics?.internalAgg)) {
+      const item = analytics.internalAgg.find(
+        (entry: any) =>
+          entry?._id?.toUpperCase() === status.toUpperCase() ||
+          entry?.status?.toUpperCase() === status.toUpperCase() ||
+          entry?.internalStatus?.toUpperCase() === status.toUpperCase(),
+      );
+      if (item !== undefined) return Number(item.count) || 0;
+    }
+    if (Array.isArray(analytics?.internalStatus)) {
+      const item = analytics.internalStatus.find(
+        (entry: any) =>
+          entry?._id?.toUpperCase() === status.toUpperCase() ||
+          entry?.status?.toUpperCase() === status.toUpperCase(),
+      );
+      if (item !== undefined) return Number(item.count) || 0;
+    }
+    if (
+      analytics?.internalStatus &&
+      typeof analytics.internalStatus === "object"
+    ) {
+      const val =
+        analytics.internalStatus[status] ??
+        analytics.internalStatus[status.toLowerCase()];
+      if (val !== undefined) return Number(val) || 0;
+    }
+    return undefined;
+  };
+
+  const totalCount =
+    Array.isArray(analytics?.externalAgg) || Array.isArray(analytics?.internalAgg)
+      ? externalAggTotal + internalAggTotal
+      : (analytics?.totalComplaints ?? analytics?.total ?? 0);
+
+  const openCount =
+    getInternalCount("OPEN") ?? analytics?.OPEN ?? analytics?.open ?? 0;
+  const pendingCount =
+    getInternalCount("PENDING") ?? analytics?.PENDING ?? analytics?.pending ?? 0;
+  const inProgressInternalCount =
+    getInternalCount("IN_PROGRESS") ??
+    analytics?.IN_PROGRESS ??
+    analytics?.inProgress ??
+    0;
+  const inProgressCount = inProgressInternalCount + externalAggTotal;
+  const resolvedCount =
+    getInternalCount("RESOLVED") ??
+    analytics?.RESOLVED ??
+    analytics?.resolved ??
+    0;
+  const closedCount =
+    getInternalCount("CLOSED") ?? analytics?.CLOSED ?? analytics?.closed ?? 0;
+  const reopenedCount =
+    getInternalCount("REOPENED") ??
+    analytics?.REOPENED ??
+    analytics?.reopened ??
+    0;
+  const escalatedCount =
+    getInternalCount("ESCALATED") ??
+    analytics?.ESCALATED ??
+    analytics?.escalated ??
+    0;
+  const rejectedCount =
+    getInternalCount("REJECTED") ??
+    analytics?.REJECTED ??
+    analytics?.rejected ??
+    0;
 
   const stats = [
     {
@@ -176,7 +265,7 @@ export default function CitizenDashboard() {
     // },
     {
       label: t("In Progress", "प्रगति पर"),
-      value: inProgressCount + externalStatusCount,
+      value: inProgressCount,
       filter: "IN_PROGRESS",
       navigateTo: `/citizen/track?filter.status=IN_PROGRESS&filter.department=${externalDepartmentsList
         .filter((dept) => !dept.isHide)
@@ -267,3 +356,4 @@ export default function CitizenDashboard() {
     </PortalLayout>
   );
 }
+
