@@ -19,12 +19,12 @@ const SahyogVariant2: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#faf7ee] text-[#14344c] antialiased selection:bg-[#f77b10]/20 selection:text-[#113859]">
       {/* Skip to Main Content (Accessibility) */}
-      <a
+      {/* <a
         href="#services"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-[#113859] focus:font-bold focus:shadow-lg focus:rounded-sm focus:border focus:border-[#113859]"
       >
         {t("Skip to main content", "मुख्य सामग्री पर जाएं")}
-      </a>
+      </a> */}
 
       {/* Top Utility Bar with Language Selector */}
       <UtilityBar />
