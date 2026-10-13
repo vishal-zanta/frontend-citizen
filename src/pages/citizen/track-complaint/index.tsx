@@ -88,7 +88,7 @@ export default function TrackComplaint({
         filterKey: "department",
         label: "Department",
         labelHindi: "विभाग",
-        isMultiple: false,
+        isMultiple: true,
         options: [...internalOptions, ...externalOptions],
       },
       {

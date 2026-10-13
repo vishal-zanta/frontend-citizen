@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from "react";
 import PortalLayout from "@/components/PortalLayout";
 import { useLanguage } from "@/context/LanguageContext";
@@ -32,26 +31,32 @@ export default function CitizenDashboard() {
   const departmentFilter = filters.department;
 
   const isExternal = Boolean(
-    departmentFilter && isExternalDepartment(departmentFilter));
+    departmentFilter && isExternalDepartment(departmentFilter),
+  );
 
-  const { data: res, isLoading, error } = useQuery({
+  const {
+    data: res,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["citizen-dashboard-analytics"],
     queryFn: getDashboardAnalytics,
   });
 
   const { data: deptRes } = useGetDepartments();
-  const apiDepartmentsList = deptRes?.data?.data?.docs || deptRes?.data?.data || [];
+  const apiDepartmentsList =
+    deptRes?.data?.data?.docs || deptRes?.data?.data || [];
 
   const filterOptions = useMemo(() => {
-    const internalOptions = (Array.isArray(apiDepartmentsList) ? apiDepartmentsList : []).map(
-      (d: any) => ({
-        label: t(
-          d.title || d.name_en || d.name || "",
-          d.titleHindi || d.name_local || d.title || d.name || ""
-        ),
-        value: d._id || d.id,
-      })
-    );
+    const internalOptions = (
+      Array.isArray(apiDepartmentsList) ? apiDepartmentsList : []
+    ).map((d: any) => ({
+      label: t(
+        d.title || d.name_en || d.name || "",
+        d.titleHindi || d.name_local || d.title || d.name || "",
+      ),
+      value: d._id || d.id,
+    }));
 
     const externalOptions = externalDepartmentsList
       .filter((dept) => !dept.isHide)
@@ -76,7 +81,10 @@ export default function CitizenDashboard() {
         options: STATUS_ACTIONS.map((action) => ({
           label: t(
             action.badgeLabel || action.label,
-            action.badgeLabelHindi || action.labelHindi || action.badgeLabel || action.label,
+            action.badgeLabelHindi ||
+              action.labelHindi ||
+              action.badgeLabel ||
+              action.label,
           ),
           value: action.value,
         })),
@@ -90,25 +98,19 @@ export default function CitizenDashboard() {
     isLoading: isComplaintsLoading,
     error: complaintsError,
   } = useGetComplaints(
-    [
-      page,
-      limit,
-      searchId,
-      statusFilter,
-      departmentFilter,
-      sortBy,
-      sortOrder,
-    ],
+    [page, limit, searchId, statusFilter, departmentFilter, sortBy, sortOrder],
     {
       page,
       limit,
       search: searchId || undefined,
       status: statusFilter || undefined,
-      department: !isExternal && departmentFilter ? departmentFilter : undefined,
-      departmentCode: isExternal && departmentFilter ? departmentFilter : undefined,
+      department:
+        !isExternal && departmentFilter ? departmentFilter : undefined,
+      departmentCode:
+        isExternal && departmentFilter ? departmentFilter : undefined,
       sortBy: sortBy || undefined,
       sortOrder: sortOrder || undefined,
-    }
+    },
   );
 
   const analytics = res?.data?.data;
@@ -142,7 +144,10 @@ export default function CitizenDashboard() {
 
     return Object.entries(analytics).reduce((sum, [key, val]) => {
       const normalizedKey = key.toLowerCase().replace(/[^a-z0-9]/g, "");
-      if (!presentKeys.has(normalizedKey) && !presentKeys.has(key.toLowerCase())) {
+      if (
+        !presentKeys.has(normalizedKey) &&
+        !presentKeys.has(key.toLowerCase())
+      ) {
         const count = typeof val === "number" ? val : Number(val);
         if (!isNaN(count)) {
           return sum + count;
@@ -160,18 +165,23 @@ export default function CitizenDashboard() {
     },
     {
       label: t("Pending", "लंबित"),
-      value: openCount,
+      value: openCount + pendingCount,
       filter: "OPEN",
+      navigateTo: `/citizen/track?filter.status=OPEN,PENDING`,
     },
-    {
-      label: t("Approval Pending", "स्वीकृति लंबित"),
-      value: pendingCount,
-      filter: "PENDING",
-    },
+    // {
+    //   label: t("Approval Pending", "स्वीकृति लंबित"),
+    //   value: pendingCount,
+    //   filter: "PENDING",
+    // },
     {
       label: t("In Progress", "प्रगति पर"),
-      value: inProgressCount,
+      value: inProgressCount + externalStatusCount,
       filter: "IN_PROGRESS",
+      navigateTo: `/citizen/track?filter.status=IN_PROGRESS&filter.department=${externalDepartmentsList
+        .filter((dept) => !dept.isHide)
+        .map((dept) => dept.key)
+        .join(",")}`,
     },
     {
       label: t("Resolved", "समाधान की गई"),
@@ -193,13 +203,13 @@ export default function CitizenDashboard() {
       value: escalatedCount,
       filter: "ESCALATED",
     },
-    {
-      label: t("External Status", "बाहरी स्थिति"),
-      value: externalStatusCount,
-      filter: "EXTERNAL_STATUS",
-      navigate: false,
-      // navigateTo : `/citizen/track?filter.department=${externalDepartmentsList.filter((dept)=> !dept.isHide).map((dept) => dept.key).join(",")}`
-    },
+    // {
+    //   label: t("External Status", "बाहरी स्थिति"),
+    //   value: externalStatusCount,
+    //   filter: "EXTERNAL_STATUS",
+    //   navigate: false,
+    //   // navigateTo : `/citizen/track?filter.department=${externalDepartmentsList.filter((dept)=> !dept.isHide).map((dept) => dept.key).join(",")}`
+    // },
     // {
     //   label: t("Rejected", "अस्वीकृत"),
     //   value: rejectedCount,
