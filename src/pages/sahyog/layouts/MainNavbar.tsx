@@ -20,7 +20,7 @@ export default function MainNavbar() {
   };
 
   return (
-    <nav className="bg-[#1C4D8D] text-white shadow-md relative z-30">
+    <nav className="hidden lg:block bg-[#1C4D8D] text-white shadow-md relative z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="flex items-center justify-between h-14">
           {/* Left Navigation: Exactly Home Page, Citizen Services (New Complaint, Registered User, FAQ) */}

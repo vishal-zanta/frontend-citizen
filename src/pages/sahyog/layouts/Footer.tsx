@@ -106,7 +106,7 @@ export default function Footer() {
           </div>
 
           {/* Copyright Sub-footer */}
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-center sm:text-left text-[11px]">
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-center sm:text-left text-xs">
             <div>{t.footer.copyright}</div>
             <div className="flex items-center gap-2">
               <span>{translate("Designed & Developed by", "द्वारा डिज़ाइन एवं विकसित")}</span>

@@ -17,7 +17,7 @@ const SahyogVariant2: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#faf7ee] text-[#14344c] antialiased selection:bg-[#f77b10]/20 selection:text-[#113859]">
+    <div className="min-h-screen flex flex-col bg-[#faf7ee] text-[#14344c] antialiased selection:bg-[#f77b10]/20 selection:text-[#113859] overflow-x-hidden">
       {/* Skip to Main Content (Accessibility) */}
       {/* <a
         href="#services"
