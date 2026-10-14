@@ -39,9 +39,9 @@ const FloatingAssistant = () => {
         aria-expanded={isOpen}
         aria-controls="assistant-panel"
         aria-label={t(content.assistant.toggleBtn.en, content.assistant.toggleBtn.hi)}
-        className="fixed bottom-5 sm:bottom-6 right-5 sm:right-6 z-50 flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full bg-[#204e83] hover:bg-[#10365e] text-white border border-white/50 shadow-[0_6px_25px_rgba(22,57,92,0.35)] transition-all duration-200 hover:scale-105 cursor-pointer text-xs sm:text-sm font-bold"
+        className="fixed bottom-4 sm:bottom-6 right-3 xs:right-4 sm:right-6 z-50 flex items-center gap-2 xs:gap-2.5 px-3.5 xs:px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-[#204e83] hover:bg-[#10365e] text-white border border-white/50 shadow-[0_6px_25px_rgba(22,57,92,0.35)] transition-all duration-200 hover:scale-105 cursor-pointer text-xs sm:text-sm font-bold"
       >
-        <HeadsetIcon className="w-5 h-5 text-[#ffb757]" />
+        <HeadsetIcon className="w-4 h-4 xs:w-5 xs:h-5 text-[#ffb757]" />
         <span>{t(content.assistant.toggleBtn.en, content.assistant.toggleBtn.hi)}</span>
       </button>
 
@@ -50,7 +50,7 @@ const FloatingAssistant = () => {
         <aside
           id="assistant-panel"
           aria-label={t(content.assistant.title.en, content.assistant.title.hi)}
-          className="fixed right-4 sm:right-6 bottom-20 sm:bottom-22 w-[calc(100%-32px)] sm:w-[340px] bg-white border border-[#dce5ed] rounded-xl shadow-[0_12px_60px_rgba(9,41,75,0.25)] p-5 sm:p-6 z-50 animate-in fade-in zoom-in-95 duration-200"
+          className="fixed right-3 xs:right-4 sm:right-6 bottom-16 sm:bottom-22 w-[calc(100%-24px)] xs:w-[calc(100%-32px)] sm:w-[340px] bg-white border border-[#dce5ed] rounded-xl shadow-[0_12px_60px_rgba(9,41,75,0.25)] p-4.5 xs:p-5 sm:p-6 z-50 animate-in fade-in zoom-in-95 duration-200"
         >
           {/* Header */}
           <div className="flex items-center justify-between gap-3 pb-3 border-b border-[#dce5ed]">

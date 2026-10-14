@@ -1,15 +1,28 @@
 
+import React from "react";
 import userFlow from "@/assets/user-flow-steps.jpeg";
 import userFlowEng from "@/assets/user-flow-steps-eng.jpeg";
-
+import userFlowHinPotrait from "@/assets/user-flow-steps-hin-potrait.jpeg";
+import userFlowEnPotrait from "@/assets/user-flow-steps-en-potrait.jpeg";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function FeaturesAndFlow() {
-  const {t} = useLanguage();
+  const { t } = useLanguage();
 
   return (
-    <section className=" bg-white" id="how-it-works">
-      <img src={t(userFlowEng, userFlow)}/>
+    <section className="bg-white" id="how-it-works">
+      {/* Small screens portrait user-flow (< sm) */}
+      <img
+        src={t(userFlowEnPotrait, userFlowHinPotrait)}
+        alt="User flow steps"
+        className="w-full h-auto block sm:hidden"
+      />
+      {/* sm+ and Desktop landscape user-flow */}
+      <img
+        src={t(userFlowEng, userFlow)}
+        alt="User flow steps"
+        className="w-full h-auto hidden sm:block"
+      />
       {/* <div className="max-w-4xl mx-auto">
         <div className="bg-slate-50/80 border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-md transition-all">
           <div className="flex items-center gap-3 pb-4 mb-6 border-b border-slate-200">

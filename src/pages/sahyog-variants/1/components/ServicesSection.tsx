@@ -17,25 +17,25 @@ const ServicesSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="services" className="bg-[#f0f5fa] py-16 md:py-20">
-      <div className="max-w-[1240px] mx-auto w-[calc(100%-32px)] sm:w-[calc(100%-80px)]">
+    <section id="services" className="bg-[#f0f5fa] py-10 xs:py-14 sm:py-18 lg:py-20">
+      <div className="max-w-[1240px] mx-auto px-3 xs:px-4 sm:px-8 lg:px-12">
         {/* Section Heading */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 mb-8 sm:mb-10">
           <div>
-            <span className="text-xs font-bold tracking-widest text-[#204e83] uppercase block mb-1">
+            <span className="text-xs font-bold tracking-widest text-[#204e83] uppercase block mb-1.5 xs:mb-2">
               {t(content.services.kicker.en, content.services.kicker.hi)}
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#162f47] tracking-tight">
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-[#162f47] tracking-tight">
               {t(content.services.heading.en, content.services.heading.hi)}
             </h2>
           </div>
-          <p className="text-sm text-[#647587] font-medium max-w-[280px]">
+          <p className="text-xs xs:text-sm text-[#647587] font-medium max-w-[280px]">
             {t(content.services.subheading.en, content.services.subheading.hi)}
           </p>
         </div>
 
         {/* Service Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 xs:gap-6 sm:gap-7">
           {content.services.items.map((item) => {
             const isOrange = item.theme === "orange";
             const isBlue = item.theme === "blue";
@@ -74,34 +74,34 @@ const ServicesSection = () => {
                 </div>
 
                 {/* Top Badge & Number */}
-                <div className="flex items-center justify-between px-6 sm:px-7 -mt-6 mb-4 relative z-10">
+                <div className="flex items-center justify-between px-4 xs:px-6 sm:px-7 -mt-5 xs:-mt-6 mb-3 xs:mb-4 relative z-10">
                   <div
-                    className={`w-12 h-12 rounded-full border-4 border-white shadow-md flex items-center justify-center ${iconBgClass}`}
+                    className={`w-10 h-10 xs:w-12 xs:h-12 rounded-full border-4 border-white shadow-md flex items-center justify-center ${iconBgClass}`}
                   >
-                    {isOrange && <FileIcon className="w-5 h-5" />}
-                    {isBlue && <SearchIcon className="w-5 h-5" />}
-                    {!isOrange && !isBlue && <MessageIcon className="w-5 h-5" />}
+                    {isOrange && <FileIcon className="w-4 xs:w-5 h-4 xs:h-5" />}
+                    {isBlue && <SearchIcon className="w-4 xs:w-5 h-4 xs:h-5" />}
+                    {!isOrange && !isBlue && <MessageIcon className="w-4 xs:w-5 h-4 xs:h-5" />}
                   </div>
-                  <span className="text-xs font-bold text-[#204e83] tracking-widest px-3 py-1.5 bg-white border border-[#dce5ed] rounded-md shadow-2xs">
+                  <span className="text-xs font-bold text-[#204e83] tracking-widest px-2.5 xs:px-3 py-1 xs:py-1.5 bg-white border border-[#dce5ed] rounded-md shadow-2xs">
                     {item.no}
                   </span>
                 </div>
 
                 {/* Content */}
-                <div className="px-6 sm:px-7 flex-1 flex flex-col">
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#162f47] mb-2 leading-tight">
+                <div className="px-4 xs:px-6 sm:px-7 flex-1 flex flex-col">
+                  <h3 className="text-xl xs:text-2xl font-bold text-[#162f47] mb-2 leading-tight">
                     {t(item.title.en, item.title.hi)}
                   </h3>
-                  <p className="text-sm sm:text-[15px] text-[#52697f] leading-relaxed mb-6 flex-1">
+                  <p className="text-xs xs:text-sm sm:text-[15px] text-[#52697f] leading-relaxed mb-5 xs:mb-6 flex-1">
                     {t(item.description.en, item.description.hi)}
                   </p>
                 </div>
 
                 {/* Button */}
-                <div className="px-6 sm:px-7 pb-6 sm:pb-7">
+                <div className="px-4 xs:px-6 sm:px-7 pb-5 xs:pb-6 sm:pb-7">
                   <Link
                     to={item.link}
-                    className={`w-full inline-flex items-center justify-center min-h-[48px] px-6 py-2.5 rounded-md font-bold text-sm sm:text-[15px] shadow-sm hover:shadow transition-all duration-200 hover:-translate-y-0.5 ${btnBgClass}`}
+                    className={`w-full inline-flex items-center justify-center min-h-[44px] xs:min-h-[48px] px-4 xs:px-6 py-2.5 rounded-md font-bold text-xs xs:text-sm sm:text-[15px] shadow-sm hover:shadow transition-all duration-200 hover:-translate-y-0.5 ${btnBgClass}`}
                   >
                     {t(item.buttonText.en, item.buttonText.hi)}
                   </Link>
