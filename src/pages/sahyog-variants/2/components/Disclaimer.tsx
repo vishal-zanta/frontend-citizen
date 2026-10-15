@@ -5,7 +5,7 @@ const Disclaimer: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="max-w-[1280px] mx-auto px-3 xs:px-4 sm:px-8 lg:px-12 py-3 xs:py-3.5 sm:py-4 text-xs text-[#78858d] leading-relaxed">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-8 lg:px-12 py-4 text-xs text-[#78858d] leading-relaxed">
       <b className="font-bold text-[#647684]">
         {t("Disclaimer:", "अस्वीकरण :")}
       </b>{" "}

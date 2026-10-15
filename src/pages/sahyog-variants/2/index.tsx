@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import UtilityBar from "./components/UtilityBar";
 import NoticeBanner from "./components/NoticeBanner";
 import Header from "./components/Header";
@@ -10,21 +10,23 @@ import SupportSection from "./components/SupportSection";
 import AboutSection from "./components/AboutSection";
 import Footer from "./components/Footer";
 import Disclaimer from "./components/Disclaimer";
+import AssistantPanel from "./components/AssistantPanel";
 import Chatbot from "@/pages/chatbot";
 import { useLanguage } from "@/context/LanguageContext";
 
 const SahyogVariant2: React.FC = () => {
   const { t } = useLanguage();
+  const [showChatbot, setShowChatbot] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#faf7ee] text-[#14344c] antialiased selection:bg-[#f77b10]/20 selection:text-[#113859] overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#faf7ee] text-[#14344c] font-sans antialiased selection:bg-[#f77b10]/20 selection:text-[#113859] overflow-x-hidden">
       {/* Skip to Main Content (Accessibility) */}
-      {/* <a
+      <a
         href="#services"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-[#113859] focus:font-bold focus:shadow-lg focus:rounded-sm focus:border focus:border-[#113859]"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-[#113859] focus:font-bold focus:shadow-lg focus:rounded-[3px] focus:border focus:border-[#113859] text-xs"
       >
         {t("Skip to main content", "मुख्य सामग्री पर जाएं")}
-      </a> */}
+      </a>
 
       {/* Top Utility Bar with Language Selector */}
       <UtilityBar />
@@ -37,7 +39,7 @@ const SahyogVariant2: React.FC = () => {
 
       {/* Main Page Content */}
       <main className="flex-1">
-        {/* Photographic Hero with Development Skyline & Leader */}
+        {/* Photographic Hero with Development Skyline & Leader Cutout */}
         <HeroSection />
 
         {/* Statistics / Impact Section */}
@@ -52,7 +54,7 @@ const SahyogVariant2: React.FC = () => {
         {/* Helpline 1100 Callout Banner */}
         <SupportSection />
 
-        {/* About Sahyog Section */}
+        {/* Bihar Culture & Heritage About Banner */}
         <AboutSection />
       </main>
 
@@ -62,8 +64,15 @@ const SahyogVariant2: React.FC = () => {
       {/* Legal & Language Disclaimer */}
       <Disclaimer />
 
-      {/* Floating AI Chatbot Assistant */}
-      <Chatbot />
+      {/* Floating Sahyog Assistant Panel */}
+      <AssistantPanel onOpenChatbot={() => setShowChatbot(true)} />
+
+      {/* Chatbot modal (if opened via assistant panel) */}
+      {showChatbot && (
+        <div className="relative z-50">
+          <Chatbot />
+        </div>
+      )}
     </div>
   );
 };

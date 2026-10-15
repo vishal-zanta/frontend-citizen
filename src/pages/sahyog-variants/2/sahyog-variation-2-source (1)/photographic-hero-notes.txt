@@ -1,0 +1,7 @@
+Photographic hero revision
+
+The generated background is a conceptual development montage, not a documentary photograph of a specific Bihar project. The supplied leader cutout is retained unchanged as a separate image layer. All existing bilingual page content and service links are preserved.
+
+Generation brief: Photorealistic panoramic government citizen-service banner, approximately 2.5:1. Contemporary Bihar development expressed through a divided road, green fields, river plain and civic architecture inspired by Patna. Natural blue sky and warm sunrise, navy negative space on the left for live HTML text. No text, logos, people or leader in the generated background. The original leader portrait is layered separately in the website.
+
+Process: Existing five circular character illustrations restored from assets/process.png. Responsive desktop and mobile layout, Hindi and English content checked.

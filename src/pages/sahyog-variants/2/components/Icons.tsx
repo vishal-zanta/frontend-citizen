@@ -103,3 +103,32 @@ export const MailIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
     <path d="m2 6 10 7 10-7" />
   </svg>
 );
+
+export const BuildingIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m3 9 9-7 9 7H3ZM4 22h16M6 9v10M12 9v10M18 9v10M2 19h20" />
+  </svg>
+);
+
+export const SmileIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 14s1.5 3 4 3 4-3 4-3M8 8h.01M16 8h.01" />
+  </svg>
+);
