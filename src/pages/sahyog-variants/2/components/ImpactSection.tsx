@@ -1,6 +1,7 @@
 import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import { FileIcon, CheckIcon } from "./Icons";
+import totalRegisteredIcon from "@/assets/sahyog-variants/2/icons/total-registered.png";
+import totalResolvedIcon from "@/assets/sahyog-variants/2/icons/total-resolved.png";
 
 const ImpactSection: React.FC = () => {
   const { t } = useLanguage();
@@ -24,7 +25,7 @@ const ImpactSection: React.FC = () => {
 
       <div className="metric">
         <span className="metric-icon">
-          <FileIcon />
+          <img src={totalRegisteredIcon} alt="" width="48" height="48" />
         </span>
         <div>
           <b>1,126</b>
@@ -36,7 +37,7 @@ const ImpactSection: React.FC = () => {
 
       <div className="metric resolved">
         <span className="metric-icon">
-          <CheckIcon />
+          <img src={totalResolvedIcon} alt="" width="48" height="48" />
         </span>
         <div>
           <b>516</b>

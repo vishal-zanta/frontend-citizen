@@ -1,6 +1,5 @@
 import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import { HeadsetIcon, PhoneIcon } from "./Icons";
 
 const SupportSection: React.FC = () => {
   const { t } = useLanguage();
@@ -8,7 +7,9 @@ const SupportSection: React.FC = () => {
   return (
     <section className="support">
       <div className="support-symbol">
-        <HeadsetIcon />
+        <svg>
+          <use href="#headset" />
+        </svg>
       </div>
       <div className="support-copy">
         <span className="kicker" data-en="BIHAR SAHYOG HELPLINE">
@@ -28,7 +29,9 @@ const SupportSection: React.FC = () => {
         <span data-en="TOLL-FREE">{t("TOLL-FREE", "टोल-फ्री")}</span>
         <b>1100</b>
         <span className="dial-label">
-          <PhoneIcon />
+          <svg>
+            <use href="#phone" />
+          </svg>
           <span data-en="Call now">{t("Call now", "अभी कॉल करें")}</span>
         </span>
       </a>

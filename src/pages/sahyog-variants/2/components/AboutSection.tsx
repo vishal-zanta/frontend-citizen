@@ -1,6 +1,6 @@
 import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import golgharSilhouetteImg from "@/assets/sahyog-variants/2/variation-2/golghar-silhouette.png";
+import golgharTricolorImg from "@/assets/sahyog-variants/2/variation-2/golghar-tricolor-watercolor.png";
 
 const AboutSection: React.FC = () => {
   const { t } = useLanguage();
@@ -9,14 +9,14 @@ const AboutSection: React.FC = () => {
     <section className="about culture-banner" id="bihar-culture">
       <img
         className="culture-photo"
-        src={golgharSilhouetteImg}
+        src={golgharTricolorImg}
         alt={t(
           "Golghar, Patna — representation of Bihar's historic heritage",
           "गोलघर, पटना — बिहार की ऐतिहासिक धरोहर का चित्रण"
         )}
         loading="lazy"
-        width="1024"
-        height="768"
+        width="1536"
+        height="1024"
       />
       <div className="about-copy">
         <span className="kicker" data-en="CONNECTED TO EVERY CITIZEN">

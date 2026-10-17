@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import ImpactSection from "./components/ImpactSection";
@@ -9,15 +9,15 @@ import SupportSection from "./components/SupportSection";
 import Footer from "./components/Footer";
 import Disclaimer from "./components/Disclaimer";
 import AssistantPanel from "./components/AssistantPanel";
-import Chatbot from "@/pages/chatbot";
 import { useLanguage } from "@/context/LanguageContext";
 import biharWideDoodle from "@/assets/sahyog-variants/2/variation-2/bihar-wide-doodle.png";
 import biharContinuousDoodle from "@/assets/sahyog-variants/2/variation-2/bihar-continuous-doodle.png";
 import "./sahyog-variation-2.css";
+import Chatbot from "@/pages/chatbot";
+
 
 const SahyogVariant2: React.FC = () => {
   const { t } = useLanguage();
-  const [showChatbot, setShowChatbot] = useState(false);
 
   return (
     <div
@@ -99,7 +99,7 @@ const SahyogVariant2: React.FC = () => {
         </section>
       </main>
 
-      {/* Dark Civic Footer */}
+      {/* Civic Footer */}
       <Footer />
 
       {/* Language / Legal Disclaimer */}
