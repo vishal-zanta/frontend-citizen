@@ -6,48 +6,75 @@ import heroSlideLightImg from "@/assets/sahyog-variants/2/variation-2/bihar-lead
 const HeroSection: React.FC = () => {
   const { lang, t } = useLanguage();
   const [activeSlide, setActiveSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const timerRef = useRef<number | null>(null);
+  const carouselRef = useRef<HTMLElement>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const nextSlide = useCallback(() => {
-    setActiveSlide((prev) => (prev + 1) % 2);
-  }, []);
+  const scheduleHero = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
 
-  useEffect(() => {
-    if (isPaused) {
-      if (timerRef.current) clearInterval(timerRef.current);
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (
+      motionQuery.matches ||
+      document.hidden ||
+      carouselRef.current?.matches(":hover") ||
+      carouselRef.current?.contains(document.activeElement)
+    ) {
       return;
     }
 
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (motionQuery.matches) return;
-
     timerRef.current = setInterval(() => {
-      nextSlide();
+      setActiveSlide((prev) => (prev + 1) % 2);
     }, 6500);
+  }, []);
+
+  useEffect(() => {
+    scheduleHero();
+
+    const handleVisibilityChange = () => scheduleHero();
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleMotionChange = () => scheduleHero();
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    motionQuery.addEventListener("change", handleMotionChange);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      motionQuery.removeEventListener("change", handleMotionChange);
     };
-  }, [isPaused, nextSlide]);
+  }, [scheduleHero]);
+
+  const handleMouseEnter = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+  };
+
+  const handleMouseLeave = () => {
+    scheduleHero();
+  };
+
+  const handleFocusIn = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+  };
+
+  const handleFocusOut = () => {
+    setTimeout(scheduleHero, 0);
+  };
 
   return (
     <section
+      ref={carouselRef}
       className="hero hero-carousel"
       id="hero-banner"
       aria-roledescription="carousel"
       aria-label="Bihar Sahyog"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onFocusCapture={() => setIsPaused(true)}
-      onBlurCapture={() => setIsPaused(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onFocusCapture={handleFocusIn}
+      onBlurCapture={handleFocusOut}
     >
-      {/* Scoped Hero styles ensuring banner text sits on top on mobile/tablet */}
+      {/* Mobile hero layout ensuring text stays at top and doesn't overlap leaders */}
       <style>{`
-        #hero-banner .hero-layout {
-          position: relative;
-        }
-        @media (max-width: 850px) {
+        @media (max-width: 768px) {
           #hero-banner.hero {
             height: 550px !important;
           }
@@ -60,40 +87,34 @@ const HeroSection: React.FC = () => {
           #hero-banner .hero-copy {
             width: 100% !important;
             max-width: none !important;
-            padding: 24px 20px 0 !important;
+            padding: 28px 22px 0 !important;
+            align-self: flex-start !important;
             position: relative !important;
             top: 0 !important;
-            margin-top: 0 !important;
-            align-self: flex-start !important;
             z-index: 4 !important;
           }
           #hero-banner .eyebrow {
             font-size: 12px !important;
-            margin-bottom: 12px !important;
+            margin-bottom: 14px !important;
           }
           #hero-banner h1 {
             font-size: clamp(27px, 7.8vw, 36px) !important;
             line-height: 1.3 !important;
           }
-          #hero-banner .hero-copy > p {
-            font-size: 13px !important;
-            line-height: 1.7 !important;
-            margin-top: 10px !important;
-            max-width: 340px !important;
-          }
           #hero-banner .hero-gallery::after {
-            background: linear-gradient(180deg, #08243c 0%, #08243c 39%, #08243c90 49%, transparent 62%) !important;
+            background: linear-gradient(180deg, #08243c 0%, #08243c 38%, transparent 62%) !important;
           }
           #hero-banner .leadership-banner {
-            position: absolute !important;
+            left: -110% !important;
+            right: auto !important;
             bottom: 0 !important;
-            left: -103% !important;
-            width: 203% !important;
+            width: 220% !important;
+            height: auto !important;
             max-width: none !important;
-            height: 310px !important;
-            margin: 0 !important;
-            object-fit: cover !important;
-            object-position: right bottom !important;
+            position: absolute !important;
+            object-fit: contain !important;
+            mask-image: linear-gradient(180deg, transparent 0%, #000 9%) !important;
+            -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 9%) !important;
           }
         }
       `}</style>
@@ -102,6 +123,7 @@ const HeroSection: React.FC = () => {
       <div
         className={`hero-slide ${activeSlide === 0 ? "is-active" : ""}`}
         aria-hidden={activeSlide !== 0}
+        inert={activeSlide !== 0}
       >
         <div className="hero-layout">
           <div className="hero-copy">
@@ -126,12 +148,6 @@ const HeroSection: React.FC = () => {
                 </>
               )}
             </h1>
-            <p data-en="Register your complaint. Check status.">
-              {t(
-                "Register your complaint. Check status.",
-                "शिकायत दर्ज करें, स्थिति देखें।",
-              )}
-            </p>
           </div>
           <div className="hero-gallery">
             <img
@@ -139,7 +155,7 @@ const HeroSection: React.FC = () => {
               src={heroSlideDarkImg}
               alt={t(
                 "Combined image of leaders against the backdrop of Bihar's heritage and development",
-                "बिहार की धरोहर और विकास की पृष्ठभूमि में दोनों नेताओं की संयोजित छवि",
+                "बिहार की धरोहर और विकास की पृष्ठभूमि में दोनों नेताओं की संयोजित छवि"
               )}
               fetchPriority="high"
             />
@@ -151,6 +167,7 @@ const HeroSection: React.FC = () => {
       <div
         className={`hero-slide hero-slide-light ${activeSlide === 1 ? "is-active" : ""}`}
         aria-hidden={activeSlide !== 1}
+        inert={activeSlide !== 1}
       >
         <div className="hero-layout">
           <div className="hero-copy">
@@ -175,27 +192,20 @@ const HeroSection: React.FC = () => {
                 </>
               )}
             </h1>
-            <p data-en="Register your complaint. Check status.">
-              {t(
-                "Register your complaint. Check status.",
-                "शिकायत दर्ज करें, स्थिति देखें।",
-              )}
-            </p>
           </div>
           <div className="hero-gallery">
             <img
               className="leadership-banner"
               src={heroSlideLightImg}
               alt={t(
-                "Combined image of leaders greeting citizens against the backdrop of Bihar's heritage and development",
-                "बिहार की धरोहर और विकास की पृष्ठभूमि में दोनों नेताओं की संयोजित छवि",
+                "Combined image of leaders against the backdrop of Bihar's heritage and development",
+                "बिहार की धरोहर और विकास की पृष्ठभूमि में दोनों नेताओं की संयोजित छवि"
               )}
               loading="eager"
             />
           </div>
         </div>
       </div>
-
     </section>
   );
 };

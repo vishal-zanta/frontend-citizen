@@ -4,7 +4,9 @@ import { useLanguage } from "@/context/LanguageContext";
 import serviceRegisterImg from "@/assets/sahyog-variants/2/variation-2/service-register-illustration.png";
 import serviceTrackImg from "@/assets/sahyog-variants/2/variation-2/service-track-illustration.png";
 import serviceFeedbackImg from "@/assets/sahyog-variants/2/variation-2/service-feedback-illustration.png";
-import { FileIcon, SearchIcon, MessageIcon } from "./Icons";
+import registerComplaintIcon from "@/assets/sahyog-variants/2/icons/register-complaint.png";
+import complaintStatusIcon from "@/assets/sahyog-variants/2/icons/complaint-status.png";
+import citizenFeedbackIcon from "@/assets/sahyog-variants/2/icons/citizen-feedback.png";
 
 const ServicesSection: React.FC = () => {
   const { t } = useLanguage();
@@ -21,12 +23,6 @@ const ServicesSection: React.FC = () => {
               {t("How can we help you?", "हम आपकी क्या मदद कर सकते हैं?")}
             </h2>
           </div>
-          <p data-en="Your complaint. Your status. Your feedback.">
-            {t(
-              "Your complaint. Your status. Your feedback.",
-              "आपकी शिकायत। आपकी स्थिति। आपकी प्रतिक्रिया।"
-            )}
-          </p>
         </div>
 
         <div className="service-grid">
@@ -45,7 +41,12 @@ const ServicesSection: React.FC = () => {
             <div className="service-copy">
               <div className="service-top">
                 <span className="service-icon">
-                  <FileIcon />
+                  <img
+                    src={registerComplaintIcon}
+                    alt=""
+                    width="44"
+                    height="44"
+                  />
                 </span>
                 <span className="service-no">01</span>
               </div>
@@ -83,7 +84,12 @@ const ServicesSection: React.FC = () => {
             <div className="service-copy">
               <div className="service-top">
                 <span className="service-icon">
-                  <SearchIcon />
+                  <img
+                    src={complaintStatusIcon}
+                    alt=""
+                    width="44"
+                    height="44"
+                  />
                 </span>
                 <span className="service-no">02</span>
               </div>
@@ -121,7 +127,12 @@ const ServicesSection: React.FC = () => {
             <div className="service-copy">
               <div className="service-top">
                 <span className="service-icon">
-                  <MessageIcon />
+                  <img
+                    src={citizenFeedbackIcon}
+                    alt=""
+                    width="44"
+                    height="44"
+                  />
                 </span>
                 <span className="service-no">03</span>
               </div>

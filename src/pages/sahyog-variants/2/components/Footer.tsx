@@ -1,7 +1,6 @@
 import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import biharLogo from "@/assets/sahyog-variants/2/bihar-logo.png";
-import { PhoneIcon, MailIcon } from "./Icons";
 
 const Footer: React.FC = () => {
   const { lang, t } = useLanguage();
@@ -34,13 +33,17 @@ const Footer: React.FC = () => {
         <div>
           <h3 data-en="Contact us">{t("Contact us", "संपर्क करें")}</h3>
           <a className="footer-phone" href="tel:1100">
-            <PhoneIcon />
+            <svg>
+              <use href="#phone" />
+            </svg>
             <span data-en="Toll-free: 1100">
               {t("Toll-free: 1100", "टोल-फ्री: 1100")}
             </span>
           </a>
           <a className="footer-mail" href="mailto:sahyoghelpline@bihar.gov.in">
-            <MailIcon />
+            <svg>
+              <use href="#mail" />
+            </svg>
             <span>sahyoghelpline@bihar.gov.in</span>
           </a>
           <p data-en="24×7 / 365 days State Call Centre">
