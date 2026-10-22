@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
-import serviceRegisterImg from "@/assets/sahyog-variants/2/variation-2/service-register-illustration.png";
-import serviceTrackImg from "@/assets/sahyog-variants/2/variation-2/service-track-illustration.png";
-import serviceFeedbackImg from "@/assets/sahyog-variants/2/variation-2/service-feedback-illustration.png";
+import serviceRegisterImg from "@/assets/sahyog-variants/2/variation-2/service-register-new.webp";
+import serviceTrackImg from "@/assets/sahyog-variants/2/variation-2/service-track-new.webp";
+import serviceFeedbackImg from "@/assets/sahyog-variants/2/variation-2/service-feedback-new.webp";
 import registerComplaintIcon from "@/assets/sahyog-variants/2/icons/register-complaint.png";
 import complaintStatusIcon from "@/assets/sahyog-variants/2/icons/complaint-status.png";
 import citizenFeedbackIcon from "@/assets/sahyog-variants/2/icons/citizen-feedback.png";
@@ -19,10 +19,17 @@ const ServicesSection: React.FC = () => {
             <span className="kicker" data-en="Citizen Service">
               {t("Citizen Service", "नागरिक सेवाएं")}
             </span>
-            <h2 data-en="How can we help you?">
-              {t("How can we help you?", "हम आपकी क्या मदद कर सकते हैं?")}
+            <h2 data-en="How We Can Help You">
+              {t("How We Can Help You", "हम आपकी कैसे मदद कर सकते हैं")}
             </h2>
           </div>
+          <Link
+            to="/sahyog/faq"
+            className="faq-link"
+            data-en="Frequently Asked Questions ↗"
+          >
+            {t("Frequently Asked Questions ↗", "अक्सर पूछे जाने वाले प्रश्न ↗")}
+          </Link>
         </div>
 
         <div className="service-grid">
@@ -48,15 +55,14 @@ const ServicesSection: React.FC = () => {
                     height="44"
                   />
                 </span>
-                <span className="service-no">01</span>
               </div>
               <h3 data-en="Register Complaint">
                 {t("Register Complaint", "शिकायत पंजीकरण")}
               </h3>
-              <p data-en="File your grievance online through our digital portal">
+              <p data-en="Register your complaint easily on the portal">
                 {t(
-                  "File your grievance online through our digital portal",
-                  "पोर्टल के माध्यम से अपनी नई शिकायत दर्ज करें"
+                  "Register your complaint easily on the portal",
+                  "पोर्टल पर अपनी शिकायत आसानी से दर्ज करें"
                 )}
               </p>
               <Link
@@ -91,15 +97,14 @@ const ServicesSection: React.FC = () => {
                     height="44"
                   />
                 </span>
-                <span className="service-no">02</span>
               </div>
               <h3 data-en="Complaint Status">
                 {t("Complaint Status", "शिकायत की स्थिति")}
               </h3>
-              <p data-en="Track real-time progress and action taken status">
+              <p data-en="Enter your complaint number to see the latest progress instantly">
                 {t(
-                  "Track real-time progress and action taken status",
-                  "अपनी शिकायत संख्या दर्ज कर वर्तमान शिकायत की स्थिति देखें"
+                  "Enter your complaint number to see the latest progress instantly",
+                  "शिकायत संख्या डालें और तुरंत देखें कि कार्रवाई कहां तक पहुंची"
                 )}
               </p>
               <Link
@@ -134,15 +139,14 @@ const ServicesSection: React.FC = () => {
                     height="44"
                   />
                 </span>
-                <span className="service-no">03</span>
               </div>
               <h3 data-en="Citizen Feedback">
                 {t("Citizen Feedback", "नागरिक प्रतिक्रिया")}
               </h3>
-              <p data-en="Share your satisfaction rating & feedback on resolution">
+              <p data-en="Rate the resolution and share your feedback with us">
                 {t(
-                  "Share your satisfaction rating & feedback on resolution",
-                  "शिकायत समाधान के संबंध में अपनी शिकायत की प्रतिक्रिया और रेटिंग दें"
+                  "Rate the resolution and share your feedback with us",
+                  "समाधान से संतुष्ट हैं? अपनी रेटिंग और राय हमारे साथ साझा करें"
                 )}
               </p>
               <Link

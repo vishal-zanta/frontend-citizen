@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import heroSlideDarkImg from "@/assets/sahyog-variants/2/variation-2/bihar-leadership-pm-foreground.png";
-import heroSlideLightImg from "@/assets/sahyog-variants/2/variation-2/bihar-leadership-namaste.png";
+import heroSlideLightImg from "@/assets/sahyog-variants/2/variation-2/bihar-leadership-banner2-v4.webp";
 
 const HeroSection: React.FC = () => {
   const { lang, t } = useLanguage();
@@ -24,7 +24,7 @@ const HeroSection: React.FC = () => {
 
     timerRef.current = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % 2);
-    }, 6500);
+    }, 5000);
   }, []);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const HeroSection: React.FC = () => {
       onFocusCapture={handleFocusIn}
       onBlurCapture={handleFocusOut}
     >
-      {/* Mobile hero layout ensuring text stays at top and doesn't overlap leaders */}
+      {/* Mobile hero layout ensuring text stays strictly at top and image below */}
       <style>{`
         @media (max-width: 768px) {
           #hero-banner.hero {
@@ -101,10 +101,10 @@ const HeroSection: React.FC = () => {
             font-size: clamp(27px, 7.8vw, 36px) !important;
             line-height: 1.3 !important;
           }
-          #hero-banner .hero-gallery::after {
+          #hero-banner .hero-slide:not(.hero-slide-light) .hero-gallery::after {
             background: linear-gradient(180deg, #08243c 0%, #08243c 38%, transparent 62%) !important;
           }
-          #hero-banner .leadership-banner {
+          #hero-banner .hero-slide:not(.hero-slide-light) .leadership-banner {
             left: -110% !important;
             right: auto !important;
             bottom: 0 !important;
@@ -115,6 +115,23 @@ const HeroSection: React.FC = () => {
             object-fit: contain !important;
             mask-image: linear-gradient(180deg, transparent 0%, #000 9%) !important;
             -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 9%) !important;
+          }
+          #hero-banner .hero-slide-light .hero-gallery::after {
+            background: linear-gradient(180deg, #c24a08 0%, #d95f0c 36%, #ee7d1e66 52%, transparent 66%) !important;
+          }
+          #hero-banner .hero-slide-light .leadership-banner {
+            inset: auto 0 0 auto !important;
+            left: auto !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 330px !important;
+            max-width: none !important;
+            position: absolute !important;
+            object-fit: cover !important;
+            object-position: 78% center !important;
+            mask-image: none !important;
+            -webkit-mask-image: none !important;
           }
         }
       `}</style>
