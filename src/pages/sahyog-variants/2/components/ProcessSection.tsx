@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
 import journeyCallImg from "@/assets/sahyog-variants/2/variation-2/journey-call.png";
 import journeyRegistrationImg from "@/assets/sahyog-variants/2/variation-2/journey-registration.png";
@@ -74,13 +73,6 @@ const ProcessSection: React.FC = () => {
             {t("From call to resolution.", "कॉल से समाधान तक।")}
           </h2>
         </div>
-        <Link
-          to="/sahyog/faq"
-          className="text-link"
-          data-en="Frequently asked questions"
-        >
-          {t("Frequently asked questions", "अक्सर पूछे जाने वाले प्रश्न")}
-        </Link>
       </div>
 
       <div className="journey-layout">
