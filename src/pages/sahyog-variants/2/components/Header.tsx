@@ -8,14 +8,6 @@ const Header: React.FC = () => {
   const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const scrollToServices = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    setMobileMenuOpen(false);
-    const el = document.getElementById("services");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -62,13 +54,13 @@ const Header: React.FC = () => {
         className={mobileMenuOpen ? "is-open" : ""}
         aria-label={t("Main navigation", "मुख्य नेविगेशन")}
       >
-        <a
-          href="#services"
-          onClick={scrollToServices}
-          data-en="Citizen services"
+        <Link
+          to="/sahyog/faq"
+          onClick={() => setMobileMenuOpen(false)}
+          data-en="FAQ"
         >
-          {t("Citizen services", "नागरिक सेवाएं")}
-        </a>
+          {t("FAQ", "सामान्य प्रश्न (FAQ)")}
+        </Link>
         <a
           href="https://portal.lumirex.tech/"
           target="_blank"
