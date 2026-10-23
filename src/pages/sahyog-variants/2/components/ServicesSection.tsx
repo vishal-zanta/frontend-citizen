@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
-import serviceRegisterImg from "@/assets/sahyog-variants/2/variation-2/service-register-new.webp";
-import serviceTrackImg from "@/assets/sahyog-variants/2/variation-2/service-track-new.webp";
-import serviceFeedbackImg from "@/assets/sahyog-variants/2/variation-2/service-feedback-new.webp";
+import serviceRegisterImg from "@/assets/sahyog-variants/2/variation-2/service-register-blob.webp";
+import serviceTrackImg from "@/assets/sahyog-variants/2/variation-2/service-track-blob.webp";
+import serviceFeedbackImg from "@/assets/sahyog-variants/2/variation-2/service-feedback-blob.webp";
 import registerComplaintIcon from "@/assets/sahyog-variants/2/icons/register-complaint.png";
 import complaintStatusIcon from "@/assets/sahyog-variants/2/icons/complaint-status.png";
 import citizenFeedbackIcon from "@/assets/sahyog-variants/2/icons/citizen-feedback.png";
@@ -23,13 +23,6 @@ const ServicesSection: React.FC = () => {
               {t("How We Can Help You", "हम आपकी कैसे मदद कर सकते हैं")}
             </h2>
           </div>
-          <Link
-            to="/sahyog/faq"
-            className="faq-link"
-            data-en="Frequently Asked Questions ↗"
-          >
-            {t("Frequently Asked Questions ↗", "अक्सर पूछे जाने वाले प्रश्न ↗")}
-          </Link>
         </div>
 
         <div className="service-grid">
