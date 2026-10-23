@@ -354,7 +354,7 @@
   inset: 0;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 900ms ease, visibility 900ms;
+  transition: opacity 600ms ease, visibility 600ms;
   pointer-events: none;
 }
 
@@ -388,17 +388,17 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin-bottom: 24px;
   line-height: 1.7;
   color: #d9e8f4;
 }
 
 .sahyog-variant-2 .eyebrow>span:first-child {
-  width: 28px;
-  height: 3px;
+  width: 44px;
+  height: 4px;
   background: var(--orange);
 }
 
@@ -451,16 +451,17 @@
   bottom: 0;
 }
 
-/* Light slide - Banner 2 with orange text-safe gradient */
+/* Light slide - Banner 2 deep-navy gradient (matches banner 1 and the leaders' attire) */
 .sahyog-variant-2 .hero-slide-light,
 .sahyog-variant-2 .hero-slide-light .hero-gallery {
-  background: #e8710a;
+  background: #0b2d4a;
 }
 
 .sahyog-variant-2 .hero-slide-light .hero-gallery::after {
   display: block;
   z-index: 2;
-  background: linear-gradient(90deg, rgba(194, 74, 8, 0.95) 0%, rgba(217, 95, 12, 0.88) 26%, rgba(238, 125, 30, 0.63) 44%, rgba(245, 154, 60, 0.25) 57%, transparent 68%);
+  background: linear-gradient(90deg, #0b2d4af0 0%, #0e3a5cd0 24%, #16507a80 42%);
+  background: linear-gradient(90deg, #0b2d4af2 0%, #0d3556d6 24%, #12466e85 42%, #0b2d4a2b 56%, #0b2d4a00 66%);
 }
 
 .sahyog-variant-2 .hero-slide-light .hero-copy {
@@ -472,11 +473,11 @@
 .sahyog-variant-2 .hero-slide-light h1,
 .sahyog-variant-2 .hero-slide-light .hero-copy>p {
   color: #fff;
-  text-shadow: 0 2px 14px rgba(122, 47, 4, 0.25);
+  text-shadow: 0 2px 16px #061c3466;
 }
 
 .sahyog-variant-2 .hero-slide-light h1 em {
-  color: #ffeab8;
+  color: #ffc766;
 }
 
 .sahyog-variant-2 .hero-slide-light .eyebrow span:first-child {
@@ -504,9 +505,11 @@
     width: 100%;
     height: 100%;
     object-position: 80% center;
+    mask-image: none;
+    -webkit-mask-image: none;
   }
   .sahyog-variant-2 .hero-slide-light .hero-gallery::after {
-    background: linear-gradient(90deg, #c24a08f5, #d95f0ce0 38%, #ee7d1e80 55%, transparent 72%);
+    background: linear-gradient(90deg, #0b2d4af5, #0d3556d9 38%, #12466e80 55%, #0b2d4a00 74%);
   }
 }
 
@@ -519,9 +522,11 @@
     height: 330px !important;
     object-fit: cover !important;
     object-position: 78% center !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
   }
   .sahyog-variant-2 .hero-slide-light .hero-gallery::after {
-    background: linear-gradient(180deg, #c24a08 0%, #d95f0c 36%, #ee7d1e66 52%, transparent 66%) !important;
+    background: linear-gradient(180deg, #0b2d4a 0%, #0d3556 38%, #12466e66 54%, #0b2d4a00 68%) !important;
   }
 }
 
@@ -586,6 +591,10 @@
     width: 49%;
   }
 
+  .sahyog-variant-2 .eyebrow {
+    font-size: 21px;
+  }
+
   .sahyog-variant-2 .hero h1 {
     font-size: 35px;
   }
@@ -639,7 +648,8 @@
   }
 
   .sahyog-variant-2 .eyebrow {
-    font-size: 12px;
+    font-size: 18px;
+    margin-bottom: 18px;
   }
 
   .sahyog-variant-2 .hero-copy>p {
@@ -671,8 +681,12 @@
   }
 
   .sahyog-variant-2 .eyebrow {
-    font-size: 12px;
+    font-size: 16px;
     margin-bottom: 14px;
+  }
+
+  .sahyog-variant-2 .eyebrow span:first-child {
+    width: 32px;
   }
 
   .sahyog-variant-2 .hero h1 {
@@ -702,6 +716,30 @@
     object-fit: contain !important;
     mask-image: linear-gradient(180deg, transparent 0%, #000 9%);
     -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 9%);
+  }
+}
+
+@media (max-width: 359px) {
+  .sahyog-variant-2 .hero-copy {
+    padding-inline: 18px;
+  }
+
+  .sahyog-variant-2 .eyebrow {
+    font-size: 14px;
+  }
+
+  .sahyog-variant-2 .hero h1 {
+    font-size: 27px;
+  }
+
+  .sahyog-variant-2 .hero-copy>p {
+    font-size: 12px;
+  }
+
+  .sahyog-variant-2 .leadership-banner {
+    height: 290px;
+    width: 220%;
+    left: -120%;
   }
 }
 
@@ -830,10 +868,11 @@
 
 .sahyog-variant-2 .impact .metric span:not(.metric-icon) {
   display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: #3f5a6c;
-  margin-top: 4px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #25475f;
+  margin-top: 6px;
+  line-height: 1.35;
 }
 
 @media (max-width: 1100px) {
@@ -871,6 +910,10 @@
 
   .sahyog-variant-2 .impact .metric b {
     font-size: 36px;
+  }
+
+  .sahyog-variant-2 .impact .metric span:not(.metric-icon) {
+    font-size: 15px;
   }
 }
 
@@ -919,8 +962,18 @@
   }
 
   .sahyog-variant-2 .impact .metric span:not(.metric-icon) {
-    font-size: 12px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 359px) {
+  .sahyog-variant-2 .impact .metric b {
+    font-size: 24px;
+  }
+
+  .sahyog-variant-2 .impact .metric span:not(.metric-icon) {
+    font-size: 11px;
   }
 }
 
@@ -956,9 +1009,9 @@
 .sahyog-variant-2 .services .section-heading h2,
 .sahyog-variant-2 .process .section-heading h2 {
   font-size: 25px;
-  font-weight: 750;
+  font-weight: 800;
   letter-spacing: -0.035em;
-  color: var(--ink);
+  color: #2a5f8a;
 }
 
 @media (max-width: 600px) {
@@ -1089,7 +1142,7 @@
   margin-bottom: 10px !important;
   line-height: 1.45;
   font-weight: 700;
-  color: var(--ink);
+  color: #2b5f86;
 }
 
 .sahyog-variant-2 .services .service p {
@@ -1100,7 +1153,7 @@
   border-bottom: 1px solid #1c3f9420;
   flex: 1;
   line-height: 1.8;
-  color: var(--muted);
+  color: #587084;
 }
 
 .sahyog-variant-2 .services .service .button {
@@ -1428,13 +1481,13 @@
   line-height: 1.45;
   margin-bottom: 9px;
   font-weight: 700;
-  color: var(--ink);
+  color: #2b5f86;
 }
 
 .sahyog-variant-2 .journey p {
   font-size: 13px;
   line-height: 1.8;
-  color: var(--muted);
+  color: #587084;
 }
 
 @media (max-width: 1100px) {
