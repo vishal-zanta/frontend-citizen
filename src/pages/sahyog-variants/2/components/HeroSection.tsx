@@ -24,7 +24,7 @@ const HeroSection: React.FC = () => {
 
     timerRef.current = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % 2);
-    }, 5000);
+    }, 2000);
   }, []);
 
   useEffect(() => {
@@ -72,75 +72,11 @@ const HeroSection: React.FC = () => {
       onFocusCapture={handleFocusIn}
       onBlurCapture={handleFocusOut}
     >
-      {/* Mobile hero layout ensuring text stays strictly at top and image below */}
-      <style>{`
-        @media (max-width: 768px) {
-          #hero-banner.hero {
-            height: 550px !important;
-          }
-          #hero-banner .hero-layout {
-            display: block !important;
-            height: 100% !important;
-            min-height: 0 !important;
-            padding: 0 !important;
-          }
-          #hero-banner .hero-copy {
-            width: 100% !important;
-            max-width: none !important;
-            padding: 28px 22px 0 !important;
-            align-self: flex-start !important;
-            position: relative !important;
-            top: 0 !important;
-            z-index: 4 !important;
-          }
-          #hero-banner .eyebrow {
-            font-size: 12px !important;
-            margin-bottom: 14px !important;
-          }
-          #hero-banner h1 {
-            font-size: clamp(27px, 7.8vw, 36px) !important;
-            line-height: 1.3 !important;
-          }
-          #hero-banner .hero-slide:not(.hero-slide-light) .hero-gallery::after {
-            background: linear-gradient(180deg, #08243c 0%, #08243c 38%, transparent 62%) !important;
-          }
-          #hero-banner .hero-slide:not(.hero-slide-light) .leadership-banner {
-            left: -110% !important;
-            right: auto !important;
-            bottom: 0 !important;
-            width: 220% !important;
-            height: auto !important;
-            max-width: none !important;
-            position: absolute !important;
-            object-fit: contain !important;
-            mask-image: linear-gradient(180deg, transparent 0%, #000 9%) !important;
-            -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 9%) !important;
-          }
-          #hero-banner .hero-slide-light .hero-gallery::after {
-            background: linear-gradient(180deg, #c24a08 0%, #d95f0c 36%, #ee7d1e66 52%, transparent 66%) !important;
-          }
-          #hero-banner .hero-slide-light .leadership-banner {
-            inset: auto 0 0 auto !important;
-            left: auto !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100% !important;
-            height: 330px !important;
-            max-width: none !important;
-            position: absolute !important;
-            object-fit: cover !important;
-            object-position: 78% center !important;
-            mask-image: none !important;
-            -webkit-mask-image: none !important;
-          }
-        }
-      `}</style>
-
       {/* Slide 1 - Dark Hero (PM foreground & leadership) */}
       <div
         className={`hero-slide ${activeSlide === 0 ? "is-active" : ""}`}
         aria-hidden={activeSlide !== 0}
-        inert={activeSlide !== 0}
+        inert={activeSlide !== 0 ? true : undefined}
       >
         <div className="hero-layout">
           <div className="hero-copy">
@@ -184,7 +120,7 @@ const HeroSection: React.FC = () => {
       <div
         className={`hero-slide hero-slide-light ${activeSlide === 1 ? "is-active" : ""}`}
         aria-hidden={activeSlide !== 1}
-        inert={activeSlide !== 1}
+        inert={activeSlide !== 1 ? true : undefined}
       >
         <div className="hero-layout">
           <div className="hero-copy">
