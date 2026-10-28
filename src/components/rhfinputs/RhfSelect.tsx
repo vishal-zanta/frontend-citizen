@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import ReactSelect from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface SelectOption {
   label: string;
   value: string;
+  labelHindi?:string,
 }
 
 interface RhfSelectProps {
@@ -197,6 +199,11 @@ export default function RhfSelect({
 
   // isCreatable always implies multiple
   const isMulti = !!isMultiple;
+  const {t} = useLanguage();
+  const multiLingoOptions = useMemo(()=>(options || []).map(o=> ({
+    ...o,
+    label : t(o.label, o?.labelHindi || o?.label)
+  })),[options,t])
 
   return (
     <Controller
@@ -206,7 +213,7 @@ export default function RhfSelect({
         const styles = buildStyles(!!error, disabled, colors, isMulti);
 
         const toOption = (val: any) =>
-          options.find((o) => o.value === val) ?? { label: val, value: val };
+          multiLingoOptions.find((o) => o.value === val) ?? { label: val, value: val };
 
         const selectValue = isMulti
           ? Array.isArray(field.value)
@@ -228,7 +235,7 @@ export default function RhfSelect({
         const commonProps: any = {
           inputId: name,
           ref: field.ref,
-          options,
+          options : multiLingoOptions,
           placeholder: placeholder ?? label ?? "Select...",
           isDisabled: disabled,
           isLoading: isLoading,

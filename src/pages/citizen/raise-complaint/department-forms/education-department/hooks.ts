@@ -36,20 +36,26 @@ export const useGetFieldsOptions = (departmentCode = "EDUCATION") => {
 
           const mappedData = {
             categoryId: (categoriesData || []).map((c: any) => ({
-              label: `${c.type}-${c.subType}`,
+              label: `${c?.typeEng}-${c?.subTypeEng}`,
               value: c.categoryId,
+              labelHindi: `${c?.type}-${c?.subType}`,
+
             })),
             districtCode: (districtsData || []).map((d: any) => ({
-              label: d.districtName,
+              label:d?.nameEng ||  d.districtName,
               value: d.districtCode,
+              labelHindi:d?.nameHindi ||  d.districtName,
+
             })),
             source: (sourcesData || []).map((s: any) => ({
-              label: s.source,
+              label: s?.nameEng || s.source,
+              labelHindi: s?.nameHindi || s.source,
               value: s.source,
             })),
-            type: ["COMPLAINT", "QUERY"].map((v) => ({
-              label: v,
-              value: v,
+            type: [{en : "COMPLAINT" , hi : "शिकायत"}, {en : "QUERY" , hi : "प्रश्न"}].map((v) => ({
+              label: v.en,
+              labelHindi : v.hi,
+              value: v.en,
             })),
           };
           await postFormFields(departmentCode, mappedData);
@@ -93,8 +99,9 @@ export const useGetBlockOptions = (
         const blocksData = response?.data?.data || [];
         const formattedBlocks = Array.isArray(blocksData)
           ? blocksData.map((b: any) => ({
-              label: b.blockName,
+              label: b?.nameEng ||  b.blockName,
               value: b.blockCode,
+              labelHindi: b?.nameHindi ||  b.blockName,
             }))
           : [];
 
@@ -141,8 +148,9 @@ export const useGetPanchayatOptions = (
         const panchayatsData = response?.data?.data || [];
         const formattedPanchayats = Array.isArray(panchayatsData)
           ? panchayatsData.map((p: any) => ({
-              label: p.panchayatName,
+              label: p?.nameEng ||  p.panchayatName,
               value: p.panchayatCode,
+              labelHindi: p?.nameHindi ||  p.panchayatName,
             }))
           : [];
 
@@ -189,8 +197,9 @@ export const useGetVillageOptions = (
         const villagesData = response?.data?.data || [];
         const formattedVillages = Array.isArray(villagesData)
           ? villagesData.map((v: any) => ({
-              label: v.villageName,
+              label: v?.nameEng ||  v.villageName,
               value: v.villageCode,
+              labelHindi: v?.nameHindi ||  v.villageName,
             }))
           : [];
 
@@ -237,8 +246,9 @@ export const useGetSchoolOptions = (
         const schoolsData = response?.data?.data || [];
         const formattedSchools = Array.isArray(schoolsData)
           ? schoolsData.map((s: any) => ({
-              label: s.schoolName,
+              label: s?.nameEng ||  s.schoolName,
               value: s.schoolCode,
+              labelHindi: s?.nameHindi ||  s.schoolName,
             }))
           : [];
 

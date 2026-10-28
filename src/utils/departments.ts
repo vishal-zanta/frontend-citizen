@@ -33,6 +33,16 @@ export interface ExternalDepartmentItem {
   ) => ExternalDepartmentRowData;
 }
 
+const resolveMultilingualLabel = (
+  opt?: { label?: string; labelHindi?: string } | null,
+  t?: (en: string, hi: string) => string,
+) => {
+  if (!opt) return undefined;
+  const en = opt.label || "";
+  const hi = opt.labelHindi || opt.label || "";
+  return t ? t(en, hi) : en;
+};
+
 export const departmentsList: ExternalDepartmentItem[] = [
   {
     id: 1,
@@ -54,17 +64,40 @@ export const departmentsList: ExternalDepartmentItem[] = [
     component: HealthDepartmentForm,
     listComponent: null,
     viewComponent: HealthDepartmentDetailView,
-    getTableRowData: (data: any, t?: any) => {
+    getTableRowData: (data: any, t?: any, masterData?: any) => {
       const payload = data?.departmentPayload || {};
       const address = payload?.address || {};
+      const grievanceTypeMatch = masterData?.grievanceType?.find(
+        (g: any) =>
+          String(g.value) === String(payload?.grievanceType) ||
+          String(g.subType) === String(payload?.serviceCode) ||
+          String(g.label) === String(payload?.grievanceType),
+      );
+      const districtMatch = masterData?.district?.find(
+        (d: any) =>
+          String(d.value) === String(address?.district) ||
+          String(d.code) === String(address?.district) ||
+          String(d.label) === String(address?.district),
+      );
+
+      const serviceLabel =
+        resolveMultilingualLabel(grievanceTypeMatch, t) ||
+        payload?.grievanceType ||
+        payload?.serviceCode ||
+        "-";
+      const districtLabel =
+        resolveMultilingualLabel(districtMatch, t) ||
+        address?.district ||
+        "-";
+
       return {
-        complaintNumber: data?.internalId ||  data?.externalComplaintId || data?._id || "-",
+        complaintNumber: data?.internalId || data?.externalComplaintId || data?._id || "-",
         nature: payload?.type || (t ? t("Grievance", "शिकायत") : "COMPLAINT"),
-        district: address?.district || "-",
+        district: districtLabel,
         department: t
           ? t("Health Department", "स्वास्थ्य विभाग")
           : "Health Department",
-        service: payload?.grievanceType || payload?.serviceCode || "-",
+        service: serviceLabel,
         status: data?.status || "PENDING",
         raisedOn: data?.createdAt || payload?.dateOfIncident,
       };
@@ -88,25 +121,32 @@ export const departmentsList: ExternalDepartmentItem[] = [
       const districtMatch = masterData?.districtCode?.find(
         (d: any) => String(d.value) === String(location?.districtCode),
       );
+      const typeMatch = masterData?.type?.find(
+        (v: any) => String(v.value) === String(payload?.type),
+      );
 
       const categoryLabel =
-        categoryMatch?.label ||
+        resolveMultilingualLabel(categoryMatch, t) ||
         payload?.categoryOther ||
         (payload?.categoryId ? `Category ${payload?.categoryId}` : "-");
       const districtLabel =
-        districtMatch?.label ||
+        resolveMultilingualLabel(districtMatch, t) ||
         (location?.districtCode ? String(location?.districtCode) : "-");
+      const natureLabel =
+        resolveMultilingualLabel(typeMatch, t) ||
+        payload?.type ||
+        (t ? t("Grievance", "शिकायत") : "COMPLAINT");
 
       return {
-        complaintNumber:data?.internalId || data?.externalComplaintId || payload?.externalRef || data?._id || "-",
-        nature: payload?.type || (t ? t("Grievance", "शिकायत") : "COMPLAINT"),
+        complaintNumber: data?.internalId || data?.externalComplaintId || payload?.externalRef || data?._id || "-",
+        nature: natureLabel,
         district: districtLabel,
         department: t
           ? t("Education Department", "शिक्षा विभाग")
           : "Education Department",
         service: categoryLabel,
         status: data?.status || "PENDING",
-        raisedOn:  data?.createdAt,
+        raisedOn: data?.createdAt,
       };
     },
   },
@@ -132,17 +172,17 @@ export const departmentsList: ExternalDepartmentItem[] = [
       );
 
       const serviceLabel =
-        typeMatch?.label ||
-        categoryMatch?.label ||
+        resolveMultilingualLabel(typeMatch, t) ||
+        resolveMultilingualLabel(categoryMatch, t) ||
         (payload?.typeId ? `Type ${payload?.typeId}` : "-");
       const districtLabel =
-        districtMatch?.label ||
+        resolveMultilingualLabel(districtMatch, t) ||
         (payload?.districtId
           ? String(payload?.districtId)
           : payload?.address || "-");
 
       return {
-        complaintNumber:data?.internalId ||  data?.externalComplaintId || payload?.grievanceID || data?._id || "-",
+        complaintNumber: data?.internalId || data?.externalComplaintId || payload?.grievanceID || data?._id || "-",
         nature: t ? t("Grievance", "शिकायत") : "COMPLAINT",
         district: districtLabel,
         department: t
