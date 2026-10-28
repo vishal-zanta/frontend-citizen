@@ -1,13 +1,13 @@
-import { getFormsFields } from "@/lib/idb";
+import { getFormsFields, IDB_VERSION } from "@/lib/idb";
 import moment from "moment";
 import { parsePhoneNumber } from "react-phone-number-input";
 
 export const checkIdbDataExpiry = async (departmentCode: string) => {
   const dataFromDb = await getFormsFields(departmentCode);
   const isExpired =
-    dataFromDb?.cachedAt &&
+    (dataFromDb?.cachedAt &&
     moment(dataFromDb.cachedAt).isValid() &&
-    moment().diff(moment(dataFromDb.cachedAt), "hours") >= 24 *100;
+    moment().diff(moment(dataFromDb.cachedAt), "hours") >= 24 *100) || dataFromDb?.__version !== IDB_VERSION;
 
   return { dataFromDb, isExpired };
 };
