@@ -9,6 +9,7 @@ export function generateUCHId() {
   return `UCH-${month}${year}-${randomNumber}`;
 }
 
+
 export const getFinalData = (data: any = {}, departmentCode = "EDUCATION") => {
   const departmentPayload = {
     externalRef: generateUCHId(),
