@@ -160,6 +160,9 @@ const HealthDepartmentDetailView = ({
               <h2 className="text-sm font-bold text-primary font-mono">
                 {data?.internalId || data?.externalComplaintId || data?._id || "N/A"}
               </h2>
+              <p className="text-xs font-semibold text-foreground mt-0.5">
+                {t("Department", "विभाग")}: {t("Health Department", "स्वास्थ्य विभाग")}
+              </p>
             </div>
             <div className="flex items-center gap-2">
               <StatusBadge status={data?.status || "PENDING"} />

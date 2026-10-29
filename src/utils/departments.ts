@@ -6,6 +6,7 @@ import HealthDepartmentDetailView from "@/pages/citizen/track-complaint/departme
 import EducationDepartmentDetailView from "@/pages/citizen/track-complaint/department-views/education-department";
 import FoodDeptView from "@/pages/citizen/track-complaint/department-views/food-department";
 
+
 export interface ExternalDepartmentRowData {
   complaintNumber?: string;
   nature?: string;
