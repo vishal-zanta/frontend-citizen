@@ -227,7 +227,7 @@ export default function RaiseComplaint({
   const [submitted, setSubmitted] = useState<any>([false, null]);
 
   const postComplaintsMutation = useMutation({
-    mutationFn: postComplaints,
+    mutationFn: (body: any)=> postComplaints(body),
     onSuccess: (data) => {
       getSuccessToast(
         t("Complaint registered successfully", "शिकायत सफलतापूर्वक दर्ज की गई"),
