@@ -6,6 +6,7 @@ import { content } from "./content";
 import sahyogHeroV4 from "@/assets/sahyog-variants/1/sahyog-hero-v4.webp";
 import heroSecondV7 from "@/assets/sahyog-variants/1/hero-second-v7.webp";
 
+
 const HeroSection = () => {
   const { t } = useLanguage();
 
