@@ -4,9 +4,9 @@ import { useLanguage } from "@/context/LanguageContext";
 import serviceRegisterImg from "@/assets/sahyog-variants/2/variation-2/service-register-blob.webp";
 import serviceTrackImg from "@/assets/sahyog-variants/2/variation-2/service-track-blob.webp";
 import serviceFeedbackImg from "@/assets/sahyog-variants/2/variation-2/service-feedback-blob.webp";
-import registerComplaintIcon from "@/assets/sahyog-variants/2/icons/register-complaint.png";
-import complaintStatusIcon from "@/assets/sahyog-variants/2/icons/complaint-status.png";
-import citizenFeedbackIcon from "@/assets/sahyog-variants/2/icons/citizen-feedback.png";
+import registerComplaintIcon from "@/assets/sahyog-variants/2/icons/register-complaint.webp";
+import complaintStatusIcon from "@/assets/sahyog-variants/2/icons/complaint-status.webp";
+import citizenFeedbackIcon from "@/assets/sahyog-variants/2/icons/citizen-feedback.webp";
 
 const ServicesSection: React.FC = () => {
   const { t } = useLanguage();

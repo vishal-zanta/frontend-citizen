@@ -2,7 +2,7 @@ import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { PhoneIcon, MailIcon } from "./Icons";
 import { content } from "./content";
-import biharLogo from "@/assets/sahyog-variants/1/bihar-logo.png";
+import biharLogo from "@/assets/sahyog-variants/1/bihar-logo.webp";
 
 const Footer = () => {
   const { t } = useLanguage();

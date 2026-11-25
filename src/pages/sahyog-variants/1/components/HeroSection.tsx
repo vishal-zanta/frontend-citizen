@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
 import { FileIcon, PhoneIcon, HeadsetIcon } from "./Icons";
 import { content } from "./content";
-import sahyogHeroV4 from "@/assets/sahyog-variants/1/sahyog-hero-v4.png";
-import heroSecondV7 from "@/assets/sahyog-variants/1/hero-second-v7.png";
+import sahyogHeroV4 from "@/assets/sahyog-variants/1/sahyog-hero-v4.webp";
+import heroSecondV7 from "@/assets/sahyog-variants/1/hero-second-v7.webp";
 
 const HeroSection = () => {
   const { t } = useLanguage();

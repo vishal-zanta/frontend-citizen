@@ -1,6 +1,6 @@
 import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import biharLogo from "@/assets/sahyog-variants/2/bihar-logo.png";
+import biharLogo from "@/assets/sahyog-variants/2/bihar-logo.webp";
 
 const Footer: React.FC = () => {
   const { lang, t } = useLanguage();

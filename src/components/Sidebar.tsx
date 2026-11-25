@@ -23,7 +23,7 @@ import {
   HardHat,
   Headphones,
 } from "lucide-react";
-import biharGovtLogo from "@/assets/bihar_govt.png";
+import biharGovtLogo from "@/assets/bihar_govt.webp";
 import { PORTAL_META } from "@/lib/biharData";
 import { useLanguage } from "@/context/LanguageContext";
 

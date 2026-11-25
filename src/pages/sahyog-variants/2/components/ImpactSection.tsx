@@ -1,7 +1,7 @@
 import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import totalRegisteredIcon from "@/assets/sahyog-variants/2/icons/total-registered.png";
-import totalResolvedIcon from "@/assets/sahyog-variants/2/icons/total-resolved.png";
+import totalRegisteredIcon from "@/assets/sahyog-variants/2/icons/total-registered.webp";
+import totalResolvedIcon from "@/assets/sahyog-variants/2/icons/total-resolved.webp";
 
 const ImpactSection: React.FC = () => {
   const { t } = useLanguage();

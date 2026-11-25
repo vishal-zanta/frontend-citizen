@@ -1,10 +1,10 @@
 import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import journeyCallImg from "@/assets/sahyog-variants/2/variation-2/journey-call.png";
-import journeyRegistrationImg from "@/assets/sahyog-variants/2/variation-2/journey-registration.png";
-import journeyResolutionImg from "@/assets/sahyog-variants/2/variation-2/journey-resolution.png";
-import journeyUpdateImg from "@/assets/sahyog-variants/2/variation-2/journey-update.png";
-import journeySatisfactionImg from "@/assets/sahyog-variants/2/variation-2/journey-satisfaction.png";
+import journeyCallImg from "@/assets/sahyog-variants/2/variation-2/journey-call.webp";
+import journeyRegistrationImg from "@/assets/sahyog-variants/2/variation-2/journey-registration.webp";
+import journeyResolutionImg from "@/assets/sahyog-variants/2/variation-2/journey-resolution.webp";
+import journeyUpdateImg from "@/assets/sahyog-variants/2/variation-2/journey-update.webp";
+import journeySatisfactionImg from "@/assets/sahyog-variants/2/variation-2/journey-satisfaction.webp";
 
 const steps = [
   {

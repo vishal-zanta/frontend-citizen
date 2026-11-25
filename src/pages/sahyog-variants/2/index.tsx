@@ -10,8 +10,8 @@ import Footer from "./components/Footer";
 import Disclaimer from "./components/Disclaimer";
 import AssistantPanel from "./components/AssistantPanel";
 import { useLanguage } from "@/context/LanguageContext";
-import biharWideDoodle from "@/assets/sahyog-variants/2/variation-2/bihar-wide-doodle.png";
-import biharContinuousDoodle from "@/assets/sahyog-variants/2/variation-2/bihar-continuous-doodle.png";
+import biharWideDoodle from "@/assets/sahyog-variants/2/variation-2/bihar-wide-doodle.webp";
+import biharContinuousDoodle from "@/assets/sahyog-variants/2/variation-2/bihar-continuous-doodle.webp";
 import "./sahyog-variation-2.css";
 import Chatbot from "@/pages/chatbot";
 

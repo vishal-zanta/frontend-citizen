@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
 import { content } from "./content";
-import processSprite from "@/assets/sahyog-variants/1/process.png";
+import processSprite from "@/assets/sahyog-variants/1/process.webp";
 
 const ProcessSection = () => {
   const { t } = useLanguage();

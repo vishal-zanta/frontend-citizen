@@ -1,8 +1,8 @@
 import React from "react";
-import banner from "@/assets/slider-2.jpeg";
-import bannerEng from "@/assets/slider-2-eng.jpeg";
-import bannerPotrait from "@/assets/slider-2-hin-potrait.jpeg";
-import bannerEngPotrait from "@/assets/slider-2-eng-potrait.jpeg";
+import banner from "@/assets/slider-2.webp";
+import bannerEng from "@/assets/slider-2-eng.webp";
+import bannerPotrait from "@/assets/slider-2-hin-potrait.webp";
+import bannerEngPotrait from "@/assets/slider-2-eng-potrait.webp";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function HeroSection() {

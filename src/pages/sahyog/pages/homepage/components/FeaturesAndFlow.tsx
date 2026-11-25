@@ -1,9 +1,9 @@
 
 import React from "react";
-import userFlow from "@/assets/user-flow-steps.jpeg";
-import userFlowEng from "@/assets/user-flow-steps-eng.jpeg";
-import userFlowHinPotrait from "@/assets/user-flow-steps-hin-potrait.jpeg";
-import userFlowEnPotrait from "@/assets/user-flow-steps-en-potrait.jpeg";
+import userFlow from "@/assets/user-flow-steps.webp";
+import userFlowEng from "@/assets/user-flow-steps-eng.webp";
+import userFlowHinPotrait from "@/assets/user-flow-steps-hin-potrait.webp";
+import userFlowEnPotrait from "@/assets/user-flow-steps-en-potrait.webp";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function FeaturesAndFlow() {

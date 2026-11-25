@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
-import biharLogo from "@/assets/sahyog-variants/1/bihar-logo.png";
+import biharLogo from "@/assets/sahyog-variants/1/bihar-logo.webp";
 import { content } from "./content";
 
 const Header = () => {

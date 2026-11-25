@@ -1,6 +1,6 @@
 import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import golgharTricolorImg from "@/assets/sahyog-variants/2/variation-2/golghar-tricolor-watercolor.png";
+import golgharTricolorImg from "@/assets/sahyog-variants/2/variation-2/golghar-tricolor-watercolor.webp";
 
 const AboutSection: React.FC = () => {
   const { t } = useLanguage();

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import heroSlideDarkImg from "@/assets/sahyog-variants/2/variation-2/bihar-leadership-pm-foreground.png";
+import heroSlideDarkImg from "@/assets/sahyog-variants/2/variation-2/bihar-leadership-pm-foreground.webp";
 import heroSlideLightImg from "@/assets/sahyog-variants/2/variation-2/bihar-leadership-banner2-v4.webp";
 
 const HeroSection: React.FC = () => {

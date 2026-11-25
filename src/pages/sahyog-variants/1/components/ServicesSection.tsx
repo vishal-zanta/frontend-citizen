@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
 import { FileIcon, SearchIcon, MessageIcon } from "./Icons";
 import { content } from "./content";
-import serviceRegister from "@/assets/sahyog-variants/1/service-register.png";
-import serviceTrack from "@/assets/sahyog-variants/1/service-track.png";
-import serviceFeedback from "@/assets/sahyog-variants/1/service-feedback.png";
+import serviceRegister from "@/assets/sahyog-variants/1/service-register.webp";
+import serviceTrack from "@/assets/sahyog-variants/1/service-track.webp";
+import serviceFeedback from "@/assets/sahyog-variants/1/service-feedback.webp";
 
 const serviceImages = {
   register: serviceRegister,

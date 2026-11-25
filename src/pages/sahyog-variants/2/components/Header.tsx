@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
-import biharLogo from "@/assets/sahyog-variants/2/bihar-logo.png";
+import biharLogo from "@/assets/sahyog-variants/2/bihar-logo.webp";
 import LangSelector from "@/components/LangSelector";
 
 const Header: React.FC = () => {
